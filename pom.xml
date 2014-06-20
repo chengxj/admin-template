@@ -10,47 +10,6 @@
 	<description>
 		使用spring，angularjs搭建的rest风格WEB项目
 	</description>
-	<organization>
-		<name>Edgar</name>
-		<url>http://www.edgar.com</url>
-	</organization>
-	<developers>
-		<developer>
-			<id>Edgar</id>
-			<name>张雨舟</name>
-			<roles>
-				<role>项目经理</role>
-				<role>开发人员</role>
-			</roles>
-			<timezone>+8</timezone>
-		</developer>
-	</developers>
-	<mailingLists>
-		<mailingList>
-			<name>开发人员列表</name>
-			<subscribe>edgar615@gmail.com</subscribe>
-			<unsubscribe>edgar615@gmail.com</unsubscribe>
-			<post>edgar615@gmail.com</post>
-			<archive>http://localhost:8080/at</archive>
-			<otherArchives>
-				<otherArchive>http://localhost:8080/at</otherArchive>
-			</otherArchives>
-		</mailingList>
-		<mailingList>
-			<name>测试人员列表</name>
-			<subscribe>edgar615@gmail.com</subscribe>
-			<unsubscribe>edgar615@gmail.com</unsubscribe>
-			<post>edgar615@gmail.com</post>
-			<archive>http://localhost:8080/at</archive>
-			<otherArchives>
-				<otherArchive>http://localhost:8080/at</otherArchive>
-			</otherArchives>
-		</mailingList>
-	</mailingLists>
-	<issueManagement>
-		<system>Test Director</system>
-		<url>http://10.11.0.15/tdBIN/start_a.htm</url>
-	</issueManagement>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
