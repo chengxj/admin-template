@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Template</title>
+
+    <!-- Fonts -->
+    <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,400italic%7cMontserrat:400,700" rel="stylesheet" type="text/css">-->
+    <!-- Icons -->
+    <link type="text/css" rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="assets/plugins/animate.css/animate.css">
+    <link type="text/css" rel="stylesheet" href="assets/plugins/jquery-pace/pace.css">
+    <link type="text/css" rel="stylesheet" href="assets/plugins/toastr/toastr.min.css">
+    <link type="text/css" rel="stylesheet" href="assets/plugins/icheck/skins/minimal/green.css">
+    <link type="text/css" rel="stylesheet" href="assets/plugins/select2/select2.css">
+    <link type="text/css" rel="stylesheet" href="assets/plugins/select2/select2-bootstrap.css">
+    <!-- Template -->
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="assets/plugins/html5shiv.js"></script>
+    <script src="assets/plugins/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="assets/img/favicon.ico" />
+</head>
+<body ng-app="rootApp">
+
+<!-- Page container -->
+<div class="page-container">
+<!-- Sidebar -->
+<aside id="sidebar">
+    <!-- Sidebar header -->
+    <header class="sidebar-header">
+        <h1><img src="" alt="Admin"></h1>
+        <a href="javascript:;" id="make-compact"><i class="fa fa-reorder"></i></a>
+        <a href="javascript:;" id="hide-menu"><i class="fa fa-reorder"></i></a>
+    </header>
+    <!-- /Sidebar header -->
+    <!-- Sidebar group -->
+    <ul class="sidebar-group">
+        <li class="sidebar-group-header">{{'label.index.menu.list' | translate}}</li>
+        <li>
+            <a href="index.html"><i class="fa fa-home"></i> <span>{{'title.common.home' | translate}}</span></a>
+            <div class="sidebar-link-addon"><span class="badge bg-green">We're coming soon</span></div>
+        </li>
+
+        <li ng-class="menu.class" ng-repeat="menu in leftMenus">
+            <a href="{{menu.menuPath}}"><i class="fa {{menu.icon}}"></i> <span translate>{{menu.menuName}}</span></a>
+            <div class="sidebar-link-addon" ng-hide="menu.childMenus.length == 0">
+                <span
+                        class="badge btn-info">{{menu.childMenus.length}}</span><i class="fa fa-plus"></i></div>
+            <ul class="sidebar-submenu">
+                <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a></li>
+            </ul>
+        </li>
+
+    </ul>
+    <!-- /Sidebar group -->
+    <!-- Sidebar group
+    <ul class="sidebar-group">
+        <li class="sidebar-group-header">FAVORITES</li>
+        <li><a href="javascript:;"><i class="typcn typcn-starburst text-red"></i> <span>Web design</span></a></li>
+        <li><a href="javascript:;"><i class="typcn typcn-starburst text-blue"></i> <span>Technology</span></a></li>
+        <li><a href="javascript:;"><i class="typcn typcn-starburst text-green"></i> <span>Gadgets</span></a></li>
+    </ul>
+     /Sidebar group
+    <br>
+     Sidebar panel
+    <div class="sidebar-panel">
+        <h4>Upgrade</h4>
+        <p>
+            Upgrade to premium to get rid of the ads!
+            <br>
+            <button class="btn btn-info btn-block">Learn more...</button>
+        </p>
+    </div>
+     /Sidebar panel
+     Sidebar panel
+    <div class="sidebar-panel">
+        <button class="btn btn-info btn-block no-margin"><i class="fa fa-plus"></i> Create invoice</button>
+    </div>
+     /Sidebar panel -->
+</aside>
+<!-- /Sidebar -->
+<div>
+    <!--BEGIN TO TOP--><a id="totop" href="javascript:;">
+    <i class="fa fa-angle-up"></i>
+</a><!--END BACK TO TOP-->
+</div>
+<!-- Content -->
+<div id="content">
+<!-- Header -->
+<nav class="header-site">
+    <div class="container-fluid" id="page-header">
+        <!-- Page title and breadcrumb navigation -->
+
+        <!-- /Page title and breadcrumb navigation -->
+        <!-- Header navigation / icons -->
+        <ul class="header-nav navbar-right">
+            <!-- Messages -->
+            <li class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-comment"></span></a>
+                <span class="badge">3</span>
+                <div class="dropdown-menu panel panel-messages dropdown-arrow pull-right">
+                    <div class="panel-heading">MESSAGES <span class="badge pull-right bg-orange">NEW</span></div>
+                    <div class="panel-body scrollbox">
+                        <ul class="chat">
+                            <li class="left clearfix">
+                                <a href="javascript:;">
+													<span class="chat-img pull-left">
+														<img src="" alt="User Avatar" class="img-circle">
+													</span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Jon Bateman</strong>
+                                            <small class="pull-right text-muted">
+                                                <span class="glyphicon glyphicon-time"></span>12 mins ago
+                                            </small>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibend...
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="left clearfix">
+                                <a href="javascript:;">
+													<span class="chat-img pull-left">
+														<img src="" alt="User Avatar" class="img-circle">
+													</span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Sam Smalls</strong>
+                                            <small class="pull-right text-muted">
+                                                <span class="glyphicon glyphicon-time"></span>12 mins ago
+                                            </small>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibend...
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="left clearfix">
+                                <a href="javascript:;">
+													<span class="chat-img pull-left">
+														<img src=""  alt="User Avatar" class="img-circle">
+													</span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">The Flash</strong>
+                                            <small class="pull-right text-muted">
+                                                <span class="glyphicon glyphicon-time"></span>12 mins ago
+                                            </small>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibend...
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="left clearfix">
+                                <a href="javascript:;">
+													<span class="chat-img pull-left">
+														<img src="" alt="User Avatar" class="img-circle">
+													</span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Bruce Nolan</strong>
+                                            <small class="pull-right text-muted">
+                                                <span class="glyphicon glyphicon-time"></span>12 mins ago
+                                            </small>
+                                        </div>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibend...
+                                        </p>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <footer class="panel-footer text-center">
+                        <a href="javascript:;">View all messages</a>
+                    </footer>
+                </div>
+            </li>
+            <!-- /Messages -->
+
+            <!-- Notifications -->
+            <li class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-bell"></span></a>
+                <div class="dropdown-menu panel panel-notifications dropdown-arrow pull-right">
+                    <div class="panel-heading">NOTIFICATIONS</div>
+                    <div class="panel-body scrollbox">
+                        <ul>
+                            <li>
+                                <a href="javascript:;">
+                                    <div class="clearfix">
+														<span class="pull-left">
+															<i class="typcn typcn-heart bg-red"></i>
+															New likes
+														</span>
+                                        <span class="badge badge-gray pull-right">22</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <div class="clearfix">
+														<span class="pull-left">
+															<i class="typcn typcn-user bg-blue"></i>
+															New users
+														</span>
+                                        <span class="badge badge-gray pull-right">6</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <div class="clearfix">
+														<span class="pull-left">
+															<i class="typcn typcn-image bg-green"></i>
+															New pictures
+														</span>
+                                        <span class="badge badge-gray pull-right">125</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <div class="clearfix">
+														<span class="pull-left">
+															<i class="typcn typcn-heart bg-orange"></i>
+															New likes
+														</span>
+                                        <span class="badge badge-gray pull-right">22</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <div class="clearfix">
+														<span class="pull-left">
+															<i class="typcn typcn-user bg-purple"></i>
+															New users
+														</span>
+                                        <span class="badge badge-gray pull-right">6</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">
+                                    <div class="clearfix">
+														<span class="pull-left">
+															<i class="typcn typcn-image bg-yellow"></i>
+															New pictures
+														</span>
+                                        <span class="badge badge-gray pull-right">125</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <!-- /Notifications -->
+
+            <!-- Profile -->
+            <li class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">{{loginUser.fullName}}</a>
+                <ul class="dropdown-menu dropdown-arrow pull-right">
+                    <li><a href="#/home/profile/{{loginUser.userId}}"><span class="fa fa-edit"></span> {{'label.index.user.profile.edit' | translate}}</a></li>
+                    <li class="divider"></li>
+                    <li><a href="javascript:;" ng-click="logout()"><span class="fa fa-sign-out"></span> {{'label.index.user.logout' | translate}}</a></li>
+                </ul>
+            </li>
+            <!-- /Profile -->
+        </ul>
+        <!-- /Header navigation / icons -->
+    </div>
+</nav>
+<!-- /Header -->
+
+<!-- Content start -->
+<div class="container-fluid" ng-view>
+    <!-- Statistics panels -->
+
+    <!-- /Statistics panels -->
+</div>
+</div>
+<!-- /Content -->
+</div>
+<!-- /Page container -->
+
+<!-- PLUGINS -->
+<script src="assets/plugins/jquery-1.10.2.min.js"></script>
+<script src="assets/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script src="assets/plugins/jquery.cookie.js"></script>
+<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/plugins/enscroll-0.6.0.min.js"></script>
+<script src="assets/plugins/multimenu.min.js"></script>
+
+<script src="assets/plugins/jquery-pace/pace.min.js"></script>
+<script src="assets/plugins/blockUI/jquery.blockUI.js"></script>
+<script src="assets/plugins/toastr/toastr.min.js"></script>
+<script src="assets/plugins/jquery-confirm/jquery.confirm.min.js"></script>
+<script src="assets/plugins/icheck/icheck.min.js"></script>
+<script src="assets/plugins/bootstrap-contextmenu/bootstrap-contextmenu.js"></script>
+<script src="assets/plugins/jquery-treegrid/js/jquery.treegrid.js"></script>
+<script src="assets/plugins/jquery-treegrid/js/jquery.treegrid.bootstrap3.js"></script>
+<script src="assets/plugins/select2/select2.js"></script>
+<script src="assets/plugins/select2/select2_locale_zh-CN.js"></script>
+<script src="assets/plugins/moment/moment.js"></script>
+<script src="assets/plugins/angular/angular.min.js"></script>
+<script src="assets/plugins/angular/angular-route.min.js"></script>
+<script src="assets/plugins/angular/angular-resource.min.js"></script>
+<script src="assets/plugins/angular/angular-translate.min.js"></script>
+<script src="assets/plugins/angular/angular-translate-loader-static-files.min.js"></script>
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/services.js"></script>
+<script src="assets/js/controllers.js"></script>
+<script src="assets/js/filters.js"></script>
+<script src="assets/js/directives.js"></script>
+<script src="assets/js/routeResolver.js"></script>
+<script src="assets/plugins/underscore-min.js"></script>
+<script src="assets/plugins/require/require.js"></script>
+</body>
+</html>

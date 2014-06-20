@@ -1,0 +1,128 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.role' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.role' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.role.list' | translate}}
+                <div class="pull-right">
+                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                       reload-fun="reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="panel-body">
+                <!--右键菜单开始-->
+                <div id="context-menu">
+                    <ul class="dropdown-menu" role="menu">
+                        <li ed-permisson perm="sys:role:**:delete">
+                            <a href="javascript:;"
+                               model-array="selectRoles" ed-delete-all
+                               click-fun="remove(role)" success-fun="reload()" ng-hide="selectRoles.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                                {{'label.common.op.delete' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/role/edit/{{role.roleId}}"
+                               ng-hide="selectRoles.length != 1"
+                               ed-permisson perm="sys:role:**:update">
+                                <i class="fa fa-edit"></i>
+                                {{'label.common.op.edit' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/role/permission/{{role.roleId}}"
+                               ng-hide="selectRoles.length != 1" ed-permisson perm="sys:menu:**:read">
+                                <i class="fa fa-lock"></i>
+                                {{'label.sys.role.permission' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--右键菜单结束-->
+                <!--工具栏开始-->
+                <div class="table-tools">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a class="btn btn-info" href="#/sys/role/add" ed-tooltip
+                               data-original-title="{{'label.sys.role.add' | translate}}" ed-permisson perm="sys:role:**:create">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="{{'label.common.op.delete' | translate}}"
+                               model-array="selectRoles" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectRoles.length == 0"
+                               ed-permisson perm="sys:role:**:delete">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <a class="btn btn-pink" href="#/sys/role/edit/{{role.roleId}}" ed-tooltip
+                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectRoles.length != 1"
+                               ed-permisson perm="sys:role:**:update">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a class="btn btn-pink" href="#/sys/role/permission/{{role.roleId}}" ed-tooltip
+                               data-original-title="{{'label.sys.role.permission' | translate}}" ng-hide="selectRoles.length != 1"
+                               ed-permisson perm="sys:menu:**:read">
+                                <i class="fa fa-lock"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-lg-6 pull-right">
+                            <div ed-simple-page page-size="10"
+                                 pagination="pagination" query-param="queryParam" query-url="sys/role/pagination"
+                                 share-key="RoleList" block-el=".panel-body">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="{{'query.sys.role.simple.rolename' | translate}}"
+                                       ng-model="queryParam.roleName_cn" ng-keydown="enterQueryValue($event)">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr role="row">
+                        <th class="width20">
+                            <input type="checkbox" ed-check-all/>
+                        </th>
+                        <th>
+                            {{'label.sys.role.rolename' | translate}}
+                        </th>
+                        <th>
+                            {{'label.sys.role.rolecode' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="role in pagination.records" data-toggle="context"
+                        data-target="#context-menu">
+                        <td>
+                            <input name="pk" type="checkbox" ng-model="role"
+                                   model-array="selectRoles" ed-checkbox/>
+                        </td>
+                        <td>{{role.roleName}}</td>
+                        <td>{{role.roleCode}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,122 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.menu' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.menu' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.menu.list' | translate}}
+                <div class="pull-right">
+                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                       reload-fun="reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="panel-body">
+                <!--右键菜单开始-->
+                <div id="context-menu">
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="javascript:;" ed-tooltip
+                               model-array="selectMenus" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectMenus.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                                {{'label.common.op.delete' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/menu/edit/{{menu.menuId}}" ed-tooltip
+                               ng-hide="selectMenus.length != 1">
+                                <i class="fa fa-edit"></i>
+                                {{'label.common.op.edit' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/menu/addChild/{{menu.menuId}}" ed-tooltip
+                               ng-hide="selectMenus.length != 1 || menu.parentId != -1">
+                                <i class="fa fa-edit"></i>
+                                {{'label.sys.menu.addchild' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/menu/route/{{menu.menuId}}" ng-hide="selectMenus.length != 1">
+                                <i class="fa fa-chain"></i>
+                                {{'label.sys.menu.relate' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--右键菜单结束-->
+                <!--工具栏开始-->
+                <div class="table-tools mrg25B">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a class="btn btn-info" href="#/sys/menu/add" ed-tooltip
+                               data-original-title="{{'label.sys.menu.add' | translate}}">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="{{'label.common.op.delete' | translate}}"
+                               model-array="selectMenus" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectMenus.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <a class="btn btn-violet" href="#/sys/menu/edit/{{menu.menuId}}" ed-tooltip
+                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectMenus.length != 1">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a class="btn btn-violet" href="#/sys/menu/addChild/{{menu.menuId}}" ed-tooltip
+                               data-original-title="{{'label.sys.menu.addchild' | translate}}" ng-hide="selectMenus.length != 1 || menu.parentId != -1">
+                                <i class="fa fa fa-plus-square"></i>
+                            </a>
+                            <a class="btn btn-green" href="#/sys/menu/route/{{menu.menuId}}" ed-tooltip
+                               data-original-title="{{'label.sys.menu.relate' | translate}}" ng-hide="selectMenus.length != 1">
+                                <i class="fa fa-chain"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+                <table class="table table-bordered tree">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            <span class="mrg15L"><input type="checkbox" ed-check-all/></span>
+                            {{'label.sys.menu.name' | translate}}
+                        </th>
+                        <th>
+                            {{'label.sys.menu.path' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="menu in menus" ng-class="menu.class" data-toggle="context"
+                        data-target="#context-menu" ed-treegrid>
+                        <td>
+                            <span style="{{menu.style}}">
+                                <input name="pk" type="checkbox" ng-model="menu"
+                                       model-array="selectMenus" ed-checkbox/>
+                            </span>
+                            <span translate>{{menu.menuName}}</span>
+                        </td>
+                        <td>{{menu.menuPath}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

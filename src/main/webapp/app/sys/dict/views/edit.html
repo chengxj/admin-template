@@ -1,0 +1,71 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.dict' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/sys/dict/list">{{'title.sys.dict' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'label.common.op.edit' | translate}}字典</a>
+    </nav>
+</div>
+
+<div class="row" ed-disabled="disabled">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.dict.info' | translate}}</header>
+            <div class="panel-body">
+                <form role="form" class="form-horizontal" name="form" novalidate>
+                    <div class="form-body">
+                        <div class="form-group"
+                             ng-class="{'has-error': form.dictName.$dirty && form.dictName.$invalid}">
+                            <label for="dictName" class="col-md-2 control-label">{{'label.sys.dict.name' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="dictName" name="dictName"
+                                       ng-model="dict.dictName" ed-focus required ng-maxlength=32>
+                                <span class='help-block'
+                                      ng-show="form.dictName.$error.required && form.dictName.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.dictName.$error.maxlength && form.dictName.$focused">{{'help.common.maxlength32' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                {{'label.sys.dict.code' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{dict.dictCode}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button class="btn btn-info"
+                                    type="button"
+                                    ng-disabled="form.$invalid || isUnchanged() || clickToken"
+                                    ng-click="save()">
+                                <i class="fa fa-check"></i>
+                                {{'button.common.save' | translate}}
+                            </button>
+                            &nbsp;
+                            <a class="btn btn-default" type="button"
+                               href="#/sys/dict/list">
+                                <i class="fa fa-undo"></i>
+                                {{'button.common.cancel' | translate}}
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

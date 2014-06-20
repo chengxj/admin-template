@@ -1,0 +1,80 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.role' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/sys/role/list">{{'title.sys.role' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.role.edit' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.role.info' | translate}}
+            </header>
+            <div class="panel-body">
+                <form role="form" class="form-horizontal" name="form" novalidate>
+                    <div class="form-body">
+                        <div class="form-group"
+                             ng-class="{'has-error': form.roleName.$dirty && form.roleName.$invalid}">
+                            <label for="roleName" class="col-md-2 control-label">{{'label.sys.role.rolename' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="roleName" name="roleName"
+                                       ng-model="role.roleName" ed-focus required ng-maxlength="32">
+                                <span class='help-block'
+                                      ng-show="form.roleName.$error.required && form.roleName.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.roleName.$error.maxlength && form.roleName.$focused">{{'help.common.maxlength32' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.roleCode.$dirty && form.roleCode.$invalid}">
+                            <label for="roleCode" class="col-md-2 control-label">{{'label.sys.role.rolecode' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input class="form-control select2"
+                                       id="roleCode"
+                                       name="roleCode"
+                                       ng-model="role.roleCode"
+                                       ed-dict-select
+                                       parent-code="ROLE_CODE"
+                                       ed-focus
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button class="btn btn-info"
+                                    type="button"
+                                    ng-disabled="form.$invalid || isUnchanged() || clickToken"
+                                    ng-click="save()">
+                                <i class="fa fa-check"></i>
+                                {{'button.common.save' | translate}}
+                            </button>
+                            &nbsp;
+                            <a class="btn btn-default" type="button"
+                               href="#/sys/role/list">
+                                <i class="fa fa-undo"></i>
+                                {{'button.common.cancel' | translate}}
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

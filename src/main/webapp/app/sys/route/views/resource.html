@@ -1,0 +1,85 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.route' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/sys/route/list">{{'title.sys.route' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.route.relate' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">
+                {{'header.sys.route.relate' | translate}}
+            </header>
+            <div class="panel-body">
+                <!--按钮栏开始-->
+                <div class="row mrg20B">
+                    <div class="col-md-6 col-sm-12">
+
+                        <a class="btn btn-info"
+                           ng-click="saveResourcePermission()"
+                           ng-disabled="selectResources.length == 0"
+                           ng-hide="clickToken">
+                            <i class="fa fa-check"></i>
+                            {{'label.sys.route.relate' | translate}}
+                        </a>
+
+                    </div>
+
+                </div>
+                <!--按钮栏开始-->
+                <!--右键菜单开始-->
+                <div id="context-menu">
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="javascript:;"
+                               ng-click="saveResourcePermission()"
+                               ng-disabled="selectResources.length == 0"
+                               ng-hide="clickToken">
+                                <i class="fa fa-check"></i>
+                                {{'label.sys.route.relate' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--右键菜单结束-->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr role="row">
+                        <th class="width20">
+                            <input type="checkbox" ed-check-all el-name="resourcePk"/>
+                        </th>
+                        <th>
+                            {{'label.sys.resource.name' | translate}}
+                        </th>
+                        <th>
+                            {{'label.sys.resource.url' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="resource in resources" data-toggle="context"
+                        data-target="#context-menu">
+                        <td class="width20">
+                            <input name="resourcePk" type="checkbox" ng-model="resource"
+                                   model-array="selectResources" ed-checkbox/>
+                        </td>
+                        <td translate>{{resource.resourceName}}</td>
+                        <td>{{resource.url}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

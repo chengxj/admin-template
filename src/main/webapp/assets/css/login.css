@@ -1,0 +1,110 @@
+/*login*/
+body.login {
+    color: #7F7F7F;
+    background-image: url("../img/bg.jpg");
+    background-color: rgba(0, 0, 0, 0);
+}
+body.login .main-login {
+    margin-top: 60px;
+}
+body.login .logo {
+    padding: 20px;
+    text-align: center;
+}
+body.login .box-login, body.login .box-forgot, body.login .box-register {
+    background: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: -30px 30px 50px rgba(0, 0, 0, 0.32);
+    overflow: hidden;
+    padding: 15px;
+}
+body.login .box-forgot, body.login .box-register {
+    display: none;
+}
+body.login .form fieldset {
+    border: none;
+    margin: 0;
+    padding: 10px 0 0;
+}
+body.login a.forgot {
+    color: #909090;
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    top: 9px;
+}
+body.login input.password {
+    padding-right: 130px;
+}
+body.login label {
+    color: #7F7F7F;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+body.login .copyright {
+    font-size: 11px;
+    margin: 0 auto;
+    padding: 10px 10px 0;
+    text-align: center;
+}
+body.login .form-actions:before, body.login .form-actions:after {
+    content: "";
+    display: table;
+    line-height: 0;
+}
+body.login .form-actions:after {
+    clear: both;
+}
+body.login .form-actions {
+    margin-top: 15px;
+    padding-top: 10px;
+    display: block;
+}
+body.login .new-account {
+    border-top: 1px dotted #EEEEEE;
+    margin-top: 15px;
+    padding-top: 10px;
+    display: block;
+}
+/*.login*/
+
+/*input-icon*/
+span.input-icon, span.input-help {
+    display: block;
+    position: relative;
+}
+
+span.input-icon > input {
+    padding-left: 25px;
+    padding-right: 6px;
+}
+
+span.input-icon.input-icon-right > input {
+    padding-left: 6px;
+    padding-right: 25px;
+}
+
+span.input-icon > [class*="fa-"] {
+    bottom: 0;
+    color: #909090;
+    display: inline-block;
+    font-size: 14px;
+    left: 5px;
+    line-height: 35px;
+    padding: 0 3px;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+}
+
+span.input-icon.input-icon-right > [class*="fa-"] {
+    left: auto;
+    right: 4px;
+}
+
+span.input-icon > input:focus + [class*="fa-"] {
+    color: #557799;
+}
+/*.input-icon*/

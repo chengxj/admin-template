@@ -1,0 +1,180 @@
+package com.edgar.module.sys.web;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.edgar.core.mvc.ToQueryExample;
+import com.edgar.core.repository.Pagination;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.core.shiro.AuthHelper;
+import com.edgar.core.shiro.AuthType;
+import com.edgar.core.view.ResponseMessage;
+import com.edgar.module.sys.repository.domain.SysUser;
+import com.edgar.module.sys.repository.domain.SysUserProfile;
+import com.edgar.module.sys.repository.domain.SysUserRole;
+import com.edgar.module.sys.service.PasswordCommand;
+import com.edgar.module.sys.service.SysUserRoleCommand;
+import com.edgar.module.sys.service.SysUserService;
+
+/**
+ * 用户的rest接口
+ * 
+ * @author Edgar Zhang
+ * @version 1.0
+ */
+@Controller
+@RequestMapping("/sys/user")
+public class SysUserResource {
+
+        @Autowired
+        private SysUserService sysUserService;
+
+        /**
+         * 保存用户
+         * 
+         * @param sysUser
+         *                用户
+         * @return 保存成功返回1，失败返回0
+         */
+        @AuthHelper("Create User")
+        @RequestMapping(method = RequestMethod.POST)
+        @ResponseBody
+        public int save(@RequestBody SysUserRoleCommand sysUser) {
+                return sysUserService.save(sysUser);
+        }
+
+        /**
+         * 更新用户
+         * 
+         * @param userId
+         *                用户ID
+         * @param sysUser
+         *                用户
+         * @return 保存成功，返回1，保存失败，返回0
+         */
+        @AuthHelper("Update User")
+        @RequestMapping(method = RequestMethod.PUT, value = "/{userId}")
+        @ResponseBody
+        public int update(@PathVariable("userId") int userId,
+                        @RequestBody SysUserRoleCommand sysUser) {
+                sysUser.setUserId(userId);
+                return sysUserService.update(sysUser);
+        }
+
+        /**
+         * 根据用户ID查询用户
+         * 
+         * @param userId
+         *                用户ID
+         * @return 用户
+         */
+        @AuthHelper("Query User")
+        @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
+        @ResponseBody
+        public SysUser get(@PathVariable("userId") int userId) {
+                return sysUserService.get(userId);
+        }
+
+        /**
+         * 分页查询用户
+         * 
+         * @param page
+         *                当前页，默认为1
+         * @param pageSize
+         *                每页显示数量，默认为10
+         * @param example
+         *                查询条件
+         * @return 用户的分页类
+         */
+        @AuthHelper("Query User")
+        @RequestMapping(method = RequestMethod.GET, value = "/pagination")
+        @ResponseBody
+        public Pagination<SysUser> pagination(
+                        @RequestParam(value = "page", defaultValue = "1") int page,
+                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                        @ToQueryExample(maxNumOfRecords = 5000) QueryExample example) {
+                return sysUserService.pagination(example, page, pageSize);
+        }
+
+        /**
+         * 根据用户ID和时间戳删除用户
+         * 
+         * @param userId
+         *                用户ID
+         * @param updatedTime
+         *                时间戳
+         * @return 如果删除成功，返回1
+         */
+        @AuthHelper("Delete User")
+        @RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
+        @ResponseBody
+        public int delete(@PathVariable("userId") int userId,
+                        @RequestParam("updatedTime") long updatedTime) {
+                return sysUserService.deleteWithLock(userId, updatedTime);
+        }
+
+        /**
+         * 校验用户名是否唯一
+         * 
+         * @param username
+         *                用户名
+         * @return 如果存在，返回false
+         */
+        @AuthHelper("Check Unique Username")
+        @RequestMapping(method = RequestMethod.GET, value = "/check/username")
+        @ResponseBody
+        public ModelAndView checkDictCode(@RequestParam("field") String username) {
+                Assert.hasText(username);
+                boolean result = sysUserService.checkUsername(username);
+                return ResponseMessage.asModelAndView(result);
+        }
+
+        /**
+         * 根据用户，查询用户角色
+         * 
+         * @param userId
+         *                用户ID
+         * @return 用户角色列表
+         */
+        @AuthHelper("Query the roles of user")
+        @ResponseBody
+        @RequestMapping(method = RequestMethod.GET, value = "/role/{userId}")
+        public List<SysUserRole> getRoles(@PathVariable("userId") int userId) {
+                return sysUserService.getRoles(userId);
+        }
+        
+        @AuthHelper(value="Query Profile", type=AuthType.AUTHC)
+        @ResponseBody
+        @RequestMapping(method = RequestMethod.GET, value = "/profile/{userId}")
+        public SysUserProfile getProfile(@PathVariable("userId") int userId) {
+                return sysUserService.getProfile(userId);
+        }
+        
+        @AuthHelper(value="Update Profile", type=AuthType.AUTHC)
+        @ResponseBody
+        @RequestMapping(method = RequestMethod.PUT, value = "/profile/{userId}")
+        public int updateProfile(@PathVariable("userId") int userId, @RequestBody SysUserProfile profile) {
+                profile.setUserId(userId);
+                return sysUserService.updateProfile(profile);
+        }
+        
+        @AuthHelper(value="Update Password", type=AuthType.AUTHC)
+        @ResponseBody
+        @RequestMapping(method = RequestMethod.PUT, value = "/password/{userId}")
+        public int updatePassword(@PathVariable("userId") int userId, @RequestBody PasswordCommand password) {
+                password.setUserId(userId);
+                return sysUserService.updatePassword(password);
+        }
+
+
+}

@@ -1,0 +1,123 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.route' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.route' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.route.list' | translate}}
+                <div class="pull-right">
+                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                       reload-fun="reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="panel-body">
+                <!--右键菜单开始-->
+                <div id="context-menu">
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a type="button" href="javascript:;"
+                               model-array="selectRoutes" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectRoutes.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                                {{'label.common.op.delete' | translate}}
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="#/sys/route/edit/{{route.routeId}}" ng-hide="selectRoutes.length != 1">
+                                <i class="fa fa-edit"></i>
+                                {{'label.common.op.edit' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/route/resource/{{route.routeId}}" ng-hide="selectRoutes.length != 1">
+                                <i class="fa fa-chain"></i>
+                                {{'label.sys.route.relate' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--右键菜单结束-->
+                <!--工具栏开始-->
+                <div class="table-tools">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a class="btn btn-info" href="#/sys/route/add" ed-tooltip
+                               data-original-title="{{'label.sys.route.add' | translate}}">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="{{'label.common.op.delete' | translate}}"
+                               model-array="selectRoutes" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectRoutes.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <a class="btn btn-pink" href="#/sys/route/edit/{{route.routeId}}" ed-tooltip
+                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectRoutes.length != 1">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a class="btn btn-green" href="#/sys/route/resource/{{route.routeId}}" ed-tooltip
+                               data-original-title="{{'label.sys.route.relate' | translate}}" ng-hide="selectRoutes.length != 1">
+                                <i class="fa fa-chain"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-lg-6 pull-right">
+                            <div ed-simple-page page-size="10"
+                                 pagination="pagination" query-param="queryParam" query-url="sys/route/pagination"
+                                 share-key="RouteList" block-el=".panel-body">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="{{'query.sys.route.simple.name' | translate}}"
+                                       ng-model="queryParam.name_cn" ng-keydown="enterQueryValue($event)">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr role="row">
+                        <th class="width20">
+                            <input type="checkbox" ed-check-all/>
+                        </th>
+                        <th>
+                            {{'label.sys.route.name' | translate}}
+                        </th>
+                        <th>
+                            {{'label.sys.route.url' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="route in pagination.records" data-toggle="context"
+                        data-target="#context-menu">
+                        <td class="width20">
+                            <input name="pk" type="checkbox" ng-model="route"
+                                   model-array="selectRoutes" ed-checkbox/>
+                        </td>
+                        <td translate>{{route.name}}</td>
+                        <td>{{route.url}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

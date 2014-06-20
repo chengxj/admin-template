@@ -1,0 +1,103 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.dict' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/sys/dict/list">{{'title.sys.dict' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.dict.child' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row" ed-disabled="disabled">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.dict.list' | translate}}
+                <div class="pull-right">
+                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                       reload-fun="reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="panel-body">
+                <!--右键菜单开始-->
+                <div id="context-menu">
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="javascript:;"
+                               model-array="selectDicts" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectDicts.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                                {{'label.common.op.delete' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/dict/editItem/{{dict.dictCode}}"
+                               ed-tooltip
+                               ng-hide="selectDicts.length != 1">
+                                <i class="fa fa-edit"></i>
+                                {{'label.common.op.edit' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--右键菜单结束-->
+                <!--工具栏开始-->
+                <div class="table-tools mrg25B">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a class="btn btn-info" href="#/sys/dict/addItem/{{dictCode}}" ed-tooltip
+                               data-original-title="{{'label.sys.dict.add' | translate}}">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="{{'label.common.op.delete' | translate}}"
+                               model-array="selectDicts" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectDicts.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <a class="btn btn-pink" href="#/sys/dict/editItem/{{dict.dictCode}}" ed-tooltip
+                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectDicts.length != 1">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr role="row">
+                        <th class="width20">
+                            <input type="checkbox" ed-check-all/>
+                        </th>
+                        <th>
+                            {{'label.sys.dict.name' | translate}}
+                        </th>
+                        <th>
+                            {{'label.sys.dict.code' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="dict in dicts">
+                        <td>
+                            <input name="pk" type="checkbox" ng-model="dict"
+                                   model-array="selectDicts" ed-checkbox/>
+                        </td>
+                        <td>{{dict.dictName}}</td>
+                        <td>{{dict.dictCode}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

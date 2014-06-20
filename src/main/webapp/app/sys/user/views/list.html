@@ -1,0 +1,115 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.user' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.user' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.user.list' | translate}}
+                <div class="pull-right">
+                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                       reload-fun="reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="panel-body">
+                <!--右键菜单开始-->
+                <div id="context-menu">
+                    <ul class="dropdown-menu" role="menu">
+                        <li ed-permisson perm="sys:user:**:delete">
+                            <a href="javascript:;"
+                               model-array="selectUsers" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectUsers.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                                {{'label.common.op.delete' | translate}}
+                            </a>
+                        </li>
+                        <li ed-permisson perm="sys:user:**:update">
+                            <a href="#/sys/user/edit/{{user.userId}}"
+                               ng-hide="selectUsers.length != 1">
+                                <i class="fa fa-edit"></i>
+                                {{'label.common.op.edit' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--右键菜单结束-->
+                <!--工具栏开始-->
+                <div class="table-tools">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a class="btn btn-info" href="#/sys/user/add" ed-tooltip
+                               data-original-title="{{'label.sys.user.add' | translate}}" ed-permisson perm="sys:user:**:create">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="{{'label.common.op.delete' | translate}}"
+                               model-array="selectUsers" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectUsers.length == 0"
+                               ed-permisson perm="sys:user:**:delete">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                            <a class="btn btn-pink" href="#/sys/user/edit/{{user.userId}}" ed-tooltip
+                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectUsers.length != 1"
+                               ed-permisson perm="sys:user:**:update">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-lg-6 pull-right">
+                            <div ed-simple-page page-size="10"
+                                 pagination="pagination" query-param="queryParam" query-url="sys/user/pagination"
+                                 share-key="userList" block-el=".panel-body">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="{{'query.sys.user.simple.username' | translate}}"
+                                       ng-model="queryParam.username_cn" ng-keydown="enterQueryValue($event)">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr user="row">
+                        <th class="width20">
+                            <input type="checkbox" ed-check-all/>
+                        </th>
+                        <th>
+                            {{'label.sys.user.username' | translate}}
+                        </th>
+                        <th>
+                            {{'label.sys.user.fullname' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in pagination.records" data-toggle="context"
+                        data-target="#context-menu">
+                        <td>
+                            <input name="pk" type="checkbox" ng-model="user"
+                                   model-array="selectUsers" ed-checkbox/>
+                        </td>
+                        <td>{{user.username}}</td>
+                        <td>{{user.fullName}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

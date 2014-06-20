@@ -1,0 +1,102 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.sys.i18n' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/sys/i18n/list">{{'title.sys.i18n' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.i18n.edit' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.i18n.info' | translate}}
+            </header>
+            <div class="panel-body">
+                <form i18n="form" class="form-horizontal" name="form" novalidate>
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{'label.sys.i18n.key' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{i18n.i18nKey}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.i18nValueEn.$dirty && form.i18nValueEn.$invalid}">
+                            <label for="i18nValueEn" class="col-md-2 control-label">{{'label.common.lang.English' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="i18nValueEn" name="i18nValueEn"
+                                       ng-model="i18n.i18nValueEn" ed-focus required ng-maxlength="64">
+                                <span class='help-block'
+                                      ng-show="form.i18nValueEn.$error.required && form.i18nValueEn.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.i18nValueEn.$error.maxlength && form.i18nValueEn.$focused">{{'help.common.maxlength64' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.i18nValueZhCn.$dirty && form.i18nValueZhCn.$invalid}">
+                            <label for="i18nValueZhCn" class="col-md-2 control-label">{{'label.common.lang.zh_CN' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="i18nValueZhCn" name="i18nValueZhCn"
+                                       ng-model="i18n.i18nValueZhCn" ed-focus required ng-maxlength="64">
+                                <span class='help-block'
+                                      ng-show="form.i18nValueZhCn.$error.required && form.i18nValueZhCn.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.i18nValueZhCn.$error.maxlength && form.i18nValueZhCn.$focused">{{'help.common.maxlength64' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.i18nValueZhTw.$dirty && form.i18nValueZhTw.$invalid}">
+                            <label for="i18nValueZhTw" class="col-md-2 control-label">{{'label.common.lang.zh_TW' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="i18nValueZhTw" name="i18nValueZhTw"
+                                       ng-model="i18n.i18nValueZhTw" ed-focus required ng-maxlength="64">
+                                <span class='help-block'
+                                      ng-show="form.i18nValueZhTw.$error.required && form.i18nValueZhTw.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.i18nValueZhTw.$error.maxlength && form.i18nValueZhTw.$focused">{{'help.common.maxlength64' | translate}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button class="btn btn-info"
+                                    type="button"
+                                    ng-disabled="form.$invalid || isUnchanged() || clickToken"
+                                    ng-click="save()">
+                                <i class="fa fa-check"></i>
+                                {{'button.common.save' | translate}}
+                            </button>
+                            &nbsp;
+                            <a class="btn btn-default" type="button"
+                               href="#/sys/i18n/list">
+                                <i class="fa fa-undo"></i>
+                                {{'button.common.cancel' | translate}}
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

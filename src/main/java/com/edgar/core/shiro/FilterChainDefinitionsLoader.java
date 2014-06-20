@@ -1,0 +1,86 @@
+package com.edgar.core.shiro;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.edgar.core.util.GlobalUtils;
+import com.edgar.module.sys.repository.domain.SysResource;
+
+/**
+ * 动态获取数据中的资源权限
+ * 
+ * @author Edgar Zhang
+ * @version 1.0
+ */
+public class FilterChainDefinitionsLoader {
+
+        /**
+         * 查询资源授权的SQL
+         */
+        private static final String URLS_QUERY = "select url, permission, auth_type from sys_resource order by url desc";
+
+        private DataSource dataSource;
+
+        public void setDataSource(DataSource dataSource) {
+                this.dataSource = dataSource;
+        }
+
+        /**
+         * 从数据库中加载资源
+         * 
+         * @return 资源权限的map对象
+         */
+        public Map<String, String> loadDefinitions() {
+
+                Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+                setStaticAuth(filterChainDefinitionMap);
+                filterChainDefinitionMap.putAll(getAuthFromDB());
+                return filterChainDefinitionMap;
+        }
+
+        /**
+         * 设置静态资源的权限
+         * 
+         * @param filterChainDefinitionMap
+         *                资源授权的map
+         */
+        private void setStaticAuth(Map<String, String> filterChainDefinitionMap) {
+                filterChainDefinitionMap.put("/login.html", "anon");
+                filterChainDefinitionMap.put("/index.html", "anon");
+                filterChainDefinitionMap.put("/app/**", "anon");
+                filterChainDefinitionMap.put("/assets/**", "anon");
+                filterChainDefinitionMap.put("/js/**", "anon");
+        }
+
+        /**
+         * 查询数据库中资源的授权
+         * 
+         * @return 资源授权
+         */
+        private Map<String, String> getAuthFromDB() {
+                Map<String, String> authcMap = new LinkedHashMap<String, String>();
+                JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                List<SysResource> resources = jdbcTemplate.query(URLS_QUERY,
+                                BeanPropertyRowMapper.newInstance(SysResource.class));
+                for (SysResource resource : resources) {
+                        if (GlobalUtils.AUTH_TYPE_REST.equals(resource.getAuthType())) {
+                                // map.put(resource.getUrl(), resource.getPermission());
+                                String permission = StringUtils.substringBeforeLast(
+                                                resource.getPermission(), ":");
+                                authcMap.put(resource.getUrl(), "authc,rest[" + permission + "]");
+                        } else if (GlobalUtils.AUTH_TYPE_AUTHC.equals(resource.getAuthType())) {
+                                authcMap.put(resource.getUrl(), "authc");
+                        } else {
+                                authcMap.put(resource.getUrl(), "anon");
+                        }
+                }
+                return authcMap;
+        }
+}
