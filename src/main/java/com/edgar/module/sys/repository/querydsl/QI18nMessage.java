@@ -37,6 +37,8 @@ public class QI18nMessage extends com.mysema.query.sql.RelationalPathBase<I18nMe
 
     public final StringPath i18nValueZhTw = createString("i18nValueZhTw");
 
+    public final BooleanPath isRoot = createBoolean("isRoot");
+
     public final DateTimePath<java.sql.Timestamp> updatedTime = createDateTime("updatedTime", java.sql.Timestamp.class);
 
     public final com.mysema.query.sql.PrimaryKey<I18nMessage> primary = createPrimaryKey(i18nId);
@@ -68,6 +70,7 @@ public class QI18nMessage extends com.mysema.query.sql.RelationalPathBase<I18nMe
         addMetadata(i18nValueEn, ColumnMetadata.named("i18n_value_en").ofType(12).withSize(64).notNull());
         addMetadata(i18nValueZhCn, ColumnMetadata.named("i18n_value_zh_cn").ofType(12).withSize(64).notNull());
         addMetadata(i18nValueZhTw, ColumnMetadata.named("i18n_value_zh_tw").ofType(12).withSize(64).notNull());
+        addMetadata(isRoot, ColumnMetadata.named("is_root").ofType(-7));
         addMetadata(updatedTime, ColumnMetadata.named("updated_time").ofType(93).withSize(19).notNull());
     }
 

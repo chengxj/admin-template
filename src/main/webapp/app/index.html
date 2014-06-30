@@ -101,9 +101,20 @@
         <!-- /Page title and breadcrumb navigation -->
         <!-- Header navigation / icons -->
         <ul class="header-nav navbar-right">
+        <!-- Messages -->
+        <li class="dropdown">
+            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-briefcase"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:;"><i class="fa fa-link"></i>  {{'label.index.account.new' | translate}}</a></li>
+                <li><a href="javascript:;"><i class="fa fa-truck"></i>  {{'label.index.delivery' | translate}}</a></li>
+                <li class="divider"></li>
+                <li><a href="javascript:;"><i class="fa fa-unlink"></i>    {{'label.index.account.cancel' | translate}}</a></li>
+            </ul>
+        </li>
+        <!-- /Messages -->
             <!-- Messages -->
             <li class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-comment"></span></a>
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-envelope-o"></span></a>
                 <span class="badge">3</span>
                 <div class="dropdown-menu panel panel-messages dropdown-arrow pull-right">
                     <div class="panel-heading">MESSAGES <span class="badge pull-right bg-orange">NEW</span></div>
@@ -192,7 +203,7 @@
 
             <!-- Notifications -->
             <li class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-bell"></span></a>
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-bell-o"></span></a>
                 <div class="dropdown-menu panel panel-notifications dropdown-arrow pull-right">
                     <div class="panel-heading">NOTIFICATIONS</div>
                     <div class="panel-body scrollbox">

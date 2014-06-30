@@ -63,11 +63,15 @@ var Login = function () {
             ignore:[]
         });
     };
+    var focusUsername = function() {
+        $("#username").focus();
+    }
     return {
         //main function to initiate template pages
         init: function () {
             runSetDefaultValidation();
             runLoginValidator();
+            focusUsername();
         }
     };
 }();

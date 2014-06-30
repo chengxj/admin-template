@@ -31,6 +31,8 @@ public class QSysUser extends com.mysema.query.sql.RelationalPathBase<SysUser> {
 
     public final StringPath email = createString("email");
 
+    public final BooleanPath enabled = createBoolean("enabled");
+
     public final StringPath fullName = createString("fullName");
 
     public final BooleanPath isRoot = createBoolean("isRoot");
@@ -71,6 +73,7 @@ public class QSysUser extends com.mysema.query.sql.RelationalPathBase<SysUser> {
         addMetadata(birthday, ColumnMetadata.named("birthday").ofType(91).withSize(10));
         addMetadata(createdTime, ColumnMetadata.named("created_time").ofType(93).withSize(19).notNull());
         addMetadata(email, ColumnMetadata.named("email").ofType(12).withSize(64));
+        addMetadata(enabled, ColumnMetadata.named("enabled").ofType(-7));
         addMetadata(fullName, ColumnMetadata.named("full_name").ofType(12).withSize(32).notNull());
         addMetadata(isRoot, ColumnMetadata.named("is_root").ofType(-7));
         addMetadata(password, ColumnMetadata.named("password").ofType(12).withSize(64).notNull());

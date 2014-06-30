@@ -80,6 +80,48 @@ commonDirective.directive('edInteger', function () {
     };
 });
 
+var POSITIVE_INTEGER_REGEXP = /^\d+$/;
+commonDirective.directive('edPositiveInteger', function () {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$parsers.unshift(function (viewValue) {
+                if (POSITIVE_INTEGER_REGEXP.test(viewValue)) {
+                    // it is valid
+                    ctrl.$setValidity('positiveInteger', true);
+                    return viewValue;
+                } else {
+                    // it is invalid, return undefined (no model update)
+                    ctrl.$setValidity('positiveInteger', false);
+                    return undefined;
+                }
+            });
+        }
+    };
+});
+
+var NUMBER_REGEXP = /^[0-9]+(.[0-9]{1,2})?$/;
+commonDirective.directive('edNumber', function () {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$parsers.unshift(function (viewValue) {
+                if (NUMBER_REGEXP.test(viewValue)) {
+                    // it is valid
+                    ctrl.$setValidity('number', true);
+                    return viewValue;
+                } else {
+                    // it is invalid, return undefined (no model update)
+                    ctrl.$setValidity('number', false);
+                    return undefined;
+                }
+            });
+        }
+    };
+});
+
 commonDirective.directive('edEnsureUnique', ['$http', function ($http) {
     return {
         restrict: 'A',

@@ -62,7 +62,7 @@ public class QSysDict extends com.mysema.query.sql.RelationalPathBase<SysDict> {
     public void addMetadata() {
         addMetadata(createdTime, ColumnMetadata.named("created_time").ofType(93).withSize(19).notNull());
         addMetadata(dictCode, ColumnMetadata.named("dict_code").ofType(12).withSize(32).notNull());
-        addMetadata(dictName, ColumnMetadata.named("dict_name").ofType(12).withSize(16).notNull());
+        addMetadata(dictName, ColumnMetadata.named("dict_name").ofType(12).withSize(32).notNull());
         addMetadata(parentCode, ColumnMetadata.named("parent_code").ofType(12).withSize(32).notNull());
         addMetadata(sorted, ColumnMetadata.named("sorted").ofType(4).withSize(10).notNull());
         addMetadata(updatedTime, ColumnMetadata.named("updated_time").ofType(93).withSize(19).notNull());

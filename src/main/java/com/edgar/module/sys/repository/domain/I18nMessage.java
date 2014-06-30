@@ -20,6 +20,8 @@ public class I18nMessage {
 
     private String i18nValueZhTw;
 
+    private Boolean isRoot;
+
     private java.sql.Timestamp updatedTime;
 
     public java.sql.Timestamp getCreatedTime() {
@@ -68,6 +70,14 @@ public class I18nMessage {
 
     public void setI18nValueZhTw(String i18nValueZhTw) {
         this.i18nValueZhTw = i18nValueZhTw;
+    }
+
+    public Boolean getIsRoot() {
+        return isRoot;
+    }
+
+    public void setIsRoot(Boolean isRoot) {
+        this.isRoot = isRoot;
     }
 
     public java.sql.Timestamp getUpdatedTime() {

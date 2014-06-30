@@ -63,7 +63,7 @@ public class QTest2Table extends com.mysema.query.sql.RelationalPathBase<Test2Ta
 
     public void addMetadata() {
         addMetadata(createdTime, ColumnMetadata.named("created_time").ofType(93).withSize(19).notNull());
-        addMetadata(dictName, ColumnMetadata.named("dict_name").ofType(12).withSize(16).notNull());
+        addMetadata(dictName, ColumnMetadata.named("dict_name").ofType(12).withSize(32).notNull());
         addMetadata(parentCode, ColumnMetadata.named("parent_code").ofType(12).withSize(32).notNull());
         addMetadata(sorted, ColumnMetadata.named("sorted").ofType(4).withSize(10).notNull());
         addMetadata(testCode2, ColumnMetadata.named("test_code2").ofType(12).withSize(32).notNull());

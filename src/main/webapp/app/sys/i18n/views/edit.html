@@ -21,7 +21,7 @@
             <header class="panel-heading">{{'header.sys.i18n.info' | translate}}
             </header>
             <div class="panel-body">
-                <form i18n="form" class="form-horizontal" name="form" novalidate>
+                <form role="form" class="form-horizontal" name="form" novalidate>
                     <div class="form-body">
                         <div class="form-group">
                             <label class="col-md-2 control-label">{{'label.sys.i18n.key' | translate}}<span
@@ -75,6 +75,14 @@
                                       ng-show="form.i18nValueZhTw.$error.required && form.i18nValueZhTw.$focused">{{'help.common.required' | translate}}</span>
                                 <span class='help-block'
                                       ng-show="form.i18nValueZhTw.$error.maxlength && form.i18nValueZhTw.$focused">{{'help.common.maxlength64' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{'label.sys.i18n.isRoot' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5 radio-list" ed-dict-radio parent-code="BOOL" ng-model="i18n.isRoot">
                             </div>
                         </div>
                     </div>

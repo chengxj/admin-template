@@ -1,5 +1,5 @@
 function I18nAddCtrl($scope, I18nService, MessageService, LocationTo) {
-    $scope.master = {};
+    $scope.master = {isRoot : false};
     $scope.i18n = angular.copy($scope.master);
     $scope.clickToken = false;
 

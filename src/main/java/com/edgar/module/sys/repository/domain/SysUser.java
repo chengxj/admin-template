@@ -14,6 +14,8 @@ public class SysUser {
 
     private String email;
 
+    private Boolean enabled;
+
     private String fullName;
 
     private Boolean isRoot;
@@ -50,6 +52,14 @@ public class SysUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getFullName() {
