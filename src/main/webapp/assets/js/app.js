@@ -160,11 +160,11 @@ function httpInterceptor($httpProvider, profile) {
                     }
                 } else {
                     if (response.data.message) {
-                        showError("系统错误[" + response.data.message + "]");
+                        showError("Error : [" + response.data.message + "]");
                     } else if (response.data) {
-                        showError("系统错误[" + response.data + "]");
+                        showError("Error : [" + response.data + "]");
                     } else {
-                        showError("系统错误");
+                        showError("Error : ");
                     }
                 }
                 return $q.reject(response);

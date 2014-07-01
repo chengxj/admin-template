@@ -386,6 +386,17 @@ commonDirective.directive('edDisabled', function () {
         }
     };
 });
+
+
+commonDirective.directive('edTouchSpin', function () {
+    return {
+        restrict: 'AE',
+        link: function postLink(scope, iElement, iAttrs) {
+            iElement.TouchSpin();
+        }
+    };
+});
+
 commonDirective.directive('edTreegrid', function ($timeout) {
     return {
         restrict: 'AE',
