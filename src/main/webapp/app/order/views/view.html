@@ -1,0 +1,396 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{"a" | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/order/list">{{'title.order.enquiry' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.order.view' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+                <b>{{'label.order.orderNo' | translate}} : </b><span class="text-blue">1508980734</span> <b>{{'label.order.state' | translate}} : </b><span class="text-blue">完成</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!--step-->
+        <div id="wizard" class="swMain">
+            <ul>
+                <li>
+                    <a href="javascript:;" class="selected">
+                        <div class="stepNumber">
+                            1
+                        </div>
+                                <span class="stepDesc"> 提交订单
+                                    <br/>
+                                    <small>2014-07-01 08:30:15</small> </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="selected">
+                        <div class="stepNumber">
+                            2
+                        </div>
+                                <span class="stepDesc"> 出库
+                                    <br/>
+                                    <small>2014-07-01 08:45:15</small> </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="selected">
+                        <div class="stepNumber">
+                            3
+                        </div>
+                                <span class="stepDesc"> 出库押运
+                                    <br/>
+                                    <small> 2014-07-01 08:49:15</small> </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="selected">
+                        <div class="stepNumber">
+                            4
+                        </div>
+                                <span class="stepDesc"> 客户签收
+                                    <br/>
+                                    <small> 2014-07-01 10:50:15</small> </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="selected">
+                        <div class="stepNumber">
+                            5
+                        </div>
+                                <span class="stepDesc"> 入库押运
+                                    <br/>
+                                    <small> 2014-07-01 14:58:45</small> </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="selected">
+                        <div class="stepNumber">
+                            6
+                        </div>
+                                <span class="stepDesc"> 入库
+                                    <br/>
+                                    <small> 2014-07-01 16:55:45</small> </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="selected">
+                        <div class="stepNumber">
+                            7
+                        </div>
+                                <span class="stepDesc"> 完成
+                                    <br/>
+                                    <small> 2014-07-01 16:58:45</small> </span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        <!--.step-->
+    </div>
+</div>
+
+
+<div class="row">
+    <!--订单详情-->
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.order.info' | translate}}
+            </header>
+            <div class="panel-body">
+                <form role="form" class="form-horizontal">
+                    <div class="form-body">
+                        <h4 class="block-heading">{{'header.customer.info' | translate}}</h4>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{'label.customer.customerName' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{customer.customerName}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{'label.customer.mobileNo' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{customer.mobileNo}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{'label.customer.address' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{customer.address}}</p>
+                            </div>
+                        </div>
+                        <!--商品-->
+                        <h4 class="block-heading">{{'header.mobilesafe.info' | translate}}</h4>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{'label.mobilesafe.safeNo' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{mobilesafe.safeNo}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{'label.mobilesafe.tariff' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{mobilesafe.tariff}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">{{'label.mobilesafe.purchaseTime' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">2014-06-01</p>
+                            </div>
+                        </div>
+                        <!--.商品-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--.订单详情-->
+
+</div>
+
+<div class="row">
+<!--订单轨迹-->
+<div class="col-md-12">
+<div class="panel panel-default">
+<header class="panel-heading">{{'header.order.tracking' | translate}}
+</header>
+<div class="panel-body">
+<!--timeline-->
+<div class="timeline-messages">
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-out">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">Edgar</a>
+                    2014-07-01 08:30:15
+                </p>
+                <p>提交订单</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-out">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">张雨舟</a>
+                    2014-07-01 08:35:15
+                </p>
+                <p>分配任务给王志维、严文林</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-out">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">王志维</a>
+                    2014-07-01 08:45:15
+                </p>
+                <p>保管箱出库</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-out">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">严文林</a>
+                    2014-07-01 08:48:15
+                </p>
+                <p>领取保管箱</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-out">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">严文林</a>
+                    2014-07-01 08:49:15
+                </p>
+                <p>押运</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-out">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">严文林</a>
+                    2014-07-01 10:49:15
+                </p>
+                <p>抵达现场</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-out">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">陈元元</a>
+                    2014-07-01 10:50:15
+                </p>
+                <p>客户签收</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-out">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">陈元元</a>
+                    2014-07-01 13:50:15
+                </p>
+                <p>使用完毕</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-in">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">陈元元</a>
+                    2014-07-01 14:55:15
+                </p>
+                <p>交还给押运员</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-in">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">严文林</a>
+                    2014-07-01 14:55:45
+                </p>
+                <p>签收</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-in">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">严文林</a>
+                    2014-07-01 14:58:45
+                </p>
+                <p>押运</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-in">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">王志维</a>
+                    2014-07-01 16:55:45
+                </p>
+                <p>仓管员签收</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-in">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">王志维</a>
+                    2014-07-01 16:58:45
+                </p>
+                <p>入库</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+    <!-- Comment -->
+    <div class="msg-time-chat">
+        <div class="message-body msg-in">
+            <span class="arrow"></span>
+            <div class="text">
+                <p class="attribution">
+                    <a href="#">系统</a>
+                    2014-07-01 16:58:45
+                </p>
+                <p>完成</p>
+            </div>
+        </div>
+    </div>
+    <!-- /comment -->
+</div>
+<!--.timeline-->
+</div>
+</div>
+</div>
+<!--.订单轨迹-->
+</div>

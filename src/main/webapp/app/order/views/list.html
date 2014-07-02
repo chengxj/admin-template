@@ -59,24 +59,68 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
                             <a class="btn btn-info" href="#/sys/role/add" ed-tooltip
-                               data-original-title="{{'label.sys.role.add' | translate}}" ed-permisson perm="sys:role:**:create">
-                                <i class="fa fa-plus"></i>
+                               data-original-title="{{'label.common.op.enquiry' | translate}}">
+                                <i class="fa fa-search"></i>
                             </a>
-                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="{{'label.common.op.delete' | translate}}"
-                               model-array="selectOrders" ed-delete-all
-                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectOrders.length == 0"
-                               ed-permisson perm="sys:role:**:delete">
-                                <i class="fa fa-trash-o"></i>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="任务分配" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-sitemap"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/sys/role/edit/{{role.roleId}}" ed-tooltip
-                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectOrders.length != 1"
-                               ed-permisson perm="sys:role:**:update">
-                                <i class="fa fa-edit"></i>
+
+                            <a class="btn btn-info" type="button" href="#/order/view/{{order.orderId}}" ed-tooltip
+                               data-original-title="出库" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-info"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/sys/role/permission/{{role.roleId}}" ed-tooltip
-                               data-original-title="{{'label.sys.role.permission' | translate}}" ng-hide="selectOrders.length != 1"
-                               ed-permisson perm="sys:menu:**:read">
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="出库" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-folder-open-o"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="分配押运员" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-sitemap"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="押运员签收" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-tasks"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="押运" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-truck"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="抵达现场" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-flag-o"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="客户签收" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-exchange"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="使用完毕" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="移交" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-exchange"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="押运员签收" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-tasks"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="押运" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-truck"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="仓管员签收" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-flag-o"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="入库" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-folder-o"></i>
+                            </a>
+                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="完成" ng-hide="selectOrders.length == 0">
                                 <i class="fa fa-lock"></i>
                             </a>
                         </div>
@@ -124,9 +168,6 @@
                             <th>
                                 {{'label.order.state' | translate}}
                             </th>
-                            <th>
-                                {{'label.order.currentProcess' | translate}}
-                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -143,7 +184,6 @@
                             <td>{{order.address}}</td>
                             <td>{{order.safeNo}}</td>
                             <td>{{order.state}}</td>
-                            <td>{{order.currentProcess}}</td>
                         </tr>
                         </tbody>
                     </table>

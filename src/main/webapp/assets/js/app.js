@@ -1,5 +1,36 @@
 'use strict';
 
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement, fromIndex) {
+        if ( this === undefined || this === null ) {
+            throw new TypeError( '"this" is null or not defined' );
+        }
+
+        var length = this.length >>> 0; // Hack to convert object.length to a UInt32
+
+        fromIndex = +fromIndex || 0;
+
+        if (Math.abs(fromIndex) === Infinity) {
+            fromIndex = 0;
+        }
+
+        if (fromIndex < 0) {
+            fromIndex += length;
+            if (fromIndex < 0) {
+                fromIndex = 0;
+            }
+        }
+
+        for (;fromIndex < length; fromIndex++) {
+            if (this[fromIndex] === searchElement) {
+                return fromIndex;
+            }
+        }
+
+        return -1;
+    };
+}
+
 angular
     .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate" ])
     .run(
@@ -44,7 +75,7 @@ angular
                         return v.sorted;
                     });
                     if (v.childMenus.length > 0) {
-                        v.class = 'has-submenu';
+                        v["class"] = 'has-submenu';
                     }
                 }
             });
@@ -52,7 +83,7 @@ angular
                 if (!v.icon) {
                     v.icon = 'fa-info'
                 }
-                if (v.class) {
+                if (v["class"]) {
                     v.menuPath = "javascript:;"
                 } else if (v.menuPath) {
                     v.menuPath = "#" + v.menuPath;

@@ -24,7 +24,8 @@
 /* ------------------ 1. STYLES ------------------ */
 body {
   background: #e7eff7;
-  font-family: "Open sans", sans-serif;
+  /*font-family: "Open sans", sans-serif;*/
+    font-family: 'Oswald';
 }
 
 /* ------------------ 2. TYPOGRAPHY ------------------ */
