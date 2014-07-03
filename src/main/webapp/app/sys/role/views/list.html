@@ -58,23 +58,23 @@
                 <div class="table-tools">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
-                            <a class="btn btn-info" href="#/sys/role/add" ed-tooltip
+                            <a class="btn btn-blue" href="#/sys/role/add" ed-tooltip
                                data-original-title="{{'label.sys.role.add' | translate}}" ed-permisson perm="sys:role:**:create">
                                 <i class="fa fa-plus"></i>
                             </a>
-                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                            <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
                                data-original-title="{{'label.common.op.delete' | translate}}"
                                model-array="selectRoles" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectRoles.length == 0"
                                ed-permisson perm="sys:role:**:delete">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/sys/role/edit/{{role.roleId}}" ed-tooltip
+                            <a class="btn btn-green" href="#/sys/role/edit/{{role.roleId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectRoles.length != 1"
                                ed-permisson perm="sys:role:**:update">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/sys/role/permission/{{role.roleId}}" ed-tooltip
+                            <a class="btn btn-purple" href="#/sys/role/permission/{{role.roleId}}" ed-tooltip
                                data-original-title="{{'label.sys.role.permission' | translate}}" ng-hide="selectRoles.length != 1"
                                ed-permisson perm="sys:menu:**:read">
                                 <i class="fa fa-lock"></i>
@@ -96,7 +96,7 @@
                     </div>
                 </div>
                 <!--工具栏结束-->
-                <table class="table table-striped table-bordered table-hover">
+                <table class="table table-striped table-bordered table-hover table-condensed">
                     <thead>
                     <tr role="row">
                         <th class="width20">

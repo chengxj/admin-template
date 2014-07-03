@@ -33,7 +33,7 @@
                         <div class="form-group"
                              ng-class="{'has-error': idCardForm.idCardNo.$dirty && idCardForm.idCardNo.$invalid}">
                             <label for="idCardNo"
-                                   class="col-md-2 control-label">{{'label.customer.idCardNo' | translate}}<span
+                                   class="col-md-3 control-label">{{'label.customer.idCardNo' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -42,7 +42,7 @@
                                     <input type="text" class="form-control input-sm" id="idCardNo" name="idCardNo"
                                            ng-model="idCardNo" ed-focus required ng-maxlength="18" ng-disabled="idCardNoDisabled" ng-keydown="enterSubmitValue($event)">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-info" type="button" ng-disabled="idCardForm.$invalid || idCardNoDisabled" ng-click="submitIdCardNo()">
+                                            <button class="btn btn-blue" type="button" ng-disabled="idCardForm.$invalid || idCardNoDisabled" ng-click="submitIdCardNo()">
                                                 {{'label.common.op.submit' | translate}}
                                             </button>
                                         </span>
@@ -70,7 +70,7 @@
                     <div class="form-body">
                         <h4 class="block-heading">{{'header.customer.info' | translate}}</h4>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">{{'label.customer.customerName' | translate}}
+                            <label class="col-md-3 control-label">{{'label.customer.customerName' | translate}}
                             </label>
 
                             <div class="col-md-5">
@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">{{'label.customer.mobileNo' | translate}}
+                            <label class="col-md-3 control-label">{{'label.customer.mobileNo' | translate}}
                             </label>
 
                             <div class="col-md-5">
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">{{'label.customer.address' | translate}}
+                            <label class="col-md-3 control-label">{{'label.customer.address' | translate}}
                             </label>
 
                             <div class="col-md-5">
@@ -138,14 +138,14 @@
                     </div>
                     <div class="form-actions">
                         <div class="col-md-offset-3 col-md-9">
-                            <button class="btn btn-info"
+                            <button class="btn btn-blue"
                                     type="button"
                                     ng-disabled="form.$invalid || isUnchanged() || clickToken"
                                     ng-click="save()">
                                 <i class="fa fa-check"></i>
                                 {{'label.common.op.save' | translate}}
                             </button>
-                            &nbsp;
+                            <label class="blank5 pull-right"></label>
                             <a class="btn btn-default" type="button"
                                ng-click="cancel()">
                                 <i class="fa fa-undo"></i>

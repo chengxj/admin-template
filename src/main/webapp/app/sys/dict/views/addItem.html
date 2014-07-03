@@ -26,7 +26,7 @@
                     <div class="form-body">
                         <div class="form-group"
                              ng-class="{'has-error': form.dictName.$dirty && form.dictName.$invalid}">
-                            <label for="dictName" class="col-md-2 control-label">{{'label.sys.dict.name' | translate}}<span
+                            <label for="dictName" class="col-md-3 control-label">{{'label.sys.dict.name' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -41,7 +41,7 @@
                         </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.dictCode.$dirty && form.dictCode.$invalid}">
-                            <label for="dictCode" class="col-md-2 control-label">{{'label.sys.dict.code' | translate}}<span
+                            <label for="dictCode" class="col-md-3 control-label">{{'label.sys.dict.code' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -69,14 +69,14 @@
                     </div>
                     <div class="form-actions">
                         <div class="col-md-offset-3 col-md-9">
-                            <button class="btn btn-info"
+                            <button class="btn btn-blue"
                                     type="button"
                                     ng-disabled="form.$invalid || isUnchanged() || clickToken"
                                     ng-click="save()">
                                 <i class="fa fa-check"></i>
                                 {{'label.common.op.save' | translate}}
                             </button>
-                            &nbsp;
+                            <label class="blank5 pull-right"></label>
                             <a class="btn btn-default" type="button"
                                href="#/sys/dict/list">
                                 <i class="fa fa-undo"></i>

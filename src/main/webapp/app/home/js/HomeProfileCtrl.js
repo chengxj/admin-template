@@ -14,6 +14,7 @@ function HomeProfileCtrl($scope, UserService, MessageService, $routeParams, $tra
         $scope.clickToken = true;
         UserService.updateProfile({userId: $routeParams.userId}, $scope.profile, function () {
             $scope.clickToken = false;
+            moment.lang($scope.profile.language.toLowerCase());
             $translate.use($scope.profile.language);
             MessageService.saveSuccess();
         }, function() {

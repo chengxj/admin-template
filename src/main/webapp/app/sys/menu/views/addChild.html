@@ -25,7 +25,7 @@
                     <div class="form-body">
                         <div class="form-group"
                              ng-class="{'has-error': form.menuName.$dirty && form.menuName.$invalid}">
-                            <label for="menuName" class="col-md-2 control-label">{{'label.sys.menu.name' | translate}}<span
+                            <label for="menuName" class="col-md-3 control-label">{{'label.sys.menu.name' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -40,7 +40,7 @@
                         </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.menuPath.$dirty && form.menuPath.$invalid}">
-                            <label for="menuPath" class="col-md-2 control-label">{{'label.sys.route.url' | translate}}</label>
+                            <label for="menuPath" class="col-md-3 control-label">{{'label.sys.route.url' | translate}}</label>
 
                             <div class="col-md-5">
                                 <input type="text" class="form-control" name="menuPath" id="menuPath"
@@ -56,7 +56,7 @@
                         </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.sorted.$dirty && form.sorted.$invalid}">
-                            <label for="sorted" class="col-md-2 control-label">{{'label.sys.menu.sorted' | translate}}<span
+                            <label for="sorted" class="col-md-3 control-label">{{'label.sys.menu.sorted' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -76,7 +76,7 @@
                         </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.icon.$dirty && form.icon.$invalid}">
-                            <label for="icon" class="col-md-2 control-label">{{'label.sys.menu.icon' | translate}}
+                            <label for="icon" class="col-md-3 control-label">{{'label.sys.menu.icon' | translate}}
                             </label>
 
                             <div class="col-md-5">
@@ -92,14 +92,14 @@
                     </div>
                     <div class="form-actions">
                         <div class="col-md-offset-3 col-md-9">
-                            <button class="btn btn-info"
+                            <button class="btn btn-blue"
                                     type="button"
                                     ng-disabled="form.$invalid || isUnchanged() || clickToken"
                                     ng-click="save()">
                                 <i class="fa fa-check"></i>
                                 {{'label.common.op.save' | translate}}
                             </button>
-                            &nbsp;
+                            <label class="blank5 pull-right"></label>
                             <a class="btn btn-default" type="button"
                                href="#/sys/menu/list">
                                 <i class="fa fa-undo"></i>

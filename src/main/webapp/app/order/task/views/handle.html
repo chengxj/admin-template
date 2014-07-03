@@ -1,0 +1,152 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.order.task' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/order/list">{{'title.order.task' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.order.task.handle' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <!--任务处理-->
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="callout callout-info fade in">
+                    <h5>UI Demo说明</h5>
+
+                    <p>不同的任务，显示的界面稍有不同</p>
+                    <p class="text-purple">项目开发时删除此说明</p>
+
+                </div>
+
+                <!--form-->
+                <div class="panel mrg15A">
+                    <h4 class="block-heading">{{'header.order.task.info' | translate}}</h4>
+
+                    <div class="panel-body">
+                        <form role="form" class="form-horizontal">
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">{{'label.customer.customerName' | translate}}
+                                    </label>
+
+                                    <div class="col-md-5">
+                                        <p class="form-control-static">{{customer.customerName}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">{{'label.customer.mobileNo' | translate}}
+                                    </label>
+
+                                    <div class="col-md-5">
+                                        <p class="form-control-static">{{customer.mobileNo}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">{{'label.customer.address' | translate}}
+                                    </label>
+
+                                    <div class="col-md-5">
+                                        <p class="form-control-static">{{customer.address}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">{{'label.mobilesafe.safeNo' | translate}}
+                                    </label>
+
+                                    <div class="col-md-5">
+                                        <p class="form-control-static">{{mobilesafe.safeNo}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--.form-->
+
+                <!--备注-->
+                <div class="panel mrg15A">
+                    <h4 class="block-heading">{{'label.order.task.comment' | translate}}</h4>
+
+                    <div class="panel-body">
+                        <!--timeline-->
+                        <div class="timeline-messages">
+                            <!-- Comment -->
+                            <div class="msg-time-chat">
+                                <div class="message-body msg-out">
+                                    <span class="arrow"></span>
+                                    <div class="text">
+                                        <p class="attribution">
+                                            <a href="#">Edgar</a>
+                                            2014-07-01 08:30:15
+                                        </p>
+                                        <p>加急处理</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /comment -->
+                        </div>
+                        <!--.timeline-->
+                    </div>
+                </div>
+                <!--.备注-->
+
+                <!--form-->
+                <div class="panel mrg15A">
+                    <h4 class="block-heading">{{'header.order.task.handle' | translate}}</h4>
+
+                    <div class="panel-body">
+                        <form role="form" class="form-horizontal" name="form" novalidate>
+                            <div class="form-body">
+                                <div class="form-group"
+                                     ng-class="{'has-error': form.comment.$dirty && form.comment.$invalid}">
+                                    <label class="col-md-3 control-label">{{'label.order.task.comment' | translate}}</label>
+
+                                    <div class="col-md-8">
+                                        <textarea name="comment"
+                                                  class="form-control"
+                                                  rows="3"
+                                                  ng-maxlength=128 ed-focus ng-model="task.comment"></textarea>
+                                <span class='help-block'
+                                      ng-show="form.comment.$error.maxlength && form.comment.$focused">{{'help.common.maxlength128' | translate}}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-blue"
+                                            type="button"
+                                            ng-disabled="form.$invalid || isUnchanged() || clickToken"
+                                            ng-click="save()">
+                                        <i class="fa fa-check"></i>
+                                        {{'label.common.op.submit' | translate}}
+                                    </button>
+                                    <label class="blank5 pull-right"></label>
+                                    <a class="btn btn-default" type="button"
+                                       href="#/order/task/list">
+                                        <i class="fa fa-undo"></i>
+                                        {{'label.common.op.cancel' | translate}}
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--.form-->
+            </div>
+        </div>
+    </div>
+    <!--.任务处理-->
+</div>

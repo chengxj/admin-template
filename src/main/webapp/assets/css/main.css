@@ -25,7 +25,9 @@
 body {
   background: #e7eff7;
   /*font-family: "Open sans", sans-serif;*/
-    font-family: 'Oswald';
+  font-family: 	"Century Gothic";
+  color: #333;
+    /*font-family: 'Oswald';*/
 }
 
 /* ------------------ 2. TYPOGRAPHY ------------------ */
@@ -41,14 +43,14 @@ a:hover, a:active, a:focus {
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Montserrat", sans-serif;
+  font-family: 	"Century Gothic";
 }
 
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small,
 .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small,
 h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small,
 .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
-  font-family: "Open sans", sans-serif;
+  font-family: 	"Century Gothic";
 }
 
 img.chat-avatar {
@@ -89,12 +91,16 @@ img.chat-avatar {
     background: #ff6363 !important;
 }
 
+.bg-red2 {
+    background: #d16d71 !important;
+}
+
 .bg-green {
     background: #5edb99 !important;
 }
 
 .bg-blue {
-    background: #2e8bff !important;
+    background: #2dc5c8 !important;
 }
 
 .bg-orange {
@@ -126,7 +132,7 @@ img.chat-avatar {
 }
 
 .bg-none {
-    background: none !important;
+    background: #E7EFF7 !important;
 }
 .bg-white {
     background: #FFFFFF !important;
@@ -134,9 +140,6 @@ img.chat-avatar {
 
 .bg-tar {
     background:#1fb5ac !important;
-}
-.bg-green {
-    background:#aec785 !important;
 }
 .bg-pink {
     background:#a48ad4 !important;
@@ -547,12 +550,12 @@ label {
 }
 
 .btn-purple {
-  background: #a44cdb;
+  background: #b5a0d1;
   color: white;
 }
 .btn-purple:hover, .btn-purple:focus, .btn-purple:active, .btn-purple.active, .btn-purple .open .dropdown-toggle.btn-purple {
   color: white;
-  background: #932bd4;
+  background: #9882b3;
 }
 
 .btn-yellow {
@@ -574,39 +577,39 @@ label {
 }
 
 .btn-orange {
-    background: #bd432a;
+    background: #f4994f;
     color: white;
 }
 .btn-orange:hover, .btn-orange:focus, .btn-orange:active, .btn-orange.active, .btn-orange .open .dropdown-toggle.btn-orange {
     color: white;
-    background: #9c3723;
+    background: #d77b32;
 }
 
 .btn-green {
-    background: #b0b800;
+    background: #2dc5c8;
     color: white;
 }
 .btn-green:hover, .btn-green:focus, .btn-green:active, .btn-green.active, .btn-green .open .dropdown-toggle.btn-green {
     color: white;
-    background: #898f00;
+    background: #0fa7aa;
 }
 
 .btn-pink{
-    background: #df4782;
+    background: #d77c80;
     color: white;
 }
 .btn-pink:hover, .btn-pink:focus, .btn-pink:active, .btn-pink.active, .btn-pink.open .dropdown-toggle.btn-pink{
     color: white;
-    background: #d8266b;
+    background: #b95e63;
 }
 
 .btn-blue{
-    background: #2598b0;
+    background: #5aafef;
     color: white;
 }
 .btn-blue:hover, .btn-blue:focus, .btn-blue:active, .btn-blue.active, .btn-blue.open .dropdown-toggle.btn-blue{
     color: white;
-    background: #1e7b8e;
+    background: #3c92cf;
 }
 
 .btn-violet{
@@ -643,7 +646,7 @@ label {
 }
 
 .panel-heading {
-  font-family: "Montserrat", sans-serif;
+  font-family: 	"Century Gothic";
 }
 
 .panel {
@@ -672,7 +675,7 @@ label {
 }
 .panel-boxed .panel-heading {
   background: #304269;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 300;
   font-family: "Open sans", sans-serif;
   border: 0;
@@ -685,7 +688,7 @@ label {
   border: 0;
   background: none;
   color: #304269;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 300;
   font-family: "Open sans", sans-serif;
 }
@@ -778,16 +781,16 @@ label {
 .dropdown-menu {
   border-radius: 0;
   border: 0;
-  background: #283758;
+  background: #ffffff;
   margin: 0;
 }
 .dropdown-menu > li > a {
-  color: #b2bfdc;
+  /*color: #b2bfdc;*/
   padding: 5px 20px;
 }
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:active, .dropdown-menu > li > a:focus {
   color: white;
-  background: #222e4a;
+  background: #2e8bff;
 }
 .dropdown-menu .divider {
   background-color: #222e4a;
@@ -1098,7 +1101,7 @@ label {
 }
 .panel-tasks .panel-heading {
   border: 0;
-  font-size: 24px;
+  font-size: 18px;
   font-family: "Open sans", sans-serif;
   font-weight: 300;
 }
@@ -1156,7 +1159,7 @@ label {
   color: #304269;
   font-weight: 300;
   font-family: "Open sans", sans-serif;
-  font-size: 24px;
+  font-size: 18px;
 }
 .panel-analytics .panel-body {
   padding: 0;

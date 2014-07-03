@@ -235,6 +235,34 @@ commonDirective.directive('edMultiSelect', function () {
     };
 });
 
+commonDirective.directive('edSelect2', function () {
+    return {
+        restrict: 'AE',
+        scope: {
+            options: '='
+        },
+        require: 'ngModel',
+        link: function postLink(scope, iElement, iAttrs, ctrl) {
+            scope.$watch("options", function (value) {
+                if (value) {
+                    iElement.select2({data: value});
+                    var  selectedOptions = _.filter(value, function(v, i) {
+                        return v.selected == true;
+                    });
+                    var val =  _.pluck(selectedOptions, "id");
+                    iElement.select2("val", val);
+                    if (val && val.length > 0) {
+                        ctrl.$setValidity('required', true);
+                    } else {
+                        ctrl.$setValidity('required', false);
+                    }
+
+                }
+            });
+        }
+    };
+});
+
 commonDirective.directive('edTooltip', function () {
     return {
         restrict: 'AE',
@@ -393,6 +421,54 @@ commonDirective.directive('edTouchSpin', function () {
         restrict: 'AE',
         link: function postLink(scope, iElement, iAttrs) {
             iElement.TouchSpin();
+        }
+    };
+});
+
+commonDirective.directive('edDateRange', function ($translate) {
+    return {
+        restrict: 'AE',
+        scope: {
+            startDate : '=',
+            endDate : '='
+        },
+        link: function postLink(scope, iElement, iAttrs) {
+            $translate(['Today','Yesterday','Last 7 Days','Last 30 Days','This Month','Last Month'
+                ,'label.common.op.accept','label.common.op.cancel','label.common.from'
+                ,'label.common.to', 'label.common.range']).then(function (translations) {
+                var today = translations['Today'];
+                var ranges = {};
+                ranges[translations['Today']] = [moment(), moment()];
+                ranges[translations['Yesterday']] = [moment().subtract('days', 1), moment().subtract('days', 1)];
+                ranges[translations['Last 7 Days']] = [moment().subtract('days', 6), moment()];
+                ranges[translations['Last 30 Days']] = [moment().subtract('days', 29), moment()];
+                ranges[translations['This Month']] = [moment().startOf('month'), moment().endOf('month')];
+                ranges[translations['Last Month']] = [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')];
+                iElement.daterangepicker(
+                    {
+                        ranges: ranges,
+                        startDate: moment().subtract('days', 29),
+                        endDate: moment(),
+                        locale : {
+                        applyLabel: translations['label.common.op.accept'],
+                        cancelLabel: translations['label.common.op.cancel'],
+                        fromLabel:  translations['label.common.from'],
+                        toLabel: translations['label.common.to'],
+                        weekLabel: 'W',
+                        customRangeLabel: translations['label.common.range'],
+                        daysOfWeek: moment()._lang._weekdaysMin.slice(),
+                        monthNames: moment()._lang._monthsShort.slice(),
+                        firstDay: 0
+                    }
+                    },
+                    function(start, end) {
+                        scope.startDate = start.format('YYYY-MM-DD');
+                        scope.endDate = end.format('YYYY-MM-DD');
+                        iElement.find('span').html(scope.startDate + ' - ' + scope.endDate);
+                    }
+                );
+            });
+
         }
     };
 });

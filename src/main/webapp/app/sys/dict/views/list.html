@@ -57,22 +57,22 @@
                 <div class="table-tools">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
-                            <a class="btn btn-info" href="#/sys/dict/add" ed-tooltip
+                            <a class="btn btn-blue" href="#/sys/dict/add" ed-tooltip
                                data-original-title="{{'label.sys.dict.add' | translate}}">
                                 <i class="fa fa-plus"></i>
                             </a>
-                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                            <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
                                data-original-title="{{'label.common.op.delete' | translate}}"
                                model-array="selectDicts" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectDicts.length == 0">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <a class="btn btn-violet" href="#/sys/dict/edit/{{dict.dictCode}}"
+                            <a class="btn btn-green" href="#/sys/dict/edit/{{dict.dictCode}}"
                                ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectDicts.length != 1">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a class="btn btn-pink" type="button"
+                            <a class="btn btn-purple" type="button"
                                href="#/sys/dict/items/{{dict.dictCode}}"
                                ed-tooltip data-original-title="{{'label.sys.dict.child' | translate}}" ng-hide="selectDicts.length != 1">
                                 <i class="fa fa-book"></i>
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <!--工具栏结束-->
-                <table class="table table-striped table-bordered table-hover">
+                <table class="table table-striped table-bordered table-hover table-condensed">
                     <thead>
                     <tr role="row">
                         <th class="width20">

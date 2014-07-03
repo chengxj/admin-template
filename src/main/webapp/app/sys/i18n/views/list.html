@@ -50,17 +50,17 @@
                 <div class="table-tools">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
-                            <a class="btn btn-info" href="#/sys/i18n/add" ed-tooltip
+                            <a class="btn btn-blue" href="#/sys/i18n/add" ed-tooltip
                                data-original-title="{{'label.sys.i18n.add' | translate}}">
                                 <i class="fa fa-plus"></i>
                             </a>
-                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                            <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
                                data-original-title="{{'label.common.op.delete' | translate}}"
                                model-array="selectI18ns" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectI18ns.length == 0">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/sys/i18n/edit/{{i18n.i18nId}}" ed-tooltip
+                            <a class="btn btn-green" href="#/sys/i18n/edit/{{i18n.i18nId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectI18ns.length != 1">
                                 <i class="fa fa-edit"></i>
                             </a>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
             <!--工具栏结束-->
-                <table class="table table-striped table-bordered table-hover">
+                <table class="table table-striped table-bordered table-hover table-condensed">
                     <thead>
                     <tr i18n="row">
                         <th class="width20">

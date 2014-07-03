@@ -53,17 +53,17 @@
                 <div class="table-tools mrg25B">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
-                            <a class="btn btn-info" href="#/sys/dict/addItem/{{dictCode}}" ed-tooltip
+                            <a class="btn btn-blue" href="#/sys/dict/addItem/{{dictCode}}" ed-tooltip
                                data-original-title="{{'label.sys.dict.add' | translate}}">
                                 <i class="fa fa-plus"></i>
                             </a>
-                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                            <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
                                data-original-title="{{'label.common.op.delete' | translate}}"
                                model-array="selectDicts" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectDicts.length == 0">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/sys/dict/editItem/{{dict.dictCode}}" ed-tooltip
+                            <a class="btn btn-green" href="#/sys/dict/editItem/{{dict.dictCode}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectDicts.length != 1">
                                 <i class="fa fa-edit"></i>
                             </a>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <!--工具栏结束-->
-                <table class="table table-striped table-bordered table-hover">
+                <table class="table table-striped table-bordered table-hover table-condensed">
                     <thead>
                     <tr role="row">
                         <th class="width20">

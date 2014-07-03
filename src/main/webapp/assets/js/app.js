@@ -1,5 +1,9 @@
 'use strict';
-
+if (!String.prototype.trim) {
+    String.prototype.trim = function () {
+        return this.replace(/^\s+|\s+$/g, '');
+    };
+}
 if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function (searchElement, fromIndex) {
         if ( this === undefined || this === null ) {
@@ -62,7 +66,7 @@ angular
 
         };
 
-        $http.get("index/user").success(function (data) {
+        $http.get("index/user?random=" + new Date().getTime()).success(function (data) {
             var menus = [];
             var copyData = angular.copy(data.menus);
             _.each(data.menus, function (v, i) {
@@ -129,6 +133,7 @@ angular
 
                 $.ajax({
                     url: 'index/user',
+                    data : {random :  new Date().getTime()},
                     method: 'get',
                     async: false,
                     success: function (data) {
@@ -148,7 +153,7 @@ angular
                         });
                         $translateProvider
                             .preferredLanguage(profile.language);
-
+                        moment.lang(profile.language.toLowerCase());
                         httpInterceptorParam($httpProvider, profile);
                     }
                 });

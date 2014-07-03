@@ -25,7 +25,7 @@
                     <div class="form-body">
                         <div class="form-group"
                              ng-class="{'has-error': form.i18nKey.$dirty && form.i18nKey.$invalid}">
-                            <label for="i18nKey" class="col-md-2 control-label">{{'label.sys.i18n.key' | translate}}<span
+                            <label for="i18nKey" class="col-md-3 control-label">{{'label.sys.i18n.key' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -42,7 +42,7 @@
                         </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.i18nValueEn.$dirty && form.i18nValueEn.$invalid}">
-                            <label for="i18nValueEn" class="col-md-2 control-label">{{'label.common.lang.English' | translate}}<span
+                            <label for="i18nValueEn" class="col-md-3 control-label">{{'label.common.lang.English' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -57,7 +57,7 @@
                         </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.i18nValueZhCn.$dirty && form.i18nValueZhCn.$invalid}">
-                            <label for="i18nValueZhCn" class="col-md-2 control-label">{{'label.common.lang.zh_CN' | translate}}<span
+                            <label for="i18nValueZhCn" class="col-md-3 control-label">{{'label.common.lang.zh_CN' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -72,7 +72,7 @@
                         </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.i18nValueZhTw.$dirty && form.i18nValueZhTw.$invalid}">
-                            <label for="i18nValueZhTw" class="col-md-2 control-label">{{'label.common.lang.zh_TW' | translate}}<span
+                            <label for="i18nValueZhTw" class="col-md-3 control-label">{{'label.common.lang.zh_TW' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-2 control-label">{{'label.sys.i18n.isRoot' | translate}}<span
+                            <label class="col-md-3 control-label">{{'label.sys.i18n.isRoot' | translate}}<span
                                     class="symbol required"></span>
                             </label>
 
@@ -96,14 +96,14 @@
                     </div>
                     <div class="form-actions">
                         <div class="col-md-offset-3 col-md-9">
-                            <button class="btn btn-info"
+                            <button class="btn btn-blue"
                                     type="button"
                                     ng-disabled="form.$invalid || isUnchanged() || clickToken"
                                     ng-click="save()">
                                 <i class="fa fa-check"></i>
                                 {{'label.common.op.save' | translate}}
                             </button>
-                            &nbsp;
+                            <label class="blank5 pull-right"></label>
                             <a class="btn btn-default" type="button"
                                href="#/sys/i18n/list">
                                 <i class="fa fa-undo"></i>

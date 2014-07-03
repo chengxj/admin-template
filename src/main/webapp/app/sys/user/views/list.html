@@ -50,11 +50,11 @@
                 <div class="table-tools">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
-                            <a class="btn btn-info" href="#/sys/user/add" ed-tooltip
+                            <a class="btn btn-blue" href="#/sys/user/add" ed-tooltip
                                data-original-title="{{'label.sys.user.add' | translate}}" ed-permisson perm="sys:user:**:create">
                                 <i class="fa fa-plus"></i>
                             </a>
-                            <a class="btn btn-danger" type="button" href="javascript:;" ed-tooltip
+                            <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
                                data-original-title="{{'label.common.op.delete' | translate}}"
                                model-array="selectUsers" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectUsers.length == 0"
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <!--工具栏结束-->
-                <table class="table table-striped table-bordered table-hover">
+                <table class="table table-striped table-bordered table-hover table-condensed">
                     <thead>
                     <tr user="row">
                         <th class="width20">

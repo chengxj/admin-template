@@ -1,0 +1,220 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.order.task' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.order.task' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.order.task.list' | translate}}
+                <div class="pull-right">
+                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                       reload-fun="reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="panel-body">
+                <!--查询-->
+                <div class="row query">
+                    <div class="col-md-12">
+                        <div class="title">{{'label.common.op.enquiry' | translate}}
+                        </div>
+                        <form role="form" class="form-horizontal">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">
+                                                {{'label.order.orderNo' | translate}}
+                                            </label>
+
+                                            <div class="col-md-9">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       id="orderNo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">
+                                                {{'label.mobilesafe.safeNo' | translate}}
+                                            </label>
+
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control" id="safeNo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">
+                                                {{'label.order.task.state' | translate}}
+                                            </label>
+
+                                            <div class="col-md-9">
+                                                <input class="form-control select2" name="state" ng-model="user.state" ed-select2 options="states">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">
+                                                {{'label.order.task.type' | translate}}
+                                            </label>
+
+                                            <div class="col-md-9">
+                                                <input class="form-control select2" name="type" ng-model="user.type" ed-select2 options="types">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label">
+                                                {{'label.order.task.allocationTime' | translate}}
+                                            </label>
+
+                                            <div class="col-md-9">
+                                                <div class="btn btn-default" ed-date-range start-date="startDate" end-date="endDate">
+                                                    <i class="fa fa-calendar"></i>
+                                                    <span>{{startDate}} - {{endDate}}</span> <b class="caret"></b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-default btn-sm pull-right"><i class="fa fa-undo"></i> {{'label.common.op.cancel' | translate}}</button>
+                                        <label class="blank5 pull-right"></label>
+                                        <button class="btn btn-blue btn-sm pull-right"><i class="fa fa-search"></i> {{'label.common.op.enquiry' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+                <!--.查询-->
+                <!--右键菜单开始-->
+                <div id="context-menu">
+                    <ul class="dropdown-menu" role="menu">
+                        <li ed-permisson perm="sys:role:**:delete">
+                            <a href="javascript:;"
+                               model-array="selectTasks" ed-delete-all
+                               click-fun="remove(role)" success-fun="reload()" ng-hide="selectTasks.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                                {{'label.common.op.delete' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/role/edit/{{role.roleId}}"
+                               ng-hide="selectTasks.length != 1"
+                               ed-permisson perm="sys:role:**:update">
+                                <i class="fa fa-edit"></i>
+                                {{'label.common.op.edit' | translate}}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/sys/role/permission/{{role.roleId}}"
+                               ng-hide="selectTasks.length != 1" ed-permisson perm="sys:menu:**:read">
+                                <i class="fa fa-lock"></i>
+                                {{'label.sys.role.permission' | translate}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--右键菜单结束-->
+                <!--工具栏开始-->
+                <div class="table-tools">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12">
+                            <a class="btn btn-blue"
+                               type="button"
+                               href="#/order/task/handle/{{task.taskId}}"
+                               ed-tooltip
+                               data-original-title="{{'label.order.task.handle' | translate}}"
+                               ng-hide="selectTasks.length == 0">
+                                <i class="fa fa-play"></i>
+                            </a>
+
+                        </div>
+
+                        <div class="col-md-4 col-sm-12">
+                            <div ed-simple-page page-size="10"
+                                 pagination="pagination" query-param="queryParam" query-url="order/pagination"
+                                 share-key="RoleList" block-el=".panel-body">
+                            </div>
+                            <!--<div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="{{'query.sys.role.simple.rolename' | translate}}"
+                                       ng-model="queryParam.roleName_cn" ng-keydown="enterQueryValue($event)">
+                            </div>-->
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover table-condensed">
+                        <thead>
+                        <tr role="row">
+                            <th class="width20">
+                                <input type="checkbox" ed-check-all/>
+                            </th>
+                            <th>
+                                {{'label.order.task.type' | translate}}
+                            </th>
+                            <th>
+                                {{'label.order.orderNo' | translate}}
+                            </th>
+                            <th>
+                                {{'label.customer.address' | translate}}
+                            </th>
+                            <th>
+                                {{'label.mobilesafe.safeNo' | translate}}
+                            </th>
+                            <th>
+                                {{'label.order.task.state' | translate}}
+                            </th>
+                            <th>
+                                {{'label.order.task.allocationTime' | translate}}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="task in pagination.records" data-toggle="context"
+                            data-target="#context-menu">
+                            <td>
+                                <input name="pk" type="checkbox" ng-model="task"
+                                       model-array="selectTasks" ed-checkbox/>
+                            </td>
+                            <td>{{task.type}}</td>
+                            <td>{{task.orderNo}}</td>
+                            <td>{{task.address}}</td>
+                            <td>{{task.safeNo}}</td>
+                            <td>{{task.state}}</td>
+                            <td>2014-07-01 14:30:00</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
