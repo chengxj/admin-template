@@ -49,7 +49,7 @@
                 <!--工具栏开始-->
                 <div class="table-tools">
                     <div class="row">
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-4 col-sm-12">
                             <a class="btn btn-blue" href="#/order/commodity/add" ed-tooltip
                                data-original-title="{{'label.order.commodity.add' | translate}}">
                                 <i class="fa fa-plus"></i>
@@ -66,17 +66,18 @@
                             </a>
                         </div>
 
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-8 col-sm-12">
                             <div ed-simple-page page-size="10"
                                  pagination="pagination" query-param="queryParam" query-url="order/commodity/pagination"
                                  share-key="RoleList" block-el=".panel-body">
                             </div>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                <input class="form-control select2" placeholder="{{'label.order.commodity.safeModel' | translate}}"
-                                       name="state" ng-model="queryParam.state" ed-select2 options="states">
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                    <input class="form-control select2" placeholder="{{'label.order.commodity.safeModel' | translate}}"
+                                           name="state" ng-model="queryParam.state" ed-select2 options="states">
+                                </div>
                             </div>
-
                         </div>
 
                     </div>

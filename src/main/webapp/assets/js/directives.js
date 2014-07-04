@@ -583,8 +583,18 @@ commonDirective.directive('edReload', function () {
         }
     };
 });
-/**
- * pageSize的默认值是10
+
+/**    ed-page 分页指令,显示详细的页码
+ * 用法
+ * <div ed-page page-size="10"
+ pagination="pagination" query-param="queryParam" query-url="sys/i18n/pagination"
+ share-key="RoleList" block-el=".panel-body">
+ 参数 : page-size:每页数量,默认值10;
+ pagination:数据源
+ query-param:查询条件
+ query-url:分页查询的Rest API
+ share-key:页面缓存的key,默认值null,不使用这个属性则代表不启用缓存
+ block-el:blockUI的DOM元素,默认值null,不使用这个属性则代表不启用BlockUI
  */
 commonDirective.directive('edPage', function ($http, ShareService) {
     return {
@@ -594,75 +604,10 @@ commonDirective.directive('edPage', function ($http, ShareService) {
             pagination: '=',
             pageSize: '@',
             url: '@queryUrl',
-            shareKey: '@'/*,
-             blockEl: '@'*/
+            shareKey: '@',
+             blockEl: '@'
         },
         templateUrl: 'app/partials/page.html',
-        link: function postLink(scope, iElement, iAttrs) {
-            scope.pageSize = scope.pageSize || 10;
-            scope.$on("query", function () {
-                scope.gotoPage(1);
-            });
-            scope.$on("reload", function () {
-                scope.gotoPage(scope.queryParam.page);
-            });
-            scope.gotoPage = function (page) {
-                if (typeof page != 'number') {
-                    return;
-                }
-                angular.extend(scope.queryParam, {
-                    page: page,
-                    pageSize: scope.pageSize
-                });
-                if (scope.shareKey) {
-                    ShareService[scope.shareKey] = scope.queryParam;
-                }
-                scope.query(scope.queryParam);
-            };
-            scope.query = function (queryParam) {
-                angular.extend(queryParam, {
-//                    timestamp: new Date().getTime()
-                });
-//                if (scope.blockEl) {
-//                    App.blockUI(scope.blockEl);
-//                }
-                $http({
-                    method: 'GET',
-                    url: scope.url,
-                    params: queryParam
-                }).success(function (data, status, headers, config) {
-                        scope.pagination = data;
-//                        if (scope.blockEl) {
-//                            App.unblockUI(scope.blockEl);
-//                        }
-                    }).error(function (data, status, headers, config) {
-//                        if (scope.blockEl) {
-//                            App.unblockUI(scope.blockEl);
-//                        }
-                    });
-            };
-            if (scope.shareKey && ShareService[scope.shareKey]) {
-                angular.extend(scope.queryParam, ShareService[scope.shareKey]);
-                scope.query(scope.queryParam);
-            } else {
-                scope.gotoPage(1);
-            }
-        }
-    };
-});
-
-commonDirective.directive('edSimplePage', function ($http, ShareService) {
-    return {
-        restrict: 'A',
-        scope: {
-            queryParam: '=',
-            pagination: '=',
-            pageSize: '@',
-            url: '@queryUrl',
-            shareKey: '@',
-            blockEl: '@'
-        },
-        templateUrl: 'app/partials/simple_page.html',
         link: function postLink(scope, iElement, iAttrs) {
             scope.pageSize = scope.pageSize || 10;
             scope.$on("query", function () {
@@ -700,6 +645,97 @@ commonDirective.directive('edSimplePage', function ($http, ShareService) {
                         if (scope.blockEl) {
                             App.unblockUI(scope.blockEl);
                         }
+                    }).error(function (data, status, headers, config) {
+                        if (scope.blockEl) {
+                            App.unblockUI(scope.blockEl);
+                        }
+                    });
+            };
+            if (scope.shareKey && ShareService[scope.shareKey]) {
+                angular.extend(scope.queryParam, ShareService[scope.shareKey]);
+                scope.query(scope.queryParam);
+            } else {
+                scope.gotoPage(1);
+            }
+        }
+    };
+});
+
+/**    ed-simple-page 简单分页指令,值显示上一页,下一页
+ * 用法
+ * <div ed-simple-page page-size="10"
+ pagination="pagination" query-param="queryParam" query-url="sys/i18n/pagination"
+ share-key="RoleList" block-el=".panel-body">
+ 参数 : page-size:每页数量,默认值10;
+ pagination:数据源
+ query-param:查询条件
+ query-url:分页查询的Rest API
+ share-key:页面缓存的key,默认值null,不使用这个属性则代表不启用缓存
+ block-el:blockUI的DOM元素,默认值null,不使用这个属性则代表不启用BlockUI
+ */
+commonDirective.directive('edSimplePage', function ($http, ShareService) {
+    return {
+        restrict: 'A',
+        scope: {
+            queryParam: '=',
+            pagination: '=',
+            pageSize: '@',
+            url: '@queryUrl',
+            shareKey: '@',
+            blockEl: '@'
+        },
+        templateUrl: 'app/partials/simple_page.html',
+        link: function postLink(scope, iElement, iAttrs) {
+            scope.p = "";
+            iElement.find("#page-input").keypress(function(event) {
+               return (event.charCode >=48 && event.charCode <= 57) || event.keyCode == 8;
+            });
+            scope.pageSize = scope.pageSize || 10;
+            scope.$on("query", function () {
+                scope.gotoPage(1);
+            });
+            scope.$on("reload", function () {
+                scope.gotoPage(scope.queryParam.page);
+            });
+            scope.enterPageValue = function ($event) {
+                if ($event.keyCode == "13") {
+                    var _p = new Number(scope.p).valueOf();
+                    if (_p == NaN) {
+                        return false;
+                    }
+                    scope.gotoPage(_p);
+                }
+            };
+            scope.gotoPage = function (page) {
+                if (typeof page != 'number') {
+                    return;
+                }
+                angular.extend(scope.queryParam, {
+                    page: page,
+                    pageSize: scope.pageSize
+                });
+                if (scope.shareKey) {
+                    ShareService[scope.shareKey] = scope.queryParam;
+                }
+                scope.query(scope.queryParam);
+            };
+            scope.query = function (queryParam) {
+                angular.extend(queryParam, {
+//                    timestamp: new Date().getTime()
+                });
+                if (scope.blockEl) {
+                    App.blockUI(scope.blockEl);
+                }
+                $http({
+                    method: 'GET',
+                    url: scope.url,
+                    params: queryParam
+                }).success(function (data, status, headers, config) {
+                        scope.pagination = data;
+                        if (scope.blockEl) {
+                            App.unblockUI(scope.blockEl);
+                        }
+                        scope.p = "";
                     }).error(function (data, status, headers, config) {
                         if (scope.blockEl) {
                             App.unblockUI(scope.blockEl);

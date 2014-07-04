@@ -1,14 +1,23 @@
-<ul class="pagination  pull-right mrg25L mrg0T mrg5B" ng-show="(pagination.records.length > 0 || pagination.totalRecords > 0)">
-    <li><a href="javascript:;" class="disabled active">{{pagination.page}}/{{pagination.totalPages}}{{'label.common.page' | translate}}</a></li>
+
+<ul class="pagination pull-right mrg25L mrg0T mrg5B" ng-show="(pagination.records.length > 0 || pagination.totalRecords > 0)">
     <li class="prev" ng-hide="pagination.page == '1'" ng-click="gotoPage(pagination.page - 1)"><a href="javascript:;">
         <i class="fa fa-angle-left"></i>
     </a></li>
+    <li><a href="javascript:;" class="disabled active">{{pagination.page}}/{{pagination.totalPages}}{{'label.common.page' | translate}}</a></li>
+
     <li class="next" ng-hide="pagination.page == pagination.totalPages" ng-click="gotoPage(pagination.page + 1)"><a
             href="javascript:;">
         <i class="fa fa-angle-right"></i>
     </a></li>
+    <li class="mrg5L">
+        <!--<label class="blank5 bg-white"></label>-->
+        <span class="text-blue">{{'label.common.jumpTo' | translate}}
+        <input id="page-input" type="text" ng-model="p" ng-keydown="enterPageValue($event)">
+            <span class="mrg5L"></span>{{'label.common.page' | translate}}
+        </span>
+    </li>
 </ul>
 
-<ul class="pagination pull-right mrg25L mrg0T mrg5B" style="margin-top: 0px; " ng-show="pagination.totalRecords == 0">
+<ul class="pagination pull-right mrg25L mrg0T mrg5B" ng-show="pagination.totalRecords == 0">
     <li><a href="javascript:;" class="disabled active">找到0条结果</a></li>
 </ul>

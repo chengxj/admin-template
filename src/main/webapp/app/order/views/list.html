@@ -35,11 +35,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">
+                                        <label class="col-md-4 control-label">
                                             {{'label.order.orderNo' | translate}}
                                         </label>
 
-                                        <div class="col-md-9">
+                                        <div class="col-md-8">
                                             <input type="text"
                                                    class="form-control input-sm"
                                                    id="orderNo">
@@ -48,11 +48,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">
+                                        <label class="col-md-4 control-label">
                                             {{'label.mobilesafe.safeNo' | translate}}
                                         </label>
 
-                                        <div class="col-md-9">
+                                        <div class="col-md-8">
                                             <input type="text" class="form-control input-sm" id="safeNo">
                                         </div>
                                     </div>
@@ -61,22 +61,22 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">
+                                        <label class="col-md-4 control-label">
                                             {{'label.customer.customerName' | translate}}
                                         </label>
 
-                                        <div class="col-md-9">
+                                        <div class="col-md-8">
                                             <input type="text" class="form-control input-sm" id="customerName">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">
+                                        <label class="col-md-4 control-label">
                                             {{'label.customer.idCardNo' | translate}}
                                         </label>
 
-                                        <div class="col-md-9">
+                                        <div class="col-md-8">
                                             <input type="text"
                                                    class="form-control input-sm"
                                                    id="idCardNo">
@@ -87,22 +87,22 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">
+                                        <label class="col-md-4 control-label">
                                             {{'label.order.state' | translate}}
                                         </label>
 
-                                        <div class="col-md-9">
+                                        <div class="col-md-8">
                                             <input class="form-control select2" name="state" ng-model="user.state" ed-select2 options="states">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">
+                                        <label class="col-md-4 control-label">
                                             {{'label.order.type' | translate}}
                                         </label>
 
-                                        <div class="col-md-9">
+                                        <div class="col-md-8">
                                             <input class="form-control select2" name="type" ng-model="user.type" ed-select2 options="types">
                                         </div>
                                     </div>
@@ -111,11 +111,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">
+                                        <label class="col-md-4 control-label">
                                             {{'label.order.orderTime' | translate}}
                                         </label>
 
-                                        <div class="col-md-9">
+                                        <div class="col-md-8">
                                             <div class="btn btn-default" ed-date-range start-date="startDate" end-date="endDate">
                                                 <i class="fa fa-calendar"></i>
                                                 <span>{{startDate | dateformat}} - {{endDate | dateformat}}</span> <b class="caret"></b>
@@ -152,7 +152,7 @@
                 <!--工具栏开始-->
                 <div class="table-tools">
                     <div class="row">
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-4 col-sm-12">
 
                             <a class="btn btn-blue" type="button" href="#/order/view/{{order.orderId}}" ed-tooltip
                                data-original-title="label.common.op.view" ng-hide="selectOrders.length == 0">
@@ -160,7 +160,7 @@
                             </a>
                         </div>
 
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-8 col-sm-12">
                             <div ed-simple-page page-size="10"
                                  pagination="pagination" query-param="queryParam" query-url="order/pagination"
                                  share-key="RoleList" block-el=".panel-body">
