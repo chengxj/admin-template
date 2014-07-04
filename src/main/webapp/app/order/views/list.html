@@ -25,9 +25,94 @@
                 </div>
             </header>
             <div class="panel-body">
+            <!--查询-->
+            <div class="row query">
+                <div class="col-md-12">
+                    <div class="title">{{'label.common.op.enquiry' | translate}}
+                    </div>
+                    <form role="form" class="form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">
+                                            {{'label.order.orderNo' | translate}}
+                                        </label>
+
+                                        <div class="col-md-9">
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="orderNo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">
+                                            {{'label.mobilesafe.safeNo' | translate}}
+                                        </label>
+
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="safeNo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">
+                                            {{'label.order.task.state' | translate}}
+                                        </label>
+
+                                        <div class="col-md-9">
+                                            <input class="form-control select2" name="state" ng-model="user.state" ed-select2 options="states">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">
+                                            {{'label.order.task.type' | translate}}
+                                        </label>
+
+                                        <div class="col-md-9">
+                                            <input class="form-control select2" name="type" ng-model="user.type" ed-select2 options="types">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">
+                                            {{'label.order.task.allocationTime' | translate}}
+                                        </label>
+
+                                        <div class="col-md-9">
+                                            <div class="btn btn-default" ed-date-range start-date="startDate" end-date="endDate">
+                                                <i class="fa fa-calendar"></i>
+                                                <span>{{startDate}} - {{endDate}}</span> <b class="caret"></b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-default btn-sm pull-right"><i class="fa fa-undo"></i> {{'label.common.op.cancel' | translate}}</button>
+                                    <label class="blank5 pull-right"></label>
+                                    <button class="btn btn-blue btn-sm pull-right"><i class="fa fa-search"></i> {{'label.common.op.enquiry' | translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+            <!--.查询-->
                 <!--右键菜单开始-->
                 <div id="context-menu">
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu dropdown-arrow-left" role="menu">
                         <li ed-permisson perm="sys:role:**:delete">
                             <a href="javascript:;"
                                model-array="selectOrders" ed-delete-all

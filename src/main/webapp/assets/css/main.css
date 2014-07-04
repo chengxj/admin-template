@@ -767,37 +767,49 @@ label {
 }
 
 /* = Dropdowns = */
+/* = Dropdowns = */
 .dropdown-arrow:before {
-  border-bottom: 8px solid #304269;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  content: "";
-  display: inline-block;
-  right: 27px;
-  position: absolute;
-  top: -7px;
+    border-bottom: 8px solid #304269;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    content: "";
+    display: inline-block;
+    right: 27px;
+    position: absolute;
+    top: -7px;
+}
+
+.dropdown-arrow-left:before {
+    border-bottom: 8px solid #304269;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    content: "";
+    display: inline-block;
+    left: 5px;
+    position: absolute;
+    top: -7px;
 }
 
 .dropdown-menu {
-  border-radius: 0;
-  border: 0;
-  background: #ffffff;
-  margin: 0;
+    border-radius: 0;
+    border: 0;
+    background: #283758;
+    margin: 0;
 }
 .dropdown-menu > li > a {
-  /*color: #b2bfdc;*/
-  padding: 5px 20px;
+    color: #b2bfdc;
+    padding: 5px 20px;
 }
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:active, .dropdown-menu > li > a:focus {
-  color: white;
-  background: #2e8bff;
+    color: white;
+    background: #222e4a;
 }
 .dropdown-menu .divider {
-  background-color: #222e4a;
+    background-color: #222e4a;
 }
 
 .bootstrap-datetimepicker-widget.dropdown-menu {
-  background: white !important;
+    background: white !important;
 }
 
 /* = Progress bar = */

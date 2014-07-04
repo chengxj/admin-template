@@ -112,28 +112,12 @@
                 <!--.查询-->
                 <!--右键菜单开始-->
                 <div id="context-menu">
-                    <ul class="dropdown-menu" role="menu">
-                        <li ed-permisson perm="sys:role:**:delete">
-                            <a href="javascript:;"
-                               model-array="selectTasks" ed-delete-all
-                               click-fun="remove(role)" success-fun="reload()" ng-hide="selectTasks.length == 0">
-                                <i class="fa fa-trash-o"></i>
-                                {{'label.common.op.delete' | translate}}
-                            </a>
-                        </li>
+                    <ul class="dropdown-menu dropdown-arrow-left" role="menu">
                         <li>
-                            <a href="#/sys/role/edit/{{role.roleId}}"
-                               ng-hide="selectTasks.length != 1"
-                               ed-permisson perm="sys:role:**:update">
-                                <i class="fa fa-edit"></i>
-                                {{'label.common.op.edit' | translate}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/sys/role/permission/{{role.roleId}}"
-                               ng-hide="selectTasks.length != 1" ed-permisson perm="sys:menu:**:read">
-                                <i class="fa fa-lock"></i>
-                                {{'label.sys.role.permission' | translate}}
+                            <a href="#/order/task/handle/{{task.taskId}}"
+                               ng-hide="selectTasks.length != 1">
+                                <i class="fa fa-play"></i>
+                                {{'label.order.task.handle' | translate}}
                             </a>
                         </li>
                     </ul>
