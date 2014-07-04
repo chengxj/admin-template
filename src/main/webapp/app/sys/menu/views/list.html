@@ -60,20 +60,20 @@
                 </div>
                 <!--右键菜单结束-->
                 <!--工具栏开始-->
-                <div class="table-tools mrg25B">
+                <div class="table-tools mrg5B">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
-                            <a class="btn btn-green" href="#/sys/menu/add" ed-tooltip
+                            <a class="btn btn-blue" href="#/sys/menu/add" ed-tooltip
                                data-original-title="{{'label.sys.menu.add' | translate}}">
                                 <i class="fa fa-plus"></i>
                             </a>
-                            <a class="btn btn-purple" type="button" href="javascript:;" ed-tooltip
+                            <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
                                data-original-title="{{'label.common.op.delete' | translate}}"
                                model-array="selectMenus" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectMenus.length == 0">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <a class="btn btn-blue" href="#/sys/menu/edit/{{menu.menuId}}" ed-tooltip
+                            <a class="btn btn-green" href="#/sys/menu/edit/{{menu.menuId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectMenus.length != 1">
                                 <i class="fa fa-edit"></i>
                             </a>
@@ -81,7 +81,7 @@
                                data-original-title="{{'label.sys.menu.addchild' | translate}}" ng-hide="selectMenus.length != 1 || menu.parentId != -1">
                                 <i class="fa fa fa-plus-square"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/sys/menu/route/{{menu.menuId}}" ed-tooltip
+                            <a class="btn btn-purple" href="#/sys/menu/route/{{menu.menuId}}" ed-tooltip
                                data-original-title="{{'label.sys.menu.relate' | translate}}" ng-hide="selectMenus.length != 1">
                                 <i class="fa fa-chain"></i>
                             </a>

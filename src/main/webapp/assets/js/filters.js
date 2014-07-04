@@ -9,118 +9,54 @@ angular.module('myApp.filters', []).filter('interpolate',
 
 var commonFilter = angular.module('app.filters', []);
 
-commonFilter.filter('money', function() {
-	return function(input) {
-		if (input) {
-			return input + "元";			
-		} else {
-			return input;
-		}
-	}
-});
-commonFilter.filter('chargeperiod', function() {
-	return function(input) {		
-		if (input) {
-			return input + "个月"		
-		} else {
-			return input;
-		}
-	}
-});
-
-commonFilter.filter('yesorno', function() {
-	return function(input) {
-		if (input == "1") {
-			return "是";
-		}
-		return "否"
-	}
-});
-commonFilter.filter('hasornot', function() {
-	return function(input) {
-		if (input == "1") {
-			return "有";
-		}
-		return "无"
-	}
-});
-
+/*
+ * 格式化日期，默认的格式为YYYY-MM-DD h:mm:ss
+ * 用法：{{startDate | datetimeformat:'YYYYMMDDHHmmss'}}
+ * {{endDate | datetimeformat}}
+ * */
 commonFilter.filter('datetimeformat', function() {
-	return function(input) {
-		if (input == undefined) {
-			return "";
-		}
-		var out = "";
-		if (input.length == 14) {
-			for ( var i = 0; i < input.length; i++) {
-				out = out + input[i];
-				if (i == 3) {
-					out += "-"
-				}
-				if (i == 5) {
-					out += "-"
-				}
-				if (i == 7) {
-					out += " "
-				}
-				if (i == 9) {
-					out += ":"
-				}
-				if (i == 11) {
-					out += ":"
-				}
-
-			}
-		}
-		return out;
-	}
+    return function(input, format) {
+        if (input == undefined) {
+            return "";
+        }
+        if (format == undefined) {
+            format = "YYYY-MM-DD h:mm:ss";
+        }
+        var date = input;
+        if (typeof input == 'string') {
+            if (input.length == 8) {
+                date = moment(input, 'YYYYMMDD');
+            }
+            if (input.length == 14) {
+                date = moment(input, 'YYYYMMDDHHmmss');
+            }
+        }
+        return date.format(format)
+    }
 });
 
+/*
+* 格式化日期，默认的格式为YYYY-MM-DD
+* 用法：{{startDate | dateformat:'YYYYMMDDHHmmss'}}
+* {{endDate | dateformat}}
+* */
 commonFilter.filter('dateformat', function() {
-	return function(input) {
+	return function(input, format) {
 		if (input == undefined) {
 			return "";
 		}
-		var out = "";
-		if (input.length == 14 || input.length == 8) {
-			for ( var i = 0; i < input.length; i++) {
-				if (i < 8) {
-					out = out + input[i];
-				}
-				if (i == 3) {
-					out += "-"
-				}
-				if (i == 5) {
-					out += "-"
-				}
-				if (i == 7) {
-					out += " "
-				}
-			}
-		}
-		return out;
-	}
-});
-
-commonFilter.filter('limit', function() {
-	return function(input, start, end) {
-		if (_.isArray(input)) {
-			return input.slice(start, end);
-		} else {
-			return input;
-		}
-	}
-});
-
-commonFilter.filter('pluckAndSum', function() {
-	return function(input, property) {
-		if (_.isArray(input)) {
-			return _.reduce(input, function(memo, v){ 
-				var s = new Number(v[property]);
-				return memo + s;
-				}, 0);
-		} else {
-			return "";
-		}
+        if (format == undefined) {
+            format = "YYYY-MM-DD";
+        }
+        var date = input;
+        if (typeof input == 'string') {
+            if (input.length == 8) {
+                date = moment(input, 'YYYYMMDD');
+            }
+            if (input.length == 14) {
+                date = moment(input, 'YYYYMMDDHHmmss');
+            }
+        }
+		return date.format(format)
 	}
 });

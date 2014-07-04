@@ -1,9 +1,12 @@
 function TaskListCtrl($scope, ShareService) {
 
     /*UI Demo*/
-    $scope.startDate = moment().format('YYYY-MM-DD');
-    $scope.endDate = moment().format('YYYY-MM-DD');
-    $scope.states = [{id: "1", text: "未领取"},{id: "2", text: "进行中"}
+    $scope.startDate = moment().startOf('day');
+    $scope.endDate = moment();
+    $scope.$watch("startDate", function(value) {
+        console.log(value);
+    })
+    $scope.states = [{id: "1", text: "未领取", selected : true},{id: "2", text: "进行中"}
         ,{id: "3", text: "完成"}]
     $scope.types = [{id: "1", text: "提交订单"},{id: "2", text: "分配任务"}
         ,{id: "3", text: "出库"},{id: "4", text: "领取保管箱"}

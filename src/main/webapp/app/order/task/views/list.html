@@ -28,9 +28,10 @@
                 <!--查询-->
                 <div class="row query">
                     <div class="col-md-12">
-                        <div class="title">{{'label.common.op.enquiry' | translate}}
-                        </div>
-                        <form role="form" class="form-horizontal">
+                        <form role="form" class="form-horizontal" ed-form-toggle minus="true">
+                            <div class="title">
+                                    {{'label.common.op.enquiry' | translate}}
+                            </div>
                             <div class="form-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -41,7 +42,7 @@
 
                                             <div class="col-md-9">
                                                 <input type="text"
-                                                       class="form-control"
+                                                       class="form-control input-sm"
                                                        id="orderNo">
                                             </div>
                                         </div>
@@ -53,7 +54,7 @@
                                             </label>
 
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" id="safeNo">
+                                                <input type="text" class="form-control input-sm" id="safeNo">
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +93,7 @@
                                             <div class="col-md-9">
                                                 <div class="btn btn-default" ed-date-range start-date="startDate" end-date="endDate">
                                                     <i class="fa fa-calendar"></i>
-                                                    <span>{{startDate}} - {{endDate}}</span> <b class="caret"></b>
+                                                    <span>{{startDate | dateformat}} - {{endDate | dateformat}}</span> <b class="caret"></b>
                                                 </div>
                                             </div>
                                         </div>

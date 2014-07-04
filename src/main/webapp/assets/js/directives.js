@@ -1,16 +1,11 @@
 'use strict';
 
 var commonDirective = angular.module('app.directives', ["app.services"]);
-commonDirective.directive('edNavbar', function (ShareService) {
-    return {
-        restrict: 'AE',
-        templateUrl: 'app/partials/navbar.html',
-        link: function postLink(scope, iElement, iAttrs) {
-            scope.webAppName = ShareService.webAppName;
-        }
-    };
-});
 
+/*
+ * ed-page-title指令,将元素自动添加到 #page-header 元素中
+ * 用法: <div class="page-title" ed-page-title>
+ * */
 commonDirective.directive('edPageTitle', function () {
     return {
         restrict: 'AE',
@@ -21,6 +16,51 @@ commonDirective.directive('edPageTitle', function () {
     };
 });
 
+/*
+ * ed-form-toggle指令,实现查询表单的显示和隐藏的切换
+ * 参数:minus 是否隐藏,如果设置了参数minus='true',则查询表单默认为隐藏状态
+ * 用法:默认隐藏表单:<form role="form" class="form-horizontal" ed-form-toggle minus="true">
+ *       默认显示表单:<form role="form" class="form-horizontal" ed-form-toggle>
+ * */
+commonDirective.directive('edFormToggle', function () {
+    return {
+        restrict: 'AE',
+        scope: {
+            'minus': '@'
+        },
+        link: function postLink(scope, iElement, iAttrs) {
+            if (scope.minus == 'true') {
+                iElement.addClass("form-minus");
+                iElement.find('.title').prepend('<i class="fa fa-caret-right"></i><label class="blank5"></label>');
+                iElement.find('.title').toggle(function () {
+                    iElement.find('.title').find('i').removeClass("fa-caret-right").addClass("fa-caret-down");
+                    iElement.removeClass("form-minus");
+                }, function () {
+                    iElement.find('.title').find('i').removeClass("fa-caret-down").addClass("fa-caret-right");
+                    iElement.addClass("form-minus");
+                });
+            } else {
+                iElement.removeClass("form-minus");
+                iElement.find('.title').prepend('<i class="fa fa-caret-down"></i><label class="blank5"></label>');
+                iElement.find('.title').toggle(function () {
+                    iElement.find('.title').find('i').removeClass("fa-caret-down").addClass("fa-caret-right");
+                    iElement.addClass("form-minus");
+                }, function () {
+                    iElement.find('.title').find('i').removeClass("fa-caret-right").addClass("fa-caret-down");
+                    iElement.removeClass("form-minus");
+                });
+            }
+
+        }
+    };
+});
+
+/*
+ * ed-focus指令:监听input对象的鼠标事件,当鼠标进入元素时,设置model的$focused为true;离开元素时,设置model的$focused为false
+ * input元素监听mouseenter和mouseleave
+ * select2元素监听select2-focus和select2-blur
+ * 用法:<input ng-model="dict.dictName" ed-focus>
+ * */
 commonDirective.directive('edFocus', function () {
     var FOCUS_CLASS = "ng-focused";
     return {
@@ -59,6 +99,10 @@ commonDirective.directive('edFocus', function () {
     };
 });
 
+/*
+ * ed-integer指令:校验输入的值是否是整数,如果是整数,设置model的integer校验为true
+ * 用法:<input ng-model="menu.sorted" ed-integer ed-focus>
+ * */
 var INTEGER_REGEXP = /^\-?\d+$/;
 commonDirective.directive('edInteger', function () {
     return {
@@ -80,6 +124,10 @@ commonDirective.directive('edInteger', function () {
     };
 });
 
+/*
+ * ed--positive-integer指令:校验输入的值是否是正整数,如果是正整数,设置model的positiveInteger校验为true
+ * 用法:<input ng-model="commodity.monthlyFreeEscort" ed-focus ed-positive-integer>
+ * */
 var POSITIVE_INTEGER_REGEXP = /^\d+$/;
 commonDirective.directive('edPositiveInteger', function () {
     return {
@@ -101,6 +149,10 @@ commonDirective.directive('edPositiveInteger', function () {
     };
 });
 
+/*
+ * ed--number:校验输入的值是否是>0的数值,如果是,设置model的number校验为true
+ * 用法:<input ng-model="commodity.escortFee" ed-focus ed-number>
+ * */
 var NUMBER_REGEXP = /^[0-9]+(.[0-9]{1,2})?$/;
 commonDirective.directive('edNumber', function () {
     return {
@@ -122,6 +174,11 @@ commonDirective.directive('edNumber', function () {
     };
 });
 
+/*
+ * ed-ensure-unique:唯一性校验,如果是唯一值,设置model的unique校验为true
+ * 用法:<input ng-model="dict.dictCode" ed-focus ed-ensure-unique="sys/dict/check/dictCode">
+ * 参数:ed-ensure-unique属性值是校验唯一性的后台服务API
+ * */
 commonDirective.directive('edEnsureUnique', ['$http', function ($http) {
     return {
         restrict: 'A',
@@ -145,6 +202,15 @@ commonDirective.directive('edEnsureUnique', ['$http', function ($http) {
     };
 }]);
 
+/*
+ * ed-delete:删除按钮
+ * 用法:<a ed-delete click-fun="remove(i18n)" success-fun="reload()"></a>
+ * 参数:click-fun :点击按钮后调用的方法,此方法需要返回$promise
+ 如：$scope.remove = function (model) {
+ return I18nService.remove({i18nId : model.i18nId, updatedTime:model.updatedTime}).$promise;
+ }
+ *       success-fun :删除成功后调用的方法
+ * */
 commonDirective.directive('edDelete', ['$http', 'MessageService', function ($http, MessageService) {
     return {
         restrict: 'A',
@@ -172,6 +238,16 @@ commonDirective.directive('edDelete', ['$http', 'MessageService', function ($htt
     };
 }]);
 
+/*
+ * ed-delete-all:批量删除按钮
+ * 用法:<a ed-delete-all click-fun="remove(i18n)" success-fun="reload()" model-array="selectI18ns"></a>
+ * 参数:click-fun :点击按钮后调用的方法,此方法需要返回$promise
+ 如：$scope.remove = function (model) {
+ return I18nService.remove({i18nId : model.i18nId, updatedTime:model.updatedTime}).$promise;
+ }
+ *       success-fun :删除成功后调用的方法
+ *model-array: 需要删除的model
+ * */
 commonDirective.directive('edDeleteAll', ['$q', 'MessageService', function ($q, MessageService) {
     return {
         restrict: 'A',
@@ -207,6 +283,12 @@ commonDirective.directive('edDeleteAll', ['$q', 'MessageService', function ($q, 
     };
 }]);
 
+/*
+ * ed-multi-select:多选的select
+ * 用法:<input ng-model="user.roleIds" ed-multi-select options="options">
+ * 参数:options :select2的下拉列表
+ 如：[{id: "1", text: "未领取", selected : true},{id: "2", text: "进行中"}]
+ * */
 commonDirective.directive('edMultiSelect', function () {
     return {
         restrict: 'AE',
@@ -218,10 +300,10 @@ commonDirective.directive('edMultiSelect', function () {
             scope.$watch("options", function (value) {
                 if (value) {
                     iElement.select2({data: value, multiple: true});
-                    var  selectedOptions = _.filter(value, function(v, i) {
+                    var selectedOptions = _.filter(value, function (v, i) {
                         return v.selected == true;
                     });
-                    var val =  _.pluck(selectedOptions, "id");
+                    var val = _.pluck(selectedOptions, "id");
                     iElement.select2("val", val);
                     if (val && val.length > 0) {
                         ctrl.$setValidity('required', true);
@@ -235,6 +317,12 @@ commonDirective.directive('edMultiSelect', function () {
     };
 });
 
+/*
+ * ed-select2:多选的select
+ * 用法:<input ng-model="user.state" ed-select2 options="states">
+ * 参数:options :select2的下拉列表
+ 如：[{id: "1", text: "未领取", selected : true},{id: "2", text: "进行中"}]
+ * */
 commonDirective.directive('edSelect2', function () {
     return {
         restrict: 'AE',
@@ -246,10 +334,10 @@ commonDirective.directive('edSelect2', function () {
             scope.$watch("options", function (value) {
                 if (value) {
                     iElement.select2({data: value});
-                    var  selectedOptions = _.filter(value, function(v, i) {
+                    var selectedOptions = _.filter(value, function (v, i) {
                         return v.selected == true;
                     });
-                    var val =  _.pluck(selectedOptions, "id");
+                    var val = _.pluck(selectedOptions, "id");
                     iElement.select2("val", val);
                     if (val && val.length > 0) {
                         ctrl.$setValidity('required', true);
@@ -263,6 +351,10 @@ commonDirective.directive('edSelect2', function () {
     };
 });
 
+/*
+ * ed-tooltip:向下的tooltip
+ * 用法:<a ed-tooltip data-original-title="删除"> </a>
+ * */
 commonDirective.directive('edTooltip', function () {
     return {
         restrict: 'AE',
@@ -274,6 +366,13 @@ commonDirective.directive('edTooltip', function () {
     };
 });
 
+/*
+ * ed-checkbox:列表的checkbox
+ * 用法:<input type="checkbox" ng-model="i18n" model-array="selectI18ns" ed-checkbox/>
+ * 参数:ng-model:checkbox对应的model
+ * model-array:选中的model数组
+ * showcontextmenu : 是否启用右键菜单,默认为启用<input type="checkbox" ng-model="route" model-array="selectRoutes" ed-checkbox showcontextmenu="false"/>
+ * */
 commonDirective.directive('edCheckbox', function ($timeout) {
     return {
         restrict: 'AE',
@@ -331,58 +430,24 @@ commonDirective.directive('edCheckbox', function ($timeout) {
     };
 });
 
-commonDirective.directive('edCheckboxTree', function ($timeout) {
-    return {
-        restrict: 'AE',
-        link: function postLink(scope, iElement, iAttrs) {
-            iElement.on('ifChecked', function (event) {
-                var classes = iElement.parents('tr').attr("class").split(" ");
-                for (var i = 0, l = classes.length; i < l; i++) {
-                    if (classes[i].indexOf("treegrid-parent-") >= 0) {
-//                        var parentClass = "treegrid-" + classes[i].substr(16);
-//                        console.log(parentClass);
-//                        $("tr." + parentClass + " :checkbox").iCheck('check');
-                    } else if (classes[i].indexOf("treegrid-") >= 0) {
-                        var subClass = "treegrid-parent-" + classes[i].substr(9);
-                        $("tr." + subClass + " :checkbox").iCheck('check');
-                    }
-
-                }
-
-            });
-            iElement.on('ifUnchecked', function (event) {
-                var classes = iElement.parents('tr').attr("class").split(" ");
-                for (var i = 0, l = classes.length; i < l; i++) {
-                    if (classes[i].indexOf("treegrid-parent-") >= 0) {
-                    } else if (classes[i].indexOf("treegrid-") >= 0) {
-                        var subClass = "treegrid-parent-" + classes[i].substr(9);
-                        $("tr." + subClass + " :checkbox").iCheck('uncheck');
-                    }
-
-                }
-            });
-        }
-    };
-});
-
+/*
+ * ed-check-all:列表的全选checkbox
+ * 用法:<input type="checkbox" ed-check-all/>
+ * 参数：elName,全选是需要选中的checkbox的name,默认值:pk,<input type="checkbox" ed-check-all el-name="pk"/>
+ * */
 commonDirective.directive('edCheckAll', function ($timeout) {
     return {
         restrict: 'AE',
-        scope: {
-            elName: '@'
-        },
         link: function postLink(scope, iElement, iAttrs) {
+            var elName = iAttrs.elName;
+            if (elName == undefined || elName == '') {
+                elName = "pk"
+            }
             iElement.on('ifChecked', function (event) {
-                if (scope.elName == undefined) {
-                    scope.elName = "pk";
-                }
-                $('[name=' + scope.elName + ']:checkbox').iCheck('check');
+                $('[name=' + elName + ']:checkbox').iCheck('check');
             });
             iElement.on('ifUnchecked', function (event) {
-                if (scope.elName == undefined) {
-                    scope.elName = "pk";
-                }
-                $('[name=' + scope.elName + ']:checkbox').iCheck('uncheck');
+                $('[name=' + elName + ']:checkbox').iCheck('uncheck');
             });
             $timeout(function () {
                 iElement.iCheck({
@@ -415,7 +480,18 @@ commonDirective.directive('edDisabled', function () {
     };
 });
 
-
+/**    ed-touch-spin
+ * 用法
+ * <input
+ value="0"
+ data-bts-min="0"
+ data-bts-max="100"
+ data-bts-init-val=""
+ data-bts-step-interval="100"
+ data-bts-button-down-class="btn btn-violet"
+ data-bts-button-up-class="btn btn-violet"
+ ed-touch-spin>
+ */
 commonDirective.directive('edTouchSpin', function () {
     return {
         restrict: 'AE',
@@ -425,49 +501,58 @@ commonDirective.directive('edTouchSpin', function () {
     };
 });
 
+/**    ed-date-range 日期范围指令
+ * 用法
+ * <div class="btn btn-default" ed-date-range start-date="startDate" end-date="endDate">
+ <i class="fa fa-calendar"></i>
+ <span>{{startDate}} - {{endDate}}</span> <b class="caret"></b>
+ </div>
+ 参数 : startDate:开始日期,endDate:结束日期
+ */
 commonDirective.directive('edDateRange', function ($translate) {
     return {
         restrict: 'AE',
         scope: {
-            startDate : '=',
-            endDate : '='
+            startDate: '=',
+            endDate: '='
         },
         link: function postLink(scope, iElement, iAttrs) {
-            $translate(['Today','Yesterday','Last 7 Days','Last 30 Days','This Month','Last Month'
-                ,'label.common.op.accept','label.common.op.cancel','label.common.from'
-                ,'label.common.to', 'label.common.range']).then(function (translations) {
-                var today = translations['Today'];
-                var ranges = {};
-                ranges[translations['Today']] = [moment(), moment()];
-                ranges[translations['Yesterday']] = [moment().subtract('days', 1), moment().subtract('days', 1)];
-                ranges[translations['Last 7 Days']] = [moment().subtract('days', 6), moment()];
-                ranges[translations['Last 30 Days']] = [moment().subtract('days', 29), moment()];
-                ranges[translations['This Month']] = [moment().startOf('month'), moment().endOf('month')];
-                ranges[translations['Last Month']] = [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')];
-                iElement.daterangepicker(
-                    {
-                        ranges: ranges,
-                        startDate: moment().subtract('days', 29),
-                        endDate: moment(),
-                        locale : {
-                        applyLabel: translations['label.common.op.accept'],
-                        cancelLabel: translations['label.common.op.cancel'],
-                        fromLabel:  translations['label.common.from'],
-                        toLabel: translations['label.common.to'],
-                        weekLabel: 'W',
-                        customRangeLabel: translations['label.common.range'],
-                        daysOfWeek: moment()._lang._weekdaysMin.slice(),
-                        monthNames: moment()._lang._monthsShort.slice(),
-                        firstDay: 0
-                    }
-                    },
-                    function(start, end) {
-                        scope.startDate = start.format('YYYY-MM-DD');
-                        scope.endDate = end.format('YYYY-MM-DD');
-                        iElement.find('span').html(scope.startDate + ' - ' + scope.endDate);
-                    }
-                );
-            });
+            $translate(['Today', 'Yesterday', 'Last 7 Days', 'Last 30 Days', 'This Month', 'Last Month'
+                , 'label.common.op.accept', 'label.common.op.cancel', 'label.common.from'
+                , 'label.common.to', 'label.common.range']).then(function (translations) {
+                    var today = translations['Today'];
+                    var ranges = {};
+                    ranges[translations['Today']] = [moment(), moment()];
+                    ranges[translations['Yesterday']] = [moment().subtract('days', 1), moment().subtract('days', 1)];
+                    ranges[translations['Last 7 Days']] = [moment().subtract('days', 6), moment()];
+                    ranges[translations['Last 30 Days']] = [moment().subtract('days', 29), moment()];
+                    ranges[translations['This Month']] = [moment().startOf('month'), moment()];
+                    ranges[translations['Last Month']] = [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')];
+                    iElement.daterangepicker(
+                        {
+                            ranges: ranges,
+                            startDate: scope.startDate,//.subtract('days', 29),
+                            endDate: scope.endDate,
+                            locale: {
+                                applyLabel: translations['label.common.op.accept'],
+                                cancelLabel: translations['label.common.op.cancel'],
+                                fromLabel: translations['label.common.from'],
+                                toLabel: translations['label.common.to'],
+                                weekLabel: 'W',
+                                customRangeLabel: translations['label.common.range'],
+                                daysOfWeek: moment()._lang._weekdaysMin.slice(),
+                                monthNames: moment()._lang._monthsShort.slice(),
+                                firstDay: 0
+                            }
+                        },
+                        function (start, end) {
+                            scope.$apply(function() {
+                                scope.startDate = start;
+                                scope.endDate = end;
+                            });
+                        }
+                    );
+                });
 
         }
     };
@@ -510,7 +595,7 @@ commonDirective.directive('edPage', function ($http, ShareService) {
             pageSize: '@',
             url: '@queryUrl',
             shareKey: '@'/*,
-            blockEl: '@'*/
+             blockEl: '@'*/
         },
         templateUrl: 'app/partials/page.html',
         link: function postLink(scope, iElement, iAttrs) {
@@ -684,14 +769,14 @@ commonDirective.directive('edDictRadio', function ($http, $timeout, ShareService
             ngModel: '='
         },
         link: function postLink(scope, iElement, iAttrs) {
-            scope.$watch('ngModel', function(value) {
-                if(value != undefined) {
-                    $timeout(function() {
-                        iElement.find(':radio[value=' + value +']').iCheck('check');
+            scope.$watch('ngModel', function (value) {
+                if (value != undefined) {
+                    $timeout(function () {
+                        iElement.find(':radio[value=' + value + ']').iCheck('check');
                     })
                 }
             });
-            var setRadioHtml = function(options) {
+            var setRadioHtml = function (options) {
                 var radio = "";
                 angular.forEach(options, function (option, key) {
                     radio += '<label><input type="radio" name="' + iAttrs.name + '" value="' + option.id + '"';
@@ -739,7 +824,7 @@ commonDirective.directive('edDictRadio', function ($http, $timeout, ShareService
     };
 });
 
-commonDirective.directive('edDictCheckbox', function ($http,$timeout, ShareService, $translate) {
+commonDirective.directive('edDictCheckbox', function ($http, $timeout, ShareService, $translate) {
     return {
         restrict: 'A',
         scope: {
@@ -747,16 +832,16 @@ commonDirective.directive('edDictCheckbox', function ($http,$timeout, ShareServi
             ngModel: '='
         },
         link: function postLink(scope, iElement, iAttrs) {
-            scope.$watch('ngModel', function(value) {
-                if(value) {
-                    _.each(value, function(v, i) {
-                        $timeout(function() {
-                            iElement.find(':checkbox[value=' + v +']').iCheck('check');
+            scope.$watch('ngModel', function (value) {
+                if (value) {
+                    _.each(value, function (v, i) {
+                        $timeout(function () {
+                            iElement.find(':checkbox[value=' + v + ']').iCheck('check');
                         });
                     });
                 }
             });
-            var setCheckboxHtml = function(options) {
+            var setCheckboxHtml = function (options) {
                 var checkbox = "";
                 angular.forEach(options, function (option, key) {
                     checkbox += '<label><input type="checkbox" name="' + iAttrs.name + '" value="' + option.id + '"';
@@ -770,21 +855,21 @@ commonDirective.directive('edDictCheckbox', function ($http,$timeout, ShareServi
                     checkboxClass: 'icheckbox_minimal-green',
                     radioClass: 'iradio_minimal-green'
                 });
-                iElement.find(':checkbox').on('ifChecked', function (event) {
+                iElement.find(':checkbox').on('ifChecked',function (event) {
                     scope.$apply(function () {
                         var value = $(event.target).attr('value');
                         scope.ngModel.push(value);
                     });
                 }).on('ifUnchecked', function (event) {
-                    scope.$apply(function () {
-                        var value = $(event.target).attr('value');
-                        angular.forEach(scope.ngModel, function (v, i) {
-                            if (angular.equals(value, v)) {
-                                scope.ngModel.splice(i, 1);
-                            }
+                        scope.$apply(function () {
+                            var value = $(event.target).attr('value');
+                            angular.forEach(scope.ngModel, function (v, i) {
+                                if (angular.equals(value, v)) {
+                                    scope.ngModel.splice(i, 1);
+                                }
+                            });
                         });
                     });
-                });
             }
             var key = "dict_" + scope.parentCode;
             if (ShareService[key]) {
@@ -817,7 +902,7 @@ commonDirective.directive('edPermisson', function ($rootScope, $timeout) {
     return {
         restrict: 'A',
         link: function postLink(scope, iElement, iAttrs) {
-            $rootScope.$watch("loginUser", function(value) {
+            $rootScope.$watch("loginUser", function (value) {
                 if (value) {
                     var perm = iAttrs.perm;
                     if (!_.contains($rootScope.loginUser.permissions, perm)) {

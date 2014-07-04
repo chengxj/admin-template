@@ -28,9 +28,9 @@
             <!--查询-->
             <div class="row query">
                 <div class="col-md-12">
-                    <div class="title">{{'label.common.op.enquiry' | translate}}
-                    </div>
-                    <form role="form" class="form-horizontal">
+                    <form role="form" class="form-horizontal" ed-form-toggle minus="true">
+                        <div class="title">{{'label.common.op.enquiry' | translate}}
+                        </div>
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -41,7 +41,7 @@
 
                                         <div class="col-md-9">
                                             <input type="text"
-                                                   class="form-control"
+                                                   class="form-control input-sm"
                                                    id="orderNo">
                                         </div>
                                     </div>
@@ -53,7 +53,7 @@
                                         </label>
 
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" id="safeNo">
+                                            <input type="text" class="form-control input-sm" id="safeNo">
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +62,33 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">
-                                            {{'label.order.task.state' | translate}}
+                                            {{'label.customer.customerName' | translate}}
+                                        </label>
+
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="customerName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">
+                                            {{'label.customer.idCardNo' | translate}}
+                                        </label>
+
+                                        <div class="col-md-9">
+                                            <input type="text"
+                                                   class="form-control input-sm"
+                                                   id="idCardNo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">
+                                            {{'label.order.state' | translate}}
                                         </label>
 
                                         <div class="col-md-9">
@@ -73,7 +99,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">
-                                            {{'label.order.task.type' | translate}}
+                                            {{'label.order.type' | translate}}
                                         </label>
 
                                         <div class="col-md-9">
@@ -86,13 +112,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">
-                                            {{'label.order.task.allocationTime' | translate}}
+                                            {{'label.order.orderTime' | translate}}
                                         </label>
 
                                         <div class="col-md-9">
                                             <div class="btn btn-default" ed-date-range start-date="startDate" end-date="endDate">
                                                 <i class="fa fa-calendar"></i>
-                                                <span>{{startDate}} - {{endDate}}</span> <b class="caret"></b>
+                                                <span>{{startDate | dateformat}} - {{endDate | dateformat}}</span> <b class="caret"></b>
                                             </div>
                                         </div>
                                     </div>
@@ -113,27 +139,11 @@
                 <!--右键菜单开始-->
                 <div id="context-menu">
                     <ul class="dropdown-menu dropdown-arrow-left" role="menu">
-                        <li ed-permisson perm="sys:role:**:delete">
-                            <a href="javascript:;"
-                               model-array="selectOrders" ed-delete-all
-                               click-fun="remove(role)" success-fun="reload()" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-trash-o"></i>
-                                {{'label.common.op.delete' | translate}}
-                            </a>
-                        </li>
                         <li>
-                            <a href="#/sys/role/edit/{{role.roleId}}"
-                               ng-hide="selectOrders.length != 1"
-                               ed-permisson perm="sys:role:**:update">
-                                <i class="fa fa-edit"></i>
-                                {{'label.common.op.edit' | translate}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/sys/role/permission/{{role.roleId}}"
-                               ng-hide="selectOrders.length != 1" ed-permisson perm="sys:menu:**:read">
-                                <i class="fa fa-lock"></i>
-                                {{'label.sys.role.permission' | translate}}
+                            <a href="#/order/view/{{order.orderId}}"
+                               ng-hide="selectOrders.length != 1">
+                                <i class="fa fa-info"></i>
+                                {{'label.common.op.view' | translate}}
                             </a>
                         </li>
                     </ul>
@@ -143,70 +153,10 @@
                 <div class="table-tools">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
-                            <a class="btn btn-blue" href="#/sys/role/add" ed-tooltip
-                               data-original-title="{{'label.common.op.enquiry' | translate}}">
-                                <i class="fa fa-search"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="任务分配" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-sitemap"></i>
-                            </a>
 
                             <a class="btn btn-blue" type="button" href="#/order/view/{{order.orderId}}" ed-tooltip
-                               data-original-title="出库" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-info"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="出库" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-folder-open-o"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="分配押运员" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-sitemap"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="押运员签收" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-tasks"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="押运" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-truck"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="抵达现场" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-flag-o"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="客户签收" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-exchange"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="使用完毕" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-eye"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="移交" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-exchange"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="押运员签收" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-tasks"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="押运" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-truck"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="仓管员签收" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-flag-o"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="入库" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-folder-o"></i>
-                            </a>
-                            <a class="btn btn-primary" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="完成" ng-hide="selectOrders.length == 0">
-                                <i class="fa fa-lock"></i>
+                               data-original-title="label.common.op.view" ng-hide="selectOrders.length == 0">
+                                <i class="fa fa-info-circle"></i>
                             </a>
                         </div>
 
@@ -214,11 +164,6 @@
                             <div ed-simple-page page-size="10"
                                  pagination="pagination" query-param="queryParam" query-url="order/pagination"
                                  share-key="RoleList" block-el=".panel-body">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                <input type="text" class="form-control" placeholder="{{'query.sys.role.simple.rolename' | translate}}"
-                                       ng-model="queryParam.roleName_cn" ng-keydown="enterQueryValue($event)">
                             </div>
                         </div>
 
@@ -236,22 +181,22 @@
                                 {{'label.order.orderNo' | translate}}
                             </th>
                             <th>
-                                {{'label.customer.idCardNo' | translate}}
-                            </th>
-                            <th>
                                 {{'label.customer.customerName' | translate}}
                             </th>
                             <th>
                                 {{'label.customer.mobileNo' | translate}}
                             </th>
                             <th>
-                                {{'label.customer.address' | translate}}
-                            </th>
-                            <th>
                                 {{'label.mobilesafe.safeNo' | translate}}
                             </th>
                             <th>
                                 {{'label.order.state' | translate}}
+                            </th>
+                            <th>
+                                {{'label.order.type' | translate}}
+                            </th>
+                            <th>
+                                {{'label.order.orderTime' | translate}}
                             </th>
                         </tr>
                         </thead>
@@ -263,12 +208,12 @@
                                        model-array="selectOrders" ed-checkbox/>
                             </td>
                             <td>{{order.orderNo}}</td>
-                            <td>{{order.idCardNo}}</td>
                             <td>{{order.customerName}}</td>
                             <td>{{order.mobileNo}}</td>
-                            <td>{{order.address}}</td>
                             <td>{{order.safeNo}}</td>
                             <td>{{order.state}}</td>
+                            <td>{{order.type}}</td>
+                            <td>2014-07-01 14:30:00</td>
                         </tr>
                         </tbody>
                     </table>

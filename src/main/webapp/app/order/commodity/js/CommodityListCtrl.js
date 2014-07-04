@@ -1,6 +1,8 @@
 function CommodityListCtrl($scope, MessageService) {
 
     /*UI Demo*/
+    $scope.states = [{id: "1", text: "A"},{id: "2", text: "B"}
+        ,{id: "3", text: "C"}]
     $scope.pagination = {"records": [
         {"createdTime": 1403066374000, "commodityId": 762, "commodityName": "A，100元/月，50元/次，5次/月", "safeModel" : "A", "monthlyFee": "100", "escortFee": "50", "monthlyFreeEscort": "1","updatedTime": 1403929798000},
         {"createdTime": 1403066374000, "commodityId": 762, "commodityName": "B，200元/月，50元/次，5次/月", "safeModel" : "B", "monthlyFee": "200", "escortFee": "50", "monthlyFreeEscort": "2","updatedTime": 1403929798000},

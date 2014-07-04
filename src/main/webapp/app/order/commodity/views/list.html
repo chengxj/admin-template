@@ -60,7 +60,7 @@
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectCommodities.length == 0">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/order/commodity/edit/{{commodity.commodityId}}" ed-tooltip
+                            <a class="btn btn-green" href="#/order/commodity/edit/{{commodity.commodityId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectCommodities.length != 1">
                                 <i class="fa fa-edit"></i>
                             </a>
@@ -70,6 +70,11 @@
                             <div ed-simple-page page-size="10"
                                  pagination="pagination" query-param="queryParam" query-url="order/commodity/pagination"
                                  share-key="RoleList" block-el=".panel-body">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input class="form-control select2" placeholder="{{'label.order.commodity.safeModel' | translate}}"
+                                       name="state" ng-model="queryParam.state" ed-select2 options="states">
                             </div>
 
                         </div>
