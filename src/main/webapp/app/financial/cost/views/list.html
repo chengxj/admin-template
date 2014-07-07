@@ -1,0 +1,165 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.financial.cost' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.financial.cost' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.financial.cost.list' | translate}}
+                <div class="pull-right">
+                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                       reload-fun="reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="panel-body">
+                <!--查询-->
+                <div class="row query">
+                    <div class="col-md-12">
+                        <form role="form" class="form-horizontal" ed-form-toggle minus="true">
+                            <div class="title">{{'label.common.op.enquiry' | translate}}
+                            </div>
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.customer.customerName' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input type="text"
+                                                       class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.customer.idCardNo' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.financial.cost.type' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input class="form-control select2" name="state" ng-model="user.state" ed-select2 options="types">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.financial.cost.state' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input class="form-control select2" name="state" ng-model="user.state" ed-select2 options="states">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-4 control-label">
+                                            {{'label.financial.cost.costTime' | translate}}
+                                        </label>
+
+                                        <div class="col-md-8">
+                                            <div class="btn btn-default" ed-date-range start-date="startDate" end-date="endDate">
+                                                <i class="fa fa-calendar"></i>
+                                                <span>{{startDate | dateformat}} - {{endDate | dateformat}}</span> <b class="caret"></b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-default btn-sm pull-right"><i class="fa fa-undo"></i> {{'label.common.op.cancel' | translate}}</button>
+                                        <label class="blank5 pull-right"></label>
+                                        <button class="btn btn-blue btn-sm pull-right"><i class="fa fa-search"></i> {{'label.common.op.enquiry' | translate}}</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+                <!--.查询-->
+
+                <!--工具栏开始-->
+                <div class="table-tools">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                        </div>
+
+                        <div class="col-md-8 col-sm-12">
+                            <div ed-simple-page page-size="10"
+                                 pagination="pagination" query-param="queryParam" query-url="cost/pagination"
+                                 share-key="RoleList" block-el=".panel-body">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            {{'label.customer.idCardNo' | translate}}
+                        </th>
+                        <th>
+                            {{'label.customer.customerName' | translate}}
+                        </th>
+                        <th>
+                            {{'label.mobilesafe.safeNo' | translate}}
+                        </th>
+                        <th>
+                            {{'label.financial.cost.cost' | translate}}
+                        </th>
+                        <th>
+                            {{'label.financial.cost.costTime' | translate}}
+                        </th>
+                        <th>
+                            {{'label.financial.cost.type' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="cost in pagination.records">
+                        <td>{{cost.idCardNo}}</td>
+                        <td>{{cost.customerName}}</td>
+                        <td>{{cost.safeNo}}</td>
+                        <td>{{cost.cost | number:2}}</td>
+                        <td>{{cost.costTime | datetimeformat}}</td>
+                        <td>{{cost.type}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

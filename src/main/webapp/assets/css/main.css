@@ -210,7 +210,7 @@ label {
 }
 
 #sidebar {
-  background: #304269;
+  background: #ffffff;
   position: absolute;
   width: 280px;
   bottom: 0;
@@ -236,7 +236,7 @@ label {
 /* ------------------ 5. SIDEBAR ------------------ */
 /* = SIDEBAR HEADER = */
 .sidebar-header {
-  background: #283758;
+  background: #5aafef;
   overflow: hidden;
   height: 70px;
   line-height: 70px;
@@ -271,7 +271,7 @@ label {
   line-height: 42px;
 }
 .sidebar-group li.sidebar-group-header {
-  color: #627cb7;
+  color: red;
   font-family: "Montserrat", sans-serif;
   text-indent: 20px;
 }
@@ -279,7 +279,7 @@ label {
   font-size: 15px;
   font-weight: 400;
   display: block;
-  color: #b2bfdc;
+  color: #333;
   padding: 0 20px;
 }
 .sidebar-group li a i {
@@ -287,10 +287,10 @@ label {
   margin-right: 15px;
 }
 .sidebar-group li a:hover, .sidebar-group li a:active {
-  background: #283758;
+  background: #b2bfdc;
   box-shadow: inset 3px 0 0 #5edb99;
   text-decoration: none;
-  color: white;
+  color: #ffffff;
 }
 .sidebar-group li a:focus {
   text-decoration: none;
@@ -298,11 +298,11 @@ label {
 }
 .sidebar-group li.active > a {
   color: white;
-  background: #283758;
+  background: #b2bfdc;
   box-shadow: inset 3px 0 0 #5edb99;
 }
 .sidebar-group li .sidebar-link-addon {
-  color: white;
+  color: #333;
   position: absolute;
   right: 20px;
   top: 0;
@@ -318,12 +318,17 @@ label {
   -moz-transform: rotate(-45deg);
   -ms-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
+    color:#ffffff;
+}
+
+.sidebar-group li.has-submenu:hover .sidebar-link-addon {
+    color:#ffffff;
 }
 
 /* === SIDEBAR NAVIGATION SUBMENU === */
 .sidebar-submenu {
   list-style: none;
-  background: #283758;
+  background: #b2bfdc;
   padding: 0;
   height: 0;
   display: none;
@@ -331,6 +336,10 @@ label {
 }
 .sidebar-submenu li {
   text-indent: 20px;
+}
+.sidebar-submenu li a {
+    text-indent: 20px;
+    color: #ffffff;
 }
 .sidebar-submenu li a:hover {
   background: #253351;

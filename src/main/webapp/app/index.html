@@ -53,8 +53,7 @@
         <li ng-class="menu.class" ng-repeat="menu in leftMenus">
             <a href="{{menu.menuPath}}"><i class="fa {{menu.icon}}"></i> <span translate>{{menu.menuName}}</span></a>
             <div class="sidebar-link-addon" ng-hide="menu.childMenus.length == 0">
-                <span
-                        class="badge bg-red">{{menu.childMenus.length}}</span><i class="fa fa-plus"></i></div>
+                <i class="fa fa-plus"></i></div>
             <ul class="sidebar-submenu">
                 <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a></li>
             </ul>
