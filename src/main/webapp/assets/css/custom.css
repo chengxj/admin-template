@@ -19,6 +19,8 @@
 .block-heading {
     /*font-weight: bold;*/
     /*font-family: 'Oswald';*/
+    font-size: 1.3em;
+    margin-left: 15px;
     margin-bottom: 15px;
     padding-bottom: 10px;
     border-bottom: 1px dashed #e5e5e5;

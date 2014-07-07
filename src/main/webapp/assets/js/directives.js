@@ -31,7 +31,7 @@ commonDirective.directive('edFormToggle', function () {
         link: function postLink(scope, iElement, iAttrs) {
             if (scope.minus == 'true') {
                 iElement.addClass("form-minus");
-                iElement.find('.title').prepend('<i class="fa fa-caret-right"></i><label class="blank5"></label>');
+                iElement.find('.title').prepend('<i class="fa fa-caret-right"></i><label class="blank5">&nbsp;</label>');
                 iElement.find('.title').toggle(function () {
                     iElement.find('.title').find('i').removeClass("fa-caret-right").addClass("fa-caret-down");
                     iElement.removeClass("form-minus");
@@ -41,7 +41,7 @@ commonDirective.directive('edFormToggle', function () {
                 });
             } else {
                 iElement.removeClass("form-minus");
-                iElement.find('.title').prepend('<i class="fa fa-caret-down"></i><label class="blank5"></label>');
+                iElement.find('.title').prepend('<i class="fa fa-caret-down"></i><label class="blank5">&nbsp;</label>');
                 iElement.find('.title').toggle(function () {
                     iElement.find('.title').find('i').removeClass("fa-caret-down").addClass("fa-caret-right");
                     iElement.addClass("form-minus");

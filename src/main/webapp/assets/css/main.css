@@ -1,26 +1,5 @@
 @charset "UTF-8";
-/* TEMPLATE: Saltkin Responsive Admin Template
- * AUTHOR: Karlo Mikuš
- * www.karlomikus.com
- *
- * Table of contents:
- * -----------------------
- * 1. Default css styles
- * 2. Typography
- * 3. Forms and input
- * 4. Layout
- * 5. Sidebar
- * 6. Compact sidebar
- * 7. Right hand sidebar
- * 8. Boxed layout
- * 9. Header
- * 10. Bootstrap overrides
- * 11. Buttons
- * 12. Components
- * 13. Login page
- * 14. Error page
- * 15. Responsive styles
- */
+
 /* ------------------ 1. STYLES ------------------ */
 body {
   background: #e7eff7;
@@ -767,9 +746,8 @@ label {
 }
 
 /* = Dropdowns = */
-/* = Dropdowns = */
 .dropdown-arrow:before {
-    border-bottom: 8px solid #304269;
+    border-bottom: 8px solid #ffffff;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     content: "";
@@ -780,7 +758,7 @@ label {
 }
 
 .dropdown-arrow-left:before {
-    border-bottom: 8px solid #304269;
+    border-bottom: 8px solid #ffffff;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     content: "";
@@ -788,24 +766,6 @@ label {
     left: 5px;
     position: absolute;
     top: -7px;
-}
-
-.dropdown-menu {
-    border-radius: 0;
-    border: 0;
-    background: #283758;
-    margin: 0;
-}
-.dropdown-menu > li > a {
-    color: #b2bfdc;
-    padding: 5px 20px;
-}
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:active, .dropdown-menu > li > a:focus {
-    color: white;
-    background: #222e4a;
-}
-.dropdown-menu .divider {
-    background-color: #222e4a;
 }
 
 .bootstrap-datetimepicker-widget.dropdown-menu {
@@ -887,6 +847,7 @@ label {
     color: #333;
     height: 20px;
     width: 30px;
+    margin-bottom: -5px;
 }
 
 .pager li > a, .pager li > span {
