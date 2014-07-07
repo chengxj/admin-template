@@ -1,5 +1,8 @@
 package com.edgar.core.workflow;
 
+import lombok.Data;
+
+@Data
 public class ActivityImpl {
 
 	/**

@@ -24,7 +24,6 @@ import com.edgar.module.sys.repository.domain.SysRoute;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.service.PermissionService;
 import com.edgar.module.sys.service.SysMenuService;
-import com.edgar.module.sys.service.SysRoleService;
 import com.edgar.module.sys.service.SysRouteService;
 import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.view.AngularRoute;
@@ -45,9 +44,6 @@ public class IndexResource {
         @Autowired
         private SysMenuService sysMenuService;
 
-        @Autowired
-        private SysRoleService sysRoleService;
-        
         @Autowired
         private PermissionService permissionService;
         
