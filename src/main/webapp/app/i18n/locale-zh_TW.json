@@ -293,6 +293,7 @@
   "label.sys.route.name" : "路由名稱",
   "label.order.orderNo" : "訂單號",
   "Delete i18n" : "刪除i18n",
+  "help.common.delete.confirm" : "确认删除？",
   "header.sys.route.relate" : "關聯資源",
   "msg.delete.success" : "刪除成功",
   "header.sys.route.list" : "路由列表",

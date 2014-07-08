@@ -293,6 +293,7 @@
   "label.sys.route.name" : "Route Name",
   "label.order.orderNo" : "Order No.",
   "Delete i18n" : "Delete i18n",
+  "help.common.delete.confirm" : "Confirm Delete?",
   "header.sys.route.relate" : "Relate Resource",
   "msg.delete.success" : "Delete Success",
   "header.sys.route.list" : "Route List",

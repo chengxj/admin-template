@@ -211,7 +211,7 @@ commonDirective.directive('edEnsureUnique', ['$http', function ($http) {
  }
  *       success-fun :删除成功后调用的方法
  * */
-commonDirective.directive('edDelete', ['$http', 'MessageService', function ($http, MessageService) {
+commonDirective.directive('edDelete', function ($http, MessageService, $translate) {
     return {
         restrict: 'A',
         scope: {
@@ -219,24 +219,27 @@ commonDirective.directive('edDelete', ['$http', 'MessageService', function ($htt
             successFun: '&'
         },
         link: function (scope, elm, attrs, ctrl) {
-            elm.click(function () {
-                $.confirm({
-                    text: "确认删除?",
-                    confirm: function (button) {
-                        scope.clickFun()/*.$promise */
-                            .then(function () {
-                                MessageService.removeSuccess();
-                                scope.successFun();
-                            });
-                    },
-                    cancel: function (button) {
+            $translate(['help.common.delete.confirm']).then(function (translations) {
+                elm.click(function () {
+                    $.confirm({
+                        text: translations["help.common.delete.confirm"],
+                        confirm: function (button) {
+                            scope.clickFun()/*.$promise */
+                                .then(function () {
+                                    MessageService.removeSuccess();
+                                    scope.successFun();
+                                });
+                        },
+                        cancel: function (button) {
 
-                    }
+                        }
+                    });
                 });
-            });
+                });
+
         }
     };
-}]);
+});
 
 /*
  * ed-delete-all:批量删除按钮
@@ -248,7 +251,7 @@ commonDirective.directive('edDelete', ['$http', 'MessageService', function ($htt
  *       success-fun :删除成功后调用的方法
  *model-array: 需要删除的model
  * */
-commonDirective.directive('edDeleteAll', ['$q', 'MessageService', function ($q, MessageService) {
+commonDirective.directive('edDeleteAll', function ($q, MessageService, $translate) {
     return {
         restrict: 'A',
         scope: {
@@ -257,31 +260,34 @@ commonDirective.directive('edDeleteAll', ['$q', 'MessageService', function ($q, 
             modelArray: '='
         },
         link: function (scope, elm, attrs, ctrl) {
-            elm.click(function () {
-                $.confirm({
-                    text: "确认删除?",
-                    confirm: function (button) {
-                        var array = [];
-                        angular.forEach(scope.modelArray, function (v, i) {
-                            array.push(scope.clickFun({model: v}));
-                        });
-                        $q.all(array).then(function (value) {
-                            MessageService.removeSuccess();
-                            scope.modelArray = [];
-                            scope.successFun();
-                        }, function (value) {
-                            scope.modelArray = [];
-                            scope.successFun();
-                        });
-                    },
-                    cancel: function (button) {
+            $translate(['help.common.delete.confirm']).then(function (translations) {
+                elm.click(function () {
+                    $.confirm({
+                        text: translations["help.common.delete.confirm"],
+                        confirm: function (button) {
+                            var array = [];
+                            angular.forEach(scope.modelArray, function (v, i) {
+                                array.push(scope.clickFun({model: v}));
+                            });
+                            $q.all(array).then(function (value) {
+                                MessageService.removeSuccess();
+                                scope.modelArray = [];
+                                scope.successFun();
+                            }, function (value) {
+                                scope.modelArray = [];
+                                scope.successFun();
+                            });
+                        },
+                        cancel: function (button) {
 
-                    }
+                        }
+                    });
                 });
             });
+
         }
     };
-}]);
+});
 
 /*
  * ed-multi-select:多选的select
