@@ -1,0 +1,76 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.inventory.model' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/inventory/model/list">{{'title.inventory.model' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.inventory.model.edit' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.inventory.model.info' | translate}}
+            </header>
+            <div class="panel-body">
+                <form role="form" class="form-horizontal" name="form" novalidate>
+                    <div class="form-body">
+                        <div class="form-group"
+                             ng-class="{'has-error': form.safeModel.$dirty && form.safeModel.$invalid}">
+                            <label for="safeModel" class="col-md-3 control-label">{{'label.inventory.mobilesafe.safeModel' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="safeModel" name="safeModel"
+                                       ng-model="model.safeModel" ed-focus required ng-maxlength="32" >
+                                <span class='help-block'
+                                      ng-show="form.safeModel.$error.required && form.safeModel.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.safeModel.$error.maxlength && form.safeModel.$focused">{{'help.common.maxlength32' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': form.manufacturers.$dirty && form.manufacturers.$invalid}">
+                            <label class="col-md-3 control-label">{{'label.inventory.mobilesafe.manufacturers' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="manufacturers" name="manufacturers"
+                                       ng-model="model.manufacturers" ed-focus required ng-maxlength="32" >
+                                <span class='help-block'
+                                      ng-show="form.manufacturers.$error.required && form.manufacturers.$focused">{{'help.common.required' | translate}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button class="btn btn-blue"
+                                    type="button"
+                                    ng-disabled="form.$invalid || isUnchanged() || clickToken"
+                                    ng-click="save()">
+                                <i class="fa fa-check"></i>
+                                {{'label.common.op.save' | translate}}
+                            </button>
+                            <label class="blank5 pull-right"></label>
+                            <a class="btn btn-default" type="button"
+                               href="#/inventory/model/list">
+                                <i class="fa fa-undo"></i>
+                                {{'label.common.op.cancel' | translate}}
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

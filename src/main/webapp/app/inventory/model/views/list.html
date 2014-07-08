@@ -3,20 +3,20 @@
         <a href="javascript:;" id="toggle-menu">
             <i class="fa fa-reorder"></i>
         </a>
-        <span>{{'title.order.commodity' | translate}}</span>
+        <span>{{'title.inventory.model' | translate}}</span>
     </h4>
     <nav>
         <span class="fa fa-home"></span>
         <a href="javascript:;">{{'title.common.home' | translate}}</a>
         <span class="fa fa-angle-right"></span>
-        <a href="javascript:;">{{'title.order.commodity' | translate}}</a>
+        <a href="javascript:;">{{'title.inventory.model' | translate}}</a>
     </nav>
 </div>
 
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
-            <header class="panel-heading">{{'header.order.commodity.list' | translate}}
+            <header class="panel-heading">{{'header.inventory.model.list' | translate}}
                 <div class="pull-right">
                     <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
                        reload-fun="reload()">
@@ -30,15 +30,15 @@
                     <ul class="dropdown-menu dropdown-arrow-left" role="menu">
                         <li>
                             <a href="javascript:;"
-                               model-array="selectCommodities" ed-delete-all
-                               click-fun="remove(commodity)" success-fun="reload()" ng-hide="selectCommodities.length == 0">
+                               model-array="selectModels" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectModels.length == 0">
                                 <i class="fa fa-trash-o"></i>
                                 {{'label.common.op.delete' | translate }}
                             </a>
                         </li>
                         <li>
-                            <a href="#/order/commodity/edit/{{commodity.commodityId}}"
-                               ng-hide="selectCommodities.length != 1">
+                            <a href="#/inventory/model/edit/{{model.modelId}}"
+                               ng-hide="selectModels.length != 1">
                                 <i class="fa fa-edit"></i>
                                 {{'label.common.op.edit' | translate}}
                             </a>
@@ -50,36 +50,26 @@
                 <div class="table-tools">
                     <div class="row">
                         <div class="col-md-4 col-sm-12">
-                            <a class="btn btn-blue" href="#/order/commodity/add" ed-tooltip
-                               data-original-title="{{'label.order.commodity.add' | translate}}">
+                            <a class="btn btn-blue" href="#/inventory/model/add" ed-tooltip
+                               data-original-title="{{'label.order.model.add' | translate}}">
                                 <i class="fa fa-plus"></i>
                             </a>
                             <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
                                data-original-title="{{'label.common.op.delete' | translate}}"
-                               model-array="selectCommodities" ed-delete-all
-                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectCommodities.length == 0">
+                               model-array="selectModels" ed-delete-all
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectModels.length == 0">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <a class="btn btn-green" href="#/order/commodity/edit/{{commodity.commodityId}}" ed-tooltip
-                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectCommodities.length != 1">
+                            <a class="btn btn-green" href="#/inventory/model/edit/{{model.modelId}}" ed-tooltip
+                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectModels.length != 1">
                                 <i class="fa fa-edit"></i>
                             </a>
                         </div>
 
-                        <div class="col-md-4">
-                            <form class="form-inline">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                    <input class="form-control select2" placeholder="{{'label.order.commodity.safeModel' | translate}}"
-                                           name="state" ng-model="queryParam.state" ed-select2 options="states">
-                                </div>
-                            </form>
 
-                        </div>
-
-                        <div class="col-md-4 col-sm-12">
+                        <div class="col-md-8 col-sm-12">
                             <div ed-simple-page page-size="10"
-                                 pagination="pagination" query-param="queryParam" query-url="order/commodity/pagination"
+                                 pagination="pagination" query-param="queryParam" query-url="order/model/pagination"
                                  share-key="RoleList" block-el=".panel-body">
                             </div>
                         </div>
@@ -94,34 +84,22 @@
                             <input type="checkbox" ed-check-all/>
                         </th>
                         <th translate>
-                            label.order.commodity.commodityName
+                            label.inventory.mobilesafe.safeModel
                         </th>
                         <th translate>
-                            label.order.commodity.safeModel
-                        </th>
-                        <th translate>
-                            label.order.commodity.monthlyFee
-                        </th>
-                        <th translate>
-                            label.order.commodity.escortFee
-                        </th>
-                        <th translate>
-                            label.order.commodity.monthlyFreeEscort
+                            label.inventory.mobilesafe.manufacturers
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="commodity in pagination.records" data-toggle="context"
+                    <tr ng-repeat="model in pagination.records" data-toggle="context"
                         data-target="#context-menu">
                         <td>
-                            <input name="pk" type="checkbox" ng-model="commodity"
-                                   model-array="selectCommodities" ed-checkbox/>
+                            <input name="pk" type="checkbox" ng-model="model"
+                                   model-array="selectModels" ed-checkbox/>
                         </td>
-                        <td>{{commodity.commodityName}}</td>
-                        <td>{{commodity.safeModel}}</td>
-                        <td>{{commodity.monthlyFee}}</td>
-                        <td>{{commodity.escortFee}}</td>
-                        <td>{{commodity.monthlyFreeEscort}}</td>
+                        <td>{{model.safeModel}}</td>
+                        <td>{{model.manufacturers}}</td>
                     </tr>
                     </tbody>
                 </table>
