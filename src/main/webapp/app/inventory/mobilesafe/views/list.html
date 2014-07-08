@@ -1,9 +1,111 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.inventory.mobilesafe' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.inventory.mobilesafe' | translate}}</a>
+    </nav>
+</div>
 
-</body>
-</html>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.inventory.mobilesafe.list' | translate}}
+                <div class="pull-right">
+                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                       reload-fun="reload()">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </header>
+            <div class="panel-body">
+                <!--右键菜单开始-->
+                <div id="context-menu">
+                    <ul class="dropdown-menu dropdown-arrow-left" role="menu">
+                        <li>
+                            <a href="javascript:;"
+                               model-array="selectMobilesafes" ed-delete-all
+                               click-fun="remove(mobilesafe)" success-fun="reload()" ng-hide="selectMobilesafes.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                                {{'label.common.op.delete' | translate }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--右键菜单结束-->
+                <!--工具栏开始-->
+                <div class="table-tools">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <a class="btn btn-blue" href="#/inventory/mobilesafe/add" ed-tooltip
+                               data-original-title="{{'label.order.model.add' | translate}}">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
+                               data-original-title="{{'label.common.op.delete' | translate}}"
+                               model-array="selectMobilesafes" ed-delete-all
+                               click-fun="remove(mobilesafe)" success-fun="reload()" ng-hide="selectMobilesafes.length == 0">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </div>
+
+
+                        <div class="col-md-8 col-sm-12">
+                            <div ed-simple-page page-size="10"
+                                 pagination="pagination" query-param="queryParam" query-url="order/model/pagination"
+                                 share-key="RoleList" block-el=".panel-body">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="{{'label.mobilesafe.safeNo' | translate}}"
+                                       ng-model="queryParam.safeNo_cn" ng-keydown="enterQueryValue($event)">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr role="row">
+                        <th class="width20">
+                            <input type="checkbox" ed-check-all/>
+                        </th>
+                        <th translate>
+                            label.mobilesafe.safeNo
+                        </th>
+                        <th translate>
+                            label.inventory.mobilesafe.safeModel
+                        </th>
+                        <th translate>
+                            label.customer.customerName
+                        </th>
+                        <th translate>
+                            label.customer.idCardNo
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="mobilesafe in pagination.records" data-toggle="context"
+                        data-target="#context-menu">
+                        <td>
+                            <input name="pk" type="checkbox" ng-model="mobilesafe"
+                                   model-array="selectMobilesafes" ed-checkbox/>
+                        </td>
+                        <td>{{mobilesafe.safeNo}}</td>
+                        <td>{{mobilesafe.safeModel}}</td>
+                        <td>{{mobilesafe.customerName}}</td>
+                        <td>{{mobilesafe.idCardNo}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -11,16 +11,19 @@ function CancelAddCtrl($scope, MessageService, LocationTo) {
     };
 
     $scope.submitIdCardNo = function() {
-        var idCardNo = $scope.idCardNo;
-        /*UI Demo*/
-        $scope.idCardNoDisabled = true;
-        if (idCardNo === '123456') {
-            $scope.noCustomer = true;
-        } else {
-            $scope.existCustomer = true;
-            $scope.customer = {customerName : "UI Demo", mobileNo : "123456", address : "UI Demo Address"}
+        if ($scope.idCardNo) {
+            var idCardNo = $scope.idCardNo;
+            /*UI Demo*/
+            $scope.idCardNoDisabled = true;
+            if (idCardNo === '123456') {
+                $scope.noCustomer = true;
+            } else {
+                $scope.existCustomer = true;
+                $scope.customer = {customerName : "UI Demo", mobileNo : "123456", address : "UI Demo Address"}
+            }
+            /*.UI Demo*/
         }
-        /*.UI Demo*/
+
     }
 
     $scope.save = function () {
