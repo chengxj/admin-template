@@ -76,7 +76,7 @@ function RolePermissionCtrl($scope, RoleService, RouteService,ResourceService, P
     };
 
     $scope.saveResourcePermission = function () {
-        var resourceIds = _.pluck($scope.selectResources, "resourceIds");
+        var resourceIds = _.pluck($scope.selectResources, "resourceId");
         PermissionService.saveResourcePermission({roleId: $routeParams.roleId, resourceIds: resourceIds}, function () {
             MessageService.saveSuccess();
         }, function () {

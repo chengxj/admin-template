@@ -13,7 +13,7 @@ function HomeProfileCtrl($scope, UserService, MessageService, $routeParams, $tra
     $scope.saveProfile = function () {
         $scope.clickToken = true;
         UserService.updateProfile({userId: $routeParams.userId}, $scope.profile, function () {
-            $scope.clickToken = false;
+//            $scope.clickToken = false;
             moment.lang($scope.profile.language.toLowerCase());
             $translate.use($scope.profile.language);
             MessageService.saveSuccess();
@@ -23,6 +23,7 @@ function HomeProfileCtrl($scope, UserService, MessageService, $routeParams, $tra
     };
 
     $scope.savePassword = function () {
+        $scope.passwordToken = true;
         UserService.updatePassword({userId: $routeParams.userId}, $scope.password, function () {
 //            $scope.passwordToken = true;
             MessageService.saveSuccess();

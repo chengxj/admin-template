@@ -61,7 +61,7 @@ public class SysUserServiceImpl implements SysUserService {
                 PasswordHelper.encryptPassword(sysUser);
                 int result = sysUserDao.insert(sysUser);
                 insertSysUserRoles(sysUser);
-                saveDefaultProfile();
+                saveDefaultProfile(sysUser.getUserId());
                 return result;
         }
 
@@ -161,7 +161,7 @@ public class SysUserServiceImpl implements SysUserService {
         @Override
         public SysUserProfile getProfile(int userId) {
                 QueryExample example = QueryExample.newInstance();
-                example.equalsTo("userID", userId);
+                example.equalsTo("userId", userId);
                 return sysUserProfileDao.uniqueResult(example);
         }
 
@@ -175,10 +175,11 @@ public class SysUserServiceImpl implements SysUserService {
          * 
          * @return 如果保存成功，返回1
          */
-        private int saveDefaultProfile() {
+        private int saveDefaultProfile(int userId) {
                 SysUserProfile profile = new SysUserProfile();
                 profile.setLanguage(GlobalUtils.DEFAULT_PROFILE_LANG);
                 profile.setProfileId(IDUtils.getNextId());
+                profile.setUserId(userId);
                 return sysUserProfileDao.insert(profile);
         }
 
