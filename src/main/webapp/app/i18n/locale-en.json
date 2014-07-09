@@ -23,6 +23,7 @@
   "Update Job" : "Update Job",
   "Model Management" : "Model Management",
   "Query the items Of Dictory" : "Query the items Of Dictory",
+  "help.common.maxlength13" : "Please enter no more than 13 characters",
   "header.inventory.mobilesafe.list" : "Mobile Safe List",
   "i18n List" : "i18n List",
   "Task Handle" : "Task Handle",

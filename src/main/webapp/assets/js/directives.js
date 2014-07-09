@@ -371,6 +371,41 @@ commonDirective.directive('edTooltip', function () {
         }
     };
 });
+/*
+ * ed-icheck:美化checkbox和radio
+ * 用法:<a ed-tooltip data-original-title="删除"> </a>
+ * */
+commonDirective.directive('edIcheck', function ($timeout) {
+    return {
+        restrict: 'AE',
+        scope : {
+          ngModel : '=',
+          modelArray : 'modelArray'
+        },
+        link: function postLink(scope, iElement, iAttrs) {
+            $timeout(function () {
+                iElement.iCheck({
+                    checkboxClass: 'icheckbox_minimal-green',
+                    radioClass: 'iradio_minimal-green'
+                });
+                iElement.on('ifChecked', function (event) {
+                    scope.$apply(function () {
+                        scope.modelArray.push(scope.ngModel);
+                    });
+                });
+                iElement.on('ifUnchecked', function (event) {
+                    scope.$apply(function () {
+                        angular.forEach(scope.modelArray, function (v, i) {
+                            if (angular.equals(scope.ngModel, v)) {
+                                scope.modelArray.splice(i, 1);
+                            }
+                        });
+                    });
+                });
+            }, 100);
+        }
+    };
+});
 
 /*
  * ed-checkbox:列表的checkbox

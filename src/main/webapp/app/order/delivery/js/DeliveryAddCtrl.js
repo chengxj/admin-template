@@ -19,12 +19,16 @@ function DeliveryAddCtrl($scope, MessageService, LocationTo) {
                 $scope.noCustomer = true;
             } else {
                 $scope.existCustomer = true;
-                $scope.customer = {customerName : "UI Demo", mobileNo : "123456", address : "UI Demo Address"}
+                $scope.customer = {idCardNo : $scope.idCardNo ,customerName : "UI Demo", mobileNo : "123456", address : "UI Demo Address"}
             }
             /*.UI Demo*/
         }
 
     }
+
+    $scope.$watch("customer.address", function(value) {
+       console.log(value);
+    });
 
     $scope.save = function () {
         $scope.clickToken = true;

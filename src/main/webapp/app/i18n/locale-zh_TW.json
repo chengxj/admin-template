@@ -23,6 +23,7 @@
   "Update Job" : "更新作業",
   "Model Management" : "型號管理",
   "Query the items Of Dictory" : "查詢字典子項",
+  "help.common.maxlength13" : "請輸入長度不大於13的字符串",
   "header.inventory.mobilesafe.list" : "保管箱列表",
   "i18n List" : "i18n列表",
   "Task Handle" : "任務處理",

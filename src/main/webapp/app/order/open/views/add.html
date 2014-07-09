@@ -13,7 +13,7 @@
     </nav>
 </div>
 
-<div class="row">
+<div class="row" ng-hide="idCardNoDisabled">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -61,10 +61,11 @@
 <div class="row" ng-show="newCustomer">
     <div class="col-md-12">
         <div class="panel panel-default">
+            <header class="panel-heading">{{'header.customer.info' | translate}}
+            </header>
             <div class="panel-body">
                 <form role="form" class="form-horizontal" name="form" novalidate>
                     <div class="form-body">
-                        <h4 class="block-heading">{{'header.customer.info' | translate}}</h4>
                         <div class="form-group"
                              ng-class="{'has-error': form.customerName.$dirty && form.customerName.$invalid}">
                             <label for="customerName" class="col-md-3 control-label">{{'label.customer.customerName' | translate}}<span
@@ -112,49 +113,55 @@
                                       ng-show="form.address.$error.maxlength && form.address.$focused">{{'help.common.maxlength128' | translate}}</span>
                             </div>
                         </div>
-                        <!--选择商品-->
-                        <h4 class="block-heading">{{'label.order.shelectCommodity' | translate}}</h4>
-                        <div class="form-group">
 
-                            <div class="col-md-12">
-                                <table class="table table-condensed">
-                                    <thead>
-                                    <tr role="row">
-                                        <th translate>
-                                            label.order.commodity.commodityName
-                                        </th>
-                                        <th translate>
-                                            label.order.amount
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="commodity in commodities">
-                                        <td>{{commodity.commodityName}}</td>
-                                        <td>
-                                            <div class="col-md-3 input-group input-group-sm">
-                                                <input
-                                                        type="text"
-                                                        class="input-sm"
-                                                        value="0"
-                                                        name="demo0"
-                                                        data-bts-min="0"
-                                                        data-bts-max="100"
-                                                        data-bts-init-val=""
-                                                        data-bts-step-interval="100"
-                                                        data-bts-button-down-class="btn btn-violet"
-                                                        data-bts-button-up-class="btn btn-violet"
-                                                        ed-touch-spin>
-                                            </div>
-                                            </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                        <!--.选择商品-->
                     </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="newCustomer">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'label.order.shelectCommodity' | translate}}
+            </header>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr role="row">
+                        <th translate>
+                            label.order.commodity.commodityName
+                        </th>
+                        <th translate>
+                            label.order.amount
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="commodity in commodities">
+                        <td>{{commodity.commodityName}}</td>
+                        <td>
+                            <div class="col-md-3 input-group input-group-sm">
+                                <input
+                                        type="text"
+                                        class="input-sm"
+                                        value="0"
+                                        name="demo0"
+                                        data-bts-min="0"
+                                        data-bts-max="100"
+                                        data-bts-init-val=""
+                                        data-bts-step-interval="100"
+                                        data-bts-button-down-class="btn btn-violet"
+                                        data-bts-button-up-class="btn btn-violet"
+                                        ed-touch-spin>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <form role="form" class="form-horizontal" name="form" novalidate>
                     <div class="form-actions">
                         <div class="col-md-offset-3 col-md-9">
                             <button class="btn btn-blue"
@@ -178,19 +185,19 @@
     </div>
 </div>
 
-
 <div class="row" ng-show="existCustomer">
     <div class="col-md-12">
         <div class="panel panel-default">
+            <header class="panel-heading">{{'label.order.shelectCommodity' | translate}}
+            </header>
             <div class="panel-body">
                 <form role="form" class="form-horizontal" name="form" novalidate>
                     <div class="form-body">
                         <!--选择商品-->
-                        <h4 class="block-heading">{{'label.order.shelectCommodity' | translate}}</h4>
                         <div class="form-group">
 
                             <div class="col-md-12">
-                                <table class="table table-condensed">
+                                <table class="table table-striped table-bordered table-hover table-condensed">
                                     <thead>
                                     <tr role="row">
                                         <th translate>
@@ -249,13 +256,17 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="row" ng-show="existCustomer">
     <!--客户资料-->
     <div class="col-md-12">
         <div class="panel panel-default">
+            <header class="panel-heading">{{'header.customer.info' | translate}}
+            </header>
             <div class="panel-body">
                 <form role="form" class="form-horizontal">
                     <div class="form-body">
-                        <h4 class="block-heading">{{'header.customer.info' | translate}}</h4>
                         <div class="form-group">
                             <label class="col-md-3 control-label">{{'label.customer.customerName' | translate}}
                             </label>
@@ -280,45 +291,50 @@
                                 <p class="form-control-static">{{customer.address}}</p>
                             </div>
                         </div>
-                        <!--选择商品-->
-                        <h4 class="block-heading">{{'label.mobilesafe.list' | translate}}</h4>
-                        <div class="form-group">
-
-                            <div class="col-md-12">
-                                <table class="table table-condensed">
-                                    <thead>
-                                    <tr role="row">
-                                        <th translate>
-                                            label.mobilesafe.safeNo
-                                        </th>
-                                        <th translate>
-                                            label.mobilesafe.tariff
-                                        </th>
-                                        <th translate>
-                                            label.mobilesafe.purchaseTime
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="safe in mobilesafes">
-                                        <td>{{safe.safeNo}}</td>
-                                        <td>
-                                            {{safe.tariff}}
-                                        </td>
-                                        <td>
-                                            {{2014-06-01}}
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                        <!--.选择商品-->
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <!--.客户资料-->
+</div>
+
+
+<div class="row" ng-show="existCustomer">
+    <!--保管箱列表-->
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'label.mobilesafe.list' | translate}}
+            </header>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr role="row">
+                        <th translate>
+                            label.mobilesafe.safeNo
+                        </th>
+                        <th translate>
+                            label.mobilesafe.tariff
+                        </th>
+                        <th translate>
+                            label.mobilesafe.purchaseTime
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="safe in mobilesafes">
+                        <td>{{safe.safeNo}}</td>
+                        <td>
+                            {{safe.tariff}}
+                        </td>
+                        <td>
+                            {{2014-06-01}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--.保管箱列表-->
 </div>
