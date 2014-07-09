@@ -87,10 +87,15 @@
                 <div id="context-menu">
                     <ul class="dropdown-menu dropdown-arrow-left" role="menu">
                         <li>
-                            <a href="#/order/customer/edit/{{customer.customerId}}"
+                            <a href="#/customer/edit/{{customer.customerId}}"
+                                   ng-hide="selectCustomers.length != 1">
+                            <i class="fa fa-edit"></i>
+                            {{'label.common.op.edit' | translate}}
+                            </a>
+                            <a href="#/customer/view/{{customer.customerId}}"
                                ng-hide="selectCustomers.length != 1">
-                                <i class="fa fa-edit"></i>
-                                {{'label.common.op.edit' | translate}}
+                                <i class="fa fa-info-circle"></i>
+                                {{'label.common.op.view' | translate}}
                             </a>
                         </li>
                     </ul>
@@ -100,6 +105,10 @@
                 <div class="table-tools">
                     <div class="row">
                         <div class="col-md-4 col-sm-12">
+                            <a class="btn btn-blue" href="#/customer/view/{{customer.customerId}}" ed-tooltip
+                               data-original-title="{{'label.common.op.view' | translate}}" ng-hide="selectCustomers.length != 1">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
                             <a class="btn btn-green" href="#/customer/edit/{{customer.customerId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectCustomers.length != 1">
                                 <i class="fa fa-edit"></i>

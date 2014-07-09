@@ -21,6 +21,7 @@
   "Last 30 Days" : "最近30天",
   "Inventory Management" : "库存管理",
   "Update Job" : "更新作业",
+  "title.customer.view" : "查看客户",
   "Model Management" : "型号管理",
   "Query the items Of Dictory" : "查询字典子项",
   "help.common.maxlength13" : "请输入一个长度最多是13的字符串",

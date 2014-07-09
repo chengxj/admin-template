@@ -102,24 +102,13 @@
         <!-- /Page title and breadcrumb navigation -->
         <!-- Header navigation / icons -->
         <ul class="header-nav navbar-right">
-        <!-- Messages -->
-        <li class="dropdown">
-            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-briefcase"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript:;"><i class="fa fa-link"></i>  {{'label.index.account.new' | translate}}</a></li>
-                <li><a href="javascript:;"><i class="fa fa-truck"></i>  {{'label.index.delivery' | translate}}</a></li>
-                <li class="divider"></li>
-                <li><a href="javascript:;"><i class="fa fa-unlink"></i>    {{'label.index.account.cancel' | translate}}</a></li>
-            </ul>
-        </li>
-        <!-- /Messages -->
             <!-- Messages -->
             <li class="dropdown">
                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-envelope-o"></span></a>
                 <span class="badge">3</span>
                 <div class="dropdown-menu panel panel-messages dropdown-arrow pull-right">
                     <div class="panel-heading">MESSAGES <span class="badge pull-right bg-orange">NEW</span></div>
-                    <div class="panel-body scrollbox">
+                    <!--<div class="panel-body scrollbox">
                         <ul class="chat">
                             <li class="left clearfix">
                                 <a href="javascript:;">
@@ -194,7 +183,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </div>-->
                     <footer class="panel-footer text-center">
                         <a href="javascript:;">View all messages</a>
                     </footer>
@@ -208,15 +197,15 @@
                 <div class="dropdown-menu panel panel-notifications dropdown-arrow pull-right">
                     <div class="panel-heading">NOTIFICATIONS</div>
                     <div class="panel-body scrollbox">
-                        <ul>
+                        <!--<ul>
                             <li>
                                 <a href="javascript:;">
                                     <div class="clearfix">
 														<span class="pull-left">
 															<i class="typcn typcn-heart bg-red"></i>
-															New likes
+															New Customer
 														</span>
-                                        <span class="badge badge-gray pull-right">22</span>
+                                        <span class="badge badge-gray pull-right">2</span>
                                     </div>
                                 </a>
                             </li>
@@ -225,7 +214,7 @@
                                     <div class="clearfix">
 														<span class="pull-left">
 															<i class="typcn typcn-user bg-blue"></i>
-															New users
+															New Order
 														</span>
                                         <span class="badge badge-gray pull-right">6</span>
                                     </div>
@@ -236,7 +225,7 @@
                                     <div class="clearfix">
 														<span class="pull-left">
 															<i class="typcn typcn-image bg-green"></i>
-															New pictures
+
 														</span>
                                         <span class="badge badge-gray pull-right">125</span>
                                     </div>
@@ -275,7 +264,7 @@
                                     </div>
                                 </a>
                             </li>
-                        </ul>
+                        </ul>-->
                     </div>
                 </div>
             </li>
@@ -283,8 +272,10 @@
 
             <!-- Profile -->
             <li class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">{{loginUser.fullName}}</a>
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span></a>
                 <ul class="dropdown-menu dropdown-arrow pull-right">
+                    <li><a class="text-violet">{{loginUser.fullName}}</a></li>
+                    <li class="divider"></li>
                     <li><a href="#/home/profile/{{loginUser.userId}}"><span class="fa fa-edit"></span> {{'label.index.user.profile.edit' | translate}}</a></li>
                     <li class="divider"></li>
                     <li><a href="javascript:;" ng-click="logout()"><span class="fa fa-sign-out"></span> {{'label.index.user.logout' | translate}}</a></li>

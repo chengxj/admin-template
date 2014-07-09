@@ -26,9 +26,6 @@ function DeliveryAddCtrl($scope, MessageService, LocationTo) {
 
     }
 
-    $scope.$watch("customer.address", function(value) {
-       console.log(value);
-    });
 
     $scope.save = function () {
         $scope.clickToken = true;

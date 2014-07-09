@@ -1,9 +1,235 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+<div class="page-title" ed-page-title>
+    <h4>
+        <a href="javascript:;" id="toggle-menu">
+            <i class="fa fa-reorder"></i>
+        </a>
+        <span>{{'title.customer' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/customer/list">{{'title.customer' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.customer.view' | translate}}</a>
+    </nav>
+</div>
 
-</body>
-</html>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.customer.info' | translate}}
+            </header>
+            <div class="panel-body">
+                <form role="form" class="form-horizontal" name="form" novalidate>
+                    <div class="form-body">
+                        <div class="form-group"
+                             ng-class="{'has-error': form.customerName.$dirty && form.customerName.$invalid}">
+                            <label class="col-md-3 control-label">{{'label.customer.idCardNo' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{customer.idCardNo}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.customerName.$dirty && form.customerName.$invalid}">
+                            <label class="col-md-3 control-label">{{'label.customer.customerName' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{customer.customerName}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.mobileNo.$dirty && form.mobileNo.$invalid}">
+                            <label class="col-md-3 control-label">{{'label.customer.mobileNo' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{customer.mobileNo}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.address.$dirty && form.address.$invalid}">
+                            <label class="col-md-3 control-label">{{'label.customer.address' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-8">
+                                <p class="form-control-static">{{customer.address}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!--保管箱列表-->
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'label.mobilesafe.list' | translate}}
+            </header>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr role="row">
+                        <th translate>
+                            label.mobilesafe.safeNo
+                        </th>
+                        <th translate>
+                            label.mobilesafe.tariff
+                        </th>
+                        <th translate>
+                            label.mobilesafe.purchaseTime
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="safe in mobilesafes">
+                        <td>{{safe.safeNo}}</td>
+                        <td>
+                            {{safe.tariff}}
+                        </td>
+                        <td>
+                            {{2014-06-01}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--.保管箱列表-->
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.financial.cost.list' | translate}}
+            </header>
+            <div class="panel-body">
+                <!--查询-->
+                <div class="row query">
+                    <div class="col-md-12">
+                        <form role="form" class="form-horizontal" ed-form-toggle minus="true">
+                            <div class="title">{{'label.common.op.enquiry' | translate}}
+                            </div>
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.financial.cost.type' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input class="form-control select2" name="state" ng-model="user.state" ed-select2 options="types">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.financial.cost.state' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input class="form-control select2" name="state" ng-model="user.state" ed-select2 options="states">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.mobilesafe.safeNo' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-4 control-label">
+                                            {{'label.financial.cost.costTime' | translate}}
+                                        </label>
+
+                                        <div class="col-md-8">
+                                            <div class="btn btn-default" ed-date-range start-date="startDate" end-date="endDate">
+                                                <i class="fa fa-calendar"></i>
+                                                <span>{{startDate | dateformat}} - {{endDate | dateformat}}</span> <b class="caret"></b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-default btn-sm pull-right"><i class="fa fa-undo"></i> {{'label.common.op.cancel' | translate}}</button>
+                                        <label class="blank5 pull-right"></label>
+                                        <button class="btn btn-blue btn-sm pull-right"><i class="fa fa-search"></i> {{'label.common.op.enquiry' | translate}}</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+                <!--.查询-->
+                <!--工具栏开始-->
+                <div class="table-tools">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                        </div>
+
+                        <div class="col-md-8 col-sm-12">
+                            <div ed-simple-page page-size="10"
+                                 pagination="pagination" query-param="queryParam" query-url="cost/pagination"
+                                 share-key="RoleList" block-el=".panel-body">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--工具栏结束-->
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr role="row">
+                        <th>
+                            {{'label.mobilesafe.safeNo' | translate}}
+                        </th>
+                        <th>
+                            {{'label.financial.cost.cost' | translate}}
+                        </th>
+                        <th>
+                            {{'label.financial.cost.costTime' | translate}}
+                        </th>
+                        <th>
+                            {{'label.financial.cost.type' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="cost in pagination.records">
+                        <td>{{cost.safeNo}}</td>
+                        <td>{{cost.cost | number:2}}</td>
+                        <td>{{cost.costTime | datetimeformat}}</td>
+                        <td>{{cost.type}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
