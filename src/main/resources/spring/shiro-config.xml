@@ -39,11 +39,14 @@
 		<property name="credentialsMatcher" ref="passwordMatcher" />
 	</bean>
 
-	<bean id="passwordMatcher" class="com.edgar.core.shiro.RetryLimitHashedCredentialsMatcher">
+	<bean id="passwordMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
 		<!-- <property name="cacheManager" ref="cacheManager" /> -->
 		<property name="hashAlgorithmName" value="MD5" />
 		<property name="hashIterations" value="1024" />
 		<property name="storedCredentialsHexEncoded" value="true" />
+	</bean>
+	
+	<bean class="com.edgar.core.shiro.RetryLimitService">
 		<property name="maxRetryCount" value="10" /> 
 	</bean>
 

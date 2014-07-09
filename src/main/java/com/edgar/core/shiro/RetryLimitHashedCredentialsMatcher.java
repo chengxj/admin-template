@@ -17,6 +17,7 @@ import com.edgar.core.cache.EhCacheWrapper;
  * @author Edgar Zhang
  * @version 1.0
  */
+@Deprecated
 public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher {
 
         private EhCacheWrapper<String, AtomicInteger> passwordRetryCache;
