@@ -1,6 +1,27 @@
 package com.edgar.core.workflow;
-public interface Activity {
 
-	public ProcessorContext execute(ProcessorContext context) throws Exception;
+import lombok.Data;
 
+@Data
+public class Activity {
+
+	/**
+	 * 唯一值
+	 */
+	private String code;
+	
+	/**
+	 * 名称
+	 */
+	private String name;
+	
+	/**
+	 * 流程类型：自动和手动
+	 */
+	private String type;
+	
+	/**
+	 * 流程的处理类
+	 */
+	private String handler;
 }

@@ -402,7 +402,7 @@
 				<version>${surefire.version}</version>
 				<configuration>
 					<argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
-					<skipTests>false</skipTests>
+					<skipTests>true</skipTests>
 					<forkMode>pertest</forkMode>
 				</configuration>
 			</plugin>

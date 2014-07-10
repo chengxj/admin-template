@@ -13,7 +13,7 @@ public class OrderWorkflowProcessor extends WorkflowProcessor {
 			Iterator<Activity> i = actlist.iterator();
 			while (i.hasNext()) {
 				Activity a = (Activity) i.next();
-				ctx = a.execute(ctx);
+//				ctx = a.execute(ctx);
 			}
 		}
 
