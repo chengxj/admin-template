@@ -66,6 +66,14 @@
             <div class="panel-body">
                 <form role="form" class="form-horizontal" name="form" novalidate>
                     <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{{'label.customer.idCardNo' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{idCardNo}}</p>
+                            </div>
+                        </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.customerName.$dirty && form.customerName.$invalid}">
                             <label for="customerName" class="col-md-3 control-label">{{'label.customer.customerName' | translate}}<span
@@ -79,6 +87,21 @@
                                       ng-show="form.customerName.$error.required && form.customerName.$focused">{{'help.common.required' | translate}}</span>
                                 <span class='help-block'
                                       ng-show="form.customerName.$error.maxlength && form.customerName.$focused">{{'help.common.maxlength64' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': form.email.$dirty && form.email.$invalid}">
+                            <label class="col-md-3 control-label">{{'label.sys.user.email' | translate}}
+                            <span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="email" id="email" name="email" class="form-control" ng-model="order.email"
+                                       ed-focus ng-maxlength="64">
+                                <span class='help-block'
+                                      ng-show="form.email.$error.email && form.email.$focused">{{'help.common.email' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.email.$error.maxlength && form.email.$focused">{{'help.common.maxlength64' | translate}}</span>
                             </div>
                         </div>
                         <div class="form-group"
@@ -273,6 +296,14 @@
 
                             <div class="col-md-5">
                                 <p class="form-control-static">{{customer.customerName}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{{'label.sys.user.email' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{customer.email}}</p>
                             </div>
                         </div>
                         <div class="form-group">

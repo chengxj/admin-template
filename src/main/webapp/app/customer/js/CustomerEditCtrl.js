@@ -4,7 +4,7 @@ function CustomerEditCtrl($scope, MessageService, LocationTo, $routeParams) {
     $scope.getCustomer = function () {
         /*UI Demo*/
 
-        $scope.customer = {"idCardNo": 1403066374000, "customerId": 762, "customerName": "张雨舟", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "服务中"};
+        $scope.customer = {"idCardNo": 1403066374000, "customerId": 762,email : "zyz@higheasyrd.com", "customerName": "张雨舟", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "服务中"};
         $scope.master = angular.copy($scope.customer);
         /*.UI Demo*/
     };

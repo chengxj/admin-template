@@ -7,7 +7,7 @@ function CustomerViewCtrl($scope, MessageService, LocationTo, $routeParams) {
         $scope.endDate = moment();
         $scope.types = [{id: "1", text: "月服务"},{id: "2", text: "押运费"}]
         $scope.states = [{id: "1", text: "已划扣"},{id: "2", text: "未划扣"}]
-        $scope.customer = {"idCardNo": 1403066374000, "customerId": 762, "customerName": "张雨舟", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "服务中"};
+        $scope.customer = {"idCardNo": 1403066374000, "customerId": 762,email : "zyz@higheasyrd.com", "customerName": "张雨舟", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "服务中"};
         $scope.master = angular.copy($scope.customer);
         $scope.mobilesafes = [
             {"createdTime": 1403066374000, "safeNo": 762, "tariff": "A，100元/月，50元/次，5次/月"},

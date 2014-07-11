@@ -23,8 +23,7 @@
             <div class="panel-body">
                 <form role="form" class="form-horizontal" name="form" novalidate>
                     <div class="form-body">
-                        <div class="form-group"
-                             ng-class="{'has-error': form.customerName.$dirty && form.customerName.$invalid}">
+                        <div class="form-group">
                             <label class="col-md-3 control-label">{{'label.customer.idCardNo' | translate}}
                             </label>
 
@@ -32,13 +31,20 @@
                                 <p class="form-control-static">{{customer.idCardNo}}</p>
                             </div>
                         </div>
-                        <div class="form-group"
-                             ng-class="{'has-error': form.customerName.$dirty && form.customerName.$invalid}">
+                        <div class="form-group">
                             <label class="col-md-3 control-label">{{'label.customer.customerName' | translate}}
                             </label>
 
                             <div class="col-md-5">
                                 <p class="form-control-static">{{customer.customerName}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{{'label.sys.user.email' | translate}}
+                            </label>
+
+                            <div class="col-md-5">
+                                <p class="form-control-static">{{customer.email}}</p>
                             </div>
                         </div>
                          <div class="form-group"
@@ -85,7 +91,7 @@
                             </button>
                             <label class="blank5 pull-right"></label>
                             <a class="btn btn-default" type="button"
-                               href="#/sys/commodity/list">
+                               href="#/customer/list">
                                 <i class="fa fa-undo"></i>
                                 {{'label.common.op.cancel' | translate}}
                             </a>

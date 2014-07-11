@@ -16,7 +16,7 @@ function OpenAddCtrl($scope, MessageService, LocationTo) {
             $scope.idCardNoDisabled = true;
             if (idCardNo === '123456') {
                 $scope.existCustomer = true;
-                $scope.customer = {customerName : "UI Demo", mobileNo : "123456", address : "UI Demo Address"}
+                $scope.customer = {email : "zyz@higheasyrd.com",customerName : "UI Demo", mobileNo : "123456", address : "UI Demo Address"}
             } else {
                 $scope.newCustomer = true;
             }

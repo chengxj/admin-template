@@ -1,10 +1,11 @@
 function CustomerListCtrl($scope, MessageService) {
 
     /*UI Demo*/
-    $scope.states = [{id: "1", text: "服务中"},{id: "2", text: "停止服务"}]
+    $scope.states = [{id: "1", text: "开户中"},{id: "2", text: "服务中"},{id: "3", text: "停止服务"}]
     $scope.pagination = {"records": [
-        {"idCardNo": 1403066374000, "customerId": 762, "customerName": "张雨舟", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "服务中"},
-        {"idCardNo": 1403066374000, "customerId": 762, "customerName": "潘龙宝", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "停止服务"}
+        {"idCardNo": 1403066374000, "customerId": 762, "customerName": "王志维",email : "wangzw@higheasyrd.com", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "开户中"},
+        {"idCardNo": 1403066374000, "customerId": 762, "customerName": "张雨舟",email : "zyz@higheasyrd.com", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "服务中"},
+        {"idCardNo": 1403066374000, "customerId": 762, "customerName": "潘龙宝",email : "plb@higheasyrd.com", "mobileNo" : "13457632334", "address": "武汉市东湖高新技术开发区关山大道1号", state : "停止服务"}
     ], "page": 1, "pageSize": 10, "totalRecords": 5, "totalPages": 1, "pageList": [1], "nextPage": 1, "prevPage": 1}
     /*.UI Demo*/
     $scope.queryParam = {};
