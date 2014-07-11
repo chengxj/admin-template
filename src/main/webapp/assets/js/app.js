@@ -145,7 +145,7 @@ angular
                         });
                         $routeProvider.when("/home/index", route.resolve('index', '/home'));
                         $routeProvider.when("/home/profile/:userId", route.resolve('profile', '/home'));
-                        $routeProvider.otherwise({redirectTo: '/home/index'});
+                        $routeProvider.otherwise({redirectTo: '/order/task/list'});
                         //设置Profile
                         var profile = data.user.profile;
                         $translateProvider.useStaticFilesLoader({

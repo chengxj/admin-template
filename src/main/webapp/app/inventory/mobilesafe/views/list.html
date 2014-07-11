@@ -25,6 +25,55 @@
                 </div>
             </header>
             <div class="panel-body">
+                <!--查询-->
+                <div class="row query">
+                    <div class="col-md-12">
+                        <form role="form" class="form-horizontal" ed-form-toggle minus="true">
+                            <div class="title">
+                                {{'label.common.op.enquiry' | translate}}
+                            </div>
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.inventory.mobilesafe.status' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input class="form-control select2" name="state" ng-model="user.state" ed-select2 options="states">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">
+                                                {{'label.mobilesafe.safeNo' | translate}}
+                                            </label>
+
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-default btn-sm pull-right"><i class="fa fa-undo"></i> {{'label.common.op.cancel' | translate}}</button>
+                                        <label class="blank5 pull-right"></label>
+                                        <button class="btn btn-blue btn-sm pull-right"><i class="fa fa-search"></i> {{'label.common.op.enquiry' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+                <!--.查询-->
                 <!--右键菜单开始-->
                 <div id="context-menu">
                     <ul class="dropdown-menu dropdown-arrow-left" role="menu">
@@ -34,6 +83,11 @@
                                click-fun="remove(mobilesafe)" success-fun="reload()" ng-hide="selectMobilesafes.length == 0">
                                 <i class="fa fa-trash-o"></i>
                                 {{'label.common.op.delete' | translate }}
+                            </a>
+                            <a href="#/inventory/mobilesafe/view/{{mobilesafe.mobilesafeId}}"
+                               model-array="selectMobilesafes" ng-hide="selectMobilesafes.length != 1">
+                                <i class="fa fa-trash-o"></i>
+                                {{'label.common.op.view' | translate }}
                             </a>
                         </li>
                     </ul>
@@ -53,6 +107,10 @@
                                click-fun="remove(mobilesafe)" success-fun="reload()" ng-hide="selectMobilesafes.length == 0">
                                 <i class="fa fa-trash-o"></i>
                             </a>
+                            <a class="btn btn-orange" type="button" href="#/inventory/mobilesafe/view/{{mobilesafe.mobilesafeId}}" ed-tooltip
+                               data-original-title="{{'label.common.op.view' | translate}}"ng-hide="selectMobilesafes.length != 1">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
                         </div>
 
 
@@ -60,11 +118,6 @@
                             <div ed-simple-page page-size="10"
                                  pagination="pagination" query-param="queryParam" query-url="order/model/pagination"
                                  share-key="RoleList" block-el=".panel-body">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                <input type="text" class="form-control" placeholder="{{'label.mobilesafe.safeNo' | translate}}"
-                                       ng-model="queryParam.safeNo_cn" ng-keydown="enterQueryValue($event)">
                             </div>
                         </div>
 
@@ -89,6 +142,9 @@
                         <th translate>
                             label.customer.idCardNo
                         </th>
+                        <th translate>
+                            label.inventory.mobilesafe.status
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -102,6 +158,7 @@
                         <td>{{mobilesafe.safeModel}}</td>
                         <td>{{mobilesafe.customerName}}</td>
                         <td>{{mobilesafe.idCardNo}}</td>
+                        <td>{{mobilesafe.state}}</td>
                     </tr>
                     </tbody>
                 </table>

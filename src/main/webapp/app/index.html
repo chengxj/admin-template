@@ -45,10 +45,10 @@
     <!-- Sidebar group -->
     <ul class="sidebar-group">
         <li class="sidebar-group-header">{{'label.index.menu.list' | translate}}</li>
-        <li>
+        <!--<li>
             <a href="index.html"><i class="fa fa-home"></i> <span>{{'title.common.home' | translate}}</span></a>
             <div class="sidebar-link-addon"><span class="badge bg-blue">We're coming soon</span></div>
-        </li>
+        </li>-->
 
         <li ng-class="menu.class" ng-repeat="menu in leftMenus">
             <a href="{{menu.menuPath}}"><i class="fa {{menu.icon}}"></i> <span translate>{{menu.menuName}}</span></a>
