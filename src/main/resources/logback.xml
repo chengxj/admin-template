@@ -53,7 +53,7 @@
 		</encoder>
 	</appender>
 
-	<root level="DEBUG">
+	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="INFO_LOG" />
 		<appender-ref ref="ERROR_LOG" />

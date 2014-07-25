@@ -26,7 +26,7 @@
         <activiti:taskListener event="create" delegateExpression="${assignmentListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="I_出库押运" name="I_出库押运">
+    <userTask id="D_出库押运" name="D_出库押运">
     	<extensionElements>
         <activiti:taskListener event="create" delegateExpression="${assignmentListener}"></activiti:taskListener>
       </extensionElements>
@@ -78,8 +78,8 @@
     </userTask>
     <sequenceFlow id="flow3" name="" sourceRef="M_任务分配" targetRef="I_出库"></sequenceFlow>
     <sequenceFlow id="flow4" name="" sourceRef="I_出库" targetRef="D_押运签收"></sequenceFlow>
-    <sequenceFlow id="flow5" name="" sourceRef="D_押运签收" targetRef="I_出库押运"></sequenceFlow>
-    <sequenceFlow id="flow6" name="" sourceRef="I_出库押运" targetRef="D_抵达现场"></sequenceFlow>
+    <sequenceFlow id="flow5" name="" sourceRef="D_押运签收" targetRef="D_出库押运"></sequenceFlow>
+    <sequenceFlow id="flow6" name="" sourceRef="D_出库押运" targetRef="D_抵达现场"></sequenceFlow>
     <sequenceFlow id="flow7" name="" sourceRef="D_抵达现场" targetRef="C_客户签收"></sequenceFlow>
     <sequenceFlow id="flow8" name="" sourceRef="C_客户签收" targetRef="C_使用完毕"></sequenceFlow>
     <sequenceFlow id="flow9" name="" sourceRef="C_使用完毕" targetRef="C_客户移交"></sequenceFlow>
@@ -110,7 +110,7 @@
       <bpmndi:BPMNShape bpmnElement="D_押运签收" id="BPMNShape_D_押运签收">
         <omgdc:Bounds height="55" width="105" x="560" y="190"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="I_出库押运" id="BPMNShape_I_出库押运">
+      <bpmndi:BPMNShape bpmnElement="D_出库押运" id="BPMNShape_D_出库押运">
         <omgdc:Bounds height="55" width="105" x="345" y="190"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="D_抵达现场" id="BPMNShape_D_抵达现场">

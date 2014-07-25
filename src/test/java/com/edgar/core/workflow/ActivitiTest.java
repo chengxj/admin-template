@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.persistence.entity.UserEntity;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.junit.Assert;
@@ -23,13 +26,25 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })
-@TransactionConfiguration(defaultRollback = true)
+@TransactionConfiguration(defaultRollback = false)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
 		TransactionalTestExecutionListener.class })
 public class ActivitiTest {
 
 	@Autowired
 	private WorkFlowService workFlowService;
+	
+	@Autowired
+	private ProcessEngine processEngine;
+	
+	@Test
+	public void testIdentity() {
+		User activitiUser = new UserEntity("Manager");
+		activitiUser.setFirstName("Edgar");
+		activitiUser.setLastName("Zhang");
+		activitiUser.setPassword("123456");
+		processEngine.getIdentityService().saveUser(activitiUser);
+	}
 
 	@Test
 	public void testDeploy() {
@@ -44,6 +59,8 @@ public class ActivitiTest {
 
 	@Test
 	public void test() {
+		
+		processEngine.getIdentityService().setAuthenticatedUserId("ddd");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderId", 1);
 		map.put("orderNo", 10);
@@ -57,15 +74,18 @@ public class ActivitiTest {
 		List<Task> tasks = workFlowService.getTaskService().createTaskQuery()
 				.taskAssignee("Manager").list();
 		Task task = tasks.get(0);
+		workFlowService.getTaskService().addComment(task.getId(), task.getProcessInstanceId(), "comment");
 		workFlowService.getTaskService().complete(task.getId());
 
 		// 出库
+		processEngine.getIdentityService().setAuthenticatedUserId("zzzz");
 		count = workFlowService.getTaskService().createTaskQuery()
 				.taskAssignee("Inventory").count();
 		Assert.assertEquals(1, count);
 		tasks = workFlowService.getTaskService().createTaskQuery()
 				.taskAssignee("Inventory").list();
 		task = tasks.get(0);
+		workFlowService.getTaskService().addComment(task.getId(), task.getProcessInstanceId(), "comment");
 		workFlowService.getTaskService().complete(task.getId());
 
 		// 押运员签收
@@ -78,6 +98,15 @@ public class ActivitiTest {
 		workFlowService.getTaskService().complete(task.getId());
 
 		// 出库押运
+		count = workFlowService.getTaskService().createTaskQuery()
+				.taskAssignee("Delivery").count();
+		Assert.assertEquals(1, count);
+		tasks = workFlowService.getTaskService().createTaskQuery()
+				.taskAssignee("Delivery").list();
+		task = tasks.get(0);
+		workFlowService.getTaskService().complete(task.getId());
+		
+		// 抵达现场
 		count = workFlowService.getTaskService().createTaskQuery()
 				.taskAssignee("Delivery").count();
 		Assert.assertEquals(1, count);

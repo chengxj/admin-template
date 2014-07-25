@@ -30,6 +30,8 @@ public class AssignmentListener implements TaskListener {
 
 	@Override
 	public void notify(DelegateTask delegateTask) {
+		System.out.println(delegateTask.getVariable("orderId"));
+		System.out.println(delegateTask.getExecution().getProcessBusinessKey());
 		if (StringUtils.startsWith(delegateTask.getTaskDefinitionKey(), "A_")) {
 			delegateTask.setAssignee("-1");
 			processEngine.getTaskService().complete(delegateTask.getId());
