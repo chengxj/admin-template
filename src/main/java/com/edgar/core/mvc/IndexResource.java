@@ -109,7 +109,7 @@ public class IndexResource {
                 for (Integer roleId : roleIds) {
                         List<SysRoleMenu> sysRoleMenus = permissionService.getMenu(roleId);
                         for (SysRoleMenu sysRoleMenu : sysRoleMenus) {
-                                // TODO 此处有性能还可以优惠
+                                // TODO 此处有性能还可以优化
                                 if (!menuMap.containsKey(sysRoleMenu.getMenuId())) {
                                         menuMap.put(sysRoleMenu.getMenuId(),
                                                         sysMenuService.get(sysRoleMenu.getMenuId()));

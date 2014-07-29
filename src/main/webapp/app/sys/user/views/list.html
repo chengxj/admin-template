@@ -28,7 +28,7 @@
                 <!--右键菜单开始-->
                 <div id="context-menu">
                     <ul class="dropdown-menu dropdown-arrow-left" role="menu">
-                        <li ed-permisson perm="sys:user:**:delete">
+                        <li ed-perm perm="sys:user:**:delete">
                             <a href="javascript:;"
                                model-array="selectUsers" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectUsers.length == 0">
@@ -36,7 +36,7 @@
                                 {{'label.common.op.delete' | translate}}
                             </a>
                         </li>
-                        <li ed-permisson perm="sys:user:**:update">
+                        <li ed-perm perm="#/sys/user/edit/:userId">
                             <a href="#/sys/user/edit/{{user.userId}}"
                                ng-hide="selectUsers.length != 1">
                                 <i class="fa fa-edit"></i>
@@ -51,19 +51,19 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-12">
                             <a class="btn btn-blue" href="#/sys/user/add" ed-tooltip
-                               data-original-title="{{'label.sys.user.add' | translate}}" ed-permisson perm="sys:user:**:create">
+                               data-original-title="{{'label.sys.user.add' | translate}}" ed-perm perm="#/sys/user/add">
                                 <i class="fa fa-plus"></i>
                             </a>
                             <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
                                data-original-title="{{'label.common.op.delete' | translate}}"
                                model-array="selectUsers" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectUsers.length == 0"
-                               ed-permisson perm="sys:user:**:delete">
+                               ed-perm perm="sys:user:**:delete">
                                 <i class="fa fa-trash-o"></i>
                             </a>
-                            <a class="btn btn-pink" href="#/sys/user/edit/{{user.userId}}" ed-tooltip
+                            <a class="btn btn-green" href="#/sys/user/edit/{{user.userId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectUsers.length != 1"
-                               ed-permisson perm="sys:user:**:update">
+                               ed-perm perm="#/sys/user/edit/:userId">
                                 <i class="fa fa-edit"></i>
                             </a>
                         </div>

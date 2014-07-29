@@ -15,172 +15,48 @@
     </nav>
 </div>
 
+<!--1-->
+
 <div class="row">
-    <div class="col-md-12">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs">
-            <li class="active">
-                <a href="javascript:;" data-target="#menu" data-toggle="tab">{{'label.sys.role.menu.permission' | translate}}</a>
-            </li>
-            <li ed-permisson perm="sys:route:**:read">
-                <a href="javascript:;" data-target="#route" data-toggle="tab">{{'label.sys.role.route.permission' | translate}}</a>
-            </li>
-            <li>
-                <a href="javascript:;" data-target="#resource" data-toggle="tab">{{'label.sys.role.resource.permission' | translate}}</a>
-            </li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-
-            <div class="tab-pane active" id="menu">
-                <!-- start: BASIC TABLE PANEL -->
-
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <!--按钮栏开始-->
-                        <div class="row mrg20B">
-                            <div class="col-md-6 col-sm-12">
-
-                                <a class="btn btn-blue"
-                                   ng-click="saveMenuPermission()"
-                                   ng-disabled="selectMenus.length == 0"
-                                   ng-hide="clickToken">
-                                    <i class="fa fa-check"></i>
-                                    {{'label.sys.role.permission' | translate}}
-                                </a>
-
-                            </div>
-
+    <a class="btn btn-blue"
+       ng-click="saveResourcePermission()"
+       ng-disabled="selectResources.length == 0"
+       ng-hide="clickToken">
+        <i class="fa fa-check"></i>
+        {{'label.sys.role.permission' | translate}}
+    </a>
+<div class="col-md-12" ng-repeat="menu in menus">
+<div class="panel panel-default">
+<div class="panel-body">
+    <!--查询-->
+    <div class="row query">
+        <div class="col-md-12">
+            <form role="form" class="form-horizontal">
+                <div class="title" translate>{{menu.menuName}}
+                </div>
+                <div class="form-body">
+                    <div class="row" ng-repeat="route in menu.sysRoutes">
+                        <div class="col-md-12"><p class="text-purple">{{route.name}}</p></div>
+                        <div class="col-md-3" ng-repeat="res in route.sysResources">
+                            <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ed-icheck model-array="selectResources" ng-model="res">
+                                        {{res.resourceName}}
+                                    </label>
+                                </div>
                         </div>
-                        <!--按钮栏开始-->
-                        <table class="table table-bordered tree">
-                            <thead>
-                            <tr role="row">
-                                <th>
-                                    <span><input type="checkbox" ed-check-all el-name="menuPk"/></span>
-                                    {{'label.sys.menu.name' | translate}}
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="menu in menus" ng-class="menu.class" ed-treegrid>
-                                <td>
-                                    <span style="{{menu.style}}">
-                                        <input name="menuPk" type="checkbox" ng-model="menu"
-                                               model-array="selectMenus" ed-checkbox showcontextmenu="false"/>
-                                    </span>
-                                    <span translate>{{menu.menuName}}</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
 
                     </div>
-
                 </div>
-                <!-- end: BASIC TABLE PANEL -->
-            </div>
-            <div class="tab-pane" id="route" ed-permisson perm="sys:route:**:read">
-                <!-- start: BASIC TABLE PANEL -->
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <!--按钮栏开始-->
-                        <div class="row mrg20B">
-                            <div class="col-md-6 col-sm-12">
+            </form>
 
-                                <a class="btn btn-blue"
-                                   ng-click="saveRoutePermission()"
-                                   ng-disabled="selectRoutes.length == 0"
-                                   ng-hide="clickToken">
-                                    <i class="fa fa-check"></i>
-                                    {{'label.sys.role.permission' | translate}}
-                                </a>
-
-                            </div>
-
-                        </div>
-                        <!--按钮栏开始-->
-
-                        <table class="table table-striped table-bordered table-hover table-condensed">
-                            <thead>
-                            <tr role="row">
-                                <th class="width20">
-                                    <input type="checkbox" ed-check-all/>
-                                </th>
-                                <th>
-                                    {{'label.sys.route.name' | translate}}
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="route in routes">
-                                <td class="width20">
-                                    <input name="pk" type="checkbox" ng-model="route"
-                                           model-array="selectRoutes" ed-checkbox showcontextmenu="false"/>
-                                </td>
-                                <td translate>{{route.name}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                </div>
-                <!-- end: BASIC TABLE PANEL -->
-            </div>
-            <!--资源开始-->
-            <div class="tab-pane" id="resource">
-                <!-- start: BASIC TABLE PANEL -->
-
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <!--按钮栏开始-->
-                        <div class="row mrg20B">
-                            <div class="col-md-6 col-sm-12">
-
-                                <a class="btn btn-blue"
-                                   ng-click="saveResourcePermission()"
-                                   ng-disabled="selectResources.length == 0"
-                                   ng-hide="clickToken">
-                                    <i class="fa fa-check"></i>
-                                    {{'label.sys.role.permission' | translate}}
-                                </a>
-
-                            </div>
-
-                        </div>
-                        <!--按钮栏开始-->
-
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr role="row">
-                                <th class="width20">
-                                    <input type="checkbox" ed-check-all el-name="resourcePk"/>
-                                </th>
-                                <th>
-                                    {{'label.sys.resource.name' | translate}}
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="resource in resources">
-                                <td class="width20">
-                                    <input name="resourcePk" type="checkbox" ng-model="resource"
-                                           model-array="selectResources" ed-checkbox showcontextmenu="false"/>
-                                </td>
-                                <td translate>{{resource.resourceName}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                </div>
-                <!-- end: BASIC TABLE PANEL -->
-            </div>
-            <!--资源结束-->
         </div>
-        <!-- End Tab panes  -->
     </div>
+    <!--.查询-->
 </div>
+</div>
+</div>
+</div>
+<!--.1-->
+

@@ -152,12 +152,8 @@ commonService.factory(
     'PermissionService',
     function ($resource) {
         return $resource("sys/permission/:roleId", {}, {
-            saveRoutePermission : {method : 'post', params: {roleId : "route"}},
-            saveMenuPermission : {method : 'post', params: {roleId : "menu"}},
-            saveResourcePermission : {method : 'post', params: {roleId : "resource"}},
-            getRoutes : {url : 'sys/permission/route/:roleId', method : 'get', isArray: true},
-            getMenus : {url : 'sys/permission/menu/:roleId', method : 'get', isArray: true},
-            getResources : {url : 'sys/permission/resource/:roleId', method : 'get', isArray: true}
+            getMenus : {url : 'sys/permission/menu/:roleId',method : 'GET', isArray: true},
+            saveResourcePermission : {method : 'post', params: {roleId : "resource"}}
         });
     });
 

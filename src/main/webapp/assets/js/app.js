@@ -99,6 +99,7 @@ angular
             $rootScope.leftMenus = _.sortBy(menus, function(v, i) {
                 return v.sorted;
             });
+            data.user.routes = _.pluck(data.routes, "url");
             $rootScope.loginUser = data.user;
             $timeout(function () {
                 App.init();

@@ -380,7 +380,7 @@ commonDirective.directive('edIcheck', function ($timeout) {
         restrict: 'AE',
         scope : {
           ngModel : '=',
-          modelArray : 'modelArray'
+          modelArray : '='
         },
         link: function postLink(scope, iElement, iAttrs) {
             $timeout(function () {
@@ -402,6 +402,9 @@ commonDirective.directive('edIcheck', function ($timeout) {
                         });
                     });
                 });
+                if (scope.ngModel.checked) {
+                    iElement.iCheck('check');
+                };
             }, 100);
         }
     };
@@ -975,14 +978,19 @@ commonDirective.directive('edDictCheckbox', function ($http, $timeout, ShareServ
     };
 });
 
-commonDirective.directive('edPermisson', function ($rootScope, $timeout) {
+commonDirective.directive('edPerm', function ($rootScope, $timeout) {
     return {
         restrict: 'A',
         link: function postLink(scope, iElement, iAttrs) {
             $rootScope.$watch("loginUser", function (value) {
                 if (value) {
                     var perm = iAttrs.perm;
-                    if (!_.contains($rootScope.loginUser.permissions, perm)) {
+                    if (perm.charAt(0) == '#') {
+                        perm = perm.substring(1);
+                        if (!_.contains($rootScope.loginUser.routes, perm)) {
+                            iElement.remove();
+                        }
+                    }else if (!_.contains($rootScope.loginUser.permissions, perm)) {
                         iElement.remove();
                     }
                 }
