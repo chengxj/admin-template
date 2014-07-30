@@ -80,7 +80,7 @@ public class SysDictResource {
          *                字典编码
          * @return 系统字典
          */
-        @AuthHelper(value = "Query Dictory", isRoot = true, type = AuthType.AUTHC)
+        @AuthHelper(value = "View Dictory", isRoot = true, type = AuthType.AUTHC)
         @RequestMapping(method = RequestMethod.GET, value = "/{dictCode}")
         @ResponseBody
         public SysDict get(@PathVariable("dictCode") String dictCode) {

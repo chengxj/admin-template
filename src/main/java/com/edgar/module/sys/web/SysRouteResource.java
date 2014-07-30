@@ -71,7 +71,7 @@ public class SysRouteResource {
          *                路由ID
          * @return 路由
          */
-        @AuthHelper(value = "Query Route", isRoot = true)
+        @AuthHelper(value = "View Route", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/{routeId}")
         @ResponseBody
         public SysRoute get(@PathVariable("routeId") int routeId) {
@@ -121,7 +121,7 @@ public class SysRouteResource {
          * 
          * @return 路由的集合
          */
-        @AuthHelper(value = "Query Route")
+        @AuthHelper(value = "Query Route", isRoot=true)
         @RequestMapping(method = RequestMethod.GET)
         @ResponseBody
         public List<SysRoute> findAll() {

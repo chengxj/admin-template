@@ -4,6 +4,7 @@ function RolePermissionCtrl($scope, PermissionService, RoleService,MessageServic
     $scope.clickToken = false;
     RoleService.get({roleId : $routeParams.roleId}, function(data) {
         $scope.menus = PermissionService.getMenus({roleId : $routeParams.roleId});
+
     }, function() {
         $scope.disabled = true;
     });

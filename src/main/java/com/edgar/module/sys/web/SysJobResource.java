@@ -64,7 +64,7 @@ public class SysJobResource {
          *                作业ID
          * @return 作业
          */
-        @AuthHelper(value = "Query Job", isRoot = true)
+        @AuthHelper(value = "View Job", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/{jobId}")
         @ResponseBody
         public SysJob get(@PathVariable("jobId") int jobId) {

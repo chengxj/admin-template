@@ -35,9 +35,8 @@
                 <div class="title" translate>{{menu.menuName}}
                 </div>
                 <div class="form-body">
-                    <div class="row" ng-repeat="route in menu.sysRoutes">
-                        <div class="col-md-12"><p class="text-purple">{{route.name}}</p></div>
-                        <div class="col-md-3" ng-repeat="res in route.sysResources">
+                    <div class="row">
+                        <div class="col-md-3" ng-repeat="res in menu.sysResources">
                             <div class="checkbox">
                                     <label>
                                         <input type="checkbox" ed-icheck model-array="selectResources" ng-model="res">

@@ -36,7 +36,7 @@ public class SysResResource {
          *                资源ID
          * @return 资源
          */
-        @AuthHelper(value = "Query Resource", isRoot = true)
+        @AuthHelper(value = "View Resource", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/{resourceId}")
         @ResponseBody
         public SysResource get(@PathVariable("resourceId") int resourceId) {
@@ -69,7 +69,7 @@ public class SysResResource {
          * 
          * @return 资源的集合
          */
-        @AuthHelper(value = "Query Resource")
+        @AuthHelper(value = "Query Resource", isRoot = true)
         @RequestMapping(method = RequestMethod.GET)
         @ResponseBody
         public List<SysResource> findAll() {

@@ -97,11 +97,6 @@ public class CustomSecurityRealm extends JdbcRealm {
 		for (SysRole sysRole : roles) {
 			roleNames.add(sysRole.getRoleName());
 		}
-//		if (loginUser.getUsername().equals("demo")) {
-//			permissions.add("sys:user:read");
-//		} else {
-//			permissions = getPermissions(loginUser.getUserId(), roles);
-//		}
 		permissions = getPermissions(loginUser.getUserId(), roles);
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
 		info.setStringPermissions(permissions);

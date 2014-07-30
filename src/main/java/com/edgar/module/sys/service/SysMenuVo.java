@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.edgar.module.sys.repository.domain.SysMenu;
-import com.edgar.module.sys.repository.domain.SysRoute;
+import com.edgar.module.sys.repository.domain.SysResource;
 
 public class SysMenuVo extends SysMenu {
 
-	private final List<SysRoute> sysRoutes = new ArrayList<SysRoute>();
+	private final List<SysResource> sysResources = new ArrayList<SysResource>();
 
-	public List<SysRoute> getSysRoutes() {
-		return sysRoutes;
+	public List<SysResource> getSysResources() {
+		return sysResources;
 	}
 
-	public void addRoute(SysRoute sysRoute) {
-		sysRoutes.add(sysRoute);
+	public void addResource(SysResource sysResource) {
+		sysResources.add(sysResource);
 	}
 }

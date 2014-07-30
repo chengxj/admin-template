@@ -70,7 +70,7 @@ public class SysMenuResource {
          *                菜单ID
          * @return 菜单
          */
-        @AuthHelper(value = "Query Menu", isRoot = true)
+        @AuthHelper(value = "View Menu", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/{menuId}")
         @ResponseBody
         public SysMenu get(@PathVariable("menuId") int menuId) {

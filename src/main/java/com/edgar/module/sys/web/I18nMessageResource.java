@@ -72,7 +72,7 @@ public class I18nMessageResource {
          *                i18nID
          * @return i18n
          */
-        @AuthHelper(value = "Query i18n", isRoot = true)
+        @AuthHelper(value = "View i18n", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/{i18nId}")
         @ResponseBody
         public I18nMessage get(@PathVariable("i18nId") int i18nId) {

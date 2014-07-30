@@ -78,7 +78,7 @@ public class SysUserResource {
          *                用户ID
          * @return 用户
          */
-        @AuthHelper("Query User")
+        @AuthHelper("View User")
         @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
         @ResponseBody
         public SysUser get(@PathVariable("userId") int userId) {
@@ -130,7 +130,7 @@ public class SysUserResource {
          *                用户名
          * @return 如果存在，返回false
          */
-        @AuthHelper("Check Unique Username")
+        @AuthHelper(value="Check Unique Username", type=AuthType.AUTHC)
         @RequestMapping(method = RequestMethod.GET, value = "/check/username")
         @ResponseBody
         public ModelAndView checkDictCode(@RequestParam("field") String username) {

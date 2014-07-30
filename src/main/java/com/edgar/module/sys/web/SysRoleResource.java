@@ -68,7 +68,7 @@ public class SysRoleResource {
          *                角色ID
          * @return 角色
          */
-        @AuthHelper("Query Role")
+        @AuthHelper("View Role")
         @RequestMapping(method = RequestMethod.GET, value = "/{roleId}")
         @ResponseBody
         public SysRole get(@PathVariable("roleId") int roleId) {

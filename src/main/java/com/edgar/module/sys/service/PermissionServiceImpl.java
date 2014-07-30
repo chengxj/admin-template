@@ -90,26 +90,22 @@ public class PermissionServiceImpl implements PermissionService {
 			example.addField("routeId");
 			List<Integer> routeIds = sysMenuRouteDao.querySingleColumn(example,
 					Integer.class);
+			Set<Integer> resourceIds = new HashSet<Integer>();
 			for (Integer routeId : routeIds) {
-				SysRouteVo routeVo = new SysRouteVo();
-				SysRoute sysRoute = sysRouteDao.get(routeId);
-				BeanUtils.copyProperties(sysRoute, routeVo);
 				example.clear();
-				example.equalsTo("routeId", sysRoute.getRouteId());
+				example.equalsTo("routeId", routeId);
 				example.addField("resourceId");
 
-				List<Integer> resourceIds = sysRouteResDao.querySingleColumn(
-						example, Integer.class);
+				resourceIds.addAll(sysRouteResDao.querySingleColumn(example,
+						Integer.class));
 
-				for (Integer resourceId : resourceIds) {
-					SysResource resource = sysResourceDao.get(resourceId);
-					SysResourceVo resourceVo = new SysResourceVo();
-					BeanUtils.copyProperties(resource, resourceVo);
-					resourceVo.setChecked(roleResourceIds.contains(resourceId));
-					routeVo.addResource(resourceVo);
-				}
-
-				sysMenuVo.addRoute(routeVo);
+			}
+			for (Integer resourceId : resourceIds) {
+				SysResource resource = sysResourceDao.get(resourceId);
+				SysResourceVo resourceVo = new SysResourceVo();
+				BeanUtils.copyProperties(resource, resourceVo);
+				resourceVo.setChecked(roleResourceIds.contains(resourceId));
+				sysMenuVo.addResource(resourceVo);
 			}
 			sysMenuVos.add(sysMenuVo);
 		}

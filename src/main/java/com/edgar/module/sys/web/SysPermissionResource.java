@@ -36,7 +36,7 @@ public class SysPermissionResource {
 	 *            资源授权的对象
 	 * @return 如果授权成功，返回1
 	 */
-	@AuthHelper("Save Resource Permisison")
+	@AuthHelper("Save Permisison")
 	@RequestMapping(value = "/resource", method = RequestMethod.POST)
 	@ResponseBody
 	public int saveResourcePermission(@RequestBody ResourcePermission command) {
@@ -51,7 +51,7 @@ public class SysPermissionResource {
 	 *            角色ID
 	 * @return 角色资源集合
 	 */
-	@AuthHelper("Query Resource Permisison")
+	@AuthHelper("Query Permisison")
 	@RequestMapping(value = "/menu/{roleId}", method = RequestMethod.GET)
 	@ResponseBody
 	public List<SysMenuVo> getMenus(@PathVariable("roleId") int roleId) {
