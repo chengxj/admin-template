@@ -80,7 +80,7 @@ public class SysDictResource {
          *                字典编码
          * @return 系统字典
          */
-        @AuthHelper(value = "Query Dictory", isRoot = true, type = AuthType.AUTHC)
+        @AuthHelper(value = "View Dictory", isRoot = true, type = AuthType.AUTHC)
         @RequestMapping(method = RequestMethod.GET, value = "/{dictCode}")
         @ResponseBody
         public SysDict get(@PathVariable("dictCode") String dictCode) {
@@ -102,7 +102,7 @@ public class SysDictResource {
          *                查询条件
          * @return 系统字典的分页类
          */
-        @AuthHelper(value = "Query Dictory", isRoot = true, type = AuthType.AUTHC)
+        @AuthHelper(value = "Paging Query Dictory", isRoot = true, type = AuthType.AUTHC)
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysDict> pagination(

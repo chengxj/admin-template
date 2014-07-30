@@ -59,7 +59,7 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-12">
                             <a class="btn btn-blue" href="#/sys/role/add" ed-tooltip
-                               data-original-title="{{'label.sys.role.add' | translate}}" ed-perm perm="sys:role:**:create">
+                               data-original-title="{{'label.sys.role.add' | translate}}" ed-perm perm="#/sys/role/add">
                                 <i class="fa fa-plus"></i>
                             </a>
                             <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
@@ -71,12 +71,12 @@
                             </a>
                             <a class="btn btn-green" href="#/sys/role/edit/{{role.roleId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectRoles.length != 1"
-                               ed-perm perm="sys:role:**:update">
+                               >
                                 <i class="fa fa-edit"></i>
                             </a>
                             <a class="btn btn-purple" href="#/sys/role/permission/{{role.roleId}}" ed-tooltip
                                data-original-title="{{'label.sys.role.permission' | translate}}" ng-hide="selectRoles.length != 1"
-                               ed-perm perm="sys:menu:**:read">
+                               >
                                 <i class="fa fa-lock"></i>
                             </a>
                         </div>

@@ -3,10 +3,10 @@ function RolePermissionCtrl($scope, PermissionService, RoleService,MessageServic
     $scope.selectResources = [];
     $scope.clickToken = false;
 
-    $scope.menus = PermissionService.getMenus({roleId : $routeParams.roleId});
+
 
     RoleService.get({roleId : $routeParams.roleId}, function(data) {
-        $scope.queryResource();
+        $scope.menus = PermissionService.getMenus({roleId : $routeParams.roleId});
     }, function() {
         $scope.disabled = true;
     });
