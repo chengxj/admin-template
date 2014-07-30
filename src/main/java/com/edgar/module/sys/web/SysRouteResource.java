@@ -71,7 +71,7 @@ public class SysRouteResource {
          *                路由ID
          * @return 路由
          */
-        @AuthHelper(value = "View Route", isRoot = true)
+        @AuthHelper(value = "Query Route", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/{routeId}")
         @ResponseBody
         public SysRoute get(@PathVariable("routeId") int routeId) {
@@ -89,7 +89,7 @@ public class SysRouteResource {
          *                查询条件
          * @return 路由的分页类
          */
-        @AuthHelper(value = "Paging Query Route", isRoot = true)
+        @AuthHelper(value = "Query Route", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysRoute> pagination(

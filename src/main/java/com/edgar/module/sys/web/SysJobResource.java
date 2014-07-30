@@ -64,7 +64,7 @@ public class SysJobResource {
          *                作业ID
          * @return 作业
          */
-        @AuthHelper(value = "View Job", isRoot = true)
+        @AuthHelper(value = "Query Job", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/{jobId}")
         @ResponseBody
         public SysJob get(@PathVariable("jobId") int jobId) {
@@ -82,7 +82,7 @@ public class SysJobResource {
          *                查询条件
          * @return 作业的分页类
          */
-        @AuthHelper(value = "Paging Query Job", isRoot = true)
+        @AuthHelper(value = "Query Job", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysJob> pagination(

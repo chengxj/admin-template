@@ -78,7 +78,7 @@ public class SysUserResource {
          *                用户ID
          * @return 用户
          */
-        @AuthHelper("View User")
+        @AuthHelper("Query User")
         @RequestMapping(method = RequestMethod.GET, value = "/{userId}")
         @ResponseBody
         public SysUser get(@PathVariable("userId") int userId) {
@@ -96,7 +96,7 @@ public class SysUserResource {
          *                查询条件
          * @return 用户的分页类
          */
-        @AuthHelper("Paging Query User")
+        @AuthHelper("Query User")
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysUser> pagination(

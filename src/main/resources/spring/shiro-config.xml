@@ -16,11 +16,20 @@
 		<property name="unauthorizedUrl" value="/auth/unauthorized" />
 		<!-- <property name="filters"> <util:map> <entry key="authc" value-ref="myOncePerRequestFilter" 
 			/> <entry key="authc" value-ref="myAdviceFilter" /> </util:map> </property> -->
-		<property name="filterChainDefinitionMap"
-			value="#{filterChainDefinitionsLoader.loadDefinitions()}" />
-		<!-- <property name="filterChainDefinitions"> <value> /login.html=anon 
-			/index.html=anon /app/**=anon /assets/**=anon /js/**=anon /sys/user/pagination=authc,rest[sys:user:pagination:read] 
-			/sys/user/*=authc,rest[sys:user:*:read] /** = anon </value> </property> -->
+		<property name="filterChainDefinitionMap" value="#{filterChainDefinitionsLoader.loadDefinitions()}" 
+			/> 
+		<!-- <property name="filterChainDefinitions">
+			<value> 
+			/login.html=anon
+			/index.html=anon 
+			/app/**=anon 
+			/assets/**=anon 
+			/js/**=anon
+			/sys/user/pagination=authc,rest[sys:user:pagination]
+			/sys/user/**=authc,rest[sys:user]
+			/** = anon 
+			</value>
+		</property> -->
 	</bean>
 
 	<bean id="filterChainDefinitionsLoader" class="com.edgar.core.shiro.FilterChainDefinitionsLoader">

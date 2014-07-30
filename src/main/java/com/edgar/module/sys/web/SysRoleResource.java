@@ -68,7 +68,7 @@ public class SysRoleResource {
          *                角色ID
          * @return 角色
          */
-        @AuthHelper("View Role")
+        @AuthHelper("Query Role")
         @RequestMapping(method = RequestMethod.GET, value = "/{roleId}")
         @ResponseBody
         public SysRole get(@PathVariable("roleId") int roleId) {
@@ -86,7 +86,7 @@ public class SysRoleResource {
          *                查询条件
          * @return 角色的分页类
          */
-        @AuthHelper("Paging Query Role")
+        @AuthHelper("Query Role")
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysRole> pagination(

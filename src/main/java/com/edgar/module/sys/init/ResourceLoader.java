@@ -41,362 +41,340 @@ import com.edgar.module.sys.repository.domain.SysRoleMenu;
 import com.edgar.module.sys.repository.domain.SysRoleResource;
 import com.edgar.module.sys.repository.domain.SysRoleRoute;
 import com.edgar.module.sys.repository.domain.SysRoute;
-import com.edgar.module.sys.repository.domain.SysRouteRes;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
 
 @Controller
 public class ResourceLoader implements Initialization {
+        
+        private static final Logger LOGGER = LoggerFactory.getLogger(AppInitializer.class);
+        
+        private static final String ROOT = GlobalUtils.ROOT_ROLE_NAME;
+        @Autowired
+        private RequestMappingHandlerMapping handlerMapping;
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(AppInitializer.class);
+        @Autowired
+        private CrudRepository<Integer, SysResource> sysResourceDao;
 
-	private static final String ROOT = GlobalUtils.ROOT_ROLE_NAME;
-	@Autowired
-	private RequestMappingHandlerMapping handlerMapping;
+        @Autowired
+        private CrudRepository<Integer, SysRole> sysRoleDao;
 
-	@Autowired
-	private CrudRepository<Integer, SysResource> sysResourceDao;
+        @Autowired
+        private CrudRepository<Integer, SysRoleResource> sysRoleResourceDao;
 
-	@Autowired
-	private CrudRepository<Integer, SysRole> sysRoleDao;
+        @Autowired
+        private CrudRepository<Integer, SysUser> sysUserDao;
 
-	@Autowired
-	private CrudRepository<Integer, SysRoleResource> sysRoleResourceDao;
+        @Autowired
+        private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
 
-	@Autowired
-	private CrudRepository<Integer, SysUser> sysUserDao;
+        @Autowired
+        private CrudRepository<Integer, SysMenu> sysMenuDao;
 
-	@Autowired
-	private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
+        @Autowired
+        private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
 
-	@Autowired
-	private CrudRepository<Integer, SysMenu> sysMenuDao;
+        @Autowired
+        private CrudRepository<Integer, SysRoute> sysRouteDao;
 
-	@Autowired
-	private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
+        @Autowired
+        private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+        
+        @Autowired
+        @Setter
+        private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
 
-	@Autowired
-	private CrudRepository<Integer, SysRoute> sysRouteDao;
+        @Autowired
+        private ShiroFilterFactoryBean shiroFilterFactoryBean;
 
-	@Autowired
-	private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+        @Autowired
+        private FilterChainDefinitionsLoader filterChainDefinitionsLoader;
 
-	@Autowired
-	private CrudRepository<Integer, SysRouteRes> sysRouteResDao;
+        @Override
+        public int getOrder() {
+                return 0;
+        }
 
-	@Autowired
-	@Setter
-	private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
+        @Override
+        @Transactional
+        public void init() throws SystemException {
+                LOGGER.info("/*****load resource start*****/");
+                List<SysResource> resources = sysResourceDao.query(QueryExample.newInstance());
+                Map<String, SysResource> resourceMap = new HashMap<String, SysResource>();
 
-	@Autowired
-	private ShiroFilterFactoryBean shiroFilterFactoryBean;
+                for (SysResource sysResource : resources) {
+                        resourceMap.put("[" + sysResource.getMethod() + "]"
+                                        + getNewUrl(sysResource.getUrl()), sysResource);
+                }
+                Set<String> existResourceKey = insertResource(resourceMap);
+                deleteNotExistsReource(resourceMap, existResourceKey);
+                SysRole rootRole = getRootRole();
+                saveRootPermission(rootRole);
+                saveRootMenu(rootRole);
+                saveRootRoute(rootRole);
+                createRootUser(rootRole);
+                refreshShiro();
+                LOGGER.info("/*****load resource finished*****/");
+        }
 
-	@Autowired
-	private FilterChainDefinitionsLoader filterChainDefinitionsLoader;
+        private void refreshShiro() {
+                AbstractShiroFilter shiroFilter = null;
 
-	@Override
-	public int getOrder() {
-		return 0;
-	}
+                try {
+                        shiroFilter = (AbstractShiroFilter) shiroFilterFactoryBean.getObject();
+                } catch (Exception e) {
+                        throw new RuntimeException("get shiroFilter failed");
+                }
 
-	@Override
-	@Transactional
-	public void init() throws SystemException {
-		LOGGER.info("/*****load resource start*****/");
-		List<SysResource> resources = sysResourceDao.query(QueryExample
-				.newInstance());
-		Map<String, SysResource> resourceMap = new HashMap<String, SysResource>();
+                PathMatchingFilterChainResolver filterChainResolver = (PathMatchingFilterChainResolver) shiroFilter
+                                .getFilterChainResolver();
+                DefaultFilterChainManager manager = (DefaultFilterChainManager) filterChainResolver
+                                .getFilterChainManager();
+                // 清空老的权限控制
+                manager.getFilterChains().clear();
+                shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();
+                shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionsLoader
+                                .loadDefinitions());
+                // 重新构建生成
+                Map<String, String> chains = shiroFilterFactoryBean.getFilterChainDefinitionMap();
+                for (Map.Entry<String, String> entry : chains.entrySet()) {
+                        String url = entry.getKey();
+                        String chainDefinition = entry.getValue();// .trim().replace(" ", "");
+                        manager.createChain(url, chainDefinition);
+                }
+        }
 
-		for (SysResource sysResource : resources) {
-			resourceMap.put("[" + sysResource.getMethod() + "]"
-					+ getNewUrl(sysResource.getUrl()), sysResource);
-		}
-		Set<String> existResourceKey = insertResource(resourceMap);
-		deleteNotExistsReource(resourceMap, existResourceKey);
-		SysRole rootRole = getRootRole();
-		saveRootPermission(rootRole);
-		saveRootMenu(rootRole);
-		saveRootRoute(rootRole);
-		createRootUser(rootRole);
-		refreshShiro();
-		LOGGER.info("/*****load resource finished*****/");
-	}
+        private String getNewUrl(String url) {
+                String newUrl = url.replaceAll("\\{[0-9a-zA-Z_]+\\}", "**");
+                // if (StringUtils.endsWith(newUrl, "/**")) {
+                // newUrl = StringUtils.substringBeforeLast(newUrl, "/**");
+                // }
+//                if (StringUtils.endsWith(newUrl, "/pagination")) {
+//                        // newUrl = StringUtils.substringBeforeLast(newUrl, "/pagination");
+//                        newUrl = url.replaceAll("/pagination", "/**");
+//                }
+                if (!StringUtils.endsWith(newUrl, "/**")) {
+                        // newUrl = StringUtils.substringBeforeLast(newUrl, "/pagination");
+                        newUrl = newUrl + "/**";
+                }
+                return newUrl;
+        }
 
-	private void refreshShiro() {
-		AbstractShiroFilter shiroFilter = null;
+        private void saveRootRoute(SysRole rootRole) {
+                QueryExample example = QueryExample.newInstance();
+                example.equalsTo("roleId", rootRole.getRoleId());
+                List<SysRoleRoute> sysRoleResources = sysRoleRouteDao.query(example);
+                Set<Integer> routeIds = new HashSet<Integer>();
+                for (SysRoleRoute sysRoleResource : sysRoleResources) {
+                        routeIds.add(sysRoleResource.getRouteId());
+                }
+                List<SysRoute> routes = sysRouteDao.query(QueryExample.newInstance());
+                for (SysRoute route : routes) {
+                        if (!routeIds.contains(route.getRouteId())) {
+                                SysRoleRoute sysRoleRoute = new SysRoleRoute();
+                                sysRoleRoute.setRoleRouteId(IDUtils.getNextId());
+                                sysRoleRoute.setRouteId(route.getRouteId());
+                                sysRoleRoute.setRoleId(rootRole.getRoleId());
+                                sysRoleRouteDao.insert(sysRoleRoute);
+                        }
+                }
+        }
 
-		try {
-			shiroFilter = (AbstractShiroFilter) shiroFilterFactoryBean
-					.getObject();
-		} catch (Exception e) {
-			throw new RuntimeException("get shiroFilter failed");
-		}
+        private void saveRootMenu(SysRole rootRole) {
+                QueryExample example = QueryExample.newInstance();
+                example.equalsTo("roleId", rootRole.getRoleId());
+                List<SysRoleMenu> sysRoleMenus = sysRoleMenuDao.query(example);
+                Set<Integer> menuIds = new HashSet<Integer>();
+                for (SysRoleMenu sysRoleResource : sysRoleMenus) {
+                        menuIds.add(sysRoleResource.getMenuId());
+                }
+                List<SysMenu> routes = sysMenuDao.query(QueryExample.newInstance());
+                for (SysMenu route : routes) {
+                        if (!menuIds.contains(route.getMenuId())) {
+                                SysRoleMenu sysRoleMenu = new SysRoleMenu();
+                                sysRoleMenu.setRoleMenuId(IDUtils.getNextId());
+                                sysRoleMenu.setMenuId(route.getMenuId());
+                                sysRoleMenu.setRoleId(rootRole.getRoleId());
+                                sysRoleMenuDao.insert(sysRoleMenu);
+                        }
+                }
 
-		PathMatchingFilterChainResolver filterChainResolver = (PathMatchingFilterChainResolver) shiroFilter
-				.getFilterChainResolver();
-		DefaultFilterChainManager manager = (DefaultFilterChainManager) filterChainResolver
-				.getFilterChainManager();
-		// 清空老的权限控制
-		manager.getFilterChains().clear();
-		shiroFilterFactoryBean.getFilterChainDefinitionMap().clear();
-		shiroFilterFactoryBean
-				.setFilterChainDefinitionMap(filterChainDefinitionsLoader
-						.loadDefinitions());
-		// 重新构建生成
-		Map<String, String> chains = shiroFilterFactoryBean
-				.getFilterChainDefinitionMap();
-		for (Map.Entry<String, String> entry : chains.entrySet()) {
-			String url = entry.getKey();
-			String chainDefinition = entry.getValue();// .trim().replace(" ",
-														// "");
-			manager.createChain(url, chainDefinition);
-		}
-	}
+        }
 
-	private String getNewUrl(String url) {
-		String newUrl = url.replaceAll("\\{[0-9a-zA-Z_]+\\}", "*");
-		// if (StringUtils.endsWith(newUrl, "/**")) {
-		// newUrl = StringUtils.substringBeforeLast(newUrl, "/**");
-		// }
-		// if (StringUtils.endsWith(newUrl, "/pagination")) {
-		// // newUrl = StringUtils.substringBeforeLast(newUrl, "/pagination");
-		// newUrl = url.replaceAll("/pagination", "/**");
-		// }
-		// if (!StringUtils.endsWith(newUrl, "/*")) {
-		// // newUrl = StringUtils.substringBeforeLast(newUrl, "/pagination");
-		// newUrl = newUrl + "/*";
-		// }
-		return newUrl;
-	}
+        private SysRole getRootRole() {
+                QueryExample example = QueryExample.newInstance();
+                example.equalsTo("roleCode", ROOT);
+                SysRole root = sysRoleDao.uniqueResult(example);
+                if (root == null) {
+                        root = new SysRole();
+                        root.setRoleId(IDUtils.getNextId());
+                        root.setRoleName(ROOT);
+                        root.setRoleCode(ROOT);
+                        root.setIsRoot(true);
+                        sysRoleDao.insert(root);
+                }
+                return root;
+        }
 
-	private void saveRootRoute(SysRole rootRole) {
-		QueryExample example = QueryExample.newInstance();
-		example.equalsTo("roleId", rootRole.getRoleId());
-		List<SysRoleRoute> sysRoleResources = sysRoleRouteDao.query(example);
-		Set<Integer> routeIds = new HashSet<Integer>();
-		for (SysRoleRoute sysRoleResource : sysRoleResources) {
-			routeIds.add(sysRoleResource.getRouteId());
-		}
-		List<SysRoute> routes = sysRouteDao.query(QueryExample.newInstance());
-		for (SysRoute route : routes) {
-			if (!routeIds.contains(route.getRouteId())) {
-				SysRoleRoute sysRoleRoute = new SysRoleRoute();
-				sysRoleRoute.setRoleRouteId(IDUtils.getNextId());
-				sysRoleRoute.setRouteId(route.getRouteId());
-				sysRoleRoute.setRoleId(rootRole.getRoleId());
-				sysRoleRouteDao.insert(sysRoleRoute);
-			}
-		}
-	}
+        private void createRootUser(SysRole rootRole) {
+                QueryExample example = QueryExample.newInstance();
+                example.equalsTo("roleId", rootRole.getRoleId());
+                List<SysUserRole> sysUserRoles = sysUserRoleDao.query(example);
+                if (sysUserRoles.isEmpty()) {
+                        SysUser rootUser = createUser();
+                        createUserRole(rootRole, rootUser);
+                }
+                
+        }
 
-	private void saveRootMenu(SysRole rootRole) {
-		QueryExample example = QueryExample.newInstance();
-		example.equalsTo("roleId", rootRole.getRoleId());
-		List<SysRoleMenu> sysRoleMenus = sysRoleMenuDao.query(example);
-		Set<Integer> menuIds = new HashSet<Integer>();
-		for (SysRoleMenu sysRoleResource : sysRoleMenus) {
-			menuIds.add(sysRoleResource.getMenuId());
-		}
-		List<SysMenu> routes = sysMenuDao.query(QueryExample.newInstance());
-		for (SysMenu route : routes) {
-			if (!menuIds.contains(route.getMenuId())) {
-				SysRoleMenu sysRoleMenu = new SysRoleMenu();
-				sysRoleMenu.setRoleMenuId(IDUtils.getNextId());
-				sysRoleMenu.setMenuId(route.getMenuId());
-				sysRoleMenu.setRoleId(rootRole.getRoleId());
-				sysRoleMenuDao.insert(sysRoleMenu);
-			}
-		}
+        private SysUser createUser() {
+                SysUser rootUser = new SysUser();
+                rootUser.setUserId(IDUtils.getNextId());
+                rootUser.setUsername(ROOT);
+                rootUser.setPassword("csstrd");
+                rootUser.setIsRoot(true);
+                rootUser.setFullName("Adminiatrator");
+                PasswordHelper.encryptPassword(rootUser);
+                sysUserDao.insert(rootUser);
+                
+                SysUserProfile profile = new SysUserProfile();
+                profile.setLanguage(GlobalUtils.DEFAULT_PROFILE_LANG);
+                profile.setUserId(rootUser.getUserId());
+                profile.setProfileId(IDUtils.getNextId());
+                sysUserProfileDao.insert(profile);
+                
+                return rootUser;
+        }
 
-	}
+        private void createUserRole(SysRole rootRole, SysUser rootUser) {
+                SysUserRole sysUserRole = new SysUserRole();
+                sysUserRole.setUserRoleId(IDUtils.getNextId());
+                sysUserRole.setRoleId(rootRole.getRoleId());
+                sysUserRole.setUserId(rootUser.getUserId());
+                sysUserRoleDao.insert(sysUserRole);
+        }
 
-	private SysRole getRootRole() {
-		QueryExample example = QueryExample.newInstance();
-		example.equalsTo("roleCode", ROOT);
-		SysRole root = sysRoleDao.uniqueResult(example);
-		if (root == null) {
-			root = new SysRole();
-			root.setRoleId(IDUtils.getNextId());
-			root.setRoleName(ROOT);
-			root.setRoleCode(ROOT);
-			root.setIsRoot(true);
-			sysRoleDao.insert(root);
-		}
-		return root;
-	}
+        private void saveRootPermission(SysRole rootRole) {
+                QueryExample example = QueryExample.newInstance();
+                example.equalsTo("roleId", rootRole.getRoleId());
+                List<SysRoleResource> sysRoleResources = sysRoleResourceDao.query(example);
+                Set<Integer> resourceIds = new HashSet<Integer>();
+                for (SysRoleResource sysRoleResource : sysRoleResources) {
+                        resourceIds.add(sysRoleResource.getResourceId());
+                }
+                List<SysResource> resources = sysResourceDao.query(QueryExample.newInstance());
+                for (SysResource sysResource : resources) {
+                        if (!resourceIds.contains(sysResource.getResourceId())) {
+                                SysRoleResource sysRoleResource = new SysRoleResource();
+                                sysRoleResource.setRoleResourceId(IDUtils.getNextId());
+                                sysRoleResource.setResourceId(sysResource.getResourceId());
+                                sysRoleResource.setRoleId(rootRole.getRoleId());
+                                sysRoleResourceDao.insert(sysRoleResource);
+                        }
+                }
+        }
 
-	private void createRootUser(SysRole rootRole) {
-		QueryExample example = QueryExample.newInstance();
-		example.equalsTo("roleId", rootRole.getRoleId());
-		List<SysUserRole> sysUserRoles = sysUserRoleDao.query(example);
-		if (sysUserRoles.isEmpty()) {
-			SysUser rootUser = createUser();
-			createUserRole(rootRole, rootUser);
-		}
+        private Set<String> insertResource(Map<String, SysResource> resourceMap) {
+                Map<RequestMappingInfo, HandlerMethod> methods = handlerMapping.getHandlerMethods();
+                Collection<RequestMappingInfo> infos = methods.keySet();
+                Set<String> existResourceKey = new HashSet<String>();
+                for (RequestMappingInfo info : infos) {
+                        for (String s : info.getPatternsCondition().getPatterns()) {
+                                if (s.startsWith("/auth") || s.startsWith("/error")) {
+                                        continue;
+                                }
+                                String newUrl = getNewUrl(s);
+                                Set<RequestMethod> requestMethods = info.getMethodsCondition()
+                                                .getMethods();
+                                for (RequestMethod requestMethod : requestMethods) {
+                                        String key = "[" + requestMethod.name().toUpperCase() + "]"
+                                                        + newUrl;
+                                        if (resourceMap.containsKey(key)) {
+                                                SysResource sysResource = resourceMap.get(key);
+                                                HandlerMethod handlerMethod = methods.get(info);
+                                                AuthHelper helper = handlerMethod
+                                                                .getMethodAnnotation(AuthHelper.class);
+                                                if (helper != null) {
+                                                        if (sysResource.getIsRoot()) {
+                                                                if (!helper.isRoot()) {
+                                                                        sysResource.setIsRoot(false);
+                                                                        sysResourceDao.update(sysResource);
+                                                                }
+                                                        }
+                                                }
+                                        } else if (!resourceMap.containsKey(key)
+                                                        && !existResourceKey.contains(key)) {
+                                                SysResource sysResource = new SysResource();
+                                                sysResource.setResourceId(IDUtils.getNextId());
+                                                sysResource.setMethod(requestMethod.name());
+                                                sysResource.setUrl(newUrl);
+                                                String permission = StringUtils.replace(newUrl,
+                                                                "/", ":");
+                                                permission = StringUtils.substringAfter(permission,
+                                                                ":");
+                                                permission = StringUtils.substringBeforeLast(permission, ":**");
+                                                switch (requestMethod) {
+                                                case GET:
+                                                        permission = permission + ":read";
+                                                        break;
+                                                case POST:
+                                                        permission = permission + ":create";
+                                                        break;
+                                                case PUT:
+                                                        permission = permission + ":update";
+                                                        break;
+                                                case DELETE:
+                                                        permission = permission + ":delete";
+                                                        break;
+                                                case TRACE:
+                                                        permission = permission + ":read";
+                                                        break;
+                                                default:
+                                                        break;
+                                                }
+                                                sysResource.setPermission(permission);
+                                                HandlerMethod handlerMethod = methods.get(info);
+                                                AuthHelper helper = handlerMethod
+                                                                .getMethodAnnotation(AuthHelper.class);
+                                                if (helper != null) {
+                                                        sysResource.setResourceName(helper.value());
+                                                        sysResource.setIsRoot(helper.isRoot());
+                                                        switch (helper.type()) {
+                                                        case REST:
+                                                                sysResource.setAuthType(GlobalUtils.AUTH_TYPE_REST);
+                                                                break;
+                                                        case AUTHC:
+                                                                sysResource.setAuthType(GlobalUtils.AUTH_TYPE_AUTHC);
+                                                                break;
+                                                        case ANON:
+                                                                sysResource.setAuthType(GlobalUtils.AUTH_TYPE_ANON);
+                                                                break;
+                                                        default:
+                                                                sysResource.setAuthType(GlobalUtils.AUTH_TYPE_REST);
+                                                                break;
+                                                        }
+                                                }
+                                                sysResourceDao.insert(sysResource);
+                                        }
+                                        existResourceKey.add(key);
+                                }
+                        }
+                }
+                return existResourceKey;
+        }
 
-	}
-
-	private SysUser createUser() {
-		SysUser rootUser = new SysUser();
-		rootUser.setUserId(IDUtils.getNextId());
-		rootUser.setUsername(ROOT);
-		rootUser.setPassword("csstrd");
-		rootUser.setIsRoot(true);
-		rootUser.setFullName("Adminiatrator");
-		PasswordHelper.encryptPassword(rootUser);
-		sysUserDao.insert(rootUser);
-
-		SysUserProfile profile = new SysUserProfile();
-		profile.setLanguage(GlobalUtils.DEFAULT_PROFILE_LANG);
-		profile.setUserId(rootUser.getUserId());
-		profile.setProfileId(IDUtils.getNextId());
-		sysUserProfileDao.insert(profile);
-
-		return rootUser;
-	}
-
-	private void createUserRole(SysRole rootRole, SysUser rootUser) {
-		SysUserRole sysUserRole = new SysUserRole();
-		sysUserRole.setUserRoleId(IDUtils.getNextId());
-		sysUserRole.setRoleId(rootRole.getRoleId());
-		sysUserRole.setUserId(rootUser.getUserId());
-		sysUserRoleDao.insert(sysUserRole);
-	}
-
-	private void saveRootPermission(SysRole rootRole) {
-		QueryExample example = QueryExample.newInstance();
-		example.equalsTo("roleId", rootRole.getRoleId());
-		List<SysRoleResource> sysRoleResources = sysRoleResourceDao
-				.query(example);
-		Set<Integer> resourceIds = new HashSet<Integer>();
-		for (SysRoleResource sysRoleResource : sysRoleResources) {
-			resourceIds.add(sysRoleResource.getResourceId());
-		}
-		List<SysResource> resources = sysResourceDao.query(QueryExample
-				.newInstance());
-		for (SysResource sysResource : resources) {
-			if (!resourceIds.contains(sysResource.getResourceId())) {
-				SysRoleResource sysRoleResource = new SysRoleResource();
-				sysRoleResource.setRoleResourceId(IDUtils.getNextId());
-				sysRoleResource.setResourceId(sysResource.getResourceId());
-				sysRoleResource.setRoleId(rootRole.getRoleId());
-				sysRoleResourceDao.insert(sysRoleResource);
-			}
-		}
-	}
-
-	private Set<String> insertResource(Map<String, SysResource> resourceMap) {
-		Map<RequestMappingInfo, HandlerMethod> methods = handlerMapping
-				.getHandlerMethods();
-		Collection<RequestMappingInfo> infos = methods.keySet();
-		Set<String> existResourceKey = new HashSet<String>();
-		for (RequestMappingInfo info : infos) {
-			for (String s : info.getPatternsCondition().getPatterns()) {
-				if (s.startsWith("/auth") || s.startsWith("/error")) {
-					continue;
-				}
-				String newUrl = getNewUrl(s);
-				Set<RequestMethod> requestMethods = info.getMethodsCondition()
-						.getMethods();
-				for (RequestMethod requestMethod : requestMethods) {
-					String key = "[" + requestMethod.name().toUpperCase() + "]"
-							+ newUrl;
-					if (resourceMap.containsKey(key)) {
-						SysResource sysResource = resourceMap.get(key);
-						HandlerMethod handlerMethod = methods.get(info);
-						AuthHelper helper = handlerMethod
-								.getMethodAnnotation(AuthHelper.class);
-						if (helper != null) {
-							if (sysResource.getIsRoot()) {
-								if (!helper.isRoot()) {
-									sysResource.setIsRoot(false);
-									sysResourceDao.update(sysResource);
-								}
-							}
-						}
-					} else if (!resourceMap.containsKey(key)
-							&& !existResourceKey.contains(key)) {
-						SysResource sysResource = new SysResource();
-						sysResource.setResourceId(IDUtils.getNextId());
-						sysResource.setMethod(requestMethod.name());
-						sysResource.setUrl(newUrl);
-						String permission = StringUtils.replace(newUrl, "/",
-								":");
-						permission = StringUtils
-								.substringAfter(permission, ":");
-						switch (requestMethod) {
-						case GET:
-							if (StringUtils.endsWith(permission, "*")) {
-								permission = permission + ":read";
-							} else {
-								permission = permission + ":read";
-							}
-							
-							break;
-						case POST:
-							permission = permission + ":create";
-							break;
-						case PUT:
-							permission = permission + ":update";
-							break;
-						case DELETE:
-							permission = permission + ":delete";
-							break;
-						case TRACE:
-							permission = permission + ":read";
-							break;
-						default:
-							break;
-						}
-						sysResource.setPermission(permission);
-						HandlerMethod handlerMethod = methods.get(info);
-						AuthHelper helper = handlerMethod
-								.getMethodAnnotation(AuthHelper.class);
-						if (helper != null) {
-							sysResource.setResourceName(helper.value());
-							sysResource.setIsRoot(helper.isRoot());
-							switch (helper.type()) {
-							case REST:
-								sysResource
-										.setAuthType(GlobalUtils.AUTH_TYPE_REST);
-								break;
-							case AUTHC:
-								sysResource
-										.setAuthType(GlobalUtils.AUTH_TYPE_AUTHC);
-								break;
-							case ANON:
-								sysResource
-										.setAuthType(GlobalUtils.AUTH_TYPE_ANON);
-								break;
-							default:
-								sysResource
-										.setAuthType(GlobalUtils.AUTH_TYPE_REST);
-								break;
-							}
-						}
-						sysResourceDao.insert(sysResource);
-					}
-					existResourceKey.add(key);
-				}
-			}
-		}
-		return existResourceKey;
-	}
-
-	private void deleteNotExistsReource(Map<String, SysResource> resourceMap,
-			Set<String> existResourceKey) {
-		for (String key : resourceMap.keySet()) {
-			if (!existResourceKey.contains(key)) {
-				SysResource resource = resourceMap.get(key);
-				sysResourceDao.deleteByPk(resource.getResourceId());
-				QueryExample example = QueryExample.newInstance();
-				example.equalsTo("resourceId", resource.getResourceId());
-				sysRoleResourceDao.delete(example);
-				sysRouteResDao.delete(example);
-			}
-		}
-	}
+        private void deleteNotExistsReource(Map<String, SysResource> resourceMap,
+                        Set<String> existResourceKey) {
+                for (String key : resourceMap.keySet()) {
+                        if (!existResourceKey.contains(key)) {
+                                SysResource resource = resourceMap.get(key);
+                                sysResourceDao.deleteByPk(resource.getResourceId());
+                                QueryExample example = QueryExample.newInstance();
+                                example.equalsTo("resourceId", resource.getResourceId());
+                                sysRoleResourceDao.delete(example);
+                        }
+                }
+        }
 
 }

@@ -72,7 +72,7 @@ public class I18nMessageResource {
          *                i18nID
          * @return i18n
          */
-        @AuthHelper(value = "View i18n", isRoot = true)
+        @AuthHelper(value = "Query i18n", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/{i18nId}")
         @ResponseBody
         public I18nMessage get(@PathVariable("i18nId") int i18nId) {
@@ -90,7 +90,7 @@ public class I18nMessageResource {
          *                查询条件
          * @return i18n的分页类
          */
-        @AuthHelper(value = "Paging Query i18n", isRoot = true)
+        @AuthHelper(value = "Query i18n", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<I18nMessage> pagination(
