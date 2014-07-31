@@ -1382,17 +1382,17 @@ label {
         height:56px;
     }
     .puerto-menu li a i {
-        font-size: 22px;
+        font-size: 10px;
     }
     .puerto-menu li a strong {
-        font-size: 12px;
+        font-size: 10px;
     }
     .puerto-menu li a small {
         font-size: 10px;
     }
     .puerto-menu li a.search input {
         width: 120px;
-        font-size: 12px;
+        font-size: 10px;
     }
     .puerto-menu li a.search buton{
         padding: 8px 10px 9px 10px;
@@ -1502,7 +1502,7 @@ label {
     }
     .puerto-menu li a:hover strong,.puerto-menu li a.active strong {
         display:block;
-        font-size:10px;
+        font-size:8px;
         padding:3px 0;
         position:absolute;
         bottom:0px;
