@@ -29,10 +29,6 @@ var App = function () {
 //            }
             $("#sidebar").css('min-height', docHeight);
             $("#content").css('min-height', docHeight);
-
-            if ($("#make-compact").css("display") == "none" ){
-                $("body").removeClass("compact-sidebar");
-            }
         });
     };
 
@@ -43,25 +39,6 @@ var App = function () {
         $("#content").css('min-height', winHeight);
     };
 
-    var runToogleMenu = function() {
-        $("#toggle-menu").click(function(e) {
-            e.preventDefault();
-            $("body").removeClass("compact-sidebar");
-            $("body").toggleClass("show-menu");
-        });
-    };
-
-    var runCompact = function() {
-        $("#make-compact").click(function(e) {
-            e.preventDefault();
-            $("body").toggleClass("compact-sidebar");
-        });
-        $("#hide-menu").click(function(e) {
-            e.preventDefault();
-            $("body").removeClass("compact-sidebar");
-            $("body").removeClass("show-menu");
-        });
-    };
     var runEnscroll = function() {
         $('.scrollbox').enscroll({
             verticalTrackClass: 'scrollbar-track',
@@ -74,13 +51,10 @@ var App = function () {
             runSideMenu();
             runToTop();
             runResize();
-            runToogleMenu();
-            runCompact();
             runEnscroll();
         },
         runHeight : function() {
             runHeight();
-            runToogleMenu();
         },
         // wrapper function to  block element(indicate loading)
         blockUI: function (el, centerY) {
