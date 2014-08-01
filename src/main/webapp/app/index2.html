@@ -20,6 +20,7 @@
     <!-- Template -->
     <link href="assets/css/main.css" rel="stylesheet">
     <link href="assets/css/custom.css" rel="stylesheet">
+    <link href="assets/css/puerto-menu-h.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="assets/plugins/html5shiv.js"></script>
@@ -31,245 +32,100 @@
 </head>
 <body ng-app="rootApp" ng-cloak>
 
-<!-- Page container -->
-<div class="page-container">
-<!-- Sidebar -->
-<aside id="sidebar">
-    <!-- Sidebar header -->
-    <header class="sidebar-header">
-        <h1>GMS</h1>
-    </header>
-    <!-- /Sidebar header -->
-    <!-- menu -->
-    <ul class="puerto-menu">
-        <li ng-repeat="menu in leftMenus">
-            <a href="{{menu.menuPath}}">
-                <i class="{{menu.icon}}"></i>
-                <p>
-                    <strong translate>{{menu.menuName}}</strong>
-                </p>
+<nav>
+    <ul class="puerto-menu-h mrg10T">
+        <li>
+            <a href="">
+                <i class="fa fa-home"></i>
+                <strong>Home</strong>
+                <small>sweet home</small>
+            </a>
+        </li>
+        <li>
+            <a href="" class="active">
+                <i class="fa fa-edit"></i>
+                <strong>About us</strong>
+                <small>sweet home</small>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="fa fa-gift"></i>
+                <strong>Features</strong>
+                <small>sweet home</small>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="fa fa-globe"></i>
+                <strong>News</strong>
+                <small>sweet home</small>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="fa fa-comments-o"></i>
+                <strong>Blog</strong>
+                <small>what they say</small>
             </a>
             <ul>
-                <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a></li>
+                <li><a href="#"><i class="fa fa-globe"></i>Mission</a></li>
+                <li>
+                    <a href="#"><i class="fa fa-group"></i>Our Team</a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-female"></i>Leyla Sparks</a></li>
+                        <li>
+                            <a href="#"><i class="fa fa-male"></i>Gleb Ismailov</a>
+                            <ul>
+                                <li><a href="#"><i class="fa fa-leaf"></i>About</a></li>
+                                <li><a href="#"><i class="fa fa-tasks"></i>Skills</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="fa fa-female"></i>Viktoria Gibbers</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><i class="fa fa-trophy"></i>Rewards</a></li>
+                <li><a href="#"><i class="fa fa-certificate"></i>Certificates</a></li>
             </ul>
         </li>
+        <li>
+            <a href="">
+                <i class="fa fa-picture-o"></i>
+                <strong>Portfolio</strong>
+                <small>sweet home</small>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="fa fa-envelope-o"></i>
+                <strong>Contacts</strong>
+                <small>drop a line</small>
+            </a>
+        </li>
+        <li class="float">
+            <a class="search">
+                <input type="text" value="search ...">
+                <button><i class="fa fa-search"></i></button>
+            </a>
+            <a href="" class="search-mobile">
+                <i class="fa fa-search"></i>
+            </a>
+        </li>
     </ul>
-    <!-- /menu -->
-</aside>
-<!-- /Sidebar -->
-<div>
-    <!--BEGIN TO TOP-->
-    <a id="totop" href="javascript:;">
-        <i class="fa fa-angle-up"></i>
-    </a>
-    <!--END BACK TO TOP-->
-</div>
-<!-- Content -->
-<div id="content">
-<!-- Header -->
-<nav class="header-site">
-    <div class="container-fluid" id="page-header">
-        <!-- Page title and breadcrumb navigation -->
-
-        <!-- /Page title and breadcrumb navigation -->
-        <!-- Header navigation / icons -->
-        <ul class="header-nav navbar-right">
-            <!-- Messages -->
-            <li class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-envelope-o"></span></a>
-                <span class="badge">3</span>
-                <div class="dropdown-menu panel panel-messages dropdown-arrow pull-right">
-                    <div class="panel-heading">MESSAGES <span class="badge pull-right bg-orange">NEW</span></div>
-                    <!--<div class="panel-body scrollbox">
-                        <ul class="chat">
-                            <li class="left clearfix">
-                                <a href="javascript:;">
-													<span class="chat-img pull-left">
-														<img src="" alt="User Avatar" class="img-circle">
-													</span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jon Bateman</strong>
-                                            <small class="pull-right text-muted">
-                                                <span class="glyphicon glyphicon-time"></span>12 mins ago
-                                            </small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibend...
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="left clearfix">
-                                <a href="javascript:;">
-													<span class="chat-img pull-left">
-														<img src="" alt="User Avatar" class="img-circle">
-													</span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Sam Smalls</strong>
-                                            <small class="pull-right text-muted">
-                                                <span class="glyphicon glyphicon-time"></span>12 mins ago
-                                            </small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibend...
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="left clearfix">
-                                <a href="javascript:;">
-													<span class="chat-img pull-left">
-														<img src=""  alt="User Avatar" class="img-circle">
-													</span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">The Flash</strong>
-                                            <small class="pull-right text-muted">
-                                                <span class="glyphicon glyphicon-time"></span>12 mins ago
-                                            </small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibend...
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="left clearfix">
-                                <a href="javascript:;">
-													<span class="chat-img pull-left">
-														<img src="" alt="User Avatar" class="img-circle">
-													</span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Bruce Nolan</strong>
-                                            <small class="pull-right text-muted">
-                                                <span class="glyphicon glyphicon-time"></span>12 mins ago
-                                            </small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibend...
-                                        </p>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>-->
-                    <footer class="panel-footer text-center">
-                        <a href="javascript:;">View all messages</a>
-                    </footer>
-                </div>
-            </li>
-            <!-- /Messages -->
-
-            <!-- Notifications -->
-            <li class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-bell-o"></span></a>
-                <div class="dropdown-menu panel panel-notifications dropdown-arrow pull-right">
-                    <div class="panel-heading">NOTIFICATIONS</div>
-                    <div class="panel-body scrollbox">
-                        <!--<ul>
-                            <li>
-                                <a href="javascript:;">
-                                    <div class="clearfix">
-														<span class="pull-left">
-															<i class="typcn typcn-heart bg-red"></i>
-															New Customer
-														</span>
-                                        <span class="badge badge-gray pull-right">2</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <div class="clearfix">
-														<span class="pull-left">
-															<i class="typcn typcn-user bg-blue"></i>
-															New Order
-														</span>
-                                        <span class="badge badge-gray pull-right">6</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <div class="clearfix">
-														<span class="pull-left">
-															<i class="typcn typcn-image bg-green"></i>
-
-														</span>
-                                        <span class="badge badge-gray pull-right">125</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <div class="clearfix">
-														<span class="pull-left">
-															<i class="typcn typcn-heart bg-orange"></i>
-															New likes
-														</span>
-                                        <span class="badge badge-gray pull-right">22</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <div class="clearfix">
-														<span class="pull-left">
-															<i class="typcn typcn-user bg-purple"></i>
-															New users
-														</span>
-                                        <span class="badge badge-gray pull-right">6</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <div class="clearfix">
-														<span class="pull-left">
-															<i class="typcn typcn-image bg-yellow"></i>
-															New pictures
-														</span>
-                                        <span class="badge badge-gray pull-right">125</span>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>-->
-                    </div>
-                </div>
-            </li>
-            <!-- /Notifications -->
-
-            <!-- Profile -->
-            <li class="dropdown">
-                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span></a>
-                <ul class="dropdown-menu dropdown-arrow pull-right">
-                    <li><a class="text-violet">{{loginUser.fullName}}</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#/home/profile/{{loginUser.userId}}"><span class="fa fa-edit"></span> {{'label.index.user.profile.edit' | translate}}</a></li>
-                    <li class="divider"></li>
-                    <li><a href="javascript:;" ng-click="logout()"><span class="fa fa-sign-out"></span> {{'label.index.user.logout' | translate}}</a></li>
-                </ul>
-            </li>
-            <!-- /Profile -->
-        </ul>
-        <!-- /Header navigation / icons -->
-    </div>
 </nav>
-<!-- /Header -->
-
-<!-- Content start -->
-<div class="container-fluid" ng-view>
-    <!-- Statistics panels -->
-
-    <!-- /Statistics panels -->
+<div style="background-color: #3498db; color: #ffffff">
+    <ul>
+        <li><a href="#" style="color: #ffffff"><i class="fa fa-female"></i>Leyla Sparks</a></li>
+        <li>
+            <a href="#"><i class="fa fa-male"></i>Gleb Ismailov</a>
+            <ul>
+                <li><a href="#"><i class="fa fa-leaf"></i>About</a></li>
+                <li><a href="#"><i class="fa fa-tasks"></i>Skills</a></li>
+            </ul>
+        </li>
+        <li><a href="#"><i class="fa fa-female"></i>Viktoria Gibbers</a></li>
+    </ul>
 </div>
-</div>
-<!-- /Content -->
-</div>
-<!-- /Page container -->
 
 <!-- PLUGINS -->
 <script src="assets/plugins/jquery-1.10.2.min.js"></script>
