@@ -1118,10 +1118,11 @@ label {
 .puerto-menu li a {
     display: block;
     text-decoration: none;
-    padding: 20px 20px;
+    padding: 10px 20px;
     color: #777;
     text-align: left;
-    height: 56px;
+    /*height: 56px;*/
+    min-height: 56px;
     position: relative;
     border-bottom: 1px solid #EEE;
 }
@@ -1160,11 +1161,12 @@ label {
 }
 
 .puerto-menu li:hover > a {
-    color: #3498db;
+    color: #ffffff;
+    background: #ad3bc4;
 }
 .puerto-menu li a.active {
     position: relative;
-    color: #3498db;
+    color: #5aafef;
     border:0;
     box-shadow: 0 0 5px #DDD;
     -moz-box-shadow: 0 0 5px #DDD;
@@ -1379,7 +1381,7 @@ label {
         width: 150px;
     }
     .puerto-menu li a {
-        height:56px;
+        /*height:56px;*/
     }
     .puerto-menu li a i {
         font-size: 10px;
@@ -1492,7 +1494,7 @@ label {
     .puerto-menu li a {
         position: relative;
         padding: 12px 16px;
-        height:56px;
+        /*height:56px;*/
     }
     .puerto-menu li a small {
         display: none;
