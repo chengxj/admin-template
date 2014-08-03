@@ -44,13 +44,17 @@
     <ul class="puerto-menu">
         <li ng-repeat="menu in leftMenus">
             <a href="{{menu.menuPath}}">
-                <i class="{{menu.icon}}"></i>
-                <p>
-                    <strong translate>{{menu.menuName}}</strong>
+                <p translate>
+                    {{menu.menuName}}
                 </p>
             </a>
             <ul>
-                <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a></li>
+                <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-leaf"></i>About</a></li>
+                        <li><a href="#"><i class="fa fa-tasks"></i>Skills</a></li>
+                    </ul>
+                </li>
             </ul>
         </li>
     </ul>
