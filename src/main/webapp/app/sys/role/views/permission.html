@@ -15,28 +15,22 @@
 <!--1-->
 
 <div class="row">
-    <a class="btn btn-blue"
-       ng-click="saveResourcePermission()"
-       ng-disabled="selectResources.length == 0"
-       ng-hide="clickToken" ed-perm perm="sys:permission:resource:create">
-        <i class="fa fa-check"></i>
-        {{'label.sys.role.permission' | translate}}
-    </a>
 <div class="col-md-12" ng-repeat="menu in menus">
 <div class="panel panel-default">
+    <header class="panel-heading" translate>{{menu.menuName}}
+    </header>
 <div class="panel-body">
-    <!--查询-->
     <div class="row query">
         <div class="col-md-12">
-            <form role="form" class="form-horizontal">
-                <div class="title" translate>{{menu.menuName}}
+            <form role="form" class="form-horizontal mrg15B" ng-repeat="m in menu.children">
+                <div class="title" translate>{{m.menuName}}
                 </div>
                 <div class="form-body">
                     <div class="row">
-                        <div class="col-md-3" ng-repeat="res in menu.sysResources">
+                        <div class="col-md-3" ng-repeat="res in m.sysResources">
                             <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" ed-icheck model-array="selectResources" ng-model="res">
+                                        <input name="resource" type="checkbox" ed-icheck model-array="selectResources" ng-model="res">
                                         {{res.resourceName}}
                                     </label>
                                 </div>
@@ -49,10 +43,35 @@
 
         </div>
     </div>
-    <!--.查询-->
 </div>
 </div>
 </div>
 </div>
 <!--.1-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <a class="btn btn-blue"
+                   ng-click="saveResourcePermission()"
+                   ng-disabled="selectResources.length == 0"
+                   ng-hide="clickToken" ed-perm perm="sys:permission:resource:create">
+                    <i class="fa fa-check"></i>
+                    {{'label.sys.role.permission' | translate}}
+                </a>
+                <a class="btn btn-link"
+                   ng-click="selectAll()">
+                    <i class="fa fa-check"></i>
+                    {{'label.common.op.all' | translate}}
+                </a>
+                <a class="btn btn-link"
+                   ng-click="unSelectAll()">
+                    <i class="fa fa-undo"></i>
+                    {{'label.common.op.cancel' | translate}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 

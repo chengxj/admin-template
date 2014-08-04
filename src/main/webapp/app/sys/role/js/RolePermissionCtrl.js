@@ -1,9 +1,25 @@
-function RolePermissionCtrl($scope, PermissionService, RoleService,MessageService, LocationTo, $routeParams, $q) {
+function RolePermissionCtrl($scope, PermissionService, RoleService,MessageService, LocationTo, $routeParams, $timeout) {
 
     $scope.selectResources = [];
     $scope.clickToken = false;
     RoleService.get({roleId : $routeParams.roleId}, function(data) {
-        $scope.menus = PermissionService.getMenus({roleId : $routeParams.roleId});
+        PermissionService.getMenus({roleId : $routeParams.roleId}, function(data) {
+            var menus = [];
+            var copyData = angular.copy(data);
+            var stripeIndex = 0;
+            _.each(data, function(v, i) {
+                if (v.parentId == -1) {
+                    v.children = [];
+                    _.each(copyData, function(c, j) {
+                        if (c.parentId == v.menuId) {
+                            v.children.push(c);
+                        }
+                    });
+                    menus.push(v);
+                }
+            });
+            $scope.menus = menus;
+        });
 
     }, function() {
         $scope.disabled = true;
@@ -17,5 +33,16 @@ function RolePermissionCtrl($scope, PermissionService, RoleService,MessageServic
             $scope.clickToken = false;
         });
     };
+
+    $scope.selectAll = function() {
+        $timeout(function() {
+            $("[name=resource]").iCheck('check');
+        })
+    }
+    $scope.unSelectAll = function() {
+        $timeout(function() {
+            $("[name=resource]").iCheck('uncheck');
+        })
+    }
 }
-RolePermissionCtrl.$inject = [ '$scope', 'PermissionService','RoleService', 'MessageService', 'LocationTo', '$routeParams', '$q'];
+RolePermissionCtrl.$inject = [ '$scope', 'PermissionService','RoleService', 'MessageService', 'LocationTo', '$routeParams', '$timeout'];

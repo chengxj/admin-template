@@ -77,7 +77,7 @@ public class PermissionServiceImpl implements PermissionService {
 		example.clear();
 		example.equalsTo("isRoot", 0);
 		example.asc("sorted");
-		example.notEqualsTo("parentId", -1);
+//		example.notEqualsTo("parentId", -1);
 		List<SysMenu> sysMenus = sysMenuDao.query(example);
 		List<SysMenuVo> sysMenuVos = new ArrayList<SysMenuVo>();
 

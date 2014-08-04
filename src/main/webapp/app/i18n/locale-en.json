@@ -249,6 +249,7 @@
   "title.order.commodity" : "Commodity Management",
   "title.inventory.mobilesafe" : "Mobile Safe Management",
   "Reource List" : "Reource List",
+  "label.common.op.all" : "Select All",
   "Query Dictory" : "Query Dictory",
   "label.order.task.state" : "Task Status",
   "UnAuthorized User" : "UnAuthorized User",
