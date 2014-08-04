@@ -1,7 +1,5 @@
 package com.edgar.module.sys.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,7 +84,7 @@ public class SysRoleResource {
          *                查询条件
          * @return 角色的分页类
          */
-        @AuthHelper("Query Role")
+        @AuthHelper("Paging Query Role")
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysRole> pagination(
@@ -94,20 +92,6 @@ public class SysRoleResource {
                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                         @ToQueryExample QueryExample example) {
                 return sysRoleService.pagination(example, page, pageSize);
-        }
-
-        /**
-         * 查询角色列表
-         * 
-         * @param example
-         *                查询条件
-         * @return 角色的分页类
-         */
-        @AuthHelper("Query Role")
-        @RequestMapping(method = RequestMethod.GET)
-        @ResponseBody
-        public List<SysRole> query(@ToQueryExample QueryExample example) {
-                return sysRoleService.query(example);
         }
 
         /**

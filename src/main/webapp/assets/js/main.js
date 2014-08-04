@@ -2,10 +2,8 @@
 var App = function () {
     var open = true;
     var runSideMenu = function() {
-        $(".has-submenu").click(function(e) {
-            $('.sidebar-group li').removeClass('active');
-            $(this).closest('li').addClass('active');
-        });
+        $('#menu').metisMenu();
+        $('#menu > li > a:first').addClass('active');
       };
     var runToTop = function() {
         $(window).scroll(function () {

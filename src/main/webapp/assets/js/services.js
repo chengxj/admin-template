@@ -163,6 +163,7 @@ commonService.factory(
         return $resource("sys/user/:userId", {}, {
             update : {method : "put"},
             getRoles : {method : "GET", url : "sys/user/role/:userId", isArray:true},
+            getAllRoles : {method : "GET", url : "sys/user/roles", isArray:true},
             getProfile  : {method : "GET", url : "sys/user/profile/:userId"},
             updateProfile  : {method : "put", url : "sys/user/profile/:userId"},
             updatePassword  : {method : "put", url : "sys/user/password/:userId"}

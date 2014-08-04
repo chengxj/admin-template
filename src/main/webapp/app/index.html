@@ -46,8 +46,9 @@
     <ul id="menu" class="sidebar-menu">
         <li ng-repeat="menu in leftMenus">
             <a href="{{menu.menuPath}}" ed-left-menu>
+                <!--<i class="{{menu.icon}}"></i>-->
                 <span class="sidebar-nav-item" translate>{{menu.menuName}}</span>
-                <span class="fa arrow pad5T"></span>
+                <span class="fa arrow pad5T" ng-if="menu.childMenus.length > 0"></span>
             </a>
             <ul>
                 <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a></li>

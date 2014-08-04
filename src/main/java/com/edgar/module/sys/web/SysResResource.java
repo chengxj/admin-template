@@ -54,7 +54,7 @@ public class SysResResource {
          *                查询条件
          * @return 资源的分页类
          */
-        @AuthHelper(value = "Query Resource", isRoot = true)
+        @AuthHelper(value = "Paging Query Resource", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysResource> pagination(

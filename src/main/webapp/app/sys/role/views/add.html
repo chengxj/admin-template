@@ -58,7 +58,7 @@
                             <button class="btn btn-blue"
                                     type="button"
                                     ng-disabled="form.$invalid || isUnchanged() || clickToken"
-                                    ng-click="save()">
+                                    ng-click="save()" ed-perm perm="sys:role:create">
                                 <i class="fa fa-check"></i>
                                 {{'label.common.op.save' | translate}}
                             </button>

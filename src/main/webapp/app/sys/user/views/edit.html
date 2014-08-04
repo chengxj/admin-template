@@ -83,7 +83,7 @@
                     </div>
                     <div class="form-actions">
                         <div class="col-md-offset-3 col-md-9">
-                            <button class="btn btn-blue" type="button" ng-disabled="form.$invalid || isUnchanged() || clickToken" ng-click="save()">
+                            <button class="btn btn-blue" type="button" ng-disabled="form.$invalid || isUnchanged() || clickToken" ng-click="save()" ed-perm perm="sys:user:update">
                                 <i class="fa fa-check"></i>
                                 {{'label.common.op.save' | translate}}
                             </button>

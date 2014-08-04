@@ -82,7 +82,7 @@ public class SysJobResource {
          *                查询条件
          * @return 作业的分页类
          */
-        @AuthHelper(value = "Query Job", isRoot = true)
+        @AuthHelper(value = "Paging Query Job", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysJob> pagination(

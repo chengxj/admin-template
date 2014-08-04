@@ -25,7 +25,7 @@
                 <!--右键菜单开始-->
                 <div id="context-menu">
                     <ul class="dropdown-menu dropdown-arrow-left" role="menu">
-                        <li ed-perm perm="sys:user:**:delete">
+                        <li ed-perm perm="sys:user:delete">
                             <a href="javascript:;"
                                model-array="selectUsers" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectUsers.length == 0">
@@ -55,7 +55,7 @@
                                data-original-title="{{'label.common.op.delete' | translate}}"
                                model-array="selectUsers" ed-delete-all
                                click-fun="remove(model)" success-fun="reload()" ng-hide="selectUsers.length == 0"
-                               ed-perm perm="sys:user:**:delete">
+                               ed-perm perm="sys:user:delete">
                                 <i class="fa fa-trash-o"></i>
                             </a>
                             <a class="btn btn-green" href="#/sys/user/edit/{{user.userId}}" ed-tooltip

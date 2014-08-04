@@ -1,4 +1,4 @@
-function UserEditCtrl($scope, UserService, RoleService, MessageService, LocationTo, $routeParams, $q) {
+function UserEditCtrl($scope, UserService, MessageService, LocationTo, $routeParams, $q) {
     $scope.getUser = function () {
         $scope.user = UserService.get({userId: $routeParams.userId}, function (data) {
             $scope.master = angular.copy($scope.user);
@@ -8,7 +8,7 @@ function UserEditCtrl($scope, UserService, RoleService, MessageService, Location
     };
     $scope.getUser();
 
-    $q.all([RoleService.query().$promise, UserService.getRoles({userId: $routeParams.userId}).$promise]).then(function(value) {
+    $q.all([UserService.getAllRoles().$promise, UserService.getRoles({userId: $routeParams.userId}).$promise]).then(function(value) {
         var options = [];
         angular.forEach(value[0], function (role, key) {
             var o = {};
@@ -45,4 +45,4 @@ function UserEditCtrl($scope, UserService, RoleService, MessageService, Location
         $scope.getUser();
     };
 }
-UserEditCtrl.$inject = [ '$scope', 'UserService', 'RoleService', 'MessageService', 'LocationTo', '$routeParams', '$q'];
+UserEditCtrl.$inject = [ '$scope', 'UserService', 'MessageService', 'LocationTo', '$routeParams', '$q'];

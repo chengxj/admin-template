@@ -18,7 +18,7 @@
     <a class="btn btn-blue"
        ng-click="saveResourcePermission()"
        ng-disabled="selectResources.length == 0"
-       ng-hide="clickToken">
+       ng-hide="clickToken" ed-perm perm="sys:permission:resource:create">
         <i class="fa fa-check"></i>
         {{'label.sys.role.permission' | translate}}
     </a>

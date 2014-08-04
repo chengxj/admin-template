@@ -1,4 +1,4 @@
-function UserAddCtrl($scope, UserService, RoleService, MessageService, LocationTo) {
+function UserAddCtrl($scope, UserService, MessageService, LocationTo) {
     $scope.master = {};
     $scope.user = angular.copy($scope.master);
     $scope.clickToken = false;
@@ -18,7 +18,7 @@ function UserAddCtrl($scope, UserService, RoleService, MessageService, LocationT
         return angular.equals($scope.user, $scope.master);
     };
 
-    $scope.roles = RoleService.query({}, function (data) {
+    $scope.roles = UserService.getAllRoles({}, function (data) {
         var options = [];
         angular.forEach(data, function (role, key) {
             options.push({id: role.roleId, text: role.roleName});
@@ -28,4 +28,4 @@ function UserAddCtrl($scope, UserService, RoleService, MessageService, LocationT
 //        $scope.$broadcast("init", options);
     });
 }
-UserAddCtrl.$inject = [ '$scope', 'UserService', 'RoleService', 'MessageService', 'LocationTo'];
+UserAddCtrl.$inject = [ '$scope', 'UserService', 'MessageService', 'LocationTo'];

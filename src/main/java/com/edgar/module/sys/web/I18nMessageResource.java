@@ -90,7 +90,7 @@ public class I18nMessageResource {
          *                查询条件
          * @return i18n的分页类
          */
-        @AuthHelper(value = "Query i18n", isRoot = true)
+        @AuthHelper(value = "Paging Query i18n", isRoot = true)
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<I18nMessage> pagination(

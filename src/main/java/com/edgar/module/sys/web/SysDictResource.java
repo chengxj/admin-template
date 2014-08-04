@@ -102,7 +102,7 @@ public class SysDictResource {
          *                查询条件
          * @return 系统字典的分页类
          */
-        @AuthHelper(value = "Query Dictory", isRoot = true, type = AuthType.AUTHC)
+        @AuthHelper(value = "PagingQuery Dictory", isRoot = true, type = AuthType.AUTHC)
         @RequestMapping(method = RequestMethod.GET, value = "/pagination")
         @ResponseBody
         public Pagination<SysDict> pagination(

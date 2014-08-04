@@ -140,7 +140,7 @@ public abstract class ExceptionFactory {
          */
         public static SystemException unSupportMethod() {
                 return new SystemException(BusinessCode.UNSUPPORT_METHOD,
-                                getMessage("msg.error.unSupportMethod "));
+                                getMessage("msg.error.unSupportMethod"));
         }
 
         /**
