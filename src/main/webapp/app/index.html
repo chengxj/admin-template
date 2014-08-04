@@ -11,6 +11,7 @@
     <!-- Icons -->
     <link type="text/css" rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
     <link type="text/css" rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="assets/plugins/metisMenu/jquery.metisMenu.css">
     <link type="text/css" rel="stylesheet" href="assets/plugins/jquery-pace/pace.css">
     <link type="text/css" rel="stylesheet" href="assets/plugins/toastr/toastr.min.css">
     <link type="text/css" rel="stylesheet" href="assets/plugins/icheck/skins/minimal/green.css">
@@ -38,18 +39,16 @@
     <!-- Sidebar header -->
     <header class="sidebar-header">
         <h1>GMS</h1>
-        <a href="javascript:;" id="make-compact"><i class="fa fa-reorder"></i></a>
-        <a href="javascript:;" id="hide-menu"><i class="fa fa-reorder"></i></a>
+        <!--<a href="javascript:;" id="make-compact"><i class="fa fa-reorder"></i></a>
+        <a href="javascript:;" id="hide-menu"><i class="fa fa-reorder"></i></a>-->
     </header>
     <!-- /Sidebar header -->
-    <!-- menu -->
-    <ul class="puerto-menu">
+    <!-- Sidebar group -->
+    <ul id="menu" class="sidebar-menu">
         <li ng-repeat="menu in leftMenus">
             <a href="{{menu.menuPath}}">
-                <i class="{{menu.icon}}"></i>
-                <p>
-                    <strong translate>{{menu.menuName}}</strong>
-                </p>
+                <span class="sidebar-nav-item" translate>{{menu.menuName}}</span>
+                <span class="fa arrow pad5T"></span>
             </a>
             <ul>
                 <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a></li>
@@ -57,6 +56,7 @@
         </li>
 
     </ul>
+
     <!-- /Sidebar group -->
     <!-- Sidebar group
     <ul class="sidebar-group">
@@ -302,7 +302,7 @@
 <script src="assets/plugins/jquery.cookie.js"></script>
 <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/plugins/enscroll-0.6.0.min.js"></script>
-<script src="assets/plugins/multimenu.min.js"></script>
+<script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
 
 <script src="assets/plugins/jquery-pace/pace.min.js"></script>
 <script src="assets/plugins/blockUI/jquery.blockUI.js"></script>
