@@ -2,6 +2,18 @@
 
 var commonDirective = angular.module('app.directives', ["app.services"]);
 
+commonDirective.directive('edLeftMenu', function () {
+    return {
+        restrict: 'AE',
+        link: function postLink(scope, iElement, iAttrs) {
+            iElement.click(function() {
+               $("#menu a").removeClass("active");
+                iElement.addClass("active");
+            });
+        }
+    };
+});
+
 /*
  * ed-page-title指令,将元素自动添加到 #page-header 元素中
  * 用法: <div class="page-title" ed-page-title>
