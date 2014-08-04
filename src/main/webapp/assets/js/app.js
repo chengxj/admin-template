@@ -103,7 +103,6 @@ angular
             $rootScope.loginUser = data.user;
             $timeout(function () {
                 App.init();
-                $("ul.puerto-menu > li > a:eq(4)").addClass("active");
             })
         });
 

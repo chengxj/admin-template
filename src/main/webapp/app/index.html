@@ -38,6 +38,8 @@
     <!-- Sidebar header -->
     <header class="sidebar-header">
         <h1>GMS</h1>
+        <a href="javascript:;" id="make-compact"><i class="fa fa-reorder"></i></a>
+        <a href="javascript:;" id="hide-menu"><i class="fa fa-reorder"></i></a>
     </header>
     <!-- /Sidebar header -->
     <!-- menu -->
@@ -45,29 +47,47 @@
         <li ng-repeat="menu in leftMenus">
             <a href="{{menu.menuPath}}">
                 <i class="{{menu.icon}}"></i>
-                <p >
+                <p>
                     <strong translate>{{menu.menuName}}</strong>
                 </p>
             </a>
             <ul>
-                <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-leaf"></i>About</a></li>
-                        <li><a href="#"><i class="fa fa-tasks"></i>Skills</a></li>
-                    </ul>
-                </li>
+                <li ng-repeat="child in menu.childMenus"><a href="#{{child.menuPath}}" translate>{{child.menuName}}</a></li>
             </ul>
         </li>
+
     </ul>
-    <!-- /menu -->
+    <!-- /Sidebar group -->
+    <!-- Sidebar group
+    <ul class="sidebar-group">
+        <li class="sidebar-group-header">FAVORITES</li>
+        <li><a href="javascript:;"><i class="typcn typcn-starburst text-red"></i> <span>Web design</span></a></li>
+        <li><a href="javascript:;"><i class="typcn typcn-starburst text-blue"></i> <span>Technology</span></a></li>
+        <li><a href="javascript:;"><i class="typcn typcn-starburst text-green"></i> <span>Gadgets</span></a></li>
+    </ul>
+     /Sidebar group
+    <br>
+     Sidebar panel
+    <div class="sidebar-panel">
+        <h4>Upgrade</h4>
+        <p>
+            Upgrade to premium to get rid of the ads!
+            <br>
+            <button class="btn btn-blue btn-block">Learn more...</button>
+        </p>
+    </div>
+     /Sidebar panel
+     Sidebar panel
+    <div class="sidebar-panel">
+        <button class="btn btn-blue btn-block no-margin"><i class="fa fa-plus"></i> Create invoice</button>
+    </div>
+     /Sidebar panel -->
 </aside>
 <!-- /Sidebar -->
 <div>
-    <!--BEGIN TO TOP-->
-    <a id="totop" href="javascript:;">
-        <i class="fa fa-angle-up"></i>
-    </a>
-    <!--END BACK TO TOP-->
+    <!--BEGIN TO TOP--><a id="totop" href="javascript:;">
+    <i class="fa fa-angle-up"></i>
+</a><!--END BACK TO TOP-->
 </div>
 <!-- Content -->
 <div id="content">
