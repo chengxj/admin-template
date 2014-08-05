@@ -15,7 +15,7 @@ import com.edgar.core.repository.QueryExample;
 import com.edgar.core.validator.ValidatorStrategy;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.repository.domain.SysRoleResource;
+import com.edgar.module.sys.repository.domain.SysRoleRes;
 import com.edgar.module.sys.repository.domain.SysRoleRoute;
 import com.edgar.module.sys.repository.domain.SysUserRole;
 import com.edgar.module.sys.validator.SysRoleUpdateValidator;
@@ -40,7 +40,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         @Autowired
         @Setter
-        private CrudRepository<Integer, SysRoleResource> sysRoleResourceDao;
+        private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
 
         @Autowired
         @Setter
@@ -104,7 +104,7 @@ public class SysRoleServiceImpl implements SysRoleService {
                 sysUserRoleDao.delete(example);
                 sysRoleRouteDao.delete(example);
                 sysRoleMenuDao.delete(example);
-                sysRoleResourceDao.delete(example);
+                sysRoleResDao.delete(example);
                 return result;
         }
 

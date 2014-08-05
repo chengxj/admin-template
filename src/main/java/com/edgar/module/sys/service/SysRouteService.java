@@ -10,7 +10,6 @@ import org.springframework.validation.annotation.Validated;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysRoute;
-import com.edgar.module.sys.repository.domain.SysRouteRes;
 
 /**
  * 路由的业务逻辑接口
@@ -81,22 +80,5 @@ public interface SysRouteService {
          * @return 如果删除成功，返回<code>1</code>
          */
         int deleteWithLock(int routeId, @Min(0) long updatedTime);
-
-        /**
-         * 根据路由查询关联的资源
-         * 
-         * @param routeId
-         *                路由ID
-         * @return 路由资源的集合
-         */
-        List<SysRouteRes> getResource(int routeId);
-
-        /**
-         * 保存路由与资源的关联
-         * 
-         * @param command
-         *                路由与资源的关联关系
-         */
-        void saveRouteRes(@NotNull RouteResCommand command);
 
 }

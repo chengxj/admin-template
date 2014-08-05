@@ -71,21 +71,6 @@
                                       ng-show="form.sorted.$error.max && form.sorted.$focused">{{'help.sys.menu.sorted.max' | translate}}</span>
                             </div>
                         </div>
-                        <div class="form-group"
-                             ng-class="{'has-error': form.icon.$dirty && form.icon.$invalid}">
-                            <label for="icon" class="col-md-3 control-label">{{'label.sys.menu.icon' | translate}}
-                            </label>
-
-                            <div class="col-md-5">
-                                <input type="text" class="form-control" name="icon" id="icon"
-                                       ng-model="menu.icon" ed-focus
-                                       ng-maxlength="32">
-                                <span class='help-block'
-                                      ng-show="form.icon.$error.required && form.icon.$focused">{{'help.common.required' | translate}}</span>
-                                <span class='help-block'
-                                      ng-show="form.icon.$error.maxlength && form.icon.$focused">{{'help.common.maxlength32' | translate}}</span>
-                            </div>
-                        </div>
 
                     </div>
                     <div class="form-actions">

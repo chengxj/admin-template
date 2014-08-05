@@ -123,9 +123,7 @@ commonService.factory(
     function ($resource) {
         return $resource("sys/route/:routeId", {}, {
             update : {method : "put"},
-            pagination : {method : 'get',params : {routeId : "pagination"}} ,
-            getResources : {url : 'sys/route/resource/:routeId', method : 'get', isArray: true},
-            saveRouteRes : {url : 'sys/route/resource',method : 'post'}
+            pagination : {method : 'get',params : {routeId : "pagination"}}
         });
     });
 
@@ -144,7 +142,7 @@ commonService.factory(
         return $resource("sys/menu/:menuId", {}, {
             update : {method : "put"},
             getRoutes : {url : 'sys/menu/route/:menuId', method : 'get', isArray: true},
-            saveMenuRoute : {url : 'sys/menu/route',method : 'post'}
+            getResources : {url : 'sys/menu/resource/:menuId', method : 'get', isArray: true}
         });
     });
 

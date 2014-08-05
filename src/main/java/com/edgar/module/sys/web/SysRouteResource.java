@@ -16,8 +16,6 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
 import com.edgar.module.sys.repository.domain.SysRoute;
-import com.edgar.module.sys.repository.domain.SysRouteRes;
-import com.edgar.module.sys.service.RouteResCommand;
 import com.edgar.module.sys.service.SysRouteService;
 
 /**
@@ -128,30 +126,4 @@ public class SysRouteResource {
                 return sysRouteService.findAll();
         }
 
-        /**
-         * 查询与路由关联的资源
-         * 
-         * @return 资源的集合
-         */
-        @AuthHelper(value = "Query relation of resource and route", isRoot = true)
-        @RequestMapping(method = RequestMethod.GET, value = "/resource/{routeId}")
-        @ResponseBody
-        public List<SysRouteRes> getResource(@PathVariable("routeId") int routeId) {
-                return sysRouteService.getResource(routeId);
-        }
-
-        /**
-         * 保存路由与资源的关联
-         * 
-         * @param command
-         *                资源授权的对象
-         * @return 如果授权成功，返回1
-         */
-        @AuthHelper(value = "Relate resource and route", isRoot = true)
-        @RequestMapping(value = "/resource", method = RequestMethod.POST)
-        @ResponseBody
-        public int saveResourcePermission(@RequestBody RouteResCommand command) {
-                sysRouteService.saveRouteRes(command);
-                return 1;
-        }
 }

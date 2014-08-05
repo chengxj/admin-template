@@ -23,10 +23,10 @@ import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.repository.domain.SysRoleResource;
+import com.edgar.module.sys.repository.domain.SysRoleRes;
 import com.edgar.module.sys.repository.domain.SysRoleRoute;
 import com.edgar.module.sys.repository.domain.SysRoute;
-import com.edgar.module.sys.repository.domain.SysRouteRes;
+import com.edgar.module.sys.web.SysRoleResource;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
@@ -40,7 +40,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Autowired
 	@Setter
-	private CrudRepository<Integer, SysRoleResource> sysRoleResourceDao;
+	private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
 
 	@Autowired
 	@Setter
@@ -58,9 +58,9 @@ public class PermissionServiceImpl implements PermissionService {
 	@Setter
 	private CrudRepository<Integer, SysMenu> sysMenuDao;
 
-	@Autowired
-	@Setter
-	private CrudRepository<Integer, SysRouteRes> sysRouteResDao;
+//	@Autowired
+//	@Setter
+//	private CrudRepository<Integer, SysRouteRes> sysRouteResDao;
 
 	@Autowired
 	@Setter
@@ -72,7 +72,7 @@ public class PermissionServiceImpl implements PermissionService {
 		example.equalsTo("roleId", roleId);
 		example.addField("resourceId");
 		Set<Integer> roleResourceIds = new HashSet<Integer>(
-				sysRoleResourceDao.querySingleColumn(example, Integer.class));
+				sysRoleResDao.querySingleColumn(example, Integer.class));
 
 		example.clear();
 		example.equalsTo("isRoot", 0);
@@ -96,8 +96,8 @@ public class PermissionServiceImpl implements PermissionService {
 				example.equalsTo("routeId", routeId);
 				example.addField("resourceId");
 
-				resourceIds.addAll(sysRouteResDao.querySingleColumn(example,
-						Integer.class));
+//				resourceIds.addAll(sysRouteResDao.querySingleColumn(example,
+//						Integer.class));
 
 			}
 			for (Integer resourceId : resourceIds) {
@@ -129,10 +129,10 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public List<SysRoleResource> getResource(int roleId) {
+	public List<SysRoleRes> getResource(int roleId) {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("roleId", roleId);
-		List<SysRoleResource> sysRoleResources = sysRoleResourceDao
+		List<SysRoleRes> sysRoleResources = sysRoleResDao
 				.query(example);
 		return sysRoleResources;
 	}
@@ -161,26 +161,26 @@ public class PermissionServiceImpl implements PermissionService {
 	 *            资源的ID集合
 	 */
 	private void saveRoleRes(int roleId, Set<Integer> resourceIds) {
-		List<SysRoleResource> sysRoleResources = new ArrayList<SysRoleResource>();
+		List<SysRoleRes> sysRoleReses = new ArrayList<SysRoleRes>();
 		for (Integer resourceId : resourceIds) {
-			SysRoleResource sysRoleRes = new SysRoleResource();
+			SysRoleRes sysRoleRes = new SysRoleRes();
 			sysRoleRes.setRoleId(roleId);
 			sysRoleRes.setResourceId(resourceId);
-			sysRoleRes.setRoleResourceId(IDUtils.getNextId());
-			sysRoleResources.add(sysRoleRes);
+			sysRoleRes.setRoleResId(IDUtils.getNextId());
+			sysRoleReses.add(sysRoleRes);
 			SysResource sysRoute = sysResourceDao.get(resourceId);
 			if (sysRoute == null) {
 				throw ExceptionFactory.isNull("msg.error.resource.notexists");
 			}
 		}
-		sysRoleResourceDao.insert(sysRoleResources);
+		sysRoleResDao.insert(sysRoleReses);
 		Set<Integer> routeIds = new HashSet<Integer>();
 		for (Integer resourceId : resourceIds) {
 			QueryExample example = QueryExample.newInstance();
 			example.equalsTo("resourceId", resourceId);
 			example.addField("routeId");
-			routeIds.addAll(sysRouteResDao.querySingleColumn(example,
-					Integer.class));
+//			routeIds.addAll(sysRouteResDao.querySingleColumn(example,
+//					Integer.class));
 		}
 		saveRoleRoute(roleId, routeIds);
 
@@ -292,7 +292,7 @@ public class PermissionServiceImpl implements PermissionService {
 		example.equalsTo("roleId", roleId);
 		sysRoleRouteDao.delete(example);
 		sysRoleMenuDao.delete(example);
-		return sysRoleResourceDao.delete(example);
+		return sysRoleResDao.delete(example);
 	}
 
 	/**

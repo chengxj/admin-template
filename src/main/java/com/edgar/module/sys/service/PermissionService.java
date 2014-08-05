@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 
 import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.repository.domain.SysRoleResource;
+import com.edgar.module.sys.repository.domain.SysRoleRes;
 import com.edgar.module.sys.repository.domain.SysRoleRoute;
 
 @Validated
@@ -39,7 +39,7 @@ public interface PermissionService {
 	 *            角色ID
 	 * @return 角色资源集合
 	 */
-	List<SysRoleResource> getResource(int roleId);
+	List<SysRoleRes> getResource(int roleId);
 
 
 	/**

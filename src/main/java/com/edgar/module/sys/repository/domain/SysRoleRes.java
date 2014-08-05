@@ -3,16 +3,16 @@ package com.edgar.module.sys.repository.domain;
 import javax.annotation.Generated;
 
 /**
- * SysRoleResource is a Querydsl bean type
+ * SysRoleRes is a Querydsl bean type
  */
 @Generated("com.mysema.query.codegen.BeanSerializer")
-public class SysRoleResource {
+public class SysRoleRes {
 
     private Integer resourceId;
 
     private Integer roleId;
 
-    private Integer roleResourceId;
+    private Integer roleResId;
 
     public Integer getResourceId() {
         return resourceId;
@@ -30,12 +30,12 @@ public class SysRoleResource {
         this.roleId = roleId;
     }
 
-    public Integer getRoleResourceId() {
-        return roleResourceId;
+    public Integer getRoleResId() {
+        return roleResId;
     }
 
-    public void setRoleResourceId(Integer roleResourceId) {
-        this.roleResourceId = roleResourceId;
+    public void setRoleResId(Integer roleResId) {
+        this.roleResId = roleResId;
     }
 
 }

@@ -37,7 +37,11 @@ public class QSysMenu extends com.mysema.query.sql.RelationalPathBase<SysMenu> {
 
     public final StringPath menuPath = createString("menuPath");
 
+    public final StringPath menuType = createString("menuType");
+
     public final NumberPath<Integer> parentId = createNumber("parentId", Integer.class);
+
+    public final StringPath permission = createString("permission");
 
     public final NumberPath<Integer> sorted = createNumber("sorted", Integer.class);
 
@@ -72,7 +76,9 @@ public class QSysMenu extends com.mysema.query.sql.RelationalPathBase<SysMenu> {
         addMetadata(menuId, ColumnMetadata.named("menu_id").ofType(4).withSize(10).notNull());
         addMetadata(menuName, ColumnMetadata.named("menu_name").ofType(12).withSize(32).notNull());
         addMetadata(menuPath, ColumnMetadata.named("menu_path").ofType(12).withSize(128));
+        addMetadata(menuType, ColumnMetadata.named("menu_type").ofType(12).withSize(32));
         addMetadata(parentId, ColumnMetadata.named("parent_id").ofType(4).withSize(10).notNull());
+        addMetadata(permission, ColumnMetadata.named("permission").ofType(12).withSize(64));
         addMetadata(sorted, ColumnMetadata.named("sorted").ofType(4).withSize(10));
         addMetadata(updatedTime, ColumnMetadata.named("updated_time").ofType(93).withSize(19).notNull());
     }

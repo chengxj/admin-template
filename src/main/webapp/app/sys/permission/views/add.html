@@ -1,0 +1,164 @@
+<div class="page-title" ed-page-title>
+    <h4>
+        <span>{{'title.sys.menu' | translate}}</span>
+    </h4>
+    <nav>
+        <span class="fa fa-home"></span>
+        <a href="javascript:;">{{'title.common.home' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="#/sys/menu/list">{{'title.sys.menu' | translate}}</a>
+        <span class="fa fa-angle-right"></span>
+        <a href="javascript:;">{{'title.sys.permission.add' | translate}}</a>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <header class="panel-heading">{{'header.sys.permission.info' | translate}}
+            </header>
+            <div class="panel-body">
+                <form role="form" class="form-horizontal" name="form" novalidate>
+                    <div class="form-body">
+                        <div class="form-group"
+                             ng-class="{'has-error': form.menuName.$dirty && form.menuName.$invalid}">
+                            <label for="menuName" class="col-md-3 control-label">{{'label.sys.permission.name' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="menuName" name="menuName"
+                                       ng-model="menu.menuName" ed-focus required ng-maxlength="32">
+                                <span class='help-block'
+                                      ng-show="form.menuName.$error.required && form.menuName.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.menuName.$error.maxlength && form.menuName.$focused">{{'help.common.maxlength32' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.permission.$dirty && form.permission.$invalid}">
+                            <label for="menuName" class="col-md-3 control-label">{{'label.sys.permission' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" id="permission" name="permission"
+                                       ng-model="menu.permission" ed-focus required ng-maxlength="32">
+                                <span class='help-block'
+                                      ng-show="form.permission.$error.required && form.permission.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.permission.$error.maxlength && form.permission.$focused">{{'help.common.maxlength32' | translate}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group"
+                             ng-class="{'has-error': form.sorted.$dirty && form.sorted.$invalid}">
+                            <label for="sorted" class="col-md-3 control-label">{{'label.sys.menu.sorted' | translate}}<span
+                                    class="symbol required"></span>
+                            </label>
+
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="sorted" id="sorted"
+                                       ng-model="menu.sorted" ed-integer ed-focus
+                                       required min="0" max="9999">
+                                <span class='help-block'
+                                      ng-show="form.sorted.$error.required && form.sorted.$focused">{{'help.common.required' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.sorted.$error.integer && form.sorted.$focused">{{'help.common.int' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.sorted.$error.min && form.sorted.$focused">{{'help.sys.menu.sorted.min' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.sorted.$error.max && form.sorted.$focused">{{'help.sys.menu.sorted.max' | translate}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <!-- 路由 -->
+    <div class="col-md-6 col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr role="row">
+                        <th class="width20">
+                            <input type="checkbox" ed-check-all/>
+                        </th>
+                        <th>
+                            {{'label.sys.route.name' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="route in routes">
+                        <td class="width20">
+                            <input name="pk" type="checkbox" ng-model="route"
+                                   model-array="selectRoutes" ed-checkbox showcontextmenu="false"/>
+                        </td>
+                        <td translate>{{route.name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- .路由 -->
+    <!-- 资源 -->
+    <div class="col-md-6 col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr role="row">
+                        <th class="width20">
+                            <input type="checkbox" ed-check-all el-name="resourcePk"/>
+                        </th>
+                        <th>
+                            {{'label.sys.resource.name' | translate}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="resource in resources">
+                        <td class="width20">
+                            <input name="resourcePk" type="checkbox" ng-model="resource"
+                                   model-array="selectResources" ed-checkbox showcontextmenu="false"/>
+                        </td>
+                        <td translate>{{resource.resourceName}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- .资源 -->
+</div>
+
+
+<div class="row">
+    <div class="col-md-offset-3 col-md-9">
+        <button class="btn btn-blue"
+                type="button"
+                ng-disabled="form.$invalid || isUnchanged() || clickToken"
+                ng-click="save()">
+            <i class="fa fa-check"></i>
+            {{'label.common.op.save' | translate}}
+        </button>
+        <label class="blank5 pull-right"></label>
+        <a class="btn btn-default" type="button"
+           href="#/sys/menu/list">
+            <i class="fa fa-undo"></i>
+            {{'label.common.op.cancel' | translate}}
+        </a>
+    </div>
+</div>

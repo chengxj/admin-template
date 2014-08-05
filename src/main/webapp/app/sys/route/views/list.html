@@ -15,7 +15,7 @@
         <div class="panel panel-default">
             <header class="panel-heading">{{'header.sys.route.list' | translate}}
                 <div class="pull-right">
-                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
+                    <a href="javascript:;" class="btn btn-xs btn-link" ed-reload
                        reload-fun="reload()">
                         <i class="fa fa-refresh"></i>
                     </a>
@@ -40,12 +40,6 @@
                                 {{'label.common.op.edit' | translate}}
                             </a>
                         </li>
-                        <li>
-                            <a href="#/sys/route/resource/{{route.routeId}}" ng-hide="selectRoutes.length != 1">
-                                <i class="fa fa-chain"></i>
-                                {{'label.sys.route.relate' | translate}}
-                            </a>
-                        </li>
                     </ul>
                 </div>
                 <!--右键菜单结束-->
@@ -66,10 +60,6 @@
                             <a class="btn btn-green" href="#/sys/route/edit/{{route.routeId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectRoutes.length != 1">
                                 <i class="fa fa-edit"></i>
-                            </a>
-                            <a class="btn btn-purple" href="#/sys/route/resource/{{route.routeId}}" ed-tooltip
-                               data-original-title="{{'label.sys.route.relate' | translate}}" ng-hide="selectRoutes.length != 1">
-                                <i class="fa fa-chain"></i>
                             </a>
                         </div>
 

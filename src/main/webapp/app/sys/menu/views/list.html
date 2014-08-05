@@ -10,109 +10,85 @@
     </nav>
 </div>
 
+<!--工具栏-->
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
-            <header class="panel-heading">{{'header.sys.menu.list' | translate}}
+            <div class="panel-body">
+                <a class="btn btn-blue" href="#/sys/menu/add" ed-tooltip
+                   data-original-title="{{'label.sys.menu.add' | translate}}">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--.工具栏-->
+
+<div class="row">
+    <div class="col-md-12" ng-repeat="menu in menus">
+        <div class="panel panel-default">
+            <header class="panel-heading"><label translate>{{menu.menuName}}</label>
                 <div class="pull-right">
-                    <a href="javascript:;" class="btn btn-xs btn-link panel-refresh" ed-reload
-                       reload-fun="reload()">
-                        <i class="fa fa-refresh"></i>
+                    <a class="btn btn-xs btn-link" href="#/sys/menu/addChild/{{menu.menuId}}">
+                        {{'label.sys.menu.addchild' | translate}}
+                    </a>
+                    <a class="btn btn-xs btn-link" href="#/sys/permission/add/{{child1.menuId}}">
+                        {{'label.sys.permission.add' | translate}}
+                    </a>
+                    <a class="btn btn-xs btn-link" type="button" ed-delete
+                       click-fun="remove(menu)" success-fun="reload()">
+                        {{'label.common.op.del' | translate}}
+                    </a>
+                    <a class="btn btn-xs btn-link" href="#/sys/menu/edit/{{menu.menuId}}">
+                        {{'label.common.op.edit' | translate}}
                     </a>
                 </div>
             </header>
             <div class="panel-body">
-                <!--右键菜单开始-->
-                <div id="context-menu">
-                    <ul class="dropdown-menu dropdown-arrow-left" role="menu">
-                        <li>
-                            <a href="javascript:;" ed-tooltip
-                               model-array="selectMenus" ed-delete-all
-                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectMenus.length == 0">
-                                <i class="fa fa-trash-o"></i>
-                                {{'label.common.op.delete' | translate}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/sys/menu/edit/{{menu.menuId}}" ed-tooltip
-                               ng-hide="selectMenus.length != 1">
-                                <i class="fa fa-edit"></i>
-                                {{'label.common.op.edit' | translate}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/sys/menu/addChild/{{menu.menuId}}" ed-tooltip
-                               ng-hide="selectMenus.length != 1 || menu.parentId != -1">
-                                <i class="fa fa-edit"></i>
-                                {{'label.sys.menu.addchild' | translate}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/sys/menu/route/{{menu.menuId}}" ng-hide="selectMenus.length != 1">
-                                <i class="fa fa-chain"></i>
-                                {{'label.sys.menu.relate' | translate}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <!--右键菜单结束-->
-                <!--工具栏开始-->
-                <div class="table-tools mrg5B">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                            <a class="btn btn-blue" href="#/sys/menu/add" ed-tooltip
-                               data-original-title="{{'label.sys.menu.add' | translate}}">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                            <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
-                               data-original-title="{{'label.common.op.delete' | translate}}"
-                               model-array="selectMenus" ed-delete-all
-                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectMenus.length == 0">
-                                <i class="fa fa-trash-o"></i>
-                            </a>
-                            <a class="btn btn-green" href="#/sys/menu/edit/{{menu.menuId}}" ed-tooltip
-                               data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectMenus.length != 1">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a class="btn btn-orange" href="#/sys/menu/addChild/{{menu.menuId}}" ed-tooltip
-                               data-original-title="{{'label.sys.menu.addchild' | translate}}" ng-hide="selectMenus.length != 1 || menu.parentId != -1">
-                                <i class="fa fa fa-plus-square"></i>
-                            </a>
-                            <a class="btn btn-purple" href="#/sys/menu/route/{{menu.menuId}}" ed-tooltip
-                               data-original-title="{{'label.sys.menu.relate' | translate}}" ng-hide="selectMenus.length != 1">
-                                <i class="fa fa-chain"></i>
-                            </a>
-                        </div>
+                <div class="row query">
+                    <div class="col-md-12">
+                        <form role="form" class="form-horizontal mrg15B" ng-repeat="child1 in menu.children">
+                            <div class="title" translate>
+                                {{child1.menuName}}
+                            </div>
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="pull-right col-md-4 col-sm-12">
+                                        <a class="btn btn-link btn-xs" href="#/sys/permission/add/{{child1.menuId}}">
+                                            {{'label.sys.permission.add' | translate}}
+                                        </a>
+                                        <a class="btn btn-link btn-xs" type="button" ed-delete
+                                           click-fun="remove(child1)" success-fun="reload()">
+                                            {{'label.common.op.del' | translate}}
+                                        </a>
+                                        <a class="btn btn-link btn-xs" href="#/sys/menu/edit/{{child1.menuId}}">
+                                            {{'label.sys.permission.edit' | translate}}
+                                        </a>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-6" ng-repeat="child2 in child1.children">
+                                        <label translate>{{child2.menuName}}</label>
+                                        <div class="btn-group btn-group-xs">
+                                            <a class="btn btn-xs btn-link" type="button" ed-delete
+                                               click-fun="remove(child2)" success-fun="reload()">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                            <a class="btn btn-xs btn-link" href="#/sys/permission/edit/{{child2.menuId}}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </form>
 
                     </div>
                 </div>
-                <!--工具栏结束-->
-                <table class="table table-bordered tree">
-                    <thead>
-                    <tr role="row">
-                        <th>
-                            <span class="mrg15L"><input type="checkbox" ed-check-all/></span>
-                            {{'label.sys.menu.name' | translate}}
-                        </th>
-                        <th>
-                            {{'label.sys.menu.path' | translate}}
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="menu in menus" ng-class="menu.class" data-toggle="context"
-                        data-target="#context-menu" ed-treegrid>
-                        <td>
-                            <span style="{{menu.style}}">
-                                <input name="pk" type="checkbox" ng-model="menu"
-                                       model-array="selectMenus" ed-checkbox/>
-                            </span>
-                            <span translate>{{menu.menuName}}</span>
-                        </td>
-                        <td>{{menu.menuPath}}</td>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

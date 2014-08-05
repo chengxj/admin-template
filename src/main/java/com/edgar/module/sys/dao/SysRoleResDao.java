@@ -3,8 +3,8 @@ package com.edgar.module.sys.dao;
 import org.springframework.stereotype.Repository;
 
 import com.edgar.core.repository.AbstractCrudRepositoryTemplate;
-import com.edgar.module.sys.repository.domain.SysRoleResource;
-import com.edgar.module.sys.repository.querydsl.QSysRoleResource;
+import com.edgar.module.sys.repository.domain.SysRoleRes;
+import com.edgar.module.sys.repository.querydsl.QSysRoleRes;
 import com.mysema.query.sql.RelationalPathBase;
 
 /**
@@ -14,11 +14,11 @@ import com.mysema.query.sql.RelationalPathBase;
  * @version 1.0
  */
 @Repository
-public class SysRoleResourceDao extends AbstractCrudRepositoryTemplate<Integer, SysRoleResource> {
+public class SysRoleResDao extends AbstractCrudRepositoryTemplate<Integer, SysRoleRes> {
 
         @Override
         public RelationalPathBase<?> getPathBase() {
-                return QSysRoleResource.sysRoleResource;
+                return QSysRoleRes.sysRoleRes;
         }
 
         @Override

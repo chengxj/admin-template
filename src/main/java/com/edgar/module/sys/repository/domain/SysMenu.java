@@ -20,7 +20,11 @@ public class SysMenu {
 
     private String menuPath;
 
+    private String menuType;
+
     private Integer parentId;
+
+    private String permission;
 
     private Integer sorted;
 
@@ -74,12 +78,28 @@ public class SysMenu {
         this.menuPath = menuPath;
     }
 
+    public String getMenuType() {
+        return menuType;
+    }
+
+    public void setMenuType(String menuType) {
+        this.menuType = menuType;
+    }
+
     public Integer getParentId() {
         return parentId;
     }
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 
     public Integer getSorted() {

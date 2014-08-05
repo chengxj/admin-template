@@ -24,7 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.edgar.module.sys.repository.domain.SysRole;
-import com.edgar.module.sys.repository.domain.SysRoleResource;
+import com.edgar.module.sys.repository.domain.SysRoleRes;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserRole;
 import com.edgar.module.sys.service.PermissionService;
@@ -159,9 +159,9 @@ public class CustomSecurityRealm extends JdbcRealm {
 	protected Set<String> getPermissions(int userId, List<SysRole> roles) {
 		Set<String> permissions = new LinkedHashSet<String>();
 		for (SysRole role : roles) {
-			List<SysRoleResource> sysRoleMenus = permissionService
+			List<SysRoleRes> sysRoleRes = permissionService
 					.getResource(role.getRoleId());
-			for (SysRoleResource sysRoleResource : sysRoleMenus) {
+			for (SysRoleRes sysRoleResource : sysRoleRes) {
 				permissions.add(sysResourceService.get(
 						sysRoleResource.getResourceId()).getPermission());
 			}

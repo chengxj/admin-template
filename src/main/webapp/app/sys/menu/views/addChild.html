@@ -37,14 +37,19 @@
                         </div>
                         <div class="form-group"
                              ng-class="{'has-error': form.menuPath.$dirty && form.menuPath.$invalid}">
-                            <label for="menuPath" class="col-md-3 control-label">{{'label.sys.route.url' | translate}}</label>
+                            <label for="menuPath" class="col-md-3 control-label">{{'label.sys.route.url' | translate}}
+                            <span
+                                    class="symbol required"></span>
+                            </label>
 
                             <div class="col-md-5">
                                 <input type="text" class="form-control" name="menuPath" id="menuPath"
                                        ng-model="menu.menuPath" ng-pattern="/^(/:?[\d\w_]+)+$/" ed-focus
-                                       ng-maxlength="128">
+                                       ng-maxlength="128" required>
                                 <span class='help-block'
                                       ng-show="form.menuPath.$focused">{{'help.sys.route.url' | translate}}</span>
+                                <span class='help-block'
+                                      ng-show="form.menuPath.$error.required && form.menuPath.$focused">{{'help.common.required' | translate}}</span>
                                 <span class='help-block'
                                       ng-show="form.menuPath.$error.pattern && form.menuPath.$focused">{{'help.sys.route.url.pattern' | translate}}</span>
                                 <span class='help-block'
@@ -69,21 +74,6 @@
                                       ng-show="form.sorted.$error.min && form.sorted.$focused">{{'help.sys.menu.sorted.min' | translate}}</span>
                                 <span class='help-block'
                                       ng-show="form.sorted.$error.max && form.sorted.$focused">{{'help.sys.menu.sorted.max' | translate}}</span>
-                            </div>
-                        </div>
-                        <div class="form-group"
-                             ng-class="{'has-error': form.icon.$dirty && form.icon.$invalid}">
-                            <label for="icon" class="col-md-3 control-label">{{'label.sys.menu.icon' | translate}}
-                            </label>
-
-                            <div class="col-md-5">
-                                <input type="text" class="form-control" name="icon" id="icon"
-                                       ng-model="menu.icon" ed-focus
-                                       ng-maxlength="32">
-                                <span class='help-block'
-                                      ng-show="form.icon.$error.required && form.icon.$focused">{{'help.common.required' | translate}}</span>
-                                <span class='help-block'
-                                      ng-show="form.icon.$error.maxlength && form.icon.$focused">{{'help.common.maxlength32' | translate}}</span>
                             </div>
                         </div>
                     </div>
