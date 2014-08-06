@@ -123,7 +123,10 @@ public class SysMenuServiceImpl implements SysMenuService {
 		updateValidator.validator(sysMenu);
 		int result = sysMenuDao.update(sysMenu);
 
-		deleteMenuRelation(sysMenu.getMenuId());
+		QueryExample example = QueryExample.newInstance();
+		example.equalsTo("menuId", sysMenu.getMenuId());
+		sysMenuRouteDao.delete(example);
+		sysMenuResDao.delete(example);
 		insertMenuRoute(sysMenu);
 		insertMenuRes(sysMenu);
 		return result;
