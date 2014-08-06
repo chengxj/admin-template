@@ -31,7 +31,7 @@
                         <li ed-perm perm="sys:role:delete">
                             <a href="javascript:;"
                                model-array="selectRoles" ed-delete-all
-                               click-fun="remove(role)" success-fun="reload()" ng-hide="selectRoles.length == 0">
+                               click-fun="remove(model)" success-fun="reload()" ng-hide="selectRoles.length == 0">
                                 <i class="fa fa-trash-o"></i>
                                 {{'label.common.op.delete' | translate}}
                             </a>
