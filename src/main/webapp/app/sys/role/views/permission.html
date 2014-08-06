@@ -13,39 +13,40 @@
 </div>
 
 <!--1-->
-
 <div class="row">
-<div class="col-md-12" ng-repeat="menu in menus">
-<div class="panel panel-default">
-    <header class="panel-heading" translate>{{menu.menuName}}
-    </header>
-<div class="panel-body">
-    <div class="row query">
-        <div class="col-md-12">
-            <form role="form" class="form-horizontal mrg15B" ng-repeat="m in menu.children">
-                <div class="title" translate>{{m.menuName}}
-                </div>
-                <div class="form-body">
-                    <div class="row">
-                        <div class="col-md-3" ng-repeat="res in m.sysResources">
-                            <div class="checkbox">
-                                    <label>
-                                        <input name="resource" type="checkbox" ed-icheck model-array="selectResources" ng-model="res">
-                                        {{res.resourceName}}
-                                    </label>
+    <div class="col-md-12" ng-repeat="menu in menus">
+        <div class="panel panel-default">
+            <header class="panel-heading"><label translate>{{menu.menuName}}</label>
+            </header>
+            <div class="panel-body">
+                <div class="row query">
+                    <div class="col-md-12">
+                        <form role="form" class="form-horizontal mrg15B" ng-repeat="child1 in menu.children">
+                            <div class="title">
+                                <input name="resource" type="checkbox" ed-icheck model-array="selectPermissions" ng-model="child1">
+                                <label translate>{{child1.menuName}}</label>
+                            </div>
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-4" ng-repeat="child2 in child1.children">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="resource" type="checkbox" ed-icheck model-array="selectPermissions" ng-model="child2">
+                                                {{child2.menuName}}
+                                            </label>
+                                        </div>
+                                    </div>
+
                                 </div>
-                        </div>
+                            </div>
+
+                        </form>
 
                     </div>
                 </div>
-
-            </form>
-
+            </div>
         </div>
     </div>
-</div>
-</div>
-</div>
 </div>
 <!--.1-->
 
@@ -54,9 +55,9 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <a class="btn btn-blue"
-                   ng-click="saveResourcePermission()"
-                   ng-disabled="selectResources.length == 0"
-                   ng-hide="clickToken" ed-perm perm="sys:permission:resource:create">
+                   ng-click="savePermission()"
+                   ng-disabled="selectPermissions.length == 0"
+                   ng-hide="clickToken">
                     <i class="fa fa-check"></i>
                     {{'label.sys.role.permission' | translate}}
                 </a>

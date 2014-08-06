@@ -1,33 +1,46 @@
-function RolePermissionCtrl($scope, PermissionService, RoleService,MessageService, LocationTo, $routeParams, $timeout) {
+function RolePermissionCtrl($scope,MenuService, PermissionService, RoleService,MessageService, LocationTo, $routeParams, $timeout, $q) {
 
-    $scope.selectResources = [];
+    $scope.selectPermissions = [];
     $scope.clickToken = false;
-    RoleService.get({roleId : $routeParams.roleId}, function(data) {
-        PermissionService.getMenus({roleId : $routeParams.roleId}, function(data) {
-            var menus = [];
-            var copyData = angular.copy(data);
-            var stripeIndex = 0;
-            _.each(data, function(v, i) {
-                if (v.parentId == -1) {
-                    v.children = [];
-                    _.each(copyData, function(c, j) {
-                        if (c.parentId == v.menuId) {
-                            v.children.push(c);
-                        }
-                    });
-                    menus.push(v);
-                }
-            });
-            $scope.menus = menus;
-        });
+//    RoleService.get({roleId : $routeParams.roleId}, function(data) {
+//        PermissionService.getMenus({roleId : $routeParams.roleId}, function(data) {
+//            var menus = [];
+//            var copyData = angular.copy(data);
+//            var stripeIndex = 0;
+//            _.each(data, function(v, i) {
+//                if (v.parentId == -1) {
+//                    v.children = [];
+//                    _.each(copyData, function(c, j) {
+//                        if (c.parentId == v.menuId) {
+//                            v.children.push(c);
+//                        }
+//                    });
+//                    menus.push(v);
+//                }
+//            });
+//            $scope.menus = menus;
+//        });
+//
+//    }, function() {
+//        $scope.disabled = true;
+//    });
 
-    }, function() {
-        $scope.disabled = true;
+    $q.all([MenuService.query().$promise, PermissionService.getMenus({roleId : $routeParams.roleId}).$promise]).then(function(value) {
+        var data = value[0];
+        var copyData = angular.copy(data);
+        var stripeIndex = 0;
+        var menus = _.filter(data, function(v, i) {
+            v.checked = _.some(value[1], function(m) {
+                return m.menuId == v.menuId;
+            });
+            return v;
+        });
+        $scope.menus = menus;
     });
 
-    $scope.saveResourcePermission = function () {
-        var resourceIds = _.pluck($scope.selectResources, "resourceId");
-        PermissionService.saveResourcePermission({roleId: $routeParams.roleId, resourceIds: resourceIds}, function () {
+    $scope.savePermission = function () {
+        var permissionIds = _.pluck($scope.selectPermissions, "menuId");
+        PermissionService.save({roleId: $routeParams.roleId, permissionIds: permissionIds}, function () {
             MessageService.saveSuccess();
         }, function () {
             $scope.clickToken = false;
@@ -45,4 +58,4 @@ function RolePermissionCtrl($scope, PermissionService, RoleService,MessageServic
         })
     }
 }
-RolePermissionCtrl.$inject = [ '$scope', 'PermissionService','RoleService', 'MessageService', 'LocationTo', '$routeParams', '$timeout'];
+RolePermissionCtrl.$inject = [ '$scope', 'MenuService', 'PermissionService','RoleService', 'MessageService', 'LocationTo', '$routeParams', '$timeout', '$q'];

@@ -150,8 +150,7 @@ commonService.factory(
     'PermissionService',
     function ($resource) {
         return $resource("sys/permission/:roleId", {}, {
-            getMenus : {url : 'sys/permission/menu/:roleId',method : 'GET', isArray: true},
-            saveResourcePermission : {method : 'post', params: {roleId : "resource"}}
+            getMenus : {url : 'sys/permission/menu/:roleId',method : 'GET', isArray: true}
         });
     });
 
