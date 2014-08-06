@@ -2219,7 +2219,7 @@ form.form-minus {
     border-left: 1px solid #E7E7E7;
     border-bottom: 1px solid #EEE;
     text-align: left;
-    height: 36px;
+    min-height: 36px;
     position: relative;
 }
 
@@ -2305,11 +2305,11 @@ form.form-minus {
     }
 
     .page-container {
-        padding-left: 90px;
+        padding-left: 100px;
     }
 
     #sidebar {
-        width: 90px;
+        width: 100px;
     }
 
     .header-site {
@@ -2350,7 +2350,7 @@ form.form-minus {
     }
 
     .sidebar-menu {
-        width: 70px;
+        width: 80px;
     }
 
     .sidebar-menu li a {
@@ -2377,7 +2377,7 @@ form.form-minus {
 
     .sidebar-menu li ul,
     .sidebar-menu li ul li ul {
-        min-width: 70px;
+        min-width: 80px;
     }
 
     .sidebar-menu li ul li a {
