@@ -40,7 +40,7 @@ public class SysUserResource {
 
 	@Autowired
 	private SysUserService sysUserService;
-	
+
 	@Autowired
 	private SysRoleService sysRoleService;
 
@@ -135,10 +135,10 @@ public class SysUserResource {
 	 *            用户名
 	 * @return 如果存在，返回false
 	 */
-	@AuthHelper(value = "Check Unique Username", type = AuthType.AUTHC)
+	@AuthHelper(value = "Check Unique Username")
 	@RequestMapping(method = RequestMethod.GET, value = "/check/username")
 	@ResponseBody
-	public ModelAndView checkDictCode(@RequestParam("field") String username) {
+	public ModelAndView checkUsername(@RequestParam("field") String username) {
 		Assert.hasText(username);
 		boolean result = sysUserService.checkUsername(username);
 		return ResponseMessage.asModelAndView(result);
@@ -151,7 +151,7 @@ public class SysUserResource {
 	 *            查询条件
 	 * @return 角色的分页类
 	 */
-	@AuthHelper(value = "Query Role", type = AuthType.AUTHC)
+	@AuthHelper(value = "Query Role")
 	@RequestMapping(method = RequestMethod.GET, value = "/roles")
 	@ResponseBody
 	public List<SysRole> query(@ToQueryExample QueryExample example) {
@@ -165,7 +165,7 @@ public class SysUserResource {
 	 *            用户ID
 	 * @return 用户角色列表
 	 */
-	@AuthHelper(value = "Query the roles of user", type = AuthType.AUTHC)
+	@AuthHelper(value = "Query the roles of user")
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/role/{userId}")
 	public List<SysUserRole> getRoles(@PathVariable("userId") int userId) {

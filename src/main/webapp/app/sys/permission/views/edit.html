@@ -42,12 +42,7 @@
                             </label>
 
                             <div class="col-md-5">
-                                <input type="text" class="form-control" id="permission" name="permission"
-                                       ng-model="menu.permission" ed-focus required ng-maxlength="32">
-                                <span class='help-block'
-                                      ng-show="form.permission.$error.required && form.permission.$focused">{{'help.common.required' | translate}}</span>
-                                <span class='help-block'
-                                      ng-show="form.permission.$error.maxlength && form.permission.$focused">{{'help.common.maxlength32' | translate}}</span>
+                                <p class="form-control-static">{{menu.permission}}</p>
                             </div>
                         </div>
                         <div class="form-group"

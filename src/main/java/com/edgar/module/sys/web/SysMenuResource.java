@@ -4,16 +4,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.edgar.core.mvc.ToQueryExample;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
+import com.edgar.core.view.ResponseMessage;
 import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysMenuRes;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
@@ -133,6 +136,22 @@ public class SysMenuResource {
 	@ResponseBody
 	public List<SysMenuRes> getResource(@PathVariable("menuId") int menuId) {
 		return sysMenuService.getResource(menuId);
+	}
+
+	/**
+	 * 校验用户名是否唯一
+	 * 
+	 * @param username
+	 *            用户名
+	 * @return 如果存在，返回false
+	 */
+	@AuthHelper(value = "Check Unique Permission", isRoot=true)
+	@RequestMapping(method = RequestMethod.GET, value = "/check/permisson")
+	@ResponseBody
+	public ModelAndView checkUsername(@RequestParam("field") String permisson) {
+		Assert.hasText(permisson);
+		boolean result = sysMenuService.checkPermisson(permisson);
+		return ResponseMessage.asModelAndView(result);
 	}
 
 }

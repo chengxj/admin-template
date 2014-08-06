@@ -174,7 +174,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		List<SysMenu> children = sysMenuDao.query(example);
 		for (SysMenu childMenu : children) {
 			sysMenuVo.addChild(getMenu(childMenu));
-		}		
+		}
 		return sysMenuVo;
 	}
 
@@ -190,6 +190,17 @@ public class SysMenuServiceImpl implements SysMenuService {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("menuId", menuId);
 		return sysMenuResDao.query(example);
+	}
+
+	@Override
+	public boolean checkPermisson(String permisson) {
+		QueryExample example = QueryExample.newInstance();
+		example.equalsTo("permission", permisson);
+		List<SysMenu> sysUsers = sysMenuDao.query(example);
+		if (sysUsers.isEmpty()) {
+			return true;
+		}
+		return false;
 	}
 
 }

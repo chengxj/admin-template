@@ -161,6 +161,7 @@
   "label.index.account.cancel" : "Account Cancellation",
   "title.financial.bill" : "Bill List",
   "label.profile.newpassword" : "New Password",
+  "help.sys.menu.permission.unique" : "Permission already exists",
   "Check Unique Dictory" : "Check Unique Dictory",
   "Update Route" : "Update Route",
   "label.order.task.type" : "Task Type",

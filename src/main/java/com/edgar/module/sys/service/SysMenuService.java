@@ -91,4 +91,13 @@ public interface SysMenuService {
 	 */
 	List<SysMenuRes> getResource(int menuId);
 
+	/**
+	 * 检查权限字符串是否存在
+	 * 
+	 * @param permisson
+	 *            权限字符串
+	 * @return 如果存在，返回false
+	 */
+	boolean checkPermisson(String permisson);
+
 }

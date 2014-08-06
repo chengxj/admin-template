@@ -161,6 +161,7 @@
   "label.index.account.cancel" : "销户",
   "title.financial.bill" : "账单列表",
   "label.profile.newpassword" : "新密码",
+  "help.sys.menu.permission.unique" : "权限字符串已经存在",
   "Check Unique Dictory" : "校验字典码是否唯一",
   "Update Route" : "更新路由",
   "label.order.task.type" : "任务类型",
