@@ -23,12 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.domain.SysRole;
-import com.edgar.module.sys.repository.domain.SysRoleRes;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserRole;
 import com.edgar.module.sys.service.PermissionService;
-import com.edgar.module.sys.service.SysResourceService;
 import com.edgar.module.sys.service.SysRoleService;
 import com.edgar.module.sys.service.SysUserService;
 
@@ -48,9 +47,6 @@ public class CustomSecurityRealm extends JdbcRealm {
 
 	@Autowired
 	private SysRoleService sysRoleService;
-
-	@Autowired
-	private SysResourceService sysResourceService;
 
 	@Autowired
 	private PermissionService permissionService;
@@ -159,11 +155,10 @@ public class CustomSecurityRealm extends JdbcRealm {
 	protected Set<String> getPermissions(int userId, List<SysRole> roles) {
 		Set<String> permissions = new LinkedHashSet<String>();
 		for (SysRole role : roles) {
-			List<SysRoleRes> sysRoleRes = permissionService
+			List<SysResource> sysResources = permissionService
 					.getResource(role.getRoleId());
-			for (SysRoleRes sysRoleResource : sysRoleRes) {
-				permissions.add(sysResourceService.get(
-						sysRoleResource.getResourceId()).getPermission());
+			for (SysResource sysResource : sysResources) {
+				permissions.add(sysResource.getPermission());
 			}
 		}
 

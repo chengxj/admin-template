@@ -1,6 +1,7 @@
 package com.edgar.core.shiro;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class LoginUser extends SysUser implements Serializable {
         /**
          * 授权列表
          */
-        private Set<String> permissions;
+        private final Set<String> permissions = new HashSet<String>();
 
         public SysUserProfile getProfile() {
                 return profile;
@@ -52,9 +53,10 @@ public class LoginUser extends SysUser implements Serializable {
         public Set<String> getPermissions() {
                 return permissions;
         }
-
-        public void setPermissions(Set<String> permissions) {
-                this.permissions = permissions;
+        
+        public void addPermission(String perm) {
+        	permissions.add(perm);
         }
+
 
 }

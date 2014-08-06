@@ -4,43 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.edgar.module.sys.repository.domain.SysMenu;
-import com.edgar.module.sys.repository.domain.SysResource;
-import com.edgar.module.sys.repository.domain.SysRoute;
 
 public class SysMenuVo extends SysMenu {
 
-	private final List<SysMenu> children = new ArrayList<SysMenu>();
-
-	private final List<SysRoute> routes = new ArrayList<SysRoute>();
-
-	private final List<SysResource> resources = new ArrayList<SysResource>();
+	private final List<SysMenuVo> children = new ArrayList<SysMenuVo>();
 
 	private List<Integer> routeIds = new ArrayList<Integer>();
-	
+
 	private List<Integer> resourceIds = new ArrayList<Integer>();
+	
+	private boolean checked;
 
-	public void addResource(SysResource sysResource) {
-		resources.add(sysResource);
+	public boolean isChecked() {
+		return checked;
 	}
 
-	public void addRoute(SysRoute sysRoute) {
-		routes.add(sysRoute);
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
-	public void addChild(SysMenu sysMenu) {
+	public void addChild(SysMenuVo sysMenu) {
 		children.add(sysMenu);
 	}
 
-	public List<SysMenu> getChildren() {
+	public List<SysMenuVo> getChildren() {
 		return children;
-	}
-
-	public List<SysRoute> getRoutes() {
-		return routes;
-	}
-
-	public List<SysResource> getResources() {
-		return resources;
 	}
 
 	public List<Integer> getRouteIds() {

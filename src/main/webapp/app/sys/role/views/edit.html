@@ -58,13 +58,13 @@
                             <button class="btn btn-blue"
                                     type="button"
                                     ng-disabled="form.$invalid || isUnchanged() || clickToken"
-                                    ng-click="save()" ed-perm perm="sys:role:update">
+                                    ng-click="save()" ed-perm perm="sys:role:edit">
                                 <i class="fa fa-check"></i>
                                 {{'label.common.op.save' | translate}}
                             </button>
                             <label class="blank5 pull-right"></label>
                             <a class="btn btn-default" type="button"
-                               href="#/sys/role/list">
+                               href="#/sys/role/list" ed-perm perm="sys:role:query">
                                 <i class="fa fa-undo"></i>
                                 {{'label.common.op.cancel' | translate}}
                             </a>

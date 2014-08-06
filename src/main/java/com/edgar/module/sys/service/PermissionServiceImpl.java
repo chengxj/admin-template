@@ -9,7 +9,6 @@ import java.util.Set;
 import lombok.Setter;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +18,7 @@ import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.repository.domain.SysMenu;
+import com.edgar.module.sys.repository.domain.SysMenuRes;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.domain.SysRole;
@@ -29,17 +29,10 @@ import com.edgar.module.sys.repository.domain.SysRoute;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
-	@Autowired
-	@Setter
-	private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
 
 	@Autowired
 	@Setter
 	private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
-
-	@Autowired
-	@Setter
-	private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
 
 	@Autowired
 	@Setter
@@ -57,82 +50,129 @@ public class PermissionServiceImpl implements PermissionService {
 	@Setter
 	private CrudRepository<Integer, SysMenu> sysMenuDao;
 
-	// @Autowired
-	// @Setter
-	// private CrudRepository<Integer, SysRouteRes> sysRouteResDao;
+	@Autowired
+	@Setter
+	private CrudRepository<Integer, SysMenuRes> sysMenuResDao;
 
 	@Autowired
 	@Setter
 	private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
 
-//	@Override
-//	public List<SysRoleMenu> getMenus(int roleId) {
-//		QueryExample example = QueryExample.newInstance();
-//		example.equalsTo("roleId", roleId);
-//		example.addField("resourceId");
-//		Set<Integer> roleResourceIds = new HashSet<Integer>(
-//				sysRoleResDao.querySingleColumn(example, Integer.class));
-//
-//		example.clear();
-//		example.equalsTo("isRoot", 0);
-//		example.asc("sorted");
-//		// example.notEqualsTo("parentId", -1);
-//		List<SysMenu> sysMenus = sysMenuDao.query(example);
-//		List<SysMenuVo> sysMenuVos = new ArrayList<SysMenuVo>();
-//
-//		for (SysMenu sysMenu : sysMenus) {
-//			SysMenuVo sysMenuVo = new SysMenuVo();
-//			BeanUtils.copyProperties(sysMenu, sysMenuVo);
-//
-//			example.clear();
-//			example.equalsTo("menuId", sysMenu.getMenuId());
-//			example.addField("routeId");
-//			List<Integer> routeIds = sysMenuRouteDao.querySingleColumn(example,
-//					Integer.class);
-//			Set<Integer> resourceIds = new HashSet<Integer>();
-//			for (Integer routeId : routeIds) {
-//				example.clear();
-//				example.equalsTo("routeId", routeId);
-//				example.addField("resourceId");
-//
-//				// resourceIds.addAll(sysRouteResDao.querySingleColumn(example,
-//				// Integer.class));
-//
-//			}
-//			for (Integer resourceId : resourceIds) {
-//				SysResource resource = sysResourceDao.get(resourceId);
-//				SysResourceVo resourceVo = new SysResourceVo();
-//				BeanUtils.copyProperties(resource, resourceVo);
-//				resourceVo.setChecked(roleResourceIds.contains(resourceId));
-//				sysMenuVo.addResource(resourceVo);
-//			}
-//			sysMenuVos.add(sysMenuVo);
-//		}
-//		return sysMenuVos;
-//	}
+	@Autowired
+	@Setter
+	private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+
+	@Autowired
+	@Setter
+	private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
+
+	// @Override
+	// public List<SysRoleMenu> getMenus(int roleId) {
+	// QueryExample example = QueryExample.newInstance();
+	// example.equalsTo("roleId", roleId);
+	// example.addField("resourceId");
+	// Set<Integer> roleResourceIds = new HashSet<Integer>(
+	// sysRoleResDao.querySingleColumn(example, Integer.class));
+	//
+	// example.clear();
+	// example.equalsTo("isRoot", 0);
+	// example.asc("sorted");
+	// // example.notEqualsTo("parentId", -1);
+	// List<SysMenu> sysMenus = sysMenuDao.query(example);
+	// List<SysMenuVo> sysMenuVos = new ArrayList<SysMenuVo>();
+	//
+	// for (SysMenu sysMenu : sysMenus) {
+	// SysMenuVo sysMenuVo = new SysMenuVo();
+	// BeanUtils.copyProperties(sysMenu, sysMenuVo);
+	//
+	// example.clear();
+	// example.equalsTo("menuId", sysMenu.getMenuId());
+	// example.addField("routeId");
+	// List<Integer> routeIds = sysMenuRouteDao.querySingleColumn(example,
+	// Integer.class);
+	// Set<Integer> resourceIds = new HashSet<Integer>();
+	// for (Integer routeId : routeIds) {
+	// example.clear();
+	// example.equalsTo("routeId", routeId);
+	// example.addField("resourceId");
+	//
+	// // resourceIds.addAll(sysRouteResDao.querySingleColumn(example,
+	// // Integer.class));
+	//
+	// }
+	// for (Integer resourceId : resourceIds) {
+	// SysResource resource = sysResourceDao.get(resourceId);
+	// SysResourceVo resourceVo = new SysResourceVo();
+	// BeanUtils.copyProperties(resource, resourceVo);
+	// resourceVo.setChecked(roleResourceIds.contains(resourceId));
+	// sysMenuVo.addResource(resourceVo);
+	// }
+	// sysMenuVos.add(sysMenuVo);
+	// }
+	// return sysMenuVos;
+	// }
 
 	@Override
-	public List<SysRoleMenu> getMenu(int roleId) {
+	public List<Integer> getMenu(int roleId) {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("roleId", roleId);
-		List<SysRoleMenu> sysRoleMenus = sysRoleMenuDao.query(example);
-		return sysRoleMenus;
+		example.addField("menuId");
+		return sysRoleMenuDao.querySingleColumn(example,
+				Integer.class);
 	}
 
 	@Override
-	public List<SysRoleRoute> getRoute(int roleId) {
+	public List<SysRoute> getRoute(int roleId) {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("roleId", roleId);
-		List<SysRoleRoute> sysRoleRoutes = sysRoleRouteDao.query(example);
-		return sysRoleRoutes;
+		example.addField("menuId");
+		List<Integer> menuIds = sysRoleMenuDao.querySingleColumn(example,
+				Integer.class);
+		Set<Integer> routeIds = new HashSet<Integer>();
+		for (Integer menuId : menuIds) {
+			example.clear();
+			example.equalsTo("menuId", menuId);
+			example.addField("routeId");
+			routeIds.addAll(sysMenuRouteDao.querySingleColumn(example,
+					Integer.class));
+		}
+		example.clear();
+		example.equalsTo("roleId", roleId);
+		example.addField("routeId");
+		routeIds.addAll(sysRoleRouteDao.querySingleColumn(example,
+				Integer.class));
+		List<SysRoute> sysRoutes = new ArrayList<SysRoute>();
+		for (Integer routeId : routeIds) {
+			sysRoutes.add(sysRouteDao.get(routeId));
+		}
+		return sysRoutes;
 	}
 
 	@Override
-	public List<SysRoleRes> getResource(int roleId) {
+	public List<SysResource> getResource(int roleId) {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("roleId", roleId);
-		List<SysRoleRes> sysRoleResources = sysRoleResDao.query(example);
-		return sysRoleResources;
+		example.addField("menuId");
+		List<Integer> menuIds = sysRoleMenuDao.querySingleColumn(example,
+				Integer.class);
+		Set<Integer> resourceIds = new HashSet<Integer>();
+		for (Integer menuId : menuIds) {
+			example.clear();
+			example.equalsTo("menuId", menuId);
+			example.addField("resourceId");
+			resourceIds.addAll(sysMenuResDao.querySingleColumn(example,
+					Integer.class));
+		}
+		example.clear();
+		example.equalsTo("roleId", roleId);
+		example.addField("resourceId");
+		resourceIds.addAll(sysRoleResDao.querySingleColumn(example,
+				Integer.class));
+		List<SysResource> sysResources = new ArrayList<SysResource>();
+		for (Integer resourceId : resourceIds) {
+			sysResources.add(sysResourceDao.get(resourceId));
+		}
+		return sysResources;
 	}
 
 	@Override

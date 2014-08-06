@@ -997,12 +997,7 @@ commonDirective.directive('edPerm', function ($rootScope, $timeout) {
             $rootScope.$watch("loginUser", function (value) {
                 if (value) {
                     var perm = iAttrs.perm;
-                    if (perm.charAt(0) == '#') {
-                        perm = perm.substring(1);
-                        if (!_.contains($rootScope.loginUser.routes, perm)) {
-                            iElement.remove();
-                        }
-                    }else if (!_.contains($rootScope.loginUser.permissions, perm)) {
+                    if (!_.contains($rootScope.loginUser.permissions, perm)) {
                         iElement.remove();
                     }
                 }

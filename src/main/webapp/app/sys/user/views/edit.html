@@ -83,13 +83,13 @@
                     </div>
                     <div class="form-actions">
                         <div class="col-md-offset-3 col-md-9">
-                            <button class="btn btn-blue" type="button" ng-disabled="form.$invalid || isUnchanged() || clickToken" ng-click="save()" ed-perm perm="sys:user:update">
+                            <button class="btn btn-blue" type="button" ng-disabled="form.$invalid || isUnchanged() || clickToken" ng-click="save()" ed-perm perm="sys:user:edit">
                                 <i class="fa fa-check"></i>
                                 {{'label.common.op.save' | translate}}
                             </button>
                             <label class="blank5 pull-right"></label>
                             <a class="btn btn-default" type="button"
-                               href="#/sys/user/list"><i class="fa fa-undo"></i> {{'label.common.op.cancel' | translate}}</a>
+                               href="#/sys/user/list" ed-perm perm="sys:user:query"><i class="fa fa-undo"></i> {{'label.common.op.cancel' | translate}}</a>
                         </div>
                     </div>
                 </form>

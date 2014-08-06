@@ -1,7 +1,10 @@
 package com.edgar.module.sys.web;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
-import com.edgar.module.sys.repository.domain.SysRoleMenu;
 import com.edgar.module.sys.service.PermissionCommand;
 import com.edgar.module.sys.service.PermissionService;
-import com.edgar.module.sys.service.ResourcePermission;
+import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.service.SysMenuVo;
 
 /**
@@ -30,6 +33,8 @@ public class SysPermissionResource {
 	@Autowired
 	private PermissionService permissionService;
 
+	@Autowired
+	private SysMenuService sysMenuService;
 
 	/**
 	 * 保存资源授权
@@ -56,7 +61,22 @@ public class SysPermissionResource {
 	@AuthHelper("Query Permisison")
 	@RequestMapping(value = "/menu/{roleId}", method = RequestMethod.GET)
 	@ResponseBody
-	public List<SysRoleMenu> getMenus(@PathVariable("roleId") int roleId) {
-		return permissionService.getMenu(roleId);
+	public List<SysMenuVo> getMenus(@PathVariable("roleId") int roleId) {
+		Set<Integer> sysRoleMenus = new HashSet<Integer>(
+				permissionService.getMenu(roleId));
+		List<SysMenuVo> sysMenuVos = sysMenuService.query(QueryExample
+				.newInstance());
+		setChecked(sysRoleMenus, sysMenuVos);
+		return sysMenuVos;
+	}
+
+	private void setChecked(Set<Integer> sysRoleMenus,
+			List<SysMenuVo> sysMenuVos) {
+		for (SysMenuVo sysMenuVo : sysMenuVos) {
+			sysMenuVo.setChecked(sysRoleMenus.contains(sysMenuVo.getMenuId()));
+			if (CollectionUtils.isNotEmpty(sysMenuVo.getChildren())) {
+				setChecked(sysRoleMenus, sysMenuVo.getChildren());
+			}
+		}
 	}
 }

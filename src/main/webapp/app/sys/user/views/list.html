@@ -33,7 +33,7 @@
                                 {{'label.common.op.delete' | translate}}
                             </a>
                         </li>
-                        <li ed-perm perm="#/sys/user/edit/:userId">
+                        <li ed-perm perm="sys:user:edit">
                             <a href="#/sys/user/edit/{{user.userId}}"
                                ng-hide="selectUsers.length != 1">
                                 <i class="fa fa-edit"></i>
@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-12">
                             <a class="btn btn-blue" href="#/sys/user/add" ed-tooltip
-                               data-original-title="{{'label.sys.user.add' | translate}}" ed-perm perm="#/sys/user/add">
+                               data-original-title="{{'label.sys.user.add' | translate}}" ed-perm perm="sys:user:add">
                                 <i class="fa fa-plus"></i>
                             </a>
                             <a class="btn btn-pink" type="button" href="javascript:;" ed-tooltip
@@ -60,7 +60,7 @@
                             </a>
                             <a class="btn btn-green" href="#/sys/user/edit/{{user.userId}}" ed-tooltip
                                data-original-title="{{'label.common.op.edit' | translate}}" ng-hide="selectUsers.length != 1"
-                               ed-perm perm="#/sys/user/edit/:userId">
+                               ed-perm perm="sys:user:edit">
                                 <i class="fa fa-edit"></i>
                             </a>
                         </div>

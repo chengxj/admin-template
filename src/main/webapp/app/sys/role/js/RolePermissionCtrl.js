@@ -2,41 +2,13 @@ function RolePermissionCtrl($scope,MenuService, PermissionService, RoleService,M
 
     $scope.selectPermissions = [];
     $scope.clickToken = false;
-//    RoleService.get({roleId : $routeParams.roleId}, function(data) {
-//        PermissionService.getMenus({roleId : $routeParams.roleId}, function(data) {
-//            var menus = [];
-//            var copyData = angular.copy(data);
-//            var stripeIndex = 0;
-//            _.each(data, function(v, i) {
-//                if (v.parentId == -1) {
-//                    v.children = [];
-//                    _.each(copyData, function(c, j) {
-//                        if (c.parentId == v.menuId) {
-//                            v.children.push(c);
-//                        }
-//                    });
-//                    menus.push(v);
-//                }
-//            });
-//            $scope.menus = menus;
-//        });
-//
-//    }, function() {
-//        $scope.disabled = true;
-//    });
+    RoleService.get({roleId : $routeParams.roleId}, function(data) {
+        $scope.menus = PermissionService.getMenus({roleId : $routeParams.roleId});
 
-    $q.all([MenuService.query().$promise, PermissionService.getMenus({roleId : $routeParams.roleId}).$promise]).then(function(value) {
-        var data = value[0];
-        var copyData = angular.copy(data);
-        var stripeIndex = 0;
-        var menus = _.filter(data, function(v, i) {
-            v.checked = _.some(value[1], function(m) {
-                return m.menuId == v.menuId;
-            });
-            return v;
-        });
-        $scope.menus = menus;
+    }, function() {
+        $scope.disabled = true;
     });
+
 
     $scope.savePermission = function () {
         var permissionIds = _.pluck($scope.selectPermissions, "menuId");

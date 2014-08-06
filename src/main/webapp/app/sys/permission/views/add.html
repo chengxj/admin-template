@@ -92,6 +92,9 @@
                         <th>
                             {{'label.sys.route.name' | translate}}
                         </th>
+                        <th>
+                            {{'label.sys.route.url' | translate}}
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -101,6 +104,7 @@
                                    model-array="selectRoutes" ed-checkbox showcontextmenu="false"/>
                         </td>
                         <td translate>{{route.name}}</td>
+                        <td translate>{{route.url}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -124,6 +128,12 @@
                         <th>
                             {{'label.sys.resource.name' | translate}}
                         </th>
+                        <th>
+                            {{'label.sys.resource.url' | translate}}
+                        </th>
+                        <th>
+                            {{'label.sys.resource.method' | translate}}
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -133,6 +143,8 @@
                                    model-array="selectResources" ed-checkbox showcontextmenu="false"/>
                         </td>
                         <td translate>{{resource.resourceName}}</td>
+                        <td>{{resource.url}}</td>
+                        <td>{{resource.method}}</td>
                     </tr>
                     </tbody>
                 </table>

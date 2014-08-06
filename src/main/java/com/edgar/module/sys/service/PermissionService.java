@@ -7,9 +7,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
 
-import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.repository.domain.SysRoleRes;
-import com.edgar.module.sys.repository.domain.SysRoleRoute;
+import com.edgar.module.sys.repository.domain.SysResource;
+import com.edgar.module.sys.repository.domain.SysRoute;
 
 @Validated
 public interface PermissionService {
@@ -21,7 +20,7 @@ public interface PermissionService {
 	 *            角色ID
 	 * @return 角色菜单集合
 	 */
-	List<SysRoleMenu> getMenu(@Min(1) int roleId);
+	List<Integer> getMenu(@Min(1) int roleId);
 
 	/**
 	 * 根据角色查询角色授权的路由
@@ -30,7 +29,7 @@ public interface PermissionService {
 	 *            角色ID
 	 * @return 角色路由集合
 	 */
-	List<SysRoleRoute> getRoute(@Min(1) int roleId);
+	List<SysRoute> getRoute(@Min(1) int roleId);
 
 	/**
 	 * 根据角色查询角色授权的资源
@@ -39,7 +38,7 @@ public interface PermissionService {
 	 *            角色ID
 	 * @return 角色资源集合
 	 */
-	List<SysRoleRes> getResource(int roleId);
+	List<SysResource> getResource(int roleId);
 
 
 	/**
