@@ -1,11 +1,11 @@
 /*login*/
 body.login {
     color: #7F7F7F;
-    background-image: url("../img/bg.jpg");
-    background-color: rgba(0, 0, 0, 0);
+    /*background-image: url("../img/bg.jpg");*/
+    background:#eff3f6;
 }
 body.login .main-login {
-    margin-top: 60px;
+    margin-top: 200px;
 }
 body.login .logo {
     padding: 20px;

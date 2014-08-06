@@ -536,26 +536,6 @@ commonDirective.directive('edDisabled', function () {
     };
 });
 
-/**    ed-touch-spin
- * 用法
- * <input
- value="0"
- data-bts-min="0"
- data-bts-max="100"
- data-bts-init-val=""
- data-bts-step-interval="100"
- data-bts-button-down-class="btn btn-violet"
- data-bts-button-up-class="btn btn-violet"
- ed-touch-spin>
- */
-commonDirective.directive('edTouchSpin', function () {
-    return {
-        restrict: 'AE',
-        link: function postLink(scope, iElement, iAttrs) {
-            iElement.TouchSpin();
-        }
-    };
-});
 
 /**    ed-date-range 日期范围指令
  * 用法
@@ -614,18 +594,6 @@ commonDirective.directive('edDateRange', function ($translate) {
     };
 });
 
-commonDirective.directive('edTreegrid', function ($timeout) {
-    return {
-        restrict: 'AE',
-        link: function postLink(scope, iElement, iAttrs) {
-            if (scope.$last === true) {
-                $timeout(function () {
-                    $('.tree').treegrid();
-                });
-            }
-        }
-    };
-});
 commonDirective.directive('edReload', function () {
     return {
         restrict: 'AE',
