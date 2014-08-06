@@ -1834,7 +1834,7 @@ form.form-minus {
     background: white;
 }
 .panel-notifications .panel-heading {
-    background: #304269;
+    background: #3498db;
     border: 0;
 }
 .panel-notifications .panel-body {
@@ -1869,7 +1869,7 @@ form.form-minus {
     box-shadow: 0 4px 6px #cccccc;
 }
 .panel-messages .panel-heading {
-    background: #304269;
+    background: #3498db;
     border: 0;
 }
 .panel-messages .panel-body {
@@ -1881,17 +1881,15 @@ form.form-minus {
     padding: 0;
 }
 .panel-messages .panel-body ul li.left .chat-body {
-    margin-left: 60px;
+    margin-left: 10px;
 }
 .panel-messages .panel-body ul li.right .chat-body {
-    margin-right: 60px;
+    margin-right: 10px;
 }
 .panel-messages .panel-body ul li .chat-body p {
     padding: 0;
 }
-.panel-messages .panel-body ul li .chat-body .glyphicon {
-    margin-right: 5px;
-}
+
 .panel-messages .panel-body ul li a {
     display: block;
     padding: 10px;
@@ -1899,7 +1897,7 @@ form.form-minus {
     border-bottom: 1px solid #dedede;
 }
 .panel-messages .panel-body ul li a:hover {
-    background: #2e8bff;
+    background: #e7eff7;
     color: white;
     text-decoration: none;
 }
@@ -1908,6 +1906,18 @@ form.form-minus {
 }
 .panel-messages .panel-footer {
     border: 0;
+}
+
+.panel-messages.dropdown-arrow:before {
+    border-bottom: 8px solid #3498db;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+}
+
+.panel-messages.dropdown-arrow-left:before {
+    border-bottom: 8px solid #3498db;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
 }
 
 /* = Status panels = */
