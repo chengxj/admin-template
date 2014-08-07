@@ -1860,6 +1860,17 @@ form.form-minus {
     background: whitesmoke;
 }
 
+.panel-notifications.dropdown-arrow:before {
+    border-bottom: 8px solid #3498db;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+}
+
+.panel-notifications.dropdown-arrow-left:before {
+    border-bottom: 8px solid #3498db;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+}
 /* = Messages dropdown = */
 .panel-messages {
     border: 0;
