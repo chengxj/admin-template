@@ -1,7 +1,4 @@
 <configuration>
-	<!-- Errors were reported during translation. -->
-	<!-- No class found for appender A1 -->
-	<!-- Could not find transformer for null -->
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>[%p] %d{yyyy-MM-dd HH:mm:ss} %c %m%n</pattern>

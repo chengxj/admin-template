@@ -29,10 +29,6 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 	
-	<mvc:interceptors>
-		<ref bean="localeChangeInterceptor"/>
-	</mvc:interceptors>
-	
 	<context:component-scan base-package="*"
 		use-default-filters="false">
 		<context:include-filter type="annotation"
