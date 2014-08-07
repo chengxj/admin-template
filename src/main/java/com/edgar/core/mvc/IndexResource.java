@@ -84,7 +84,7 @@ public class IndexResource {
 	public Map<String, Object> getUserData() {
 		Set<Integer> roleIds = LoginUserUtils.getRoleIds();
 		if (roleIds.isEmpty()) {
-			throw ExceptionFactory.isNull("msg.error.unAuthorized");
+			throw ExceptionFactory.isNull();
 		}
 		Map<String, Object> data = new HashMap<String, Object>();
 		LoginUser loginUser = LoginUserUtils.getLoginUser();

@@ -227,7 +227,7 @@ public class PermissionServiceImpl implements PermissionService {
 	private SysMenu checkSysMenu(int menuId) {
 		SysMenu sysMenu = sysMenuDao.get(menuId);
 		if (sysMenu == null) {
-			throw ExceptionFactory.isNull("msg.error.menu.notexists");
+			throw ExceptionFactory.isNull();
 		}
 		return sysMenu;
 	}
@@ -271,7 +271,7 @@ public class PermissionServiceImpl implements PermissionService {
 	private void checkRole(int roleId) {
 		SysRole sysRole = sysRoleDao.get(roleId);
 		if (sysRole == null) {
-			throw ExceptionFactory.isNull("msg.error.role.notexists");
+			throw ExceptionFactory.isNull();
 		}
 	}
 

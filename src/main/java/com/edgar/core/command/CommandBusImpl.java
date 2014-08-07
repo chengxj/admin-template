@@ -12,8 +12,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.edgar.core.util.ExceptionFactory;
-
 /**
  * 命令调度类的实现.
  * 
@@ -23,78 +21,73 @@ import com.edgar.core.util.ExceptionFactory;
 @Service
 public class CommandBusImpl implements CommandBus, ApplicationContextAware {
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(CommandBusImpl.class);
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(CommandBusImpl.class);
 
-        /**
-         * Spring的上下文
-         */
-        private static ApplicationContext APPLICATION_CONTEXT;
+	/**
+	 * Spring的上下文
+	 */
+	private static ApplicationContext APPLICATION_CONTEXT;
 
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-        @Override
-        public <T> CommandResult<T> executeCommand(Command command) {
-                CommandHandler commandHandler;
-                try {
-                        commandHandler = getCommandHandler(command);
-                } catch (Exception e) {
-                        LOGGER.error("hander:{} is undefined", command.getClass().getSimpleName());
-                        throw ExceptionFactory.isNull("msg.error.hander.undefined", command
-                                        .getClass().getSimpleName());
-                }
-                LOGGER.debug("request command is {}", ToStringBuilder.reflectionToString(command,
-                                ToStringStyle.SHORT_PREFIX_STYLE));
-                if (command instanceof ChainCommand) {
-                        ChainCommand chainCommand = (ChainCommand) command;
-                        CommandResult<T> result = commandHandler.execute(command);
-                        Command nextCommand = chainCommand.nextCommand();
-                        if (nextCommand == null || nextCommand instanceof UnResolvedCommand) {
-                                return result;
-                        }
-                        LOGGER.debug("command in chain，next command is {}", ToStringBuilder
-                                        .reflectionToString(nextCommand,
-                                                        ToStringStyle.SHORT_PREFIX_STYLE));
-                        return executeCommand(nextCommand);
-                }
-                return commandHandler.execute(command);
-        }
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public <T> CommandResult<T> executeCommand(Command command) {
+		CommandHandler commandHandler;
+		commandHandler = getCommandHandler(command);
+		LOGGER.debug("request command is {}", ToStringBuilder
+				.reflectionToString(command, ToStringStyle.SHORT_PREFIX_STYLE));
+		if (command instanceof ChainCommand) {
+			ChainCommand chainCommand = (ChainCommand) command;
+			CommandResult<T> result = commandHandler.execute(command);
+			Command nextCommand = chainCommand.nextCommand();
+			if (nextCommand == null || nextCommand instanceof UnResolvedCommand) {
+				return result;
+			}
+			LOGGER.debug("command in chain，next command is {}", ToStringBuilder
+					.reflectionToString(nextCommand,
+							ToStringStyle.SHORT_PREFIX_STYLE));
+			return executeCommand(nextCommand);
+		}
+		return commandHandler.execute(command);
+	}
 
-        @Override
-        public <T> CommandResult<T> executeCommands(List<Command> commands) {
-                LOGGER.debug("batch execute {} commands", commands.size());
-                CommandResult<T> result = null;
-                for (int i = 0, n = commands.size(); i < n; i++) {
-                        Command command = commands.get(i);
-                        if (i < n - 1) {
-                                executeCommand(command);
-                        } else {
-                                result = executeCommand(command);
-                        }
-                }
-                return result;
-        }
+	@Override
+	public <T> CommandResult<T> executeCommands(List<Command> commands) {
+		LOGGER.debug("batch execute {} commands", commands.size());
+		CommandResult<T> result = null;
+		for (int i = 0, n = commands.size(); i < n; i++) {
+			Command command = commands.get(i);
+			if (i < n - 1) {
+				executeCommand(command);
+			} else {
+				result = executeCommand(command);
+			}
+		}
+		return result;
+	}
 
-        @Override
-        public void setApplicationContext(ApplicationContext context) {
-                APPLICATION_CONTEXT = context;
-        }
+	@Override
+	public void setApplicationContext(ApplicationContext context) {
+		APPLICATION_CONTEXT = context;
+	}
 
-        /**
-         * 根据命令对象获取处理类
-         * 
-         * @param command
-         *                命令对象
-         * @return 命令处理类
-         */
-        @SuppressWarnings("rawtypes")
-        private CommandHandler getCommandHandler(Command command) {
-                Assert.notNull(command, "command cannot be null");
-                Assert.isTrue(!(command instanceof UnResolvedCommand),
-                                "UnResolvedCommand donot has hander");
-                String handlerId = command.getClass().getSimpleName() + "Handler";
-                handlerId = StringUtils.uncapitalize(handlerId);
-                CommandHandler commandHandler = APPLICATION_CONTEXT.getBean(handlerId,
-                                CommandHandler.class);
-                return commandHandler;
-        }
+	/**
+	 * 根据命令对象获取处理类
+	 * 
+	 * @param command
+	 *            命令对象
+	 * @return 命令处理类
+	 */
+	@SuppressWarnings("rawtypes")
+	private CommandHandler getCommandHandler(Command command) {
+		Assert.notNull(command, "command cannot be null");
+		Assert.isTrue(!(command instanceof UnResolvedCommand),
+				"UnResolvedCommand donot has hander");
+		String handlerId = command.getClass().getSimpleName() + "Handler";
+		handlerId = StringUtils.uncapitalize(handlerId);
+		CommandHandler commandHandler = APPLICATION_CONTEXT.getBean(handlerId,
+				CommandHandler.class);
+		return commandHandler;
+	}
 
 }

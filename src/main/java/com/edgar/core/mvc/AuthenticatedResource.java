@@ -18,7 +18,6 @@ import com.edgar.core.shiro.AuthType;
 import com.edgar.core.shiro.CustomExcessiveAttemptsException;
 import com.edgar.core.shiro.RetryLimitService;
 import com.edgar.core.util.ExceptionFactory;
-import com.edgar.core.util.MessageUtils;
 import com.edgar.core.view.ResponseMessage;
 
 /**
@@ -86,8 +85,7 @@ public class AuthenticatedResource {
 			throw ExceptionFactory.userOrPasswordError();
 		}
 		retryLimitService.removeRetry(username);
-		return ResponseMessage.asModelAndView(MessageUtils
-				.getMessage("msg.login.success"));
+		return ResponseMessage.asModelAndView("Login Success");
 	}
 
 	/**
@@ -100,7 +98,6 @@ public class AuthenticatedResource {
 	public ModelAndView logout() {
 		Subject subject = SecurityUtils.getSubject();
 		subject.logout();
-		return ResponseMessage.asModelAndView(MessageUtils
-				.getMessage("msg.logout.success"));
+		return ResponseMessage.asModelAndView("Login Failed");
 	}
 }

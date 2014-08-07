@@ -27,6 +27,5 @@
 	<import resource="shiro-config.xml"/>
 	<import resource="ehcache-config.xml"/>
 	<import resource="mail-config.xml"/>
-	<import resource="i18n-config.xml"/>
 	
 </beans>

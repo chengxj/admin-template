@@ -238,7 +238,7 @@ public class SysUserServiceImpl implements SysUserService {
 		validator.validator(command);
 		if (!command.getNewpassword().equals(command.getRetypepassword())) {
 			throw ExceptionFactory
-					.inValidParameter("msg.error.twoPasswordNotEquals");
+					.inValidParameter("Two input password is not same");
 		}
 		SysUser oldUser = sysUserDao.get(command.getUserId());
 		String oldPassword = command.getOldpassword();
@@ -247,7 +247,7 @@ public class SysUserServiceImpl implements SysUserService {
 				oldUser);
 		if (!encryptPassword.equals(oldUser.getPassword())) {
 			throw ExceptionFactory
-					.inValidParameter("msg.error.passwordInit.error");
+					.inValidParameter("The Original Password is not correct");
 		}
 		SysUser sysUser = new SysUser();
 		sysUser.setPassword(command.getNewpassword());

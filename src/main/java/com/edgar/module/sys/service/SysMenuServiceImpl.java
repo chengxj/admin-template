@@ -84,7 +84,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 		if (sysMenu.getParentId() != -1) {
 			SysMenu parent = get(sysMenu.getParentId());
 			if (parent == null) {
-				throw ExceptionFactory.isNull("msg.error.menu.notexists");
+				throw ExceptionFactory.isNull();
 			}
 		}
 	}

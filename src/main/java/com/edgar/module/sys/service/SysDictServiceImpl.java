@@ -59,7 +59,7 @@ public class SysDictServiceImpl implements SysDictService {
                 if (!"-1".equals(sysDict.getParentCode())) {
                         SysDict parentDict = get(sysDict.getParentCode());
                         if (parentDict == null) {
-                                throw ExceptionFactory.isNull("msg.error.dict.parent.undefined ");
+                                throw ExceptionFactory.isNull();
                         }
                 }
                 saveOrUpdateDict(sysDict);
