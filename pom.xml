@@ -24,7 +24,7 @@
 		<project.build.sourceEncoding>${java.encoding}</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>${java.encoding}</project.reporting.outputEncoding>
 		<org.slf4j.version>1.6.1</org.slf4j.version>
-		<logback.version>1.0.13</logback.version>
+		<logback.version>1.1.2</logback.version>
 		<javamelody.version>1.49.0</javamelody.version>
 		<junit.version>4.11</junit.version>
 		<mockito.version>1.9.5</mockito.version>
