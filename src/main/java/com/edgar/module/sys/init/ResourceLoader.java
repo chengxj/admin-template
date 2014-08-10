@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import lombok.Setter;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
@@ -83,7 +81,6 @@ public class ResourceLoader implements Initialization {
 	private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
 
 	@Autowired

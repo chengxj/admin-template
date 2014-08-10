@@ -2,8 +2,6 @@ package com.edgar.module.sys.service;
 
 import java.util.List;
 
-import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,6 @@ import com.edgar.module.sys.repository.domain.SysResource;
 public class SysResourceServiceImpl implements SysResourceService {
 
         @Autowired
-        @Setter
         private CrudRepository<Integer, SysResource> sysResourceDao;
 
         @Override
@@ -49,4 +46,7 @@ public class SysResourceServiceImpl implements SysResourceService {
                 return sysResourceDao.get(resourceId);
         }
 
+    public void setSysResourceDao(CrudRepository<Integer, SysResource> sysResourceDao) {
+        this.sysResourceDao = sysResourceDao;
+    }
 }

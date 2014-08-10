@@ -3,8 +3,6 @@ package com.edgar.module.sys.web;
 import java.util.Collection;
 import java.util.List;
 
-import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -39,7 +37,6 @@ import com.edgar.module.sys.service.SysDictService;
 public class SysDictResource {
 
         @Autowired
-        @Setter
         private SysDictService sysDictService;
 
         /**
@@ -173,4 +170,7 @@ public class SysDictResource {
                 return ResponseMessage.asModelAndView(result);
         }
 
+    public void setSysDictService(SysDictService sysDictService) {
+        this.sysDictService = sysDictService;
+    }
 }

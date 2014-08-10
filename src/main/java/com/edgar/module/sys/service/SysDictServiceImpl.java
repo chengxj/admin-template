@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Setter;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,6 @@ import com.edgar.module.sys.view.Dictory;
 public class SysDictServiceImpl implements SysDictService {
 
         @Autowired
-        @Setter
         private CrudRepository<String, SysDict> sysDictDao;
 
         private ValidatorStrategy validator = new SysDictValidator();
@@ -160,4 +157,8 @@ public class SysDictServiceImpl implements SysDictService {
                         }
                 }
         }
+
+    public void setSysDictDao(CrudRepository<String, SysDict> sysDictDao) {
+        this.sysDictDao = sysDictDao;
+    }
 }

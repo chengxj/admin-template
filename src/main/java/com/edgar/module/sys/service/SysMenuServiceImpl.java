@@ -3,8 +3,6 @@ package com.edgar.module.sys.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Setter;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -34,19 +32,15 @@ import com.edgar.module.sys.validator.SysMenuValidator;
 @Service
 public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysMenu> sysMenuDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysMenuRes> sysMenuResDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
 
 	private ValidatorStrategy validator = new SysMenuValidator();
@@ -206,4 +200,19 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return false;
 	}
 
+    public void setSysMenuDao(CrudRepository<Integer, SysMenu> sysMenuDao) {
+        this.sysMenuDao = sysMenuDao;
+    }
+
+    public void setSysMenuRouteDao(CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao) {
+        this.sysMenuRouteDao = sysMenuRouteDao;
+    }
+
+    public void setSysMenuResDao(CrudRepository<Integer, SysMenuRes> sysMenuResDao) {
+        this.sysMenuResDao = sysMenuResDao;
+    }
+
+    public void setSysRoleMenuDao(CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao) {
+        this.sysRoleMenuDao = sysRoleMenuDao;
+    }
 }

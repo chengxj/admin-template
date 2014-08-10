@@ -1,6 +1,5 @@
 package com.edgar.core.repository;
 
-import lombok.Data;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 
@@ -11,7 +10,6 @@ import org.apache.commons.lang.builder.CompareToBuilder;
  * @version 1.0
  * 
  */
-@Data
 public class Criteria implements Comparable<Criteria> {
 
         /**
@@ -63,4 +61,35 @@ public class Criteria implements Comparable<Criteria> {
 
         }
 
+    public String getField() {
+        return field;
+    }
+
+    public void setField(String field) {
+        this.field = field;
+    }
+
+    public SqlOperator getOp() {
+        return op;
+    }
+
+    public void setOp(SqlOperator op) {
+        this.op = op;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public Object getSecondValue() {
+        return secondValue;
+    }
+
+    public void setSecondValue(Object secondValue) {
+        this.secondValue = secondValue;
+    }
 }

@@ -1,14 +1,11 @@
 package com.edgar.core.repository;
 
-import lombok.Data;
-
 /**
  * 排序类
  * 
  * @author Edgar Zhang
  * @version 1.0
  */
-@Data
 public final class OrderBy implements Comparable<OrderBy> {
 
         private final String field;
@@ -85,4 +82,19 @@ public final class OrderBy implements Comparable<OrderBy> {
                 return 1;
         }
 
+    public String getField() {
+        return field;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public int getSorted() {
+        return sorted;
+    }
+
+    public void setSorted(int sorted) {
+        this.sorted = sorted;
+    }
 }

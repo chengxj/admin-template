@@ -1,8 +1,5 @@
 package com.edgar.module.sys.view;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -12,27 +9,13 @@ import org.apache.commons.lang.StringUtils;
  * @version 1.0
  */
 public class AngularRoute implements Comparable<AngularRoute> {
-        @Getter
-        @Setter
         private String id;
-
-        @Getter
         private String url;
-        @Getter
         private String basename;
-        @Getter
         private String path;
-        @Getter
-        @Setter
         private String name;
-        @Getter
-        @Setter
         private boolean isMenu;
-        @Getter
-        @Setter
         private int sorted = 1;
-        @Getter
-        @Setter
         private String parentId;
 
         /**
@@ -48,7 +31,67 @@ public class AngularRoute implements Comparable<AngularRoute> {
                 this.path = StringUtils.substringBeforeLast(newUrl, "/");
         }
 
-        @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getBasename() {
+        return basename;
+    }
+
+    public void setBasename(String basename) {
+        this.basename = basename;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isMenu() {
+        return isMenu;
+    }
+
+    public void setMenu(boolean menu) {
+        isMenu = menu;
+    }
+
+    public int getSorted() {
+        return sorted;
+    }
+
+    public void setSorted(int sorted) {
+        this.sorted = sorted;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    @Override
         public int compareTo(AngularRoute o) {
                 if (sorted == o.getSorted()) {
                         return 0;

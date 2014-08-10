@@ -2,8 +2,6 @@ package com.edgar.module.sys.service;
 
 import java.util.List;
 
-import lombok.Setter;
-
 import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +28,9 @@ import com.edgar.module.sys.validator.SysJobValidator;
 @Service
 public class SysJobServiceImpl implements SysJobService {
         @Autowired
-        @Setter
         private CrudRepository<Integer, SysJob> sysJobDao;
 
         @Autowired
-        @Setter
         private JobScheduler jobScheduler;
         
         private ValidatorStrategy validator = new SysJobValidator();
@@ -123,4 +119,11 @@ public class SysJobServiceImpl implements SysJobService {
                 return query(example);
         }
 
+    public void setSysJobDao(CrudRepository<Integer, SysJob> sysJobDao) {
+        this.sysJobDao = sysJobDao;
+    }
+
+    public void setJobScheduler(JobScheduler jobScheduler) {
+        this.jobScheduler = jobScheduler;
+    }
 }

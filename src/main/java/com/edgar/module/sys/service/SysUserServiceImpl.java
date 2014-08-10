@@ -3,8 +3,6 @@ package com.edgar.module.sys.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Setter;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -39,19 +37,15 @@ import com.edgar.module.sys.validator.SysUserValidator;
 public class SysUserServiceImpl implements SysUserService {
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysUser> sysUserDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysRole> sysRoleDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
 
 	private ValidatorStrategy validator = new SysUserValidator();
@@ -256,4 +250,20 @@ public class SysUserServiceImpl implements SysUserService {
 		PasswordHelper.encryptPassword(sysUser);
 		return sysUserDao.update(sysUser);
 	}
+
+    public void setSysUserDao(CrudRepository<Integer, SysUser> sysUserDao) {
+        this.sysUserDao = sysUserDao;
+    }
+
+    public void setSysRoleDao(CrudRepository<Integer, SysRole> sysRoleDao) {
+        this.sysRoleDao = sysRoleDao;
+    }
+
+    public void setSysUserRoleDao(CrudRepository<Integer, SysUserRole> sysUserRoleDao) {
+        this.sysUserRoleDao = sysUserRoleDao;
+    }
+
+    public void setSysUserProfileDao(CrudRepository<Integer, SysUserProfile> sysUserProfileDao) {
+        this.sysUserProfileDao = sysUserProfileDao;
+    }
 }

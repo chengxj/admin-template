@@ -3,7 +3,6 @@ package com.edgar.core.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Data;
 
 import org.springframework.util.Assert;
 
@@ -15,7 +14,6 @@ import org.springframework.util.Assert;
  * @param <T>
  *                实体类
  */
-@Data
 public final class Pagination<T> {
         private static final long PAGE_SCOPE = 2;
 
@@ -165,4 +163,47 @@ public final class Pagination<T> {
                 return this.page - 1;
         }
 
+    public static long getPageScope() {
+        return PAGE_SCOPE;
+    }
+
+    public List<T> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<T> records) {
+        this.records = records;
+    }
+
+    public long getPage() {
+        return page;
+    }
+
+    public void setPage(long page) {
+        this.page = page;
+    }
+
+    public long getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(long pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public long getTotalRecords() {
+        return totalRecords;
+    }
+
+    public void setTotalRecords(long totalRecords) {
+        this.totalRecords = totalRecords;
+    }
+
+    public long getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(long totalPages) {
+        this.totalPages = totalPages;
+    }
 }

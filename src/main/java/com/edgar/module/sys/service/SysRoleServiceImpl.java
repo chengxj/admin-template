@@ -2,8 +2,6 @@ package com.edgar.module.sys.service;
 
 import java.util.List;
 
-import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,23 +29,18 @@ import com.edgar.module.sys.validator.SysRoleValidator;
 public class SysRoleServiceImpl implements SysRoleService {
 
         @Autowired
-        @Setter
         private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
 
         @Autowired
-        @Setter
         private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
 
         @Autowired
-        @Setter
         private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
 
         @Autowired
-        @Setter
         private CrudRepository<Integer, SysRole> sysRoleDao;
 
         @Autowired
-        @Setter
         private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
 
         private ValidatorStrategy validator = new SysRoleValidator();
@@ -108,4 +101,23 @@ public class SysRoleServiceImpl implements SysRoleService {
                 return result;
         }
 
+    public void setSysRoleRouteDao(CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao) {
+        this.sysRoleRouteDao = sysRoleRouteDao;
+    }
+
+    public void setSysRoleMenuDao(CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao) {
+        this.sysRoleMenuDao = sysRoleMenuDao;
+    }
+
+    public void setSysRoleResDao(CrudRepository<Integer, SysRoleRes> sysRoleResDao) {
+        this.sysRoleResDao = sysRoleResDao;
+    }
+
+    public void setSysRoleDao(CrudRepository<Integer, SysRole> sysRoleDao) {
+        this.sysRoleDao = sysRoleDao;
+    }
+
+    public void setSysUserRoleDao(CrudRepository<Integer, SysUserRole> sysUserRoleDao) {
+        this.sysUserRoleDao = sysUserRoleDao;
+    }
 }

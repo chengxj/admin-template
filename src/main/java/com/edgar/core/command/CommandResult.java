@@ -1,7 +1,5 @@
 package com.edgar.core.command;
 
-import lombok.Data;
-
 /**
  * 命令处理类返回的结果对象
  * 
@@ -9,7 +7,6 @@ import lombok.Data;
  * @version 1.0
  * @param <T> 返回结果
  */
-@Data
 public final class CommandResult<T> {
         private final T result;
 
@@ -28,4 +25,7 @@ public final class CommandResult<T> {
                 return new CommandResult<T>(result);
         }
 
+    public T getResult() {
+        return result;
+    }
 }

@@ -2,11 +2,25 @@ package com.edgar.module.sys.service;
 
 import java.util.Set;
 
-import lombok.Data;
 
-@Data
 public class PermissionCommand {
 	private int roleId;
 
 	private Set<Integer> permissionIds;
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public Set<Integer> getPermissionIds() {
+        return permissionIds;
+    }
+
+    public void setPermissionIds(Set<Integer> permissionIds) {
+        this.permissionIds = permissionIds;
+    }
 }

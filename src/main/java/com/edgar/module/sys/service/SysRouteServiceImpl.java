@@ -2,8 +2,6 @@ package com.edgar.module.sys.service;
 
 import java.util.List;
 
-import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,15 +27,12 @@ import com.edgar.module.sys.validator.SysRouteValidator;
 @Service
 public class SysRouteServiceImpl implements SysRouteService {
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysRoute> sysRouteDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
 
 	@Autowired
-	@Setter
 	private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
 
 	private ValidatorStrategy validator = new SysRouteValidator();
@@ -92,4 +87,15 @@ public class SysRouteServiceImpl implements SysRouteService {
 		return result;
 	}
 
+    public void setSysRouteDao(CrudRepository<Integer, SysRoute> sysRouteDao) {
+        this.sysRouteDao = sysRouteDao;
+    }
+
+    public void setSysRoleRouteDao(CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao) {
+        this.sysRoleRouteDao = sysRoleRouteDao;
+    }
+
+    public void setSysMenuRouteDao(CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao) {
+        this.sysMenuRouteDao = sysMenuRouteDao;
+    }
 }
