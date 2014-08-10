@@ -49,7 +49,7 @@ public class EhCacheWrapper<K, V> implements CacheWrapper<K, V> {
         
         @Override
         public void removeAll() {
-                getCache().removeAll();;
+                getCache().removeAll();
         }
 
 }

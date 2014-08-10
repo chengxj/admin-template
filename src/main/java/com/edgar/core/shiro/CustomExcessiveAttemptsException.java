@@ -15,7 +15,7 @@ public class CustomExcessiveAttemptsException extends ExcessiveAttemptsException
         /**
          * 错误次数
          */
-        private int attemptsNum;
+        private final int attemptsNum;
 
         public CustomExcessiveAttemptsException(int attemptsNum) {
                 super();

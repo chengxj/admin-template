@@ -16,7 +16,7 @@ public class Dictory implements Map<String, SysDict> {
 
 	private SysDict sysDict;
 
-	private Map<String, SysDict> delegateMap = new HashMap<String, SysDict>();
+	private final Map<String, SysDict> delegateMap = new HashMap<String, SysDict>();
 
 	public SysDict getSysDict() {
 		return sysDict;

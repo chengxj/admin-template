@@ -1,11 +1,6 @@
 package com.edgar.core.mvc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -64,7 +59,7 @@ public class QueryExampleResolver implements WebArgumentResolver {
                         QueryExample example = QueryExample.newInstance();
                         example.setMaxNumOfRecords(toQueryExample.maxNumOfRecords());
                         while (paramterNames.hasNext()) {
-                                String paramName = (String) paramterNames.next();
+                                String paramName = paramterNames.next();
                                 String value = webRequest.getParameter(paramName);
                                 if (StringUtils.isBlank(paramName)) {
                                         continue;
@@ -165,17 +160,13 @@ public class QueryExampleResolver implements WebArgumentResolver {
                                         String field = StringUtils.substringBeforeLast(paramName,
                                                         IN);
                                         List<Object> inList = new ArrayList<Object>();
-                                        for (String v : values) {
-                                                inList.add(v);
-                                        }
+                                    Collections.addAll(inList, values);
                                         example.in(field, inList);
                                 } else if (paramName.endsWith(NOT_IN)) {
                                         String field = StringUtils.substringBeforeLast(paramName,
                                                         NOT_IN);
                                         List<Object> inList = new ArrayList<Object>();
-                                        for (String v : values) {
-                                                inList.add(v);
-                                        }
+                                    Collections.addAll(inList, values);
                                         example.notIn(field, inList);
                                 } else {
                                         for (String v : values) {

@@ -32,7 +32,7 @@ public class SysDictServiceImpl implements SysDictService {
         @Autowired
         private CrudRepository<String, SysDict> sysDictDao;
 
-        private ValidatorStrategy validator = new SysDictValidator();
+        private final ValidatorStrategy validator = new SysDictValidator();
 
         @Override
         public SysDict get(String dictCode) {
@@ -102,10 +102,7 @@ public class SysDictServiceImpl implements SysDictService {
         public boolean checkDictCode(String dictCode) {
                 Assert.notNull(dictCode);
                 SysDict sysDict = sysDictDao.get(dictCode);
-                if (sysDict != null) {
-                        return false;
-                }
-                return true;
+            return sysDict == null;
         }
 
         /**
@@ -146,10 +143,7 @@ public class SysDictServiceImpl implements SysDictService {
                 Collection<Dictory> dictories = map.values();
                 for (Dictory dictory : dictories) {
                         Collection<SysDict> sysDicts = dictory.values();
-                        if (sysDicts == null) {
-                                continue;
-                        }
-                        for (SysDict child : sysDicts) {
+                    for (SysDict child : sysDicts) {
                                 if (dictCode.equals(child.getDictCode())) {
                                         sysDicts.remove(child);
                                         return;

@@ -66,8 +66,6 @@ public class SysCompanyResource {
 	 * 
 	 * @param companyId
 	 *            公司ID
-	 * @param updatedTime
-	 *            时间戳
 	 * @return 如果删除成功，返回1
 	 */
 	@AuthHelper(value = "Delete Company", isRoot = true)

@@ -59,17 +59,7 @@ public interface I18nMessageService {
         @NotNull
         Pagination<I18nMessage> pagination(QueryExample example, int page, int pageSize);
 
-        /**
-         * 查询i18n的集合
-         * 
-         * @param example
-         *                查询条件
-         * @return i18n集合
-         */
-        @NotNull
-        List<I18nMessage> query(QueryExample example);
-
-        /**
+    /**
          * 根据i18nID和时间戳删除i18n
          * 
          * @param i18nId

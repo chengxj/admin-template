@@ -43,9 +43,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
 
-	private ValidatorStrategy validator = new SysMenuValidator();
+	private final ValidatorStrategy validator = new SysMenuValidator();
 
-	private ValidatorStrategy updateValidator = new SysMenuUpdateValidator();
+	private final ValidatorStrategy updateValidator = new SysMenuUpdateValidator();
 
 	@Override
 	public SysMenu get(int menuId) {
@@ -194,11 +194,8 @@ public class SysMenuServiceImpl implements SysMenuService {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("permission", permisson);
 		List<SysMenu> sysUsers = sysMenuDao.query(example);
-		if (sysUsers.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
+        return sysUsers.isEmpty();
+    }
 
     public void setSysMenuDao(CrudRepository<Integer, SysMenu> sysMenuDao) {
         this.sysMenuDao = sysMenuDao;

@@ -85,9 +85,8 @@ public class CommandBusImpl implements CommandBus, ApplicationContextAware {
 				"UnResolvedCommand donot has hander");
 		String handlerId = command.getClass().getSimpleName() + "Handler";
 		handlerId = StringUtils.uncapitalize(handlerId);
-		CommandHandler commandHandler = APPLICATION_CONTEXT.getBean(handlerId,
-				CommandHandler.class);
-		return commandHandler;
+		return APPLICATION_CONTEXT.getBean(handlerId,
+                CommandHandler.class);
 	}
 
 }

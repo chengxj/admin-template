@@ -57,5 +57,5 @@ public enum SqlOperator {
         /**
          * not between
          */
-        NOT_BETWEEN;
+        NOT_BETWEEN
 }

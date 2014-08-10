@@ -139,18 +139,18 @@ public class SysMenuResource {
 	}
 
 	/**
-	 * 校验用户名是否唯一
+	 * 校验权限字符串是否唯一
 	 * 
-	 * @param username
-	 *            用户名
+	 * @param permission
+	 *            权限字符串
 	 * @return 如果存在，返回false
 	 */
 	@AuthHelper(value = "Check Unique Permission", isRoot=true)
 	@RequestMapping(method = RequestMethod.GET, value = "/check/permisson")
 	@ResponseBody
-	public ModelAndView checkUsername(@RequestParam("field") String permisson) {
-		Assert.hasText(permisson);
-		boolean result = sysMenuService.checkPermisson(permisson);
+	public ModelAndView checkPermission(@RequestParam("field") String permission) {
+		Assert.hasText(permission);
+		boolean result = sysMenuService.checkPermisson(permission);
 		return ResponseMessage.asModelAndView(result);
 	}
 

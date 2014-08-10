@@ -22,7 +22,7 @@ public class LoginUserUtils {
 	 * 
 	 * @return 登录用户
 	 */
-	public static final LoginUser getLoginUser() {
+	public static LoginUser getLoginUser() {
 		Subject subject = SecurityUtils.getSubject();
 		LoginUser loginUser = (LoginUser) subject.getPrincipal();
 		return loginUser;
@@ -33,7 +33,7 @@ public class LoginUserUtils {
 	 * 
 	 * @return 角色ID的集合
 	 */
-	public static final Set<Integer> getRoleIds() {
+	public static Set<Integer> getRoleIds() {
 		LoginUser loginUser = getLoginUser();
 		Set<Integer> roleIds = new LinkedHashSet<Integer>();
 		List<SysRole> roles = loginUser.getRoles();

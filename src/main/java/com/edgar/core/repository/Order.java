@@ -15,5 +15,5 @@ public enum Order {
         /**
          * 降序
          */
-        DESC;
+        DESC
 }

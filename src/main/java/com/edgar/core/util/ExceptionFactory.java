@@ -77,10 +77,6 @@ public abstract class ExceptionFactory {
 	/**
 	 * 空
 	 * 
-	 * @param code
-	 *            异常消息的国际化键
-	 * @param args
-	 *            参数
 	 * @return SystemException
 	 */
 	public static SystemException isNull() {

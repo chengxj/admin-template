@@ -35,9 +35,9 @@ public class SysRouteServiceImpl implements SysRouteService {
 	@Autowired
 	private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
 
-	private ValidatorStrategy validator = new SysRouteValidator();
+	private final ValidatorStrategy validator = new SysRouteValidator();
 
-	private ValidatorStrategy updateValidator = new SysRouteUpdateValidator();
+	private final ValidatorStrategy updateValidator = new SysRouteUpdateValidator();
 
 	@Override
 	public List<SysRoute> findAll() {

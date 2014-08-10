@@ -65,11 +65,8 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("companyCode", code);
 
-		List<SysCompany> sysCompanyies = sysCompanyDao.query(example);
-		if (sysCompanyies.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
+		List<SysCompany> sysCompanies = sysCompanyDao.query(example);
+        return sysCompanies.isEmpty();
+    }
 
 }

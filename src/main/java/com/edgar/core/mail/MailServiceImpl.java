@@ -105,7 +105,7 @@ public class MailServiceImpl implements MailService {
                                 message.setCc(cc.toArray(new String[cc.size()]));
                                 message.setFrom(from);
                                 message.setSubject(subject);
-                                String tpl = null;
+                                String tpl;
                                 if (!cache.containsKey(tplLocation)) {
                                         tpl = VelocityEngineUtils.mergeTemplateIntoString(
                                                         velocityEngine, tplLocation, "utf-8", model);

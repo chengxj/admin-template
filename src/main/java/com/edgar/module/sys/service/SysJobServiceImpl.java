@@ -33,9 +33,9 @@ public class SysJobServiceImpl implements SysJobService {
         @Autowired
         private JobScheduler jobScheduler;
         
-        private ValidatorStrategy validator = new SysJobValidator();
+        private final ValidatorStrategy validator = new SysJobValidator();
         
-        private ValidatorStrategy updateValidator = new SysJobUpdateValidator();
+        private final ValidatorStrategy updateValidator = new SysJobUpdateValidator();
 
         @Override
         @Transactional
@@ -106,10 +106,7 @@ public class SysJobServiceImpl implements SysJobService {
                 QueryExample example = QueryExample.newInstance();
                 example.equalsTo("clazzName", clazzName);
                 List<SysJob> sysJobs = query(example);
-                if (sysJobs == null || sysJobs.isEmpty()) {
-                        return true;
-                }
-                return false;
+                return sysJobs == null || sysJobs.isEmpty();
         }
 
         @Override

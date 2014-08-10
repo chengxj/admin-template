@@ -184,7 +184,7 @@ public class PermissionServiceImpl implements PermissionService {
      * @param roleId  角色ID
      * @param menuIds 菜单的ID集合
      */
-    private Set<Integer> saveRoleMenu(int roleId, Set<Integer> menuIds) {
+    private void saveRoleMenu(int roleId, Set<Integer> menuIds) {
         List<SysRoleMenu> sysRoleMenus = new ArrayList<SysRoleMenu>();
         Set<Integer> parentIds = new HashSet<Integer>();
         for (Integer menuId : menuIds) {
@@ -201,7 +201,6 @@ public class PermissionServiceImpl implements PermissionService {
         }
         sysRoleMenuDao.insert(sysRoleMenus);
         parentIds.addAll(menuIds);
-        return parentIds;
     }
 
     /**
@@ -236,13 +235,13 @@ public class PermissionServiceImpl implements PermissionService {
     /**
      * 根据角色删除资源权限
      *
+     *
      * @param roleId 角色ID
-     * @return 返回删除的记录数
      */
-    private int deleteByRole(int roleId) {
+    private void deleteByRole(int roleId) {
         QueryExample example = QueryExample.newInstance();
         example.equalsTo("roleId", roleId);
-        return sysRoleMenuDao.delete(example);
+        sysRoleMenuDao.delete(example);
     }
 
     /**

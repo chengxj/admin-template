@@ -66,7 +66,7 @@ public class SystemException extends RuntimeException {
         }
 
         /**
-         * 包装异常.等同于 {@link #wrap(Throwable, null)}.
+         * 包装异常.等同于 .
          * 
          * @param exception
          *                需要包装的异常

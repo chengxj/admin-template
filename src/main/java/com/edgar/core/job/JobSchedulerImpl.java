@@ -25,7 +25,7 @@ import com.edgar.core.util.ExceptionFactory;
  */
 @Service
 public class JobSchedulerImpl implements JobScheduler {
-        private Logger logger = LoggerFactory.getLogger(JobSchedulerImpl.class);
+        private final Logger logger = LoggerFactory.getLogger(JobSchedulerImpl.class);
 
         @Override
         public void addAndStartJob(JobAdpater job) {

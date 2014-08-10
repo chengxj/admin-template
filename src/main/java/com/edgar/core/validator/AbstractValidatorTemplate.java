@@ -17,7 +17,7 @@ public abstract class AbstractValidatorTemplate implements ValidatorStrategy {
 
 	private final Validator validator;
 
-	public AbstractValidatorTemplate() {
+	protected AbstractValidatorTemplate() {
 		validator = createValidator();
 	}
 
@@ -26,7 +26,7 @@ public abstract class AbstractValidatorTemplate implements ValidatorStrategy {
 	 * 
 	 * @return Validator
 	 */
-	public abstract Validator createValidator();
+	protected abstract Validator createValidator();
 
 	@Override
 	public final boolean validator(Object target) {

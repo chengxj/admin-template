@@ -118,7 +118,7 @@ public class ResourceLoader implements Initialization {
 	}
 
 	private void refreshShiro() {
-		AbstractShiroFilter shiroFilter = null;
+		AbstractShiroFilter shiroFilter;
 
 		try {
 			shiroFilter = (AbstractShiroFilter) shiroFilterFactoryBean

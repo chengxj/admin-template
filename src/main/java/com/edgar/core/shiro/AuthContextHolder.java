@@ -8,7 +8,7 @@ package com.edgar.core.shiro;
  */
 public abstract class AuthContextHolder {
 
-	private static ThreadLocal<Integer> RETRY_COUNT = new ThreadLocal<Integer>();
+	private static final ThreadLocal<Integer> RETRY_COUNT = new ThreadLocal<Integer>();
 
 	private AuthContextHolder() {
 		super();

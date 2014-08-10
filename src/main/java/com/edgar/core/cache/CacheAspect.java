@@ -61,7 +61,7 @@ public class CacheAspect {
 
         /**
          * 插入记录的切面.
-         * 
+         *
          * @param domain
          *                实体对象
          */
@@ -101,7 +101,7 @@ public class CacheAspect {
          * @param example
          *                查询条件
          */
-        @Pointcut("execution(* com.edgar.core.repository.CrudRepository+.update(Object, com.edgar.core.repository.QueryExample)) && args(domain, example)")
+        @Pointcut(value = "execution(* com.edgar.core.repository.CrudRepository+.update(Object, com.edgar.core.repository.QueryExample)) && args(domain, example)", argNames = "domain,example")
         public void updateByExamplePointCut(Object domain, QueryExample example) {
 
         }
@@ -125,15 +125,14 @@ public class CacheAspect {
          * @param updatedTime
          *                时间戳
          */
-        @Pointcut("execution(* com.edgar.core.repository.CrudRepository+.deleteByPkAndVersion(Object, long)) && args(pk, updatedTime)")
+        @Pointcut(value = "execution(* com.edgar.core.repository.CrudRepository+.deleteByPkAndVersion(Object, long)) && args(pk, updatedTime)", argNames = "pk,updatedTime")
         public void deleteByVersionPointCut(Object pk, long updatedTime) {
 
         }
 
         /**
          * 根据条件删除记录的切面.
-         * 
-         * @param 查询条件
+         *
          */
         @Pointcut("execution(* com.edgar.core.repository.CrudRepository+.delete(com.edgar.core.repository.QueryExample)) && args(example)")
         public void deleteByExamplePointCut(QueryExample example) {

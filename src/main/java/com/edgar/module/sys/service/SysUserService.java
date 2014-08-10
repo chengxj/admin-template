@@ -26,8 +26,7 @@ public interface SysUserService {
 	 * 
 	 * @param sysUser
 	 *            用户
-	 * @return 如果保存成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出
-	 *         {@link SystemException}
+	 * @return 如果保存成功，返回<code>1</code>
 	 */
 	int save(@NotNull SysUserRoleCommand sysUser);
 
@@ -60,8 +59,7 @@ public interface SysUserService {
 	 * 
 	 * @param sysUser
 	 *            用户
-	 * @return 如果保存成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出
-	 *         {@link SystemException}
+	 * @return 如果保存成功，返回<code>1</code>
 	 */
 	int update(@NotNull SysUserRoleCommand sysUser);
 
@@ -72,8 +70,7 @@ public interface SysUserService {
 	 *            用户ID
 	 * @param updatedTime
 	 *            时间戳
-	 * @return 如果删除成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出
-	 *         {@link SystemException}
+	 * @return 如果删除成功，返回<code>1</code>
 	 */
 	int deleteWithLock(@Min(1) int userId, long updatedTime);
 
@@ -116,7 +113,7 @@ public interface SysUserService {
 	/**
 	 * 更新用户的profile
 	 * 
-	 * @param profile
+	 * @param profile 用户偏好
 	 * @return 保存成功，返回1
 	 */
 	int updateProfile(SysUserProfile profile);
@@ -133,10 +130,10 @@ public interface SysUserService {
 	/**
 	 * 创建管理员角色的用户
 	 * 
-	 * @param sysUser
-	 *            用户
-	 * @return 保存成功，返回1
+	 *
+     * @param sysUser
+     *            用户
 	 */
-	int saveAdminUser(SysUser sysUser);
+	void saveAdminUser(SysUser sysUser);
 
 }

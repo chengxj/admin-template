@@ -43,9 +43,9 @@ public class SysRoleServiceImpl implements SysRoleService {
         @Autowired
         private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
 
-        private ValidatorStrategy validator = new SysRoleValidator();
+        private final ValidatorStrategy validator = new SysRoleValidator();
 
-        private ValidatorStrategy updateValidator = new SysRoleUpdateValidator();
+        private final ValidatorStrategy updateValidator = new SysRoleUpdateValidator();
 
         // private boolean validRoleId(int roleId) {
         // Set<Integer> roleIds = LoginUserUtils.getRoleIds();

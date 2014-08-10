@@ -48,18 +48,18 @@ public class SysUserServiceImpl implements SysUserService {
 	@Autowired
 	private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
 
-	private ValidatorStrategy validator = new SysUserValidator();
+	private final ValidatorStrategy validator = new SysUserValidator();
 
-	private ValidatorStrategy updateValidator = new SysUserUpdateValidator();
+	private final ValidatorStrategy updateValidator = new SysUserUpdateValidator();
 
 	@Override
 	@Transactional
-	public int saveAdminUser(SysUser sysUser) {
+	public void saveAdminUser(SysUser sysUser) {
 		validator.validator(sysUser);
 		sysUser.setUserId(IDUtils.getNextId());
 		sysUser.setIsRoot(false);
 		PasswordHelper.encryptPassword(sysUser);
-		int result = sysUserDao.insert(sysUser);
+		sysUserDao.insert(sysUser);
 
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("roleCode", "ROLE_CODE_ADMIN");
@@ -79,7 +79,6 @@ public class SysUserServiceImpl implements SysUserService {
 		}
 
 		saveDefaultProfile(sysUser.getUserId());
-		return result;
 	}
 
 	@Override
@@ -133,11 +132,8 @@ public class SysUserServiceImpl implements SysUserService {
 	@Override
 	public boolean checkUsername(String username) {
 		List<SysUser> sysUsers = queryByUsername(username);
-		if (sysUsers.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
+        return sysUsers.isEmpty();
+    }
 
 	@Override
 	public List<SysUser> queryByUsername(String username) {
@@ -203,15 +199,14 @@ public class SysUserServiceImpl implements SysUserService {
 
 	/**
 	 * 保存默认profile
-	 * 
-	 * @return 如果保存成功，返回1
+	 *
 	 */
-	private int saveDefaultProfile(int userId) {
+	private void saveDefaultProfile(int userId) {
 		SysUserProfile profile = new SysUserProfile();
 		profile.setLanguage(GlobalUtils.DEFAULT_PROFILE_LANG);
 		profile.setProfileId(IDUtils.getNextId());
 		profile.setUserId(userId);
-		return sysUserProfileDao.insert(profile);
+		sysUserProfileDao.insert(profile);
 	}
 
 	/**

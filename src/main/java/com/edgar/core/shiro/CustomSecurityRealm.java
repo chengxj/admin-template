@@ -62,7 +62,7 @@ public class CustomSecurityRealm extends JdbcRealm {
 			throw new AccountException("username cannot be null");
 		}
 
-		AuthenticationInfo info = null;
+		AuthenticationInfo info;
 		LoginUser loginUser = getUser(username);
 
 		if (loginUser == null || loginUser.getPassword() == null) {
@@ -87,13 +87,12 @@ public class CustomSecurityRealm extends JdbcRealm {
 		LoginUser loginUser = (LoginUser) getAvailablePrincipal(principals);
 
 		Set<String> roleNames = new LinkedHashSet<String>();
-		Set<String> permissions = new LinkedHashSet<String>();
 		List<SysRole> roles = loginUser.getRoles();
 		loginUser.setRoles(roles);
 		for (SysRole sysRole : roles) {
 			roleNames.add(sysRole.getRoleName());
 		}
-		permissions = getPermissions(loginUser.getUserId(), roles);
+        Set<String> permissions = getPermissions(loginUser.getUserId(), roles);
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
 		info.setStringPermissions(permissions);
 		return info;

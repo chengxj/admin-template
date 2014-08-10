@@ -82,11 +82,11 @@ public enum BusinessCode implements ErrorCode {
         /**
          * 异常编码
          */
-        private int number;
+        private final int number;
 
         /**
          * 
-         * @param number
+         * @param number 异常码
          */
         private BusinessCode(int number) {
                 this.number = number;

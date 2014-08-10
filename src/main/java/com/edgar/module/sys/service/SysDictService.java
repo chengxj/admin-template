@@ -31,7 +31,7 @@ public interface SysDictService {
          * 
          * @param sysDict
          *                字典
-         * @return 如果保存成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出{@link SystemException}
+         * @return 如果保存成功，返回<code>1</code>
          */
         int save(SysDict sysDict);
 
@@ -40,7 +40,7 @@ public interface SysDictService {
          * 
          * @param sysDict
          *                字典
-         * @return 如果保存成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出{@link SystemException}
+         * @return 如果保存成功，返回<code>1</code>
          */
         int update(SysDict sysDict);
 
@@ -51,7 +51,7 @@ public interface SysDictService {
          *                字典编码
          * @param updatedTime
          *                时间戳
-         * @return 如果删除成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出{@link SystemException}
+         * @return 如果删除成功，返回<code>1</code>
          */
         int deleteWithLock(String dictCode, long updatedTime);
 

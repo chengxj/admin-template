@@ -37,7 +37,7 @@ public class BusinessLogAspect {
          * @param helper
          *                日志的annotation类
          */
-        @After(value = "logInfoPointCut() && @annotation(helper)", argNames = "helper")
+        @After(value = "logInfoPointCut() && @annotation(helper)", argNames = "jp,helper")
         public void afterUpdate(JoinPoint jp, AuthHelper helper) {
                 Logger logger = LoggerFactory.getLogger(jp.getTarget().getClass());
                 HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder

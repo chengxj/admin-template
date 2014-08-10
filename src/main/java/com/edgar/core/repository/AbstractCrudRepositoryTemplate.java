@@ -72,9 +72,9 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 	 */
 	private SQLTemplates dialect;
 
-	private Class<T> entityBeanType;
+	private final Class<T> entityBeanType;
 
-	protected JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	private static final ExtendQuery UNRESOLVED = new ExtendQuery() {
 
@@ -447,8 +447,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 				Assert.notNull(source.getValue(humpName), "the value of "
 						+ name + "cannot be null");
 				example.equalsTo(humpName, source.getValue(humpName));
-				continue;
-			}
+            }
 		}
 		return update(domain, example);
 	}
@@ -779,14 +778,8 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 	 * @return 是，返回true,不是，返回false
 	 */
 	public boolean checkColumn(Path<?> path, String field) {
-		if (path.getMetadata().getName().equals(field)) {
-			return true;
-		}
-		if (path.getMetadata().getName().equals(humpName(field))) {
-			return true;
-		}
-		return false;
-	}
+        return path.getMetadata().getName().equals(field) || path.getMetadata().getName().equals(humpName(field));
+    }
 
 	/**
 	 * 字符串转换，将alarmUserCode转换为alarm_user_code

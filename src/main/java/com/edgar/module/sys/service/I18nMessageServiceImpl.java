@@ -51,8 +51,7 @@ public class I18nMessageServiceImpl implements I18nMessageService {
         return i18nMessageDao.pagination(example, page, pageSize);
     }
 
-    @Override
-    public List<I18nMessage> query(QueryExample example) {
+    private List<I18nMessage> query(QueryExample example) {
         return i18nMessageDao.query(example);
     }
 
@@ -67,10 +66,7 @@ public class I18nMessageServiceImpl implements I18nMessageService {
         QueryExample example = QueryExample.newInstance();
         example.equalsTo("i18nKey", i18nKey);
         List<I18nMessage> i18ns = query(example);
-        if (i18ns == null || i18ns.isEmpty()) {
-            return true;
-        }
-        return false;
+        return i18ns == null || i18ns.isEmpty();
     }
 
     @Override

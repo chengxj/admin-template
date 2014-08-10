@@ -11,7 +11,7 @@ public class CustomerContextHolder {
 	}
 
 	public static CustomerType getCustomerType() {
-		return (CustomerType) contextHolder.get();
+		return contextHolder.get();
 	}
 
 	public static void clearCustomerType() {
