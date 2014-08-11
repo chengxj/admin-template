@@ -1,6 +1,5 @@
 package com.edgar.core.command;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
 
 import com.edgar.core.command.Command;
 
@@ -10,9 +9,20 @@ import com.edgar.core.command.Command;
  * @author Edgar Zhang
  * @version 1.0
  */
-@Data
-@AllArgsConstructor
 public class GetSysUser implements Command {
 
-        private int userId;
+    private int userId;
+
+    public GetSysUser(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
 }

@@ -1,23 +1,18 @@
 package com.edgar.module.sys.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.validator.ValidatorStrategy;
-import com.edgar.module.sys.repository.domain.SysRole;
-import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.repository.domain.SysRoleRes;
-import com.edgar.module.sys.repository.domain.SysRoleRoute;
-import com.edgar.module.sys.repository.domain.SysUserRole;
+import com.edgar.module.sys.repository.domain.*;
 import com.edgar.module.sys.validator.SysRoleUpdateValidator;
 import com.edgar.module.sys.validator.SysRoleValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 角色的业务逻辑实现

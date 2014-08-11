@@ -34,7 +34,6 @@ import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.SqlOperator;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.repository.domain.SysRoleResource;
 import com.edgar.module.sys.repository.domain.SysRoleRoute;
 import com.edgar.module.sys.repository.domain.SysUserRole;
 import com.edgar.module.sys.service.SysRoleServiceImpl;
@@ -53,9 +52,6 @@ public class SysRoleServiceTest {
         private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
 
         @Mock
-        private CrudRepository<Integer, SysRoleResource> sysRoleResourceDao;
-
-        @Mock
         private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
 
         private SysRoleServiceImpl sysRoleService;
@@ -66,7 +62,6 @@ public class SysRoleServiceTest {
                 sysRoleService = new SysRoleServiceImpl();
                 sysRoleService.setSysRoleDao(sysRoleDao);
                 sysRoleService.setSysRoleMenuDao(sysRoleMenuDao);
-                sysRoleService.setSysRoleResourceDao(sysRoleResourceDao);
                 sysRoleService.setSysRoleRouteDao(sysRoleRouteDao);
                 sysRoleService.setSysUserRoleDao(sysUserRoleDao);
         }
@@ -84,7 +79,6 @@ public class SysRoleServiceTest {
                 when(sysRoleDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(1);
                 when(sysRoleMenuDao.delete(any(QueryExample.class))).thenReturn(1);
                 when(sysRoleRouteDao.delete(any(QueryExample.class))).thenReturn(1);
-                when(sysRoleResourceDao.delete(any(QueryExample.class))).thenReturn(1);
 
                 final QueryExample example = QueryExample.newInstance();
                 mockStatic(QueryExample.class);
@@ -97,7 +91,6 @@ public class SysRoleServiceTest {
                 verify(sysUserRoleDao, only()).delete(any(QueryExample.class));
                 verify(sysRoleMenuDao, only()).delete(any(QueryExample.class));
                 verify(sysRoleRouteDao, only()).delete(any(QueryExample.class));
-                verify(sysRoleResourceDao, only()).delete(any(QueryExample.class));
                 verifyStatic(only());
                 QueryExample.newInstance();
                 Assert.assertTrue(example.getCriterias().contains(

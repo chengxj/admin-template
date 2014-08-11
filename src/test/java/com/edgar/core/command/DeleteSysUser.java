@@ -1,6 +1,5 @@
 package com.edgar.core.command;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
 
 import com.edgar.core.command.Command;
 
@@ -10,9 +9,19 @@ import com.edgar.core.command.Command;
  * @author Edgar Zhang
  * @version 1.0
  */
-@Data
-@AllArgsConstructor
 public class DeleteSysUser implements Command {
 
         private int userId;
+
+    public DeleteSysUser(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }

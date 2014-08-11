@@ -3,11 +3,6 @@ package com.edgar.core.command;
 import com.edgar.core.command.ChainCommand;
 import com.edgar.core.command.Command;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class ChainGetSysUser implements Command, ChainCommand {
         
         private int userId;
@@ -17,4 +12,15 @@ public class ChainGetSysUser implements Command, ChainCommand {
                 return new GetSysUser(userId);
         }
 
+    public ChainGetSysUser(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }
