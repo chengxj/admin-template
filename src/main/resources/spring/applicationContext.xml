@@ -11,7 +11,7 @@
 	<!-- <aop:config proxy-target-class="true"/> -->
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-			<property name="validationMessageSource" ref="messageSource" />
+			<!--<property name="validationMessageSource" ref="messageSource" />-->
 		</bean>
 	<bean
 		class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor" />

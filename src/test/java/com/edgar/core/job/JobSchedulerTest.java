@@ -24,7 +24,7 @@ public class JobSchedulerTest {
         @Test
         public void testAddAndStart() throws InterruptedException {
                 JobAdpater job = new JobAdpater();
-                job.setClazzName("com.edgar.job.DayJob");
+                job.setClazzName("com.edgar.core.job.DayJob");
                 job.setCron("0/1 * * * * ? *");
                 jobScheduler.addAndStartJob(job);
                 
@@ -35,7 +35,7 @@ public class JobSchedulerTest {
         @Test(expected=SystemException.class)
         public void testAddAndStartClassNotFound() throws InterruptedException {
                 JobAdpater job = new JobAdpater();
-                job.setClazzName("com.edgar.job.DayJob2");
+                job.setClazzName("com.edgar.core.job.DayJob2");
                 job.setCron("0/1 * * * * ? *");
                 jobScheduler.addAndStartJob(job);
         }
@@ -43,7 +43,7 @@ public class JobSchedulerTest {
         @Test
         public void testUpdateJob() throws InterruptedException {
                 JobAdpater job = new JobAdpater();
-                job.setClazzName("com.edgar.job.DayJob");
+                job.setClazzName("com.edgar.core.job.DayJob");
                 job.setCron("0/1 * * * * ? *");
                 jobScheduler.addAndStartJob(job);
                 TimeUnit.SECONDS.sleep(5);
@@ -56,7 +56,7 @@ public class JobSchedulerTest {
         @Test
         public void testUpdateJobForInsert() throws InterruptedException {
                 JobAdpater job = new JobAdpater();
-                job.setClazzName("com.edgar.job.DayJob");
+                job.setClazzName("com.edgar.core.job.DayJob");
                 job.setCron("0/1 * * * * ? *");
                 job.setCron("0/2 * * * * ? *");
                 jobScheduler.updateJob(job);
@@ -67,7 +67,7 @@ public class JobSchedulerTest {
         @Test
         public void testAdd() throws InterruptedException, SchedulerException {
                 JobAdpater job = new JobAdpater();
-                job.setClazzName("com.edgar.job.DayJob");
+                job.setClazzName("com.edgar.core.job.DayJob");
                 job.setCron("0/1 * * * * ? *");
                 Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
                 scheduler.start();

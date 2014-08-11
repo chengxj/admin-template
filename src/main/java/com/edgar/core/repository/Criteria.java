@@ -46,10 +46,7 @@ public class Criteria implements Comparable<Criteria> {
         }
 
         public Criteria(String field, SqlOperator op, Object value, Object secondValue) {
-                super();
-                this.field = field;
-                this.op = op;
-                this.value = value;
+                this(field,op,value);
                 this.secondValue = secondValue;
         }
 
@@ -60,6 +57,31 @@ public class Criteria implements Comparable<Criteria> {
                                 .append(secondValue, o.getSecondValue()).toComparison();
 
         }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Criteria criteria = (Criteria) o;
+
+        if (!field.equals(criteria.field)) return false;
+        if (op != criteria.op) return false;
+        if (secondValue != null ? !secondValue.equals(criteria.secondValue) : criteria.secondValue != null)
+            return false;
+        if (value != null ? !value.equals(criteria.value) : criteria.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = field.hashCode();
+        result = 31 * result + op.hashCode();
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (secondValue != null ? secondValue.hashCode() : 0);
+        return result;
+    }
 
     public String getField() {
         return field;

@@ -106,7 +106,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 	 * 
 	 * @return 默认为false
 	 */
-	public boolean cacheEnabled() {
+    public boolean cacheEnabled() {
 		return false;
 	}
 
@@ -119,15 +119,15 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 
 	@Autowired
 	@Qualifier("jdbcTemplate")
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+	protected void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public Class<T> getEntityBeanType() {
+    public Class<T> getEntityBeanType() {
 		return entityBeanType;
 	}
 
-	public RowMapper<T> getRowMapper() {
+    protected RowMapper<T> getRowMapper() {
 		return BeanPropertyRowMapper.newInstance(entityBeanType);
 	}
 
@@ -143,7 +143,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 		Assert.notEmpty(example.getFields(), "fields cannot be null");
 		SQLQuery sqlQuery = createSQLQuery(example);
 		List<Path<?>> paths = getReturnPath(example);
-		Assert.isTrue(paths.size() == 1, "only need one filed");
 		Path<?>[] pathArray = new Path<?>[paths.size()];
 		SQLBindings sqlBindings = sqlQuery.getSQL(paths.toArray(pathArray));
 		String sql = sqlBindings.getSQL();
@@ -291,46 +290,12 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 			LOGGER.debug("delete {} \nSQL:{} \nparams:{}", getPathBase()
 					.getTableName(), deleteSql, whereArgs);
 			return jdbcTemplate.update(deleteSql.toString(),
-					whereArgs.toArray());
+                    whereArgs.toArray());
 		}
 		LOGGER.debug("delete {} \nSQL:{}", getPathBase().getTableName(),
 				deleteSql);
 		return jdbcTemplate.update(deleteSql.toString());
 	}
-
-	// @Override
-	// public void lock(PK pk) {
-	// StringBuilder updateSql = new StringBuilder("update ").append(
-	// getPathBase().getTableName()).append(" set ");
-	// Assert.notNull(pk, "primaryKey cannot be null");
-	//
-	// for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
-	// String name = path.getMetadata().getName();
-	// updateSql.append(name).append(" = ").append(name);
-	// }
-	//
-	// List<Object> args = new ArrayList<Object>();
-	// int numOfPk = getPathBase().getPrimaryKey().getLocalColumns().size();
-	// Assert.isTrue(numOfPk > 0, "表不存在主键");
-	// updateSql.append(" where ");
-	// if (numOfPk == 1) {
-	// updateSql.append(
-	// getPathBase().getPrimaryKey().getLocalColumns().get(0)
-	// .getMetadata().getName()).append(" = ?");
-	// args.add(pk);
-	// } else {
-	// SqlParameterSource source = new BeanPropertySqlParameterSource(pk);
-	// for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
-	// String name = path.getMetadata().getName();
-	// String humpName = humpName(name);
-	// updateSql.append(name).append(" = ?");
-	// args.add(source.getValue(humpName));
-	// }
-	// }
-	// LOGGER.debug("锁{}表 \nSQL{} \nparams:{}", getPathBase().getTableName(),
-	// updateSql, args);
-	// jdbcTemplate.update(updateSql.toString(), args.toArray());
-	// }
 
 	@Override
 	public int update(final T domain, QueryExample example) {

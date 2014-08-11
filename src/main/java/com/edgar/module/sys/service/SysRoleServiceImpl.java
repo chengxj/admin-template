@@ -42,14 +42,6 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         private final ValidatorStrategy updateValidator = new SysRoleUpdateValidator();
 
-        // private boolean validRoleId(int roleId) {
-        // Set<Integer> roleIds = LoginUserUtils.getRoleIds();
-        // if (roleIds.contains(roleId)) {
-        // throw ExceptionFactory.forbidden("不允许修改自己的角色");
-        // }
-        // return true;
-        // }
-
         @Override
         @Transactional
         public int save(SysRole sysRole) {

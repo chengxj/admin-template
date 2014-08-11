@@ -269,14 +269,14 @@ public class CacheDisabledTest {
                 Assert.assertEquals(1, testTables.getNextPage());
 
                 testTables = testTableDao.pagination(example, 2, 10);
-                Assert.assertEquals(0, testTables.getRecords().size());
+                Assert.assertEquals(10, testTables.getRecords().size());
                 // Assert.assertTrue(testTables.getTotalRecords() <= example
                 // .getMaxNumOfRecords());
-                Assert.assertEquals(2, testTables.getPage());
+                Assert.assertEquals(1, testTables.getPage());
                 Assert.assertEquals((testTables.getTotalRecords() + testTables.getPageSize() - 1)
                                 / testTables.getPageSize(), testTables.getTotalPages());
                 Assert.assertEquals(1, testTables.getPrevPage());
-                Assert.assertEquals(3, testTables.getNextPage());
+                Assert.assertEquals(1, testTables.getNextPage());
         }
 
         @Transactional

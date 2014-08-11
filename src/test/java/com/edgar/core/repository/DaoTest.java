@@ -295,6 +295,23 @@ public class DaoTest {
                 Assert.assertEquals(8, testTables.size());
         }
 
+    @Transactional
+    @Test
+    public void testQuerySingleColumn() {
+        QueryExample example = QueryExample.newInstance();
+        example.equalsTo("testCode", "0001");
+        example.addField("testCode");
+        List<String> testTables = testTableDao.querySingleColumn(example, String.class);
+        Assert.assertEquals(1, testTables.size());
+        example.addField("dictName");
+        try{
+            testTables = testTableDao.querySingleColumn(example, String.class);
+            Assert.assertEquals(1, testTables.size());
+        }   catch (Exception e) {
+
+        }
+    }
+
         @Transactional
         @Test
         public void testPage() {
