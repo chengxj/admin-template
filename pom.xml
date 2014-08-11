@@ -57,7 +57,6 @@
 		<checkstyle.version>2.12.1</checkstyle.version>
 		<project.info.version>2.7</project.info.version>
 		<site.version>3.3</site.version>
-		<activiti.version>5.16</activiti.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -295,16 +294,6 @@
 			<artifactId>amqp-client</artifactId>
 			<version>${rabbitmq.version}</version>
 		</dependency>
-		<dependency>
-				<groupId>org.activiti</groupId>
-				<artifactId>activiti-engine</artifactId>
-				<version>${activiti.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.activiti</groupId>
-				<artifactId>activiti-spring</artifactId>
-				<version>${activiti.version}</version>
-			</dependency>
 	</dependencies>
 	<profiles>
 		<profile>
