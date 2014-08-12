@@ -228,6 +228,12 @@ function httpInterceptorParam($httpProvider, profile) {
                 } else {
                     config.params = {lang : profile.language, random:new Date().getTime()};
                 }
+                if (config.url.indexOf(".html") < 0) {
+                    console.log(config.url);
+                    console.log(config.data);
+                    console.log(config.params);
+                }
+
                 return config;
             }
 
