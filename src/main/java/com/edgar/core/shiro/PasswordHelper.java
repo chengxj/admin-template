@@ -44,4 +44,5 @@ public class PasswordHelper {
                 return new SimpleHash(algorithmName, password, ByteSource.Util.bytes(user
                                 .getUsername() + user.getSalt()), hashIterations).toHex();
         }
+
 }

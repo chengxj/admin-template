@@ -1,5 +1,8 @@
 package com.edgar.core.mvc;
 
+import com.edgar.core.shiro.*;
+import com.edgar.core.util.ExceptionFactory;
+import com.edgar.core.view.ResponseMessage;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -12,13 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.edgar.core.shiro.AuthHelper;
-import com.edgar.core.shiro.AuthType;
-import com.edgar.core.shiro.CustomExcessiveAttemptsException;
-import com.edgar.core.shiro.RetryLimitService;
-import com.edgar.core.util.ExceptionFactory;
-import com.edgar.core.view.ResponseMessage;
 
 /**
  * 用户登录、注销的rest类
@@ -85,10 +81,12 @@ public class AuthenticatedResource {
 			throw ExceptionFactory.userOrPasswordError();
 		}
 		retryLimitService.removeRetry(username);
-		return ResponseMessage.asModelAndView("Login Success");
+        Token restToken = TokenManager.newToken(username);
+		return ResponseMessage.asModelAndView(restToken);
 	}
 
-	/**
+
+    /**
 	 * 用户注销
 	 * 
 	 * @return 注销成功的视图

@@ -88,7 +88,10 @@ function login() {
             },
             success : function(data) {
                 $("#error-msg").hide();
-                $("#success-msg").html(data).show();
+                $("#success-msg").show();
+                $.cookie("accessToken", data.accessToken);
+                $.cookie("refreshToken", data.refreshToken);
+                $.cookie("sessionSecret", data.sessionSecret);
                 window.location.href = "index.html";
             },
             error : function(data) {

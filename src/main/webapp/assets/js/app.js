@@ -67,6 +67,13 @@ angular
 
         };
 
+        $rootScope.accessToken = $.cookie("accessToken");
+        $rootScope.refreshToken = $.cookie("refreshToken");
+        $rootScope.sessionSecret = $.cookie("sessionSecret");
+        console.log($rootScope.accessToken);
+        console.log($rootScope.refreshToken);
+        console.log($rootScope.sessionSecret);
+
         $http.get("index/user?random=" + new Date().getTime()).success(function (data) {
             var menus = [];
             var copyData = angular.copy(data.menus);

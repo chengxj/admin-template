@@ -51,7 +51,12 @@ public class CustomSecurityRealm extends JdbcRealm {
 	@Autowired
 	private PermissionService permissionService;
 
-	@Override
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof  UsernamePasswordToken;
+    }
+
+    @Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken token) throws AuthenticationException {
 
