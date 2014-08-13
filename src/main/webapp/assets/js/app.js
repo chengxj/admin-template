@@ -74,7 +74,7 @@ angular
         console.log($rootScope.refreshToken);
         console.log($rootScope.sessionSecret);
 
-        $http.get("index/user?random=" + new Date().getTime()).success(function (data) {
+        $http.get("index/user").success(function (data) {
             var menus = [];
             var copyData = angular.copy(data.menus);
             _.each(data.menus, function (v, i) {
@@ -228,10 +228,38 @@ function httpInterceptorParam($httpProvider, profile) {
                 } else {
                     config.params = {lang : profile.language, random:new Date().getTime()};
                 }
-                if (config.url.indexOf(".html") < 0) {
-                    console.log(config.url);
-                    console.log(config.data);
-                    console.log(config.params);
+                config.params.zz = ["b", "a"];
+                config.params.accessToken = $.cookie("accessToken");
+                //HMAC签名
+                if (config.url.indexOf(".html") < 0 && config.url.indexOf(".json") < 0) {
+                    var queryArray = [];
+                    var keys = _.sortBy(_.keys(config.params), function(k) {
+                        return k;
+                    });
+                    keys = _.without(keys, "digest");
+                    _.each(keys, function(v) {
+                        var value = config.params[v];
+                        if (_.isArray(value)) {
+                            value = _.sortBy(value, function(va) {
+                                return va;
+                            } );
+                            value = value.join(",")
+                        }
+                        queryArray.push(v + "=" + value);
+                    });
+                    var baseString = config.method + config.url + "?" + queryArray.join("&");
+                    console.log(baseString);
+                    console.log(CryptoJS.HmacSHA256(baseString, "aaaaaaaaaaaaa").toString());
+                    config.params.digest = CryptoJS.HmacSHA256(baseString, "aaaaaaaaaaaaa").toString();
+//                    _.sortBy(config.params, function(v, key) {
+//                        return key;
+//
+//                    });
+//                    console.log(config.params);
+//                    console.log(_.sortBy(config.params, function(v, key) {
+//                        return key;
+//
+//                    }));
                 }
 
                 return config;
