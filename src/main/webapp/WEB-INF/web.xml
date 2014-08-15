@@ -45,9 +45,9 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-    <filter>
+  <filter>
         <filter-name>digest</filter-name>
-        <filter-class>com.edgar.core.shiro.DigestFilter</filter-class>
+        <filter-class>com.edgar.core.shiro.StatelessAuthcFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>digest</filter-name>

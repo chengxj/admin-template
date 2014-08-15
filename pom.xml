@@ -44,9 +44,10 @@
 		<commons.collections.version>4.0</commons.collections.version>
 		<commons.lang.version>3.3.2</commons.lang.version>
 		<commons.codec.version>1.8</commons.codec.version>
-		<joda.version>2.2</joda.version>
+		<commons.io.version>2.4</commons.io.version>
 		<commons.digester.version>2.1</commons.digester.version>
-		<cglib.version>2.2.2</cglib.version>
+        <joda.version>2.2</joda.version>
+        <cglib.version>2.2.2</cglib.version>
 		<aspectjweaver.version>1.7.2</aspectjweaver.version>
 		<mysql.version>5.1.24</mysql.version>
 		<javax.mail.version>1.4.7</javax.mail.version>
@@ -297,7 +298,12 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.8</version>
+            <version>${commons.codec.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
         </dependency>
 	</dependencies>
 	<profiles>

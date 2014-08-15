@@ -228,38 +228,23 @@ function httpInterceptorParam($httpProvider, profile) {
                 } else {
                     config.params = {lang : profile.language, random:new Date().getTime()};
                 }
-                config.params.zz = ["b", "a"];
+
+                //增加TOKEN
                 config.params.accessToken = $.cookie("accessToken");
                 //HMAC签名
+                //对排序后与URL一起签名
                 if (config.url.indexOf(".html") < 0 && config.url.indexOf(".json") < 0) {
                     var queryArray = [];
-                    var keys = _.sortBy(_.keys(config.params), function(k) {
-                        return k;
-                    });
-                    keys = _.without(keys, "digest");
-                    _.each(keys, function(v) {
-                        var value = config.params[v];
-                        if (_.isArray(value)) {
-                            value = _.sortBy(value, function(va) {
-                                return va;
-                            } );
-                            value = value.join(",")
-                        }
-                        queryArray.push(v + "=" + value);
-                    });
+                    if (config.params) {
+                        queryArray = queryArray.concat(getArray(config.params));
+                    }
+                    if (config.data) {
+                        var data = angular.toJson(config.data);
+                        queryArray = queryArray.concat(angular.fromJson(data));
+                    }
                     var baseString = config.method + config.url + "?" + queryArray.join("&");
                     console.log(baseString);
-                    console.log(CryptoJS.HmacSHA256(baseString, "aaaaaaaaaaaaa").toString());
                     config.params.digest = CryptoJS.HmacSHA256(baseString, "aaaaaaaaaaaaa").toString();
-//                    _.sortBy(config.params, function(v, key) {
-//                        return key;
-//
-//                    });
-//                    console.log(config.params);
-//                    console.log(_.sortBy(config.params, function(v, key) {
-//                        return key;
-//
-//                    }));
                 }
 
                 return config;
@@ -267,6 +252,24 @@ function httpInterceptorParam($httpProvider, profile) {
 
         };
     });
+}
+function getArray(obj) {
+    var queryArray = [];
+    var keys = _.sortBy(_.keys(obj), function(k) {
+        return k;
+    });
+    keys = _.without(keys, "digest");
+    _.each(keys, function(v) {
+        var value = obj[v];
+        if (_.isArray(value)) {
+            value = _.sortBy(value, function(va) {
+                return va;
+            } );
+            value = value.join(",")
+        }
+        queryArray.push(v + "=" + value);
+    });
+    return queryArray;
 }
 
 function showSuccess(msg) {
