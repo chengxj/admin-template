@@ -40,12 +40,10 @@ if (!Array.prototype.indexOf) {
 }
 
 angular
-    .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate" ])
+    .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate", "LocalStorageModule" ])
     .run(
-    function ($route, $rootScope, $http, $timeout, $translate, MessageService) {
-//        $rootScope.checkPermisson = function(permission) {
-//            return _.contains($rootScope.loginUser.permissions, permission);
-//        }
+    function ($route, $rootScope, $http, $timeout, $translate, MessageService, localStorageService) {
+        $rootScope.accessToken =   localStorageService.get("accessToken");
         $rootScope.$on('$viewContentLoaded', function () {
 //        $templateCache.removeAll();
             App.runHeight();
@@ -69,6 +67,11 @@ angular
                 });
 
         };
+//        $rootScope.on("accessToken", function(value) {
+//            if (value) {
+//
+//            }
+//        })
 
         $rootScope.$on("login", function() {
             $http.get("index/user").success(function (data) {
@@ -129,10 +132,12 @@ angular
                 event.preventDefault();
             }
         });
+
+        moment.lang("en");
     }).config(
         [
-            '$routeProvider', '$httpProvider', '$locationProvider', 'routeResolverProvider','$compileProvider','$translateProvider',
-            function ($routeProvider, $httpProvider, $locationProvider, routeResolverProvider, $compileProvider, $translateProvider) {
+            '$routeProvider', '$httpProvider', '$locationProvider', 'routeResolverProvider','$compileProvider','$translateProvider', 'localStorageServiceProvider',
+            function ($routeProvider, $httpProvider, $locationProvider, routeResolverProvider, $compileProvider, $translateProvider, localStorageServiceProvider) {
                 httpInterceptor($httpProvider);
                 $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|javascript):/);
                 routeResolverProvider.routeConfig.setBaseDirectories('app', 'app');
@@ -157,7 +162,7 @@ angular
                         });
                         $translateProvider
                             .preferredLanguage("en");
-//                        moment.lang("en");
+                        localStorageServiceProvider.setPrefix('admin');
                         httpInterceptorParam($httpProvider);
                     }
                 });

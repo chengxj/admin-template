@@ -1,13 +1,13 @@
 'use strict';
-function LoginCtrl($scope, $http, $rootScope) {
+function LoginCtrl($scope, $http, localStorageService) {
     // $scope.menus = $http.get("route");
     $scope.user = {username : 1, password : 2};
     $scope.login = function () {
         $http.post("auth/login", $scope.user).success(
             function (data) {
-                $rootScope.accessToken = data.accessToken;
-                $rootScope.refreshToken = data.refreshToken;
-                $rootScope.secretKey = data.secretKey;
+                localStorageService.accessToken = data.accessToken;
+                localStorageService.refreshToken = data.refreshToken;
+                localStorageService.secretKey = data.secretKey;
                 accessToken = data.accessToken;
                 secretKey = data.secretKey;
                 $scope.$emit("login");
@@ -22,4 +22,4 @@ function LoginCtrl($scope, $http, $rootScope) {
             }
         }
 }
-LoginCtrl.$inject = [ '$scope', '$http', "$rootScope" ];
+LoginCtrl.$inject = [ '$scope', '$http', "localStorageService" ];
