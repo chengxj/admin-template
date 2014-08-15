@@ -10,7 +10,7 @@ import java.io.*;
 public class AuthenticationRequestWrapper
         extends HttpServletRequestWrapper {
 
-    public final String body;
+    private final String body;
 
     public AuthenticationRequestWrapper(HttpServletRequest request) throws IOException {
 
@@ -65,4 +65,7 @@ public class AuthenticationRequestWrapper
         return inputStream;
     }
 
-} 
+    public String getBody() {
+        return body;
+    }
+}

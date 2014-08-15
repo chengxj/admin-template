@@ -240,7 +240,7 @@ function httpInterceptorParam($httpProvider, profile) {
                     }
                     if (config.data) {
                         var data = angular.toJson(config.data);
-                        queryArray = queryArray.concat(angular.fromJson(data));
+                        queryArray = queryArray.concat(getArray(angular.fromJson(data)));
                     }
                     var baseString = config.method + config.url + "?" + queryArray.join("&");
                     console.log(baseString);

@@ -15,7 +15,7 @@
 		</mvc:argument-resolvers>
 		<mvc:message-converters register-defaults="true">
 			<bean
-				class="com.edgar.core.shiro.CustomJsonHttpMessageConverter">
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<property name="prefixJson" value="false" />
 				<property name="supportedMediaTypes" value="application/json" />
 				<property name="objectMapper">
@@ -35,10 +35,6 @@
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	<!-- <context:component-scan base-package="*" /> -->
-
-<!--  <mvc:interceptors>
-        <bean class=" com.edgar.core.shiro.DigestInterceptor" />
-    </mvc:interceptors>-->
 
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/lib/**" location="/lib/" />
