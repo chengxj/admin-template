@@ -9,13 +9,21 @@ import java.util.Map;
  */
 public class StatelessToken implements AuthenticationToken {
     private String username;
-    private Map<String, ?> params;
+    private String baseString;
     private String digest;
 
-    public StatelessToken(String username, Map<String, ?> params, String digest) {
+    public StatelessToken(String username, String baseString, String digest) {
         this.username = username;
-        this.params = params;
+        this.baseString = baseString;
         this.digest = digest;
+    }
+
+    public String getBaseString() {
+        return baseString;
+    }
+
+    public void setBaseString(String baseString) {
+        this.baseString = baseString;
     }
 
     public String getUsername() {
@@ -24,14 +32,6 @@ public class StatelessToken implements AuthenticationToken {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Map<String, ?> getParams() {
-        return params;
-    }
-
-    public void setParams(Map<String, ?> params) {
-        this.params = params;
     }
 
     public String getDigest() {

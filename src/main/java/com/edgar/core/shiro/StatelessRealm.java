@@ -31,19 +31,16 @@ public class StatelessRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         StatelessToken statelessToken = (StatelessToken) authenticationToken;
         String username = statelessToken.getUsername();
-        String clientDigest = statelessToken.getDigest();
+        String baseString = statelessToken.getBaseString();
 
         String key = getKey(username);// 根据用户名获取密钥（和客户端的一样）
         // 在服务器端生成客户端参数消息摘要
         String serverDigest = HmacSHA256Utils.digest(key,
-                statelessToken.getParams());
+                baseString);
         return new SimpleAuthenticationInfo(username, serverDigest, getName());
     }
 
     private String getKey(String username) {// 得到密钥，此处硬编码一个
-        if ("admin".equals(username)) {
-            return "dadadswdewq2ewdwqdwadsadasd";
-        }
-        return null;
+        return "dadadswdewq2ewdwqdwadsadasd";
     }
 }

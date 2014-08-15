@@ -74,9 +74,9 @@ public class FilterChainDefinitionsLoader {
                                 // map.put(resource.getUrl(), resource.getPermission());
                                 String permission = StringUtils.substringBeforeLast(
                                                 resource.getPermission(), ":");
-                                authcMap.put(resource.getUrl(), "authc,rest[" + permission + "]");
+                                authcMap.put(resource.getUrl(), "statelessAuthc,rest[" + permission + "]");
                         } else if (GlobalUtils.AUTH_TYPE_AUTHC.equals(resource.getAuthType())) {
-                                authcMap.put(resource.getUrl(), "authc");
+                                authcMap.put(resource.getUrl(), "statelessAuthc");
                         } else {
                                 authcMap.put(resource.getUrl(), "anon");
                         }

@@ -1,62 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" />
-		<!-- The 'filters' property is not necessary since any declared javax.servlet.Filter 
-			bean -->
-		<!-- defined will be automatically acquired and available via its beanName 
-			in chain -->
-		<!-- definitions, but you can perform instance overrides or name aliases 
-			here if you like: -->
-		<property name="loginUrl" value="/auth/unlogin" />
-		<property name="unauthorizedUrl" value="/auth/unauthorized" />
-		<!-- <property name="filters"> <util:map> <entry key="authc" value-ref="myOncePerRequestFilter" 
-			/> <entry key="authc" value-ref="myAdviceFilter" /> </util:map> </property> -->
-		<property name="filterChainDefinitionMap" value="#{filterChainDefinitionsLoader.loadDefinitions()}" 
-			/> 
-		<!-- <property name="filterChainDefinitions">
-			<value> 
-			/login.html=anon
-			/index.html=anon 
-			/app/**=anon 
-			/assets/**=anon 
-			/js/**=anon
-			/sys/user/pagination=authc,rest[sys:user:pagination]
-			/sys/user/**=authc,rest[sys:user]
-			/** = anon 
-			</value>
-		</property> -->
-	</bean>
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/auth/unlogin"/>
+        <property name="unauthorizedUrl" value="/auth/unauthorized"/>
+        <property name="filters">
+            <util:map>
+                <entry key="statelessAuthc" value-ref="statelessAuthcFilter"/>
+            </util:map>
+        </property>
+        <property name="filterChainDefinitionMap" value="#{filterChainDefinitionsLoader.loadDefinitions()}"
+                />
+        <!-- <property name="filterChainDefinitions">
+              <value>
+              /login.html=anon
+              /index.html=anon
+              /app/**=anon
+              /assets/**=anon
+              /js/**=anon
+              /sys/user/pagination=authc,rest[sys:user:pagination]
+              /sys/user/**=authc,rest[sys:user]
+              /** = anon
+              </value>
+          </property> -->
+    </bean>
 
-	<bean id="filterChainDefinitionsLoader" class="com.edgar.core.shiro.FilterChainDefinitionsLoader">
-		<property name="dataSource" ref="db1.dataSource" />
-	</bean>
+    <bean id="filterChainDefinitionsLoader" class="com.edgar.core.shiro.FilterChainDefinitionsLoader">
+        <property name="dataSource" ref="db1.dataSource"/>
+    </bean>
 
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<!-- Single realm app. If you have multiple realms, use the 'realms' property 
-			instead. -->
-		<property name="realm" ref="myRealm" />
-	</bean>
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+    <!-- Subject工厂 -->
+    <bean id="subjectFactory"
+          class="com.edgar.core.shiro.StatelessDefaultSubjectFactory" />
 
-	<bean id="myRealm" class="com.edgar.core.shiro.CustomSecurityRealm">
-		<property name="credentialsMatcher" ref="passwordMatcher" />
-	</bean>
+    <!-- 会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager">
+        <property name="sessionValidationSchedulerEnabled" value="false" />
+    </bean>
 
-	<bean id="passwordMatcher"
-		class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-		<!-- <property name="cacheManager" ref="cacheManager" /> -->
-		<property name="hashAlgorithmName" value="MD5" />
-		<property name="hashIterations" value="1024" />
-		<property name="storedCredentialsHexEncoded" value="true" />
-	</bean>
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- Single realm app. If you have multiple realms, use the 'realms' property
+              instead. -->
+        <property name="realms">
+            <list>
+                <ref bean="myRealm"/>
+                <ref bean="statelessRealm"/>
+            </list>
+        </property>
+        <property name="subjectDAO.sessionStorageEvaluator.sessionStorageEnabled"
+                  value="false" />
+        <property name="subjectFactory" ref="subjectFactory" />
+        <property name="sessionManager" ref="sessionManager" />
+        <property name="authenticator.authenticationStrategy">
+            <bean class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy"/>
+        </property>
+    </bean>
 
-	<bean class="com.edgar.core.shiro.RetryLimitService">
-		<property name="maxRetryCount" value="10" />
-	</bean>
+    <!--<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+        <property name="authenticationStrategy">
+            <bean class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy" />
+        </property>
+    </bean>-->
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!--用户名密码Realm-->
+    <bean id="myRealm" class="com.edgar.core.shiro.CustomSecurityRealm">
+        <property name="credentialsMatcher" ref="passwordMatcher"/>
+    </bean>
+
+    <!--无状态Realm-->
+    <bean id="statelessRealm"
+          class="com.edgar.core.shiro.StatelessRealm">
+        <property name="cachingEnabled" value="false"/>
+    </bean>
+
+    <!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+    <bean
+            class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod"
+                  value="org.apache.shiro.SecurityUtils.setSecurityManager" />
+        <property name="arguments" ref="securityManager" />
+    </bean>
+
+    <!--无状态的filter-->
+    <bean id="statelessAuthcFilter" class="com.edgar.core.shiro.StatelessAuthcFilter"/>
+
+    <bean id="passwordMatcher"
+          class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!-- <property name="cacheManager" ref="cacheManager" /> -->
+        <property name="hashAlgorithmName" value="MD5"/>
+        <property name="hashIterations" value="1024"/>
+        <property name="storedCredentialsHexEncoded" value="true"/>
+    </bean>
+
+    <bean class="com.edgar.core.shiro.RetryLimitService">
+        <property name="maxRetryCount" value="10"/>
+    </bean>
 
 </beans>

@@ -4,12 +4,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 
-public class StatelessAuthcFilter implements Filter {
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.web.filter.AccessControlFilter;
+
+public class StatelessAuthcFilter extends AccessControlFilter {
 
     private static final Set<String> MULTI_READ_HTTP_METHODS = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER) {{
         // Enable Multi-Read for PUT and POST requests
@@ -17,36 +23,26 @@ public class StatelessAuthcFilter implements Filter {
         add("POST");
     }};
 
-    public void doFilter(ServletRequest servletRequest, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    @Override
+    protected boolean isAccessAllowed(ServletRequest request,
+                                      ServletResponse response, Object mappedValue) throws Exception {
+        return false;
+    }
+
+    @Override
+    protected boolean onAccessDenied(ServletRequest servletRequest,
+                                     ServletResponse response) throws Exception {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String url = request.getRequestURL().toString();
         String method = request.getMethod();
+        String accessToken = request.getParameter("accessToken");
+        String clientDigest = request.getParameter("digest");
+        String baseString = null;
+        if (StringUtils.endsWith(url, "/login")) {
+            return true;
+        }
 
-        if (StringUtils.endsWith(url, ".html")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".js")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".jpg")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".png")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".css")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".font")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".4.1.0")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".woff")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".eot")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".ico")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".gif")) {
-            filterChain.doFilter(request, response);
-        } else if (StringUtils.endsWith(url, ".json")) {
-            filterChain.doFilter(request, response);
-        } else if (MULTI_READ_HTTP_METHODS.contains(method) && !StringUtils.endsWith(url, "/login")) {
+        if (MULTI_READ_HTTP_METHODS.contains(method)) {
             AuthenticationRequestWrapper authenticationRequestWrapper;
             try {
                 authenticationRequestWrapper = new AuthenticationRequestWrapper(request);
@@ -54,7 +50,8 @@ public class StatelessAuthcFilter implements Filter {
                 String bodyString = null;
                 if (StringUtils.isNotBlank(body)) {
                     ObjectMapper mapper = new ObjectMapper();
-                    Map<String,Object> map = mapper.readValue(body, new TypeReference<HashMap<String,Object>>() {});
+                    Map<String, Object> map = mapper.readValue(body, new TypeReference<HashMap<String, Object>>() {
+                    });
                     List<String> keys = new ArrayList<String>(map.keySet());
                     Collections.sort(keys);
 
@@ -62,19 +59,19 @@ public class StatelessAuthcFilter implements Filter {
 
                     for (String key : keys) {
                         Object value = map.get(key);
-                        if(value instanceof String[]) {
+                        if (value instanceof String[]) {
                             List<String> valueList = new ArrayList<String>();
-                            Collections.addAll(valueList, (String[])value);
+                            Collections.addAll(valueList, (String[]) value);
                             Collections.sort(valueList);
                             dataStringList.add(key + "=" + StringUtils.join(valueList, ","));
-                        } else if(value instanceof List) {
+                        } else if (value instanceof List) {
                             List<String> valueList = (List<String>) value;
                             dataStringList.add(key + "=" + StringUtils.join(valueList, ","));
                         } else {
                             dataStringList.add(key + "=" + value.toString());
                         }
                     }
-                     bodyString = StringUtils.join(dataStringList, "&");
+                    bodyString = StringUtils.join(dataStringList, "&");
                 }
                 String queryString = getQueryString(request);
                 if (StringUtils.isNotBlank(queryString)) {
@@ -84,41 +81,41 @@ public class StatelessAuthcFilter implements Filter {
                 } else {
                     queryString = bodyString;
                 }
-                String serverDigest = getServerDigest(request, queryString);
-                System.out.println(url);
-                String clientDigest = request.getParameter("digest");
-                System.out.println(clientDigest);
-                System.out.println(serverDigest);
-                System.out.println(serverDigest.equals(clientDigest));
+                baseString = getBaseString(request, queryString);
             } catch (IOException ex) {
                 throw new ServletException("Unable to wrap the request", ex);
             }
 
-            // continue the filter chain
-            filterChain.doFilter(authenticationRequestWrapper, response);
         } else {
-            System.out.println(url);
-            String clientDigest = request.getParameter("digest");
             String queryString = getQueryString(request);
-            String serverDigest = getServerDigest(request, queryString);
-            System.out.println(clientDigest);
-            System.out.println(serverDigest);
-            System.out.println(serverDigest.equals(clientDigest));
-            filterChain.doFilter(request, response);
+            baseString = getBaseString(request, queryString);
         }
 
+        // 4、生成无状态Token
+        StatelessToken token = new StatelessToken(accessToken, baseString,
+                clientDigest);
+
+        try {
+            // 5、委托给Realm进行登录
+            getSubject(request, response).login(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+            onLoginFail(response); // 6、登录失败
+            return false;
+        }
+        return true;
     }
 
-    private String getServerDigest(HttpServletRequest request, String queryString) {
+    private String getBaseString(HttpServletRequest request, String queryString) {
         System.out.println(queryString);
-        String url =request.getRequestURL().toString() ;
+        String url = request.getRequestURL().toString();
         String method = request.getMethod();
         String contextPah = request.getContextPath();
         StringBuilder baseString = new StringBuilder(method).append(StringUtils.substringAfter(url, contextPah + "/"));
-        if (StringUtils.isNotBlank(queryString))  {
+        if (StringUtils.isNotBlank(queryString)) {
             baseString.append("?").append(queryString);
         }
-        return HmacSHA256Utils.digest("aaaaaaaaaaaaa", baseString.toString());
+        return baseString.toString();
     }
 
     public String getQueryString(HttpServletRequest request) {
@@ -143,9 +140,10 @@ public class StatelessAuthcFilter implements Filter {
         return StringUtils.join(paramStringList, "&");
     }
 
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
-
-    public void destroy() {
+    // 登录失败时默认返回401状态码
+    private void onLoginFail(ServletResponse response) throws IOException {
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        httpResponse.getWriter().write("login error");
     }
 }

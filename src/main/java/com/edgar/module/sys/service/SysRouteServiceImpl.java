@@ -46,6 +46,13 @@ public class SysRouteServiceImpl implements SysRouteService {
 		return sysRouteDao.query(example);
 	}
 
+    @Override
+    public List<SysRoute> findAllWithRoot() {
+        QueryExample example = QueryExample.newInstance();
+        return sysRouteDao.query(example);
+    }
+
+
 	@Override
 	@Transactional
 	public int save(SysRoute sysRoute) {
