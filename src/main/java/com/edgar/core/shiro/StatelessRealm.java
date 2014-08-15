@@ -14,6 +14,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedHashSet;
@@ -28,7 +30,8 @@ import java.util.Set;
  * To change this template use File | Settings | File Templates.
  */
 public class StatelessRealm extends AuthorizingRealm {
-
+    private static final Logger logger = LoggerFactory
+            .getLogger(StatelessRealm.class);
     @Autowired
     private StatelessUserService statelessUserService;
 
@@ -44,6 +47,7 @@ public class StatelessRealm extends AuthorizingRealm {
 //                    "PrincipalCollection method argument cannot be null.");
 //        }
 
+        logger.debug("StatelessRealm doGetAuthenticationInfo");
         String accessToken = (String) getAvailablePrincipal(principalCollection);
         StatelessUser user = statelessUserService.getUser(accessToken);
         Set<String> roleNames = new LinkedHashSet<String>();
@@ -59,6 +63,8 @@ public class StatelessRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+        logger.debug("StatelessRealm doGetAuthenticationInfo");
+
         StatelessToken statelessToken = (StatelessToken) authenticationToken;
         String accessToken = statelessToken.getAccessToken();
         String baseString = statelessToken.getBaseString();

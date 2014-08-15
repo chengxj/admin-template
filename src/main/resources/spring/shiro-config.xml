@@ -48,7 +48,7 @@
               instead. -->
         <property name="realms">
             <list>
-                <ref bean="myRealm"/>
+                <ref bean="usernamePasswordRealm"/>
                 <ref bean="statelessRealm"/>
             </list>
         </property>
@@ -70,7 +70,7 @@
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
     <!--用户名密码Realm-->
-    <bean id="myRealm" class="com.edgar.core.shiro.CustomSecurityRealm">
+    <bean id="usernamePasswordRealm" class="com.edgar.core.shiro.UsernamePasswordRealm">
         <property name="credentialsMatcher" ref="passwordMatcher"/>
     </bean>
 
