@@ -40,10 +40,12 @@ if (!Array.prototype.indexOf) {
 }
 
 angular
-    .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate", "LocalStorageModule" ])
+    .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate"])
     .run(
-    function ($route, $rootScope, $http, $timeout, $translate, MessageService, localStorageService) {
-        $rootScope.accessToken =   localStorageService.get("accessToken");
+    function ($route, $rootScope, $http, $timeout, $translate, MessageService) {
+        var storage = $.localStorage;
+        $rootScope.accessToken = storage.get("accessToken");
+        console.log($rootScope.accessToken);
         $rootScope.$on('$viewContentLoaded', function () {
 //        $templateCache.removeAll();
             App.runHeight();
@@ -136,8 +138,8 @@ angular
         moment.lang("en");
     }).config(
         [
-            '$routeProvider', '$httpProvider', '$locationProvider', 'routeResolverProvider','$compileProvider','$translateProvider', 'localStorageServiceProvider',
-            function ($routeProvider, $httpProvider, $locationProvider, routeResolverProvider, $compileProvider, $translateProvider, localStorageServiceProvider) {
+            '$routeProvider', '$httpProvider', '$locationProvider', 'routeResolverProvider','$compileProvider','$translateProvider',
+            function ($routeProvider, $httpProvider, $locationProvider, routeResolverProvider, $compileProvider, $translateProvider) {
                 httpInterceptor($httpProvider);
                 $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|javascript):/);
                 routeResolverProvider.routeConfig.setBaseDirectories('app', 'app');
@@ -161,8 +163,7 @@ angular
                             suffix: '.json'
                         });
                         $translateProvider
-                            .preferredLanguage("en");
-                        localStorageServiceProvider.setPrefix('admin');
+                            .preferredLanguage("en");;
                         httpInterceptorParam($httpProvider);
                     }
                 });
@@ -228,6 +229,9 @@ function httpInterceptorParam($httpProvider) {
                     config.params = {random:new Date().getTime()};
                 }
                 if (config.url.indexOf("/login") > 0) {
+                    return config;
+                }
+                if (config.url.indexOf(".html") > 0) {
                     return config;
                 }
 
