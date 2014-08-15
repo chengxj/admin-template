@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.edgar.core.util.GlobalUtils;
+import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.SysResource;
 
 /**
@@ -70,12 +70,12 @@ public class FilterChainDefinitionsLoader {
                 List<SysResource> resources = jdbcTemplate.query(URLS_QUERY,
                                 BeanPropertyRowMapper.newInstance(SysResource.class));
                 for (SysResource resource : resources) {
-                        if (GlobalUtils.AUTH_TYPE_REST.equals(resource.getAuthType())) {
+                        if (Constants.AUTH_TYPE_REST.equals(resource.getAuthType())) {
                                 // map.put(resource.getUrl(), resource.getPermission());
                                 String permission = StringUtils.substringBeforeLast(
                                                 resource.getPermission(), ":");
                                 authcMap.put(resource.getUrl(), "statelessAuthc,rest[" + permission + "]");
-                        } else if (GlobalUtils.AUTH_TYPE_AUTHC.equals(resource.getAuthType())) {
+                        } else if (Constants.AUTH_TYPE_AUTHC.equals(resource.getAuthType())) {
                                 authcMap.put(resource.getUrl(), "statelessAuthc");
                         } else {
                                 authcMap.put(resource.getUrl(), "anon");

@@ -8,12 +8,12 @@ import java.util.Map;
  * 无状态的TOKEN，用来校验rest API
  */
 public class StatelessToken implements AuthenticationToken {
-    private String username;
+    private String accessToken;
     private String baseString;
     private String digest;
 
-    public StatelessToken(String username, String baseString, String digest) {
-        this.username = username;
+    public StatelessToken(String accessToken, String baseString, String digest) {
+        this.accessToken = accessToken;
         this.baseString = baseString;
         this.digest = digest;
     }
@@ -26,12 +26,12 @@ public class StatelessToken implements AuthenticationToken {
         this.baseString = baseString;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getDigest() {
@@ -44,7 +44,7 @@ public class StatelessToken implements AuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return username;
+        return accessToken;
     }
 
     @Override

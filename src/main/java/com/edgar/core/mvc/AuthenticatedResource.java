@@ -1,8 +1,11 @@
 package com.edgar.core.mvc;
 
+import com.edgar.core.cache.CacheWrapper;
+import com.edgar.core.cache.EhCacheWrapper;
 import com.edgar.core.shiro.*;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.core.view.ResponseMessage;
+import net.sf.ehcache.CacheManager;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -29,6 +32,14 @@ public class AuthenticatedResource {
 
     @Autowired
     private RetryLimitService retryLimitService;
+
+
+    private CacheWrapper<String, Token> cacheWrapper;
+
+    @Autowired
+    public void setCacheManager(CacheManager cacheManager) {
+        cacheWrapper = new EhCacheWrapper<String, Token>("StatelessCache", cacheManager);
+    }
 
     /**
      * 未登录用户
@@ -89,6 +100,8 @@ public class AuthenticatedResource {
 //		}
         retryLimitService.removeRetry(username);
         Token restToken = TokenManager.newToken(username);
+        System.out.println(restToken.getAccessToken());
+        cacheWrapper.put(restToken.getAccessToken(), restToken);
         return ResponseMessage.asModelAndView(restToken);
     }
 

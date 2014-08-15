@@ -13,12 +13,25 @@ public class Token {
     /**
      * 基于http调用API时计算参数签名用的签名密钥
      */
-    private String sessionSecret;
+    private String secretKey;
 
     /**
      * Access Token的有效期，以秒为单位
      */
     private long expiresIn;
+
+    /**
+     * 用户名
+     */
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getAccessToken() {
         return accessToken;
@@ -36,12 +49,12 @@ public class Token {
         this.refreshToken = refreshToken;
     }
 
-    public String getSessionSecret() {
-        return sessionSecret;
+    public String getSecretKey() {
+        return secretKey;
     }
 
-    public void setSessionSecret(String sessionSecret) {
-        this.sessionSecret = sessionSecret;
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 
     public long getExpiresIn() {

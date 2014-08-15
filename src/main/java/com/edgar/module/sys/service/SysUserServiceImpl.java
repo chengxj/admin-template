@@ -17,7 +17,7 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.PasswordHelper;
 import com.edgar.core.util.ExceptionFactory;
-import com.edgar.core.util.GlobalUtils;
+import com.edgar.core.util.Constants;
 import com.edgar.core.validator.ValidatorStrategy;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
@@ -203,7 +203,7 @@ public class SysUserServiceImpl implements SysUserService {
 	 */
 	private void saveDefaultProfile(int userId) {
 		SysUserProfile profile = new SysUserProfile();
-		profile.setLanguage(GlobalUtils.DEFAULT_PROFILE_LANG);
+		profile.setLanguage(Constants.DEFAULT_PROFILE_LANG);
 		profile.setProfileId(IDUtils.getNextId());
 		profile.setUserId(userId);
 		sysUserProfileDao.insert(profile);

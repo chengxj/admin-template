@@ -28,9 +28,10 @@ public class TokenManager {
     public static Token newToken(String username) {
 
         Token token = new Token();
+        token.setUsername(username);
         token.setAccessToken(createToken(username, 30 * 3600 * 1000));
         token.setRefreshToken(createToken(username, 60 * 3600 * 1000));
-        token.setSessionSecret(createToken(username, 30 * 3600 * 1000));
+        token.setSecretKey(createToken(username, 30 * 3600 * 1000));
         token.setExpiresIn(30 * 3600 * 1000);
         return token;
     }

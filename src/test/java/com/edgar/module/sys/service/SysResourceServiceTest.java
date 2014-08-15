@@ -27,9 +27,8 @@ import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.SqlOperator;
-import com.edgar.core.util.GlobalUtils;
+import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.SysResource;
-import com.edgar.module.sys.service.SysResourceServiceImpl;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(QueryExample.class)
@@ -69,7 +68,7 @@ public class SysResourceServiceTest {
                 Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
                                 SqlOperator.EQUALS_TO, 0)));
                 Assert.assertTrue(example.containCriteria(new Criteria("authType",
-                                SqlOperator.EQUALS_TO, GlobalUtils.AUTH_TYPE_REST)));
+                                SqlOperator.EQUALS_TO, Constants.AUTH_TYPE_REST)));
                 verify(sysResourceDao, times(1)).pagination(same(example), anyInt(), anyInt());
         }
 
@@ -87,7 +86,7 @@ public class SysResourceServiceTest {
                 Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
                                 SqlOperator.EQUALS_TO, 0)));
                 Assert.assertTrue(example.containCriteria(new Criteria("authType",
-                                SqlOperator.EQUALS_TO, GlobalUtils.AUTH_TYPE_REST)));
+                                SqlOperator.EQUALS_TO, Constants.AUTH_TYPE_REST)));
                 verify(sysResourceDao, times(1)).query(any(QueryExample.class));
                 verifyStatic(only());
                 QueryExample.newInstance();

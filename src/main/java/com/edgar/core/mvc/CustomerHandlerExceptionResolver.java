@@ -27,7 +27,7 @@ import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 import com.edgar.core.exception.BusinessCode;
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.mail.MailService;
-import com.edgar.core.util.GlobalUtils;
+import com.edgar.core.util.Constants;
 import com.edgar.core.view.ResponseMessage;
 
 /**
@@ -116,7 +116,7 @@ public class CustomerHandlerExceptionResolver extends AbstractHandlerExceptionRe
                         final List<String> to = new ArrayList<String>();
                         to.add(alertTo);
                         final List<String> cc = new ArrayList<String>();
-                        GlobalUtils.EXEC.submit(new Runnable() {
+                        Constants.EXEC.submit(new Runnable() {
                                 
                                 @Override
                                 public void run() {

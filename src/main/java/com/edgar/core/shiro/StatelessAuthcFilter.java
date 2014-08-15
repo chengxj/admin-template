@@ -1,7 +1,11 @@
 package com.edgar.core.shiro;
 
+import com.edgar.core.cache.CacheWrapper;
+import com.edgar.core.cache.EhCacheWrapper;
+import com.edgar.core.util.Constants;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
@@ -14,8 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 public class StatelessAuthcFilter extends AccessControlFilter {
+
+    @Autowired
+    private StatelessUserService statelessUserService;
 
     private static final Set<String> MULTI_READ_HTTP_METHODS = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER) {{
         // Enable Multi-Read for PUT and POST requests
@@ -38,9 +48,6 @@ public class StatelessAuthcFilter extends AccessControlFilter {
         String accessToken = request.getParameter("accessToken");
         String clientDigest = request.getParameter("digest");
         String baseString = null;
-        if (StringUtils.endsWith(url, "/login")) {
-            return true;
-        }
 
         if (MULTI_READ_HTTP_METHODS.contains(method)) {
             AuthenticationRequestWrapper authenticationRequestWrapper;
@@ -103,11 +110,11 @@ public class StatelessAuthcFilter extends AccessControlFilter {
             onLoginFail(response); // 6、登录失败
             return false;
         }
+        RequestContextHolder.currentRequestAttributes().setAttribute(Constants.USER_KEY, statelessUserService.getUser(accessToken), RequestAttributes.SCOPE_REQUEST);
         return true;
     }
 
     private String getBaseString(HttpServletRequest request, String queryString) {
-        System.out.println(queryString);
         String url = request.getRequestURL().toString();
         String method = request.getMethod();
         String contextPah = request.getContextPath();
@@ -118,7 +125,7 @@ public class StatelessAuthcFilter extends AccessControlFilter {
         return baseString.toString();
     }
 
-    public String getQueryString(HttpServletRequest request) {
+    private String getQueryString(HttpServletRequest request) {
         List<String> paramNameList = new ArrayList<String>();
         Enumeration<String> names = request.getParameterNames();
         while (names.hasMoreElements()) {

@@ -1,5 +1,8 @@
 'use strict';
 
+var accessToken;
+var secretKey;
+
 if (!String.prototype.trim) {
     String.prototype.trim = function () {
         return this.replace(/^\s+|\s+$/g, '');
@@ -219,9 +222,12 @@ function httpInterceptorParam($httpProvider) {
                 } else {
                     config.params = {random:new Date().getTime()};
                 }
+                if (config.url.indexOf("/login") > 0) {
+                    return config;
+                }
 
                 //增加TOKEN
-                config.params.accessToken = $.cookie("accessToken");
+                config.params.accessToken = accessToken;;
                 //HMAC签名
                 //对排序后与URL一起签名
                 if (config.url.indexOf(".html") < 0 && config.url.indexOf(".json") < 0) {
@@ -235,7 +241,7 @@ function httpInterceptorParam($httpProvider) {
                     }
                     var baseString = config.method + config.url + "?" + queryArray.join("&");
                     console.log(baseString);
-                    config.params.digest = CryptoJS.HmacSHA256(baseString, "dadadswdewq2ewdwqdwadsadasd").toString();
+                    config.params.digest = CryptoJS.HmacSHA256(baseString, secretKey).toString();
                 }
 
                 return config;

@@ -7,7 +7,9 @@ function LoginCtrl($scope, $http, $rootScope) {
             function (data) {
                 $rootScope.accessToken = data.accessToken;
                 $rootScope.refreshToken = data.refreshToken;
-                $rootScope.sessionSecret = data.sessionSecret;
+                $rootScope.secretKey = data.secretKey;
+                accessToken = data.accessToken;
+                secretKey = data.secretKey;
                 $scope.$emit("login");
             }).error(function (data) {
             $("#success-msg").hide();

@@ -1,14 +1,11 @@
 package com.edgar.core.mvc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.QueryExample;
+import com.edgar.core.shiro.*;
+import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.service.SysRouteService;
 import org.apache.commons.lang.StringUtils;
@@ -18,10 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.edgar.core.shiro.AuthHelper;
-import com.edgar.core.shiro.AuthType;
-import com.edgar.core.shiro.LoginUser;
-import com.edgar.core.shiro.LoginUserUtils;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysRoute;
@@ -30,6 +23,8 @@ import com.edgar.module.sys.service.PermissionService;
 import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.view.AngularRoute;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * 路由的rest接口
@@ -52,9 +47,6 @@ public class IndexResource {
 
 	@Autowired
 	private SysUserService sysUserService;
-
-    @Autowired
-    private CrudRepository<Integer, SysRole> sysRoleDao;
 
 	/**
 	 * 根据用户权限返回路由
@@ -92,9 +84,12 @@ public class IndexResource {
 	@RequestMapping(method = RequestMethod.GET, value = "/user")
 	@ResponseBody
 	public Map<String, Object> getUserData() {
-        QueryExample example = QueryExample.newInstance();
-        example.addField("roleId");
-		List<Integer> roleIds = sysRoleDao.querySingleColumn(example, Integer.class);
+        StatelessUser user = (StatelessUser) RequestContextHolder.currentRequestAttributes().getAttribute(Constants.USER_KEY, RequestAttributes.SCOPE_REQUEST);
+     Set<Integer> roleIds = new LinkedHashSet<Integer>();
+        List<SysRole> roles = user.getRoles();
+        for (SysRole sysRole : roles) {
+            roleIds.add(sysRole.getRoleId());
+        }
 		if (roleIds.isEmpty()) {
 			throw ExceptionFactory.isNull();
 		}
@@ -113,12 +108,12 @@ public class IndexResource {
 				SysMenu menu = sysMenuService.get(menuId);
 				menus.add(menu);
 				if (StringUtils.isNotBlank(menu.getPermission())) {
-//					loginUser.addPermission(menu.getPermission());
+                    user.addPermission(menu.getPermission());
 				}
 			}
 		}
 		data.put("menus", menus);
-//		data.put("user", loginUser);
+		data.put("user", user);
 //		data.put("routes", getRoutes());
 		return data;
 	}

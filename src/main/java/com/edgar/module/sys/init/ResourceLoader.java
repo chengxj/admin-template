@@ -31,7 +31,7 @@ import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
 import com.edgar.core.shiro.FilterChainDefinitionsLoader;
 import com.edgar.core.shiro.PasswordHelper;
-import com.edgar.core.util.GlobalUtils;
+import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.domain.SysRole;
@@ -49,7 +49,7 @@ public class ResourceLoader implements Initialization {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(AppInitializer.class);
 
-	private static final String ROOT = GlobalUtils.ROOT_ROLE_NAME;
+	private static final String ROOT = Constants.ROOT_ROLE_NAME;
 	@Autowired
 	private RequestMappingHandlerMapping handlerMapping;
 
@@ -242,7 +242,7 @@ public class ResourceLoader implements Initialization {
 		sysUserDao.insert(rootUser);
 
 		SysUserProfile profile = new SysUserProfile();
-		profile.setLanguage(GlobalUtils.DEFAULT_PROFILE_LANG);
+		profile.setLanguage(Constants.DEFAULT_PROFILE_LANG);
 		profile.setUserId(rootUser.getUserId());
 		profile.setProfileId(IDUtils.getNextId());
 		sysUserProfileDao.insert(profile);
@@ -349,19 +349,19 @@ public class ResourceLoader implements Initialization {
 							switch (helper.type()) {
 							case REST:
 								sysResource
-										.setAuthType(GlobalUtils.AUTH_TYPE_REST);
+										.setAuthType(Constants.AUTH_TYPE_REST);
 								break;
 							case AUTHC:
 								sysResource
-										.setAuthType(GlobalUtils.AUTH_TYPE_AUTHC);
+										.setAuthType(Constants.AUTH_TYPE_AUTHC);
 								break;
 							case ANON:
 								sysResource
-										.setAuthType(GlobalUtils.AUTH_TYPE_ANON);
+										.setAuthType(Constants.AUTH_TYPE_ANON);
 								break;
 							default:
 								sysResource
-										.setAuthType(GlobalUtils.AUTH_TYPE_REST);
+										.setAuthType(Constants.AUTH_TYPE_REST);
 								break;
 							}
 						}

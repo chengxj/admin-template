@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
-import com.edgar.core.util.GlobalUtils;
+import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.SysResource;
 
 /**
@@ -27,7 +27,7 @@ public class SysResourceServiceImpl implements SysResourceService {
         public List<SysResource> findAll() {
                 QueryExample example = QueryExample.newInstance();
                 example.equalsTo("isRoot", 0);
-                example.equalsTo("authType", GlobalUtils.AUTH_TYPE_REST);
+                example.equalsTo("authType", Constants.AUTH_TYPE_REST);
                 example.asc("url");
                 return sysResourceDao.query(example);
         }
@@ -37,7 +37,7 @@ public class SysResourceServiceImpl implements SysResourceService {
         public Pagination<SysResource> pagination(QueryExample example, int page, int pageSize) {
                 example.asc("url");
                 example.equalsTo("isRoot", 0);
-                example.equalsTo("authType", GlobalUtils.AUTH_TYPE_REST);
+                example.equalsTo("authType", Constants.AUTH_TYPE_REST);
                 return sysResourceDao.pagination(example, page, pageSize);
         }
 

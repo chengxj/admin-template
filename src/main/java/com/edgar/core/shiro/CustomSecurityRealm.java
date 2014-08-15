@@ -59,7 +59,6 @@ public class CustomSecurityRealm extends JdbcRealm {
     @Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken token) throws AuthenticationException {
-
 		UsernamePasswordToken upToken = (UsernamePasswordToken) token;
 		String username = upToken.getUsername();
 
@@ -84,23 +83,7 @@ public class CustomSecurityRealm extends JdbcRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(
 			PrincipalCollection principals) {
-		if (principals == null) {
-			throw new AuthorizationException(
-					"PrincipalCollection method argument cannot be null.");
-		}
-
-		LoginUser loginUser = (LoginUser) getAvailablePrincipal(principals);
-
-		Set<String> roleNames = new LinkedHashSet<String>();
-		List<SysRole> roles = loginUser.getRoles();
-		loginUser.setRoles(roles);
-		for (SysRole sysRole : roles) {
-			roleNames.add(sysRole.getRoleName());
-		}
-        Set<String> permissions = getPermissions(loginUser.getUserId(), roles);
-		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
-		info.setStringPermissions(permissions);
-		return info;
+		return null;
 
 	}
 
