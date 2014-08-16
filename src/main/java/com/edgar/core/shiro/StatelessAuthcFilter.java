@@ -151,6 +151,6 @@ public class StatelessAuthcFilter extends AccessControlFilter {
     private void onLoginFail(ServletResponse response) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        httpResponse.getWriter().write("login error");
+        httpResponse.getWriter().write("Username or Password is not correct!");
     }
 }

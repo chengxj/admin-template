@@ -50,9 +50,13 @@ public class StatelessUserService {
         return token;
     }
 
-    public String getKey(String accessToken) {
+    public String getSecretKey(String accessToken) {
         Token token = cacheWrapper.get(accessToken);
         return token.getSecretKey();
+    }
+
+    public void removeToken(String accessToken) {
+        cacheWrapper.remove(accessToken);
     }
 
     public String getUsername(String accessToken) {
@@ -72,6 +76,7 @@ public class StatelessUserService {
             statelessUser.setFullName(sysUser.getFullName());
             statelessUser.setEmail(sysUser.getEmail());
             statelessUser.setRoles(getRolesForUser(sysUser.getUserId()));
+            statelessUser.setAccessToken(accessToken);
             return statelessUser;
         }
         return null;

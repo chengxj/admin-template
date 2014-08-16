@@ -1,15 +1,10 @@
 package com.edgar.core.shiro;
 
-import com.edgar.core.cache.CacheWrapper;
-import com.edgar.core.cache.EhCacheWrapper;
-import com.edgar.module.sys.repository.domain.SysDict;
 import com.edgar.module.sys.repository.domain.SysRole;
-import net.sf.ehcache.CacheManager;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -19,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -69,7 +63,7 @@ public class StatelessRealm extends AuthorizingRealm {
         String accessToken = statelessToken.getAccessToken();
         String baseString = statelessToken.getBaseString();
 
-        String key = statelessUserService.getKey(accessToken);// 根据用户名获取密钥（和客户端的一样）
+        String key = statelessUserService.getSecretKey(accessToken);// 根据用户名获取密钥（和客户端的一样）
         // 在服务器端生成客户端参数消息摘要
         String serverDigest = HmacSHA256Utils.digest(key,
                 baseString);

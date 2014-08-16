@@ -89,10 +89,9 @@ public class IndexResource {
 			throw ExceptionFactory.isNull();
 		}
 		Map<String, Object> data = new HashMap<String, Object>();
-//		LoginUser loginUser = LoginUserUtils.getLoginUser();
-//		SysUserProfile profile = sysUserService.getProfile(loginUser
-//				.getUserId());
-//		loginUser.setProfile(profile);
+		SysUserProfile profile = sysUserService.getProfile(user
+				.getUserId());
+        user.setProfile(profile);
 
 		List<SysMenu> menus = new ArrayList<SysMenu>();
 		for (Integer roleId : roleIds) {

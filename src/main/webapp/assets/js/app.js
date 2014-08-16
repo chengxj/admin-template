@@ -116,12 +116,10 @@ angular
         });
         $rootScope.logout = function () {
             $http.post('auth/logout').success(function (data) {
-                $timeout(function () {
-                   window.location.href = "login.html";
-                }, 500);
+                $("body").trigger("unlogin");
             }).error(function () {
                 $timeout(function () {
-                    window.location.href = "login.html";
+                    $("body").trigger("unlogin");
                 }, 500);
             });
 
@@ -236,7 +234,7 @@ function httpInterceptor($httpProvider) {
                     } else if (response.data.code == "20") {
                         showWarning(response.data.message);
                     } else if (response.data.code == "30") {
-                        window.location.href = "login.html";
+                        $( "body").trigger("unlogin");;
                     } else {
                         showError(response.data.message);
                     }

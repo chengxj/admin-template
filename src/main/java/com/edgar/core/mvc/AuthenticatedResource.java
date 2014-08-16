@@ -3,6 +3,7 @@ package com.edgar.core.mvc;
 import com.edgar.core.cache.CacheWrapper;
 import com.edgar.core.cache.EhCacheWrapper;
 import com.edgar.core.shiro.*;
+import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.core.view.ResponseMessage;
 import net.sf.ehcache.CacheManager;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -97,11 +100,13 @@ public class AuthenticatedResource {
      *
      * @return 注销成功的视图
      */
-    @AuthHelper(value = "Logout", type = AuthType.ANON)
+    @AuthHelper(value = "Logout", type = AuthType.AUTHC)
     @RequestMapping(method = RequestMethod.POST, value = "/logout")
     public ModelAndView logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return ResponseMessage.asModelAndView("Login Failed");
+        StatelessUser user = (StatelessUser) RequestContextHolder.currentRequestAttributes().getAttribute(Constants.USER_KEY, RequestAttributes.SCOPE_REQUEST);
+        statelessUserService.removeToken(user.getAccessToken());
+        return ResponseMessage.asModelAndView("Login Success");
     }
 }

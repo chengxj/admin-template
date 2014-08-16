@@ -23,9 +23,32 @@ public class StatelessUser extends SysUser {
     private List<SysRole> roles;
 
     /**
+     * Profile
+     */
+    private SysUserProfile profile;
+
+    private String accessToken;
+
+    /**
      * 授权列表
      */
     private final Set<String> permissions = new HashSet<String>();
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public SysUserProfile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(SysUserProfile profile) {
+        this.profile = profile;
+    }
 
     public List<SysRole> getRoles() {
         return roles;

@@ -286,9 +286,6 @@ public class ResourceLoader implements Initialization {
 		Set<String> existResourceKey = new HashSet<String>();
 		for (RequestMappingInfo info : infos) {
 			for (String s : info.getPatternsCondition().getPatterns()) {
-				if (s.startsWith("/auth") || s.startsWith("/error")) {
-					continue;
-				}
 				String newUrl = getNewUrl(s);
 				Set<RequestMethod> requestMethods = info.getMethodsCondition()
 						.getMethods();
