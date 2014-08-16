@@ -40,7 +40,7 @@ angular
     .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate"])
     .run(
     function ($route, $rootScope, $http, $timeout, $translate, $routeProvider, $routeResolverProvider) {
-        $(".login").hide();
+
         $( "body").on("login", function() {
             $(".login").hide();
         }).on("unlogin", function() {
@@ -112,6 +112,8 @@ angular
         $rootScope.$watch("accessToken", function(value) {
             if (value) {
                 $rootScope.loadUser();
+            } else {
+                $("body").trigger("unlogin");
             }
         });
         $rootScope.logout = function () {
