@@ -46,11 +46,11 @@
 	</filter-mapping>
 
   <filter>
-        <filter-name>digest</filter-name>
-        <filter-class>com.edgar.core.shiro.StatelessAuthcFilter</filter-class>
+        <filter-name>authenticationRequestWrapper</filter-name>
+        <filter-class>com.edgar.core.shiro.AuthenticationRequestWrapperFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>digest</filter-name>
+        <filter-name>authenticationRequestWrapper</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

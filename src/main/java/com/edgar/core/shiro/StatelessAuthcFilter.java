@@ -43,60 +43,10 @@ public class StatelessAuthcFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest servletRequest,
                                      ServletResponse response) throws Exception {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String url = request.getRequestURL().toString();
         String method = request.getMethod();
-        String accessToken = request.getParameter("accessToken");
-        String clientDigest = request.getParameter("digest");
-        String baseString = null;
-
-        if (MULTI_READ_HTTP_METHODS.contains(method)) {
-            AuthenticationRequestWrapper authenticationRequestWrapper;
-            try {
-                authenticationRequestWrapper = new AuthenticationRequestWrapper(request);
-                String body = new String(authenticationRequestWrapper.getBody().getBytes());
-                String bodyString = null;
-                if (StringUtils.isNotBlank(body)) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    Map<String, Object> map = mapper.readValue(body, new TypeReference<HashMap<String, Object>>() {
-                    });
-                    List<String> keys = new ArrayList<String>(map.keySet());
-                    Collections.sort(keys);
-
-                    List<String> dataStringList = new ArrayList<String>(keys.size());
-
-                    for (String key : keys) {
-                        Object value = map.get(key);
-                        if (value instanceof String[]) {
-                            List<String> valueList = new ArrayList<String>();
-                            Collections.addAll(valueList, (String[]) value);
-                            Collections.sort(valueList);
-                            dataStringList.add(key + "=" + StringUtils.join(valueList, ","));
-                        } else if (value instanceof List) {
-                            List<String> valueList = (List<String>) value;
-                            dataStringList.add(key + "=" + StringUtils.join(valueList, ","));
-                        } else {
-                            dataStringList.add(key + "=" + value.toString());
-                        }
-                    }
-                    bodyString = StringUtils.join(dataStringList, "&");
-                }
-                String queryString = getQueryString(request);
-                if (StringUtils.isNotBlank(queryString)) {
-                    if (StringUtils.isNotBlank(bodyString)) {
-                        queryString = queryString + "&" + bodyString;
-                    }
-                } else {
-                    queryString = bodyString;
-                }
-                baseString = getBaseString(request, queryString);
-            } catch (IOException ex) {
-                throw new ServletException("Unable to wrap the request", ex);
-            }
-
-        } else {
-            String queryString = getQueryString(request);
-            baseString = getBaseString(request, queryString);
-        }
+        String accessToken = servletRequest.getParameter("accessToken");
+        String clientDigest = servletRequest.getParameter("digest");
+        String baseString = (String) request.getAttribute("baseString");
 
         // 4、生成无状态Token
         StatelessToken token = new StatelessToken(accessToken, baseString,
