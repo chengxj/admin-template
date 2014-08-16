@@ -2,6 +2,9 @@
 
 var commonService = angular.module('app.services', [ 'ngResource' ]);
 
+/**
+ * 全局变量
+ */
 commonService.factory('ShareService', function () {
 	  return {
           tasks : [
@@ -21,6 +24,20 @@ commonService.factory('ShareService', function () {
           ]
       };
 	});
+
+/**
+ * localStorage
+ */
+commonService.factory('StorageService', function () {
+    return {
+        set : function(key, value) {
+            $.localStorage.set(key, value);
+        },
+        get : function(key) {
+            $.localStorage.get(key);
+        }
+    };
+});
 
 commonService.factory('LocationTo', function ($location) {
     return {
@@ -81,6 +98,17 @@ commonService.factory('MessageService', function ($translate) {
                 "extendedTimeOut": "500"
             }
             toastr.error(msg);
+        } ,
+        warningMsg : function(msg) {
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "positionClass": "toast-bottom-center",
+                "onclick": null,
+                "timeOut": "2000",
+                "extendedTimeOut": "500"
+            }
+            toastr.warning(msg);
         }
     };
 });

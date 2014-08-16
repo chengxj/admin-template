@@ -53,27 +53,22 @@ public class IndexResource {
 	 * 
 	 * @return 路由的集合
 	 */
-	// @AuthHelper(value = "Query Routes", isRoot = true, type = AuthType.AUTHC)
-	// @RequestMapping(method = RequestMethod.GET, value = "/route")
-	// @ResponseBody
-//	private List<AngularRoute> getRoutes() {
-//		List<AngularRoute> angularRoutes = new ArrayList<AngularRoute>();
-//		Set<Integer> roleIds = LoginUserUtils.getRoleIds();
-//
-//		List<SysRoute> routes = new ArrayList<SysRoute>();
-//
-//		for (Integer roleId : roleIds) {
-//			routes.addAll(permissionService.getRoute(roleId));
-//		}
-//
-//		for (SysRoute sysRoute : routes) {
-//			AngularRoute angularRoute = new AngularRoute();
-//			angularRoute.setUrl(sysRoute.getUrl());
-//			angularRoute.setName(sysRoute.getName());
-//			angularRoutes.add(angularRoute);
-//		}
-//		return angularRoutes;
-//	}
+	private List<AngularRoute> getRoutes(Set<Integer> roleIds) {
+        List<AngularRoute> angularRoutes = new ArrayList<AngularRoute>();
+		List<SysRoute> routes = new ArrayList<SysRoute>();
+
+		for (Integer roleId : roleIds) {
+			routes.addAll(permissionService.getRoute(roleId));
+		}
+
+		for (SysRoute sysRoute : routes) {
+			AngularRoute angularRoute = new AngularRoute();
+			angularRoute.setUrl(sysRoute.getUrl());
+			angularRoute.setName(sysRoute.getName());
+			angularRoutes.add(angularRoute);
+		}
+		return angularRoutes;
+	}
 
 	/**
 	 * 根据用户权限返回菜单
@@ -114,24 +109,8 @@ public class IndexResource {
 		}
 		data.put("menus", menus);
 		data.put("user", user);
-//		data.put("routes", getRoutes());
+		data.put("routes", getRoutes(roleIds));
 		return data;
 	}
 
-    @AuthHelper(value = "Query Routes", isRoot = true, type = AuthType.ANON)
-    @RequestMapping(method = RequestMethod.GET, value = "/route")
-    @ResponseBody
-    public List<AngularRoute> getAllRoutes() {
-        List<AngularRoute> angularRoutes = new ArrayList<AngularRoute>();
-
-        List<SysRoute> routes = sysRouteService.findAllWithRoot();
-
-        for (SysRoute sysRoute : routes) {
-            AngularRoute angularRoute = new AngularRoute();
-            angularRoute.setUrl(sysRoute.getUrl());
-            angularRoute.setName(sysRoute.getName());
-            angularRoutes.add(angularRoute);
-        }
-        return angularRoutes;
-    }
 }

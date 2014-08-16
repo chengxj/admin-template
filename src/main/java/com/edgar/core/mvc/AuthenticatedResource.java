@@ -33,13 +33,8 @@ public class AuthenticatedResource {
     @Autowired
     private RetryLimitService retryLimitService;
 
-
-    private CacheWrapper<String, Token> cacheWrapper;
-
     @Autowired
-    public void setCacheManager(CacheManager cacheManager) {
-        cacheWrapper = new EhCacheWrapper<String, Token>("StatelessCache", cacheManager);
-    }
+    private StatelessUserService statelessUserService;
 
     /**
      * 未登录用户
@@ -79,29 +74,20 @@ public class AuthenticatedResource {
         UsernamePasswordToken token = new UsernamePasswordToken(username,
                 password);
         // token.setRememberMe(true);
-        try {
-            retryLimitService.addRetry(username);
-            subject.login(token);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw ExceptionFactory.userOrPasswordError();
-        }
-//		try {
-//			retryLimitService.addRetry(username);
-//			subject.login(token);
-//		} catch (CustomExcessiveAttemptsException e) {
-//			throw ExceptionFactory.ExcessiveAttempts(e.getAttemptsNum());
-//		} catch (UnknownAccountException e) {
-//			throw ExceptionFactory.userOrPasswordError();
-//		} catch (IncorrectCredentialsException e) {
-//			throw ExceptionFactory.userOrPasswordError();
-//		} catch (AuthenticationException e) {
-//			throw ExceptionFactory.userOrPasswordError();
-//		}
+		try {
+			retryLimitService.addRetry(username);
+			subject.login(token);
+		} catch (CustomExcessiveAttemptsException e) {
+			throw ExceptionFactory.ExcessiveAttempts(e.getAttemptsNum());
+		} catch (UnknownAccountException e) {
+			throw ExceptionFactory.userOrPasswordError();
+		} catch (IncorrectCredentialsException e) {
+			throw ExceptionFactory.userOrPasswordError();
+		} catch (AuthenticationException e) {
+			throw ExceptionFactory.userOrPasswordError();
+		}
         retryLimitService.removeRetry(username);
-        Token restToken = TokenManager.newToken(username);
-        System.out.println(restToken.getAccessToken());
-        cacheWrapper.put(restToken.getAccessToken(), restToken);
+        Token restToken = statelessUserService.newToken(username);
         return ResponseMessage.asModelAndView(restToken);
     }
 

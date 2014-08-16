@@ -1,8 +1,5 @@
 'use strict';
 
-var accessToken;
-var secretKey;
-
 if (!String.prototype.trim) {
     String.prototype.trim = function () {
         return this.replace(/^\s+|\s+$/g, '');
@@ -42,40 +39,28 @@ if (!Array.prototype.indexOf) {
 angular
     .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate"])
     .run(
-    function ($route, $rootScope, $http, $timeout, $translate, MessageService) {
-        var storage = $.localStorage;
-        $rootScope.accessToken = storage.get("accessToken");
-        console.log($rootScope.accessToken);
-        $rootScope.$on('$viewContentLoaded', function () {
-//        $templateCache.removeAll();
-            App.runHeight();
+    function ($route, $rootScope, $http, $timeout, $translate, $routeProvider, $routeResolverProvider) {
+        $(".login").hide();
+        $( "body").on("login", function() {
+            $(".login").hide();
+        }).on("unlogin", function() {
+            $rootScope.loginUser = undefined;
+            $(".login").show();
         });
-        $rootScope.$on('$routeChangeSuccess', function () {
+        $rootScope.accessToken = $.localStorage.get("accessToken");
 
-        });
-        $rootScope.logout = function () {
-            $http.post('auth/logout').success(function (data) {
-                $translate("msg.logout.success").then(function (msg) {
-                    MessageService.successMsg(msg);
-                });
-                $timeout(function () {
-                   window.location.href = "login.html";
-                }, 500);
-            }).error(function () {
-                    $translate("msg.logout.failed").then(function (msg) {
-                        MessageService.errorMsg(msg);
-                    });
-
-                });
-
+        $rootScope.loadRoute = function(routes) {
+            var route = $routeResolverProvider.route
+            $.each(routes, function (i, v) {
+                $routeProvider.when(v.url, route.resolve(v.basename, v.path))
+            });
+            $routeProvider.when("/home/index", route.resolve('index', '/home'));
+            $routeProvider.when("/home/profile/:userId", route.resolve('profile', '/home'));
+            $routeProvider.otherwise({redirectTo: '/order/task/list'});
+            $route.reload();
         };
-//        $rootScope.on("accessToken", function(value) {
-//            if (value) {
-//
-//            }
-//        })
 
-        $rootScope.$on("login", function() {
+        $rootScope.loadUser = function() {
             $http.get("index/user").success(function (data) {
                 var menus = [];
                 var copyData = angular.copy(data.menus);
@@ -108,13 +93,39 @@ angular
                 $rootScope.leftMenus = _.sortBy(menus, function(v, i) {
                     return v.sorted;
                 });
-                data.user.routes = _.pluck(data.routes, "url");
+                $rootScope.loadRoute(data.routes);
+                if (data.user.profile && data.user.profile.language) {
+                    $translate.use(data.user.profile.language);
+                }
                 $rootScope.loginUser = data.user;
+                $("body").trigger("login");
                 $timeout(function () {
                     App.init();
                 })
             });
+        }
+        $rootScope.$on('$viewContentLoaded', function () {
+//        $templateCache.removeAll();
+            App.runHeight();
         });
+
+        $rootScope.$watch("accessToken", function(value) {
+            if (value) {
+                $rootScope.loadUser();
+            }
+        });
+        $rootScope.logout = function () {
+            $http.post('auth/logout').success(function (data) {
+                $timeout(function () {
+                   window.location.href = "login.html";
+                }, 500);
+            }).error(function () {
+                $timeout(function () {
+                    window.location.href = "login.html";
+                }, 500);
+            });
+
+        };
 
         //禁用页面上的backspace回退功能
         $(document).unbind('keydown').bind('keydown', function (event) {
@@ -138,40 +149,65 @@ angular
         moment.lang("en");
     }).config(
         [
-            '$routeProvider', '$httpProvider', '$locationProvider', 'routeResolverProvider','$compileProvider','$translateProvider',
-            function ($routeProvider, $httpProvider, $locationProvider, routeResolverProvider, $compileProvider, $translateProvider) {
+            '$provide', '$routeProvider', '$httpProvider', 'routeResolverProvider','$compileProvider','$translateProvider',
+            function ($provide, $routeProvider, $httpProvider, routeResolverProvider, $compileProvider, $translateProvider) {
+                //将config使用$provide.factory转移到run中执行，并不是angular推荐的方式
+                $provide.factory('$routeProvider', function () {
+                    return $routeProvider;
+                });
                 httpInterceptor($httpProvider);
                 $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|javascript):/);
                 routeResolverProvider.routeConfig.setBaseDirectories('app', 'app');
                 var route = routeResolverProvider.route;
-
-                $.ajax({
-                    url: 'index/route',
-                    data : {random :  new Date().getTime()},
-                    method: 'get',
-                    async: false,
-                    success: function (data) {
-                        //设置路由
-                        $.each(data, function (i, v) {
-                            $routeProvider.when(v.url, route.resolve(v.basename, v.path))
-                        });
-                        $routeProvider.when("/home/index", route.resolve('index', '/home'));
-                        $routeProvider.when("/home/profile/:userId", route.resolve('profile', '/home'));
-                        $routeProvider.otherwise({redirectTo: '/order/task/list'});
-                        $translateProvider.useStaticFilesLoader({
-                            prefix: 'app/i18n/locale-',
-                            suffix: '.json'
-                        });
-                        $translateProvider
-                            .preferredLanguage("en");;
-                        httpInterceptorParam($httpProvider);
-                    }
+                $provide.factory('$routeResolverProvider', function () {
+                    return routeResolverProvider;
                 });
+
+                $translateProvider.useStaticFilesLoader({
+                    prefix: 'app/i18n/locale-',
+                    suffix: '.json'
+                });
+                $translateProvider
+                    .preferredLanguage("en");
             } ]);
 
 function httpInterceptor($httpProvider) {
     $httpProvider.interceptors.push(function ($q) {
         return {
+            'request': function(config) {
+                if (config && config.params) {
+                    config.params.random = new Date().getTime();
+                } else {
+                    config.params = {random:new Date().getTime()};
+                }
+                if (config.url.indexOf("/login") > 0) {
+                    return config;
+                }
+                if (config.url.indexOf(".html") > 0) {
+                    return config;
+                }
+
+                //增加TOKEN
+                var accessToken = $.localStorage.get("accessToken");
+                var secretKey = $.localStorage.get("secretKey");
+                config.params.accessToken = accessToken;;
+                //HMAC签名
+                //对排序后与URL一起签名
+                if (config.url.indexOf(".html") < 0 && config.url.indexOf(".json") < 0) {
+                    var queryArray = [];
+                    if (config.params) {
+                        queryArray = queryArray.concat(getArray(config.params));
+                    }
+                    if (config.data) {
+                        var data = angular.toJson(config.data);
+                        queryArray = queryArray.concat(getArray(angular.fromJson(data)));
+                    }
+                    var baseString = config.method + config.url + "?" + queryArray.join("&");
+                    config.params.digest = CryptoJS.HmacSHA256(baseString, secretKey).toString();
+                }
+
+                return config;
+            },
             response: function (response) {
                 $(".form-body #error-alert").remove();
                 if (response.headers()['content-type'] === "application/json;charset=UTF-8") {
@@ -185,7 +221,7 @@ function httpInterceptor($httpProvider) {
             },
             responseError: function (response) {
                 if (response.status == "401") {
-                    //window.location.href= "spring_security_login";
+                    $( "body").trigger("unlogin");
                 } else if (response.status == "403") {
                     if (response.data.exMessage && response.data.code == "100") {
                         $(".form-body #error-alert").remove();
@@ -219,46 +255,6 @@ function httpInterceptor($httpProvider) {
     });
 }
 
-function httpInterceptorParam($httpProvider) {
-    $httpProvider.interceptors.push(function () {
-        return {
-            'request': function(config) {
-                if (config && config.params) {
-                    config.params.random = new Date().getTime();
-                } else {
-                    config.params = {random:new Date().getTime()};
-                }
-                if (config.url.indexOf("/login") > 0) {
-                    return config;
-                }
-                if (config.url.indexOf(".html") > 0) {
-                    return config;
-                }
-
-                //增加TOKEN
-                config.params.accessToken = accessToken;;
-                //HMAC签名
-                //对排序后与URL一起签名
-                if (config.url.indexOf(".html") < 0 && config.url.indexOf(".json") < 0) {
-                    var queryArray = [];
-                    if (config.params) {
-                        queryArray = queryArray.concat(getArray(config.params));
-                    }
-                    if (config.data) {
-                        var data = angular.toJson(config.data);
-                        queryArray = queryArray.concat(getArray(angular.fromJson(data)));
-                    }
-                    var baseString = config.method + config.url + "?" + queryArray.join("&");
-                    console.log(baseString);
-                    config.params.digest = CryptoJS.HmacSHA256(baseString, secretKey).toString();
-                }
-
-                return config;
-            }
-
-        };
-    });
-}
 function getArray(obj) {
     var queryArray = [];
     var keys = _.sortBy(_.keys(obj), function(k) {

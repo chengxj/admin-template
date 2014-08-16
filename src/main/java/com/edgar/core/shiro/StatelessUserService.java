@@ -14,7 +14,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,22 +44,28 @@ public class StatelessUserService {
         cacheWrapper = new EhCacheWrapper<String, Token>("StatelessCache", cacheManager);
     }
 
-    public String getKey(String accessToken) {// 得到密钥，此处硬编码一个
-        Token token =     cacheWrapper.get(accessToken);
+    public Token newToken(String username) {
+        Token token = TokenManager.newToken(username);
+        cacheWrapper.put(token.getAccessToken(), token);
+        return token;
+    }
+
+    public String getKey(String accessToken) {
+        Token token = cacheWrapper.get(accessToken);
         return token.getSecretKey();
     }
 
-    public String getUsername(String accessToken) {// 得到密钥，此处硬编码一个
-        Token token =     cacheWrapper.get(accessToken);
+    public String getUsername(String accessToken) {
+        Token token = cacheWrapper.get(accessToken);
         return token.getUsername();
     }
 
     public StatelessUser getUser(String accessToken) {
         String username = getUsername(accessToken);
-        List<SysUser> sysUserList =  sysUserService.queryByUsername(username);
+        List<SysUser> sysUserList = sysUserService.queryByUsername(username);
 
         if (CollectionUtils.isNotEmpty(sysUserList)) {
-            SysUser  sysUser = sysUserList.get(0);
+            SysUser sysUser = sysUserList.get(0);
             StatelessUser statelessUser = new StatelessUser();
             statelessUser.setUserId(sysUser.getUserId());
             statelessUser.setUsername(sysUser.getUsername());
@@ -72,8 +81,7 @@ public class StatelessUserService {
     /**
      * 根据用户ID获取用户角色
      *
-     * @param userId
-     *            用户ID
+     * @param userId 用户ID
      * @return 角色的集合
      */
     protected List<SysRole> getRolesForUser(int userId) {
@@ -89,8 +97,7 @@ public class StatelessUserService {
     /**
      * 获取用户的授权
      *
-     * @param roles
-     *            角色列表
+     * @param roles 角色列表
      * @return 授权的集合
      */
     protected Set<String> getPermissions(List<SysRole> roles) {

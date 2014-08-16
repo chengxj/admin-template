@@ -27,8 +27,6 @@
     <link rel="shortcut icon" href="assets/img/favicon.ico" />
 </head>
 <body ng-app="rootApp" ng-cloak>
-<div class="login" ng-include="'app/partials/login.html'" ng-if="!loginUser" ng-controller="LoginCtrl"></div>
-
 <!-- Page container -->
 <div class="page-container" ng-if="loginUser">
 <!-- Sidebar -->
@@ -273,6 +271,8 @@
 <!-- /Content -->
 </div>
 <!-- /Page container -->
+
+<div class="login" ng-include="'app/partials/login.html'" ng-controller="LoginCtrl"></div>
 
 <!-- PLUGINS -->
 <script src="assets/plugins/jquery-1.10.2.min.js"></script>
