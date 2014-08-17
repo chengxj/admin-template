@@ -51,6 +51,11 @@ public abstract class ExceptionFactory {
 				"No Authorization Right");
 	}
 
+    public static SystemException timeout() {
+        return new SystemException(BusinessCode.TIMEOUT,
+                "Request timed out");
+    }
+
 	/**
 	 * 请求被禁止
 	 * 

@@ -719,7 +719,6 @@ commonDirective.directive('edSimplePage', function ($http, $location) {
         },
         templateUrl: 'app/partials/simple_page.html',
         link: function postLink(scope, iElement, iAttrs) {
-            console.log($location.path())
             scope.p = "";
             iElement.find("#page-input").keypress(function(event) {
                return (event.charCode >=48 && event.charCode <= 57) || event.keyCode == 8;

@@ -27,12 +27,6 @@ public class StatelessAuthcFilter extends AccessControlFilter {
     @Autowired
     private StatelessUserService statelessUserService;
 
-    private static final Set<String> MULTI_READ_HTTP_METHODS = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER) {{
-        // Enable Multi-Read for PUT and POST requests
-        add("PUT");
-        add("POST");
-    }};
-
     @Override
     protected boolean isAccessAllowed(ServletRequest request,
                                       ServletResponse response, Object mappedValue) throws Exception {

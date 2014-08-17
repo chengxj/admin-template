@@ -10,6 +10,7 @@
         <property name="unauthorizedUrl" value="/auth/unauthorized"/>
         <property name="filters">
             <util:map>
+                <entry key="replayAttack" value-ref="replayAttackFilter"/>
                 <entry key="statelessAuthc" value-ref="statelessAuthcFilter"/>
             </util:map>
         </property>
@@ -90,6 +91,8 @@
 
     <!--无状态的filter-->
     <bean id="statelessAuthcFilter" class="com.edgar.core.shiro.StatelessAuthcFilter"/>
+    <!--重放攻击的filter-->
+    <bean id="replayAttackFilter" class="com.edgar.core.shiro.ReplayAttackFilter"/>
 
     <bean id="passwordMatcher"
           class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">

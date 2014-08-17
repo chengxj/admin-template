@@ -40,7 +40,7 @@ angular
     .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate"])
     .run(
     function ($route, $rootScope, $http, $timeout, $translate, $routeProvider, $routeResolverProvider) {
-
+//        $.localStorage.removeAll();
         $( "body").on("login", function() {
             $(".login").hide();
         }).on("unlogin", function() {
@@ -176,9 +176,9 @@ function httpInterceptor($httpProvider) {
         return {
             'request': function(config) {
                 if (config && config.params) {
-                    config.params.random = new Date().getTime();
+                    config.params.timestamp = new Date().getTime();
                 } else {
-                    config.params = {random:new Date().getTime()};
+                    config.params = {timestamp:new Date().getTime()};
                 }
                 if (config.url.indexOf("/login") > 0) {
                     return config;
@@ -187,6 +187,8 @@ function httpInterceptor($httpProvider) {
                     return config;
                 }
 
+                //增加随机数
+                config.params.nonce = CryptoJS.lib.WordArray.random(128/8).toString()
                 //增加TOKEN
                 var accessToken = $.localStorage.get("accessToken");
                 var secretKey = $.localStorage.get("secretKey");

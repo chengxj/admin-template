@@ -59,6 +59,10 @@ public enum BusinessCode implements ErrorCode {
          */
         INVALID_PARAMETER(104),
         /**
+         * 超时.
+         */
+        TIMEOUT(105),
+        /**
          * 请求非法
          */
         BAD_REQUEST(400),
