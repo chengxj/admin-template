@@ -1,7 +1,11 @@
 package com.edgar.core.shiro;
 
+import com.edgar.core.cache.CacheWrapper;
+import com.edgar.core.cache.EhCacheWrapper;
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -12,6 +16,14 @@ import java.io.IOException;
  * Created by Administrator on 2014/8/17.
  */
 public class ReplayAttackFilter extends AccessControlFilter {
+
+    private CacheWrapper<String, String> cacheWrapper;
+
+    @Autowired
+    public void setCacheManager(CacheManager cacheManager) {
+        cacheWrapper = new EhCacheWrapper<String, String>("ReplayAttackCache", cacheManager);
+    }
+
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
         return false;
@@ -22,25 +34,16 @@ public class ReplayAttackFilter extends AccessControlFilter {
         String nonce = request.getParameter("nonce");
         long timestamp = NumberUtils.toLong(request.getParameter("timestamp"));
         long currentTime = System.currentTimeMillis();
-        if (timestamp + 0.5 * 60 * 1000 < currentTime) {
+        if (timestamp + 5 * 60 * 1000 < currentTime) {
             onTimeout(response);
             return false;
         }
         String replayKey = nonce + "-" + timestamp;
-        System.out.println(replayKey);
-//
-//        // 4、生成无状态Token
-//        StatelessToken token = new StatelessToken(accessToken, baseString,
-//                clientDigest);
-//
-//        try {
-//            // 5、委托给Realm进行登录
-//            getSubject(request, response).login(token);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            onTimeout(response); // 6、登录失败
-//            return false;
-//        }
+        if (cacheWrapper.get(replayKey) != null) {
+            onTimeout(response);
+            return false;
+        }
+        cacheWrapper.put(replayKey, replayKey);
         return true;
     }
 
