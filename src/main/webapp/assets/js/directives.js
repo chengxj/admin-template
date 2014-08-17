@@ -14,6 +14,15 @@ commonDirective.directive('edLeftMenu', function () {
     };
 });
 
+commonDirective.directive('edFocusInput', function () {
+    return {
+        restrict: 'AE',
+        link: function postLink(scope, iElement, iAttrs) {
+            iElement.focus();
+        }
+    };
+});
+
 /*
  * ed-page-title指令,将元素自动添加到 #page-header 元素中
  * 用法: <div class="page-title" ed-page-title>
@@ -620,7 +629,7 @@ commonDirective.directive('edReload', function () {
  share-key:页面缓存的key,默认值null,不使用这个属性则代表不启用缓存
  block-el:blockUI的DOM元素,默认值null,不使用这个属性则代表不启用BlockUI
  */
-commonDirective.directive('edPage', function ($http, ShareService) {
+commonDirective.directive('edPage', function ($http) {
     return {
         restrict: 'A',
         scope: {
@@ -649,7 +658,7 @@ commonDirective.directive('edPage', function ($http, ShareService) {
                     pageSize: scope.pageSize
                 });
                 if (scope.shareKey) {
-                    ShareService[scope.shareKey] = scope.queryParam;
+                    $.localStorage.set(scope.shareKey, scope.queryParam);
                 }
                 scope.query(scope.queryParam);
             };
@@ -675,8 +684,8 @@ commonDirective.directive('edPage', function ($http, ShareService) {
                         }
                     });
             };
-            if (scope.shareKey && ShareService[scope.shareKey]) {
-                angular.extend(scope.queryParam, ShareService[scope.shareKey]);
+            if (scope.shareKey && $.localStorage.get(scope.shareKey)) {
+                angular.extend(scope.queryParam, $.localStorage.get(scope.shareKey));
                 scope.query(scope.queryParam);
             } else {
                 scope.gotoPage(1);
@@ -697,7 +706,7 @@ commonDirective.directive('edPage', function ($http, ShareService) {
  share-key:页面缓存的key,默认值null,不使用这个属性则代表不启用缓存
  block-el:blockUI的DOM元素,默认值null,不使用这个属性则代表不启用BlockUI
  */
-commonDirective.directive('edSimplePage', function ($http, ShareService) {
+commonDirective.directive('edSimplePage', function ($http, $location) {
     return {
         restrict: 'A',
         scope: {
@@ -710,6 +719,7 @@ commonDirective.directive('edSimplePage', function ($http, ShareService) {
         },
         templateUrl: 'app/partials/simple_page.html',
         link: function postLink(scope, iElement, iAttrs) {
+            console.log($location.path())
             scope.p = "";
             iElement.find("#page-input").keypress(function(event) {
                return (event.charCode >=48 && event.charCode <= 57) || event.keyCode == 8;
@@ -739,7 +749,7 @@ commonDirective.directive('edSimplePage', function ($http, ShareService) {
                     pageSize: scope.pageSize
                 });
                 if (scope.shareKey) {
-                    ShareService[scope.shareKey] = scope.queryParam;
+                    $.localStorage.set(scope.shareKey, scope.queryParam);
                 }
                 scope.query(scope.queryParam);
             };
@@ -766,8 +776,8 @@ commonDirective.directive('edSimplePage', function ($http, ShareService) {
                         }
                     });
             };
-            if (scope.shareKey && ShareService[scope.shareKey]) {
-                angular.extend(scope.queryParam, ShareService[scope.shareKey]);
+            if (scope.shareKey && $.localStorage.get(scope.shareKey)) {
+                angular.extend(scope.queryParam, $.localStorage.get(scope.shareKey));
                 scope.query(scope.queryParam);
             } else {
                 scope.gotoPage(1);

@@ -1,24 +1,22 @@
 'use strict';
-function LoginCtrl($scope, $http, $rootScope, StorageService) {
-    // $scope.menus = $http.get("route");
-    $scope.user = {username : 'root', password : '123456'};
+function LoginCtrl($scope, $http, RootScope) {
+    $scope.user = {};
     $scope.login = function () {
         $http.post("auth/login", $scope.user).success(
             function (data) {
-                StorageService.set("accessToken", data.accessToken);
-                StorageService.set("refreshToken", data.refreshToken);
-                StorageService.set("secretKey", data.secretKey);
-                $rootScope.accessToken = data.accessToken;
-                $rootScope.secretKey = data.secretKey;
-            }).error(function (data) {
-            $("#success-msg").hide();
-            $("#error-msg").html(data.responseJSON.message).show();
-        });
+                $.localStorage.set("accessToken", data.accessToken);
+                $.localStorage.set("refreshToken", data.refreshToken);
+                $.localStorage.set("secretKey", data.secretKey);
+                RootScope.set("accessToken", data.accessToken);
+                RootScope.set("secretKey", data.secretKey);
+            });
     }
         $scope.enterLogin = function ($event) {
-            if ($event.keyCode == "13") {
-                console.log("login");
+            if ($scope.user.username && $scope.user.password) {
+                if ($event.keyCode == "13") {
+                    $scope.login();
+                }
             }
         }
 }
-LoginCtrl.$inject = [ '$scope', '$http', '$rootScope', 'StorageService' ];
+LoginCtrl.$inject = [ '$scope', '$http', 'RootScope' ];

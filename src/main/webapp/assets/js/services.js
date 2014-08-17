@@ -25,16 +25,13 @@ commonService.factory('ShareService', function () {
       };
 	});
 
-/**
- * localStorage
- */
-commonService.factory('StorageService', function () {
+commonService.factory('RootScope', function ($rootScope) {
     return {
         set : function(key, value) {
-            $.localStorage.set(key, value);
+            $rootScope[key] = value;
         },
         get : function(key) {
-            $.localStorage.get(key);
+            return $rootScope[key];
         }
     };
 });

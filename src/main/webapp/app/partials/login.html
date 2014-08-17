@@ -5,36 +5,32 @@
     <div class="box-login">
         <h3>Guardforce Mobile Safe</h3>
         <p>
-            Sign in
+            {{'label.login.title' | translate}}
         </p>
-        <form id="login-form" class="form-login" action="index.html">
-            <div id="error-msg" class="alert alert-danger" style="display: none;">
-
-            </div>
-            <div id="success-msg" class="alert alert-success" style="display: none;">
-                Login Success
-            </div>
+        <form id="login-form" class="form-login" action="index.html" name="form" novalidate>
             <fieldset>
-                <div class="form-group">
+                <div class="form-group"
+                     ng-class="{'has-error': form.username.$dirty && form.username.$invalid}">
 							<span class="input-icon">
-								<input id="username" type="text" class="form-control" name="username" placeholder="Username" ng-model="user.username" ng-keydown="enterLogin($event)">
+								<input id="username" type="text" class="form-control" name="username" placeholder="{{'label.sys.user.username' | translate}}" ng-model="user.username" ng-keydown="enterLogin($event)" required ed-focus-input>
 								<i class="fa fa-user"></i> </span>
+                     <span class='help-block'
+                           ng-show="form.username.$error.required && form.username.$dirty && form.username.$invalid">{{'help.common.required' | translate}}</span>
                 </div>
-                <div class="form-group form-actions">
+                <div class="form-group form-actions"
+                     ng-class="{'has-error': form.password.$dirty && form.password.$invalid}">
 							<span class="input-icon">
-								<input id="password" type="password" class="form-control password" name="password" placeholder="Password" ng-model="user.password" ng-keydown="enterLogin($event)">
+								<input id="password" type="password" class="form-control password" name="password" placeholder="{{'label.sys.user.password' | translate}}" ng-model="user.password" ng-keydown="enterLogin($event)" required>
 								<i class="fa fa-lock"></i>
 								<a class="forgot" href="#">
-                                    I forgot my password
+                                    {{'label.login.forgot' | translate}}
                                 </a> </span>
+                     <span class='help-block'
+                           ng-show="form.password.$error.required && form.password.$dirty && form.password.$invalid">{{'help.common.required' | translate}}</span>
                 </div>
                 <div class="form-actions">
-                    <!--<label for="remember" class="checkbox-inline">
-                        <input type="checkbox" class="grey remember" id="remember" name="remember">
-                        记住我
-                    </label>-->
-                    <button id="loginBtn" type="button" class="btn btn-info pull-right" ng-click="login()">
-                        Login <i class="fa fa-sign-in"></i>
+                    <button id="loginBtn" type="button" class="btn btn-info pull-right" ng-click="login()" ng-disabled="form.$invalid">
+                        {{'Login' | translate}} <i class="fa fa-sign-in"></i>
                     </button>
                 </div>
             </fieldset>

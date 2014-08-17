@@ -190,6 +190,12 @@ function httpInterceptor($httpProvider) {
                 //增加TOKEN
                 var accessToken = $.localStorage.get("accessToken");
                 var secretKey = $.localStorage.get("secretKey");
+                if (accessToken == undefined || accessToken == null) {
+                    accessToken = "";
+                }
+                if (secretKey == undefined || secretKey == null) {
+                    secretKey = "";
+                }
                 config.params.accessToken = accessToken;;
                 //HMAC签名
                 //对排序后与URL一起签名
