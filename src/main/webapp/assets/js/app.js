@@ -40,7 +40,6 @@ angular
     .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate"])
     .run(
     function ($route, $rootScope, $http, $timeout, $translate, $routeProvider, $routeResolverProvider) {
-//        $.localStorage.removeAll();
         $( "body").on("login", function() {
             $(".login").hide();
         }).on("unlogin", function() {
