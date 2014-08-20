@@ -1,9 +1,9 @@
 package com.edgar.core.auth.stateless;
 
+import com.edgar.core.auth.AccessToken;
 import com.edgar.core.cache.CacheWrapper;
 import com.edgar.core.cache.EhCacheWrapper;
-import com.edgar.core.auth.Token;
-import com.edgar.core.shiro.TokenManager;
+import com.edgar.core.auth.TokenManager;
 import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
@@ -30,7 +30,7 @@ import java.util.Set;
  */
 @Service
 public class StatelessUserService {
-    private CacheWrapper<String, Token> cacheWrapper;
+    private CacheWrapper<String, AccessToken> cacheWrapper;
 
     @Autowired
     private SysUserService sysUserService;
@@ -43,17 +43,17 @@ public class StatelessUserService {
 
     @Autowired
     public void setCacheManager(CacheManager cacheManager) {
-        cacheWrapper = new EhCacheWrapper<String, Token>("StatelessCache", cacheManager);
+        cacheWrapper = new EhCacheWrapper<String, AccessToken>("StatelessCache", cacheManager);
     }
 
-    public Token newToken(String username) {
-        Token token = TokenManager.newToken(username);
+    public AccessToken newToken(String username) {
+        AccessToken token = TokenManager.newToken(username);
         cacheWrapper.put(token.getAccessToken(), token);
         return token;
     }
 
     public String getSecretKey(String accessToken) {
-        Token token = cacheWrapper.get(accessToken);
+        AccessToken token = cacheWrapper.get(accessToken);
         return token.getSecretKey();
     }
 
@@ -62,7 +62,7 @@ public class StatelessUserService {
     }
 
     public String getUsername(String accessToken) {
-        Token token = cacheWrapper.get(accessToken);
+        AccessToken token = cacheWrapper.get(accessToken);
         return token.getUsername();
     }
 

@@ -8,7 +8,7 @@ import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
 import com.edgar.core.shiro.FilterChainDefinitionsLoader;
-import com.edgar.core.shiro.PasswordHelper;
+import com.edgar.core.util.PasswordHelper;
 import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.*;
 import org.apache.commons.lang.StringUtils;

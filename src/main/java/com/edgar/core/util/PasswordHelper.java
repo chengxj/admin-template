@@ -1,4 +1,4 @@
-package com.edgar.core.shiro;
+package com.edgar.core.util;
 
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;

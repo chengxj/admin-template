@@ -1,7 +1,7 @@
 package com.edgar.core.mvc;
 
+import com.edgar.core.auth.AccessToken;
 import com.edgar.core.auth.LoginCommand;
-import com.edgar.core.auth.Token;
 import com.edgar.core.auth.stateless.StatelessUser;
 import com.edgar.core.auth.stateless.StatelessUserService;
 import com.edgar.core.command.CommandBus;
@@ -11,10 +11,6 @@ import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.core.view.ResponseMessage;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,7 +68,7 @@ public class AuthenticatedResource {
     @AuthHelper(value = "Login", type = AuthType.SSL)
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ModelAndView login(@RequestBody LoginCommand loginCommand) {
-        CommandResult<Token> result = commandBus.executeCommand(loginCommand);
+        CommandResult<AccessToken> result = commandBus.executeCommand(loginCommand);
         return ResponseMessage.asModelAndView(result.getResult());
     }
 

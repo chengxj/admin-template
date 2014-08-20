@@ -1,11 +1,8 @@
-package com.edgar.core.shiro;
+package com.edgar.core.auth;
 
-import com.edgar.core.util.Constants;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

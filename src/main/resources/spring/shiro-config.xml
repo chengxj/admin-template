@@ -72,7 +72,7 @@
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
     <!--用户名密码Realm-->
-    <bean id="usernamePasswordRealm" class="com.edgar.core.shiro.UsernamePasswordRealm">
+    <bean id="usernamePasswordRealm" class="com.edgar.core.auth.password.UsernamePasswordRealm">
         <property name="credentialsMatcher" ref="passwordMatcher"/>
     </bean>
 

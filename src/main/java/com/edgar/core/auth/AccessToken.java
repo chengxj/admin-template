@@ -1,6 +1,6 @@
 package com.edgar.core.auth;
 
-public class Token {
+public class AccessToken {
 
 
     private String accessToken;

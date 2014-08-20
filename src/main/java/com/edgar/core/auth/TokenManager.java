@@ -1,6 +1,6 @@
-package com.edgar.core.shiro;
+package com.edgar.core.auth;
 
-import com.edgar.core.auth.Token;
+import com.edgar.core.auth.AccessToken;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -26,9 +26,9 @@ public class TokenManager {
      */
     private static final int hashIterations = 1024;
 
-    public static Token newToken(String username) {
+    public static AccessToken newToken(String username) {
 
-        Token token = new Token();
+        AccessToken token = new AccessToken();
         token.setUsername(username);
         token.setAccessToken(createToken(username, 30 * 3600 * 1000));
         token.setRefreshToken(createToken(username, 60 * 3600 * 1000));

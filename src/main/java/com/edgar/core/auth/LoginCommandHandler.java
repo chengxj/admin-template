@@ -20,7 +20,7 @@ public class LoginCommandHandler implements CommandHandler<LoginCommand> {
     private StatelessUserService statelessUserService;
 
     @Override
-    public CommandResult<Token> execute(LoginCommand command) {
+    public CommandResult<AccessToken> execute(LoginCommand command) {
         String username = command.getUsername();
         String password = command.getPassword();
 
@@ -36,7 +36,7 @@ public class LoginCommandHandler implements CommandHandler<LoginCommand> {
         } catch (AuthenticationException e) {
             throw ExceptionFactory.userOrPasswordError();
         }
-        Token restToken = statelessUserService.newToken(username);
+        AccessToken restToken = statelessUserService.newToken(username);
         return CommandResult.newInstance(restToken);
     }
 }

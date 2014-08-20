@@ -15,7 +15,7 @@ import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
-import com.edgar.core.shiro.PasswordHelper;
+import com.edgar.core.util.PasswordHelper;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.core.util.Constants;
 import com.edgar.core.validator.ValidatorStrategy;
