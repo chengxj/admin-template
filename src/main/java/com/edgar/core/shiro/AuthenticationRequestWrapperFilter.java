@@ -22,10 +22,14 @@ public class AuthenticationRequestWrapperFilter implements Filter {
         add("PUT");
         add("POST");
     }};
+    private static final Set<String> IGNORE_URL = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        String ignore = filterConfig.getInitParameter("ignore");
+        String[] ignoreArray = StringUtils.split(ignore, ",");
+        Collections.addAll(IGNORE_URL, ignoreArray);
+        System.out.println(IGNORE_URL);
     }
 
     @Override
@@ -33,6 +37,14 @@ public class AuthenticationRequestWrapperFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String method = request.getMethod();
         String baseString = null;
+        String serveltPath = request.getServletPath();
+        for (String ignore : IGNORE_URL) {
+            String start = StringUtils.substringBeforeLast(StringUtils.trim(ignore), "/*");
+            if (StringUtils.startsWith(serveltPath, start)) {
+                filterChain.doFilter(servletRequest, servletResponse);
+                return;
+            }
+        }
 
         if (MULTI_READ_HTTP_METHODS.contains(method)) {
             AuthenticationRequestWrapper authenticationRequestWrapper;
