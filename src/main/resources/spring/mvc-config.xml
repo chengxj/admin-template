@@ -46,6 +46,6 @@
 	<mvc:resources mapping="/vendors/**" location="/vendors/" />
 	<mvc:resources mapping="/login.html" location="/app/login.html" />
 	<mvc:resources mapping="/index.html" location="/app/index.html" />
-	<mvc:resources mapping="/index2.html" location="/app/index2.html" />
+	<mvc:resources mapping="/" location="/index.html" />
 
 </beans>

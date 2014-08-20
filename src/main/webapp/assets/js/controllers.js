@@ -2,7 +2,7 @@
 function LoginCtrl($scope, $http, RootScope) {
     $scope.user = {};
     $scope.login = function () {
-        $http.post("auth/login", $scope.user).success(
+        $http.post("https://localhost:8443/admintemplate/auth/login", $scope.user).success(
             function (data) {
                 $.localStorage.set("accessToken", data.accessToken);
                 $.localStorage.set("refreshToken", data.refreshToken);

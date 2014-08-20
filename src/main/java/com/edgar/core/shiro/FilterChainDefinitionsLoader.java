@@ -42,6 +42,7 @@ public class FilterChainDefinitionsLoader {
                 Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
                 setStaticAuth(filterChainDefinitionMap);
                 filterChainDefinitionMap.putAll(getAuthFromDB());
+                System.out.println(filterChainDefinitionMap);
                 return filterChainDefinitionMap;
         }
 
@@ -70,6 +71,9 @@ public class FilterChainDefinitionsLoader {
                 List<SysResource> resources = jdbcTemplate.query(URLS_QUERY,
                                 BeanPropertyRowMapper.newInstance(SysResource.class));
                 for (SysResource resource : resources) {
+                        if (StringUtils.contains(resource.getUrl(), "/login")) {
+                            authcMap.put(resource.getUrl(), "ssl, anon");
+                        } else
                         if (Constants.AUTH_TYPE_REST.equals(resource.getAuthType())) {
                                 // map.put(resource.getUrl(), resource.getPermission());
                                 String permission = StringUtils.substringBeforeLast(
