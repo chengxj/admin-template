@@ -37,7 +37,7 @@
 
     <!-- Subject工厂 -->
     <bean id="subjectFactory"
-          class="com.edgar.core.shiro.StatelessDefaultSubjectFactory" />
+          class="com.edgar.core.auth.stateless.StatelessDefaultSubjectFactory" />
 
     <!-- 会话管理器 -->
     <bean id="sessionManager" class="org.apache.shiro.session.mgt.DefaultSessionManager">
@@ -78,7 +78,7 @@
 
     <!--无状态Realm-->
     <bean id="statelessRealm"
-          class="com.edgar.core.shiro.StatelessRealm">
+          class="com.edgar.core.auth.stateless.StatelessRealm">
         <property name="cachingEnabled" value="false"/>
     </bean>
 
@@ -91,9 +91,9 @@
     </bean>
 
     <!--无状态的filter-->
-    <bean id="statelessAuthcFilter" class="com.edgar.core.shiro.StatelessAuthcFilter"/>
+    <bean id="statelessAuthcFilter" class="com.edgar.core.auth.stateless.StatelessAuthcFilter"/>
     <!--重放攻击的filter-->
-    <bean id="replayAttackFilter" class="com.edgar.core.shiro.ReplayAttackFilter"/>
+    <bean id="replayAttackFilter" class="com.edgar.core.auth.stateless.ReplayAttackFilter"/>
     <bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">
         <property name="port" value="8443"/>
     </bean>
@@ -104,10 +104,6 @@
         <property name="hashAlgorithmName" value="MD5"/>
         <property name="hashIterations" value="1024"/>
         <property name="storedCredentialsHexEncoded" value="true"/>
-    </bean>
-
-    <bean class="com.edgar.core.shiro.RetryLimitService">
-        <property name="maxRetryCount" value="10"/>
     </bean>
 
 </beans>

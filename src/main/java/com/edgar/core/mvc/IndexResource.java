@@ -2,8 +2,7 @@ package com.edgar.core.mvc;
 
 import java.util.*;
 
-import com.edgar.core.repository.CrudRepository;
-import com.edgar.core.repository.QueryExample;
+import com.edgar.core.auth.stateless.StatelessUser;
 import com.edgar.core.shiro.*;
 import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.SysRole;

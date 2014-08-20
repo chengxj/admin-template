@@ -29,7 +29,6 @@ public class AuthenticationRequestWrapperFilter implements Filter {
         String ignore = filterConfig.getInitParameter("ignore");
         String[] ignoreArray = StringUtils.split(ignore, ",");
         Collections.addAll(IGNORE_URL, ignoreArray);
-        System.out.println(IGNORE_URL);
     }
 
     @Override

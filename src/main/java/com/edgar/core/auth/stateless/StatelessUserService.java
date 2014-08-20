@@ -1,7 +1,9 @@
-package com.edgar.core.shiro;
+package com.edgar.core.auth.stateless;
 
 import com.edgar.core.cache.CacheWrapper;
 import com.edgar.core.cache.EhCacheWrapper;
+import com.edgar.core.auth.Token;
+import com.edgar.core.shiro.TokenManager;
 import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;

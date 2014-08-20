@@ -10,7 +10,6 @@ import org.springframework.validation.FieldError;
 
 import com.edgar.core.exception.BusinessCode;
 import com.edgar.core.exception.SystemException;
-import com.edgar.core.shiro.AuthContextHolder;
 
 /**
  * 创建异常的工厂类
@@ -35,10 +34,8 @@ public abstract class ExceptionFactory {
 	 * @return SystemException
 	 */
 	public static SystemException userOrPasswordError() {
-		int retryCount = AuthContextHolder.getRetryCount();
 		return new SystemException(BusinessCode.USERNAME_PASSWORD_ERROR,
-				"Username or Password is not correct! You have left "
-						+ (10 - retryCount) + " chance");
+				"Username or Password is not correct!");
 	}
 
 	/**

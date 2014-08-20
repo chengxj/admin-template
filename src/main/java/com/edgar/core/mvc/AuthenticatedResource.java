@@ -1,12 +1,15 @@
 package com.edgar.core.mvc;
 
-import com.edgar.core.cache.CacheWrapper;
-import com.edgar.core.cache.EhCacheWrapper;
+import com.edgar.core.auth.LoginCommand;
+import com.edgar.core.auth.Token;
+import com.edgar.core.auth.stateless.StatelessUser;
+import com.edgar.core.auth.stateless.StatelessUserService;
+import com.edgar.core.command.CommandBus;
+import com.edgar.core.command.CommandResult;
 import com.edgar.core.shiro.*;
 import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.core.view.ResponseMessage;
-import net.sf.ehcache.CacheManager;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -18,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,7 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthenticatedResource {
 
     @Autowired
-    private RetryLimitService retryLimitService;
+    private CommandBus commandBus;
 
     @Autowired
     private StatelessUserService statelessUserService;
@@ -64,34 +66,14 @@ public class AuthenticatedResource {
     /**
      * 用户登录
      *
-     * @param usernamePassword 用户名 密码对象
+     * @param loginCommand 用户名 密码对象
      * @return 登录成功的视图
      */
     @AuthHelper(value = "Login", type = AuthType.SSL)
     @RequestMapping(method = RequestMethod.POST, value = "/login")
-    public ModelAndView login(@RequestBody UsernamePassword usernamePassword) {
-        String username = usernamePassword.getUsername();
-        String password = usernamePassword.getPassword();
-
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username,
-                password);
-        // token.setRememberMe(true);
-		try {
-			retryLimitService.addRetry(username);
-			subject.login(token);
-		} catch (CustomExcessiveAttemptsException e) {
-			throw ExceptionFactory.ExcessiveAttempts(e.getAttemptsNum());
-		} catch (UnknownAccountException e) {
-			throw ExceptionFactory.userOrPasswordError();
-		} catch (IncorrectCredentialsException e) {
-			throw ExceptionFactory.userOrPasswordError();
-		} catch (AuthenticationException e) {
-			throw ExceptionFactory.userOrPasswordError();
-		}
-        retryLimitService.removeRetry(username);
-        Token restToken = statelessUserService.newToken(username);
-        return ResponseMessage.asModelAndView(restToken);
+    public ModelAndView login(@RequestBody LoginCommand loginCommand) {
+        CommandResult<Token> result = commandBus.executeCommand(loginCommand);
+        return ResponseMessage.asModelAndView(result.getResult());
     }
 
 

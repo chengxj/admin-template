@@ -1,5 +1,6 @@
 package com.edgar.core.shiro;
 
+import com.edgar.core.auth.Token;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;

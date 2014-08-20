@@ -1,4 +1,4 @@
-package com.edgar.core.shiro;
+package com.edgar.core.auth.stateless;
 
 import com.edgar.core.util.Constants;
 import org.apache.shiro.web.filter.AccessControlFilter;

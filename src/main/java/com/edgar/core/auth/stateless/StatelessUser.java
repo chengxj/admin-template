@@ -1,4 +1,4 @@
-package com.edgar.core.shiro;
+package com.edgar.core.auth.stateless;
 
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;

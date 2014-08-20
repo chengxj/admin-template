@@ -1,7 +1,9 @@
-package com.edgar.core.mvc;
+package com.edgar.core.auth;
 
 
-public class UsernamePassword {
+import com.edgar.core.command.Command;
+
+public class LoginCommand implements Command {
     private String username;
     
     private String password;

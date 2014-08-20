@@ -1,4 +1,4 @@
-package com.edgar.core.shiro;
+package com.edgar.core.auth;
 
 public class Token {
 
