@@ -67,7 +67,7 @@ public class AuthenticatedResource {
      * @param usernamePassword 用户名 密码对象
      * @return 登录成功的视图
      */
-    @AuthHelper(value = "Login", type = AuthType.ANON)
+    @AuthHelper(value = "Login", type = AuthType.SSL)
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ModelAndView login(@RequestBody UsernamePassword usernamePassword) {
         String username = usernamePassword.getUsername();

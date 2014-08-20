@@ -40,4 +40,9 @@ public abstract class Constants {
      */
     public static final String AUTH_TYPE_REST = "rest";
 
+    /**
+     * ssl类型的权限
+     */
+    public static final String AUTH_TYPE_SSL = "ssl";
+
 }
