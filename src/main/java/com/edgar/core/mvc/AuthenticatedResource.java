@@ -2,6 +2,7 @@ package com.edgar.core.mvc;
 
 import com.edgar.core.auth.AccessToken;
 import com.edgar.core.auth.LoginCommand;
+import com.edgar.core.auth.LogoutCommand;
 import com.edgar.core.auth.stateless.StatelessUser;
 import com.edgar.core.auth.stateless.StatelessUserService;
 import com.edgar.core.command.CommandBus;
@@ -33,9 +34,6 @@ public class AuthenticatedResource {
 
     @Autowired
     private CommandBus commandBus;
-
-    @Autowired
-    private StatelessUserService statelessUserService;
 
     /**
      * 未登录用户
@@ -81,10 +79,10 @@ public class AuthenticatedResource {
     @AuthHelper(value = "Logout", type = AuthType.AUTHC)
     @RequestMapping(method = RequestMethod.POST, value = "/logout")
     public ModelAndView logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
         StatelessUser user = (StatelessUser) RequestContextHolder.currentRequestAttributes().getAttribute(Constants.USER_KEY, RequestAttributes.SCOPE_REQUEST);
-        statelessUserService.removeToken(user.getAccessToken());
+        LogoutCommand command = new LogoutCommand();
+        command.setAccessToken(user.getAccessToken());
+        commandBus.executeCommand(command);
         return ResponseMessage.asModelAndView("Login Success");
     }
 }
