@@ -377,7 +377,7 @@
                 <artifactId>tomcat-maven-plugin</artifactId>
                 <version>1.1</version>
                 <configuration>
-                    <path>/${artifactId}</path>
+                    <path>/</path>
                     <port>8080</port>
                     <httpsPort>8443</httpsPort>
                     <keystoreFile>${project.basedir}/certificates/localhost.keystore</keystoreFile>

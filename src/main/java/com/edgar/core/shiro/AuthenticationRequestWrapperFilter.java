@@ -95,10 +95,12 @@ public class AuthenticationRequestWrapperFilter implements Filter {
     }
 
     private String getBaseString(HttpServletRequest request, String queryString) {
-        String url = request.getRequestURL().toString();
         String method = request.getMethod();
-        String contextPah = request.getContextPath();
-        StringBuilder baseString = new StringBuilder(method).append(StringUtils.substringAfter(url, contextPah + "/"));
+        String servletPath = request.getServletPath();
+        if (StringUtils.startsWith(servletPath, "/")) {
+            servletPath = StringUtils.substringAfter(servletPath, "/");
+        }
+        StringBuilder baseString = new StringBuilder(method).append(servletPath);
         if (StringUtils.isNotBlank(queryString)) {
             baseString.append("?").append(queryString);
         }
