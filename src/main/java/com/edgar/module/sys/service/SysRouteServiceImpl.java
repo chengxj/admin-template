@@ -85,8 +85,8 @@ public class SysRouteServiceImpl implements SysRouteService {
 
 	@Override
 	@Transactional
-	public int deleteWithLock(int routeId, long updatedTime) {
-		int result = sysRouteDao.deleteByPkAndVersion(routeId, updatedTime);
+	public long deleteWithLock(int routeId, long updatedTime) {
+        long result = sysRouteDao.deleteByPkAndVersion(routeId, updatedTime);
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("routeId", routeId);
 		sysRoleRouteDao.delete(example);

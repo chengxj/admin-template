@@ -1,5 +1,6 @@
 package com.edgar.core.command;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,18 +53,13 @@ public class CommandBusImpl implements CommandBus, ApplicationContextAware {
 	}
 
 	@Override
-	public <T> CommandResult<T> executeCommands(List<Command> commands) {
+	public List<CommandResult> executeCommands(List<Command> commands) {
 		LOGGER.debug("batch execute {} commands", commands.size());
-		CommandResult<T> result = null;
-		for (int i = 0, n = commands.size(); i < n; i++) {
-			Command command = commands.get(i);
-			if (i < n - 1) {
-				executeCommand(command);
-			} else {
-				result = executeCommand(command);
-			}
-		}
-		return result;
+        List<CommandResult> results = new ArrayList<CommandResult>(commands.size());
+        for (Command command : commands) {
+            results.add(executeCommand(command));
+        }
+		return results;
 	}
 
 	@Override

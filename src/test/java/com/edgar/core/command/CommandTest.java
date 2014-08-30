@@ -49,8 +49,8 @@ public class CommandTest {
                 List<Command> commands = new ArrayList<Command>();
                 commands.add(new GetSysUser(1));
                 commands.add(new ChainGetSysUser(1));
-                CommandResult<SysUser> result = commandBus.executeCommands(commands);
-                Assert.assertNotNull(result.getResult());
+                List<CommandResult> result = commandBus.executeCommands(commands);
+                Assert.assertNotNull(result.get(0).getResult());
         }
         
         @Test(expected=SystemException.class)

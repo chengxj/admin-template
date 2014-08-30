@@ -1,5 +1,6 @@
 package com.edgar.module.sys.service;
 
+import com.edgar.core.command.Command;
 import com.edgar.module.sys.repository.domain.SysUser;
 
 /**
@@ -8,7 +9,7 @@ import com.edgar.module.sys.repository.domain.SysUser;
  * @author Edgar Zhang
  * @version 1.0
  */
-public class SysUserRoleCommand extends SysUser {
+public class SysUserRoleCommand extends SysUser implements Command {
 
         private String roleIds;
 

@@ -10,12 +10,11 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Created by Administrator on 2014/8/16.
+ * 重复读取request body的过滤器
  */
 public class AuthenticationRequestWrapperFilter implements Filter {
 
     private static final Set<String> MULTI_READ_HTTP_METHODS = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER) {{
-        // Enable Multi-Read for PUT and POST requests
         add("PUT");
         add("POST");
     }};
@@ -32,7 +31,7 @@ public class AuthenticationRequestWrapperFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String method = request.getMethod();
-        String baseString = null;
+        String baseString;
         String serveltPath = request.getServletPath();
         for (String ignore : IGNORE_URL) {
             String start = StringUtils.substringBeforeLast(StringUtils.trim(ignore), "/*");
@@ -65,7 +64,7 @@ public class AuthenticationRequestWrapperFilter implements Filter {
                             Collections.sort(valueList);
                             dataStringList.add(key + "=" + StringUtils.join(valueList, ","));
                         } else if (value instanceof List) {
-                            List<String> valueList = (List<String>) value;
+                            List<Object> valueList = (List<Object>) value;
                             dataStringList.add(key + "=" + StringUtils.join(valueList, ","));
                         } else {
                             dataStringList.add(key + "=" + value.toString());

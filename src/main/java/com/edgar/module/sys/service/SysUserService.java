@@ -72,7 +72,7 @@ public interface SysUserService {
 	 *            时间戳
 	 * @return 如果删除成功，返回<code>1</code>
 	 */
-	int deleteWithLock(@Min(1) int userId, long updatedTime);
+	long deleteWithLock(@Min(1) int userId, long updatedTime);
 
 	/**
 	 * 检查用户名是否存在
@@ -134,6 +134,6 @@ public interface SysUserService {
      * @param sysUser
      *            用户
 	 */
-	void saveAdminUser(SysUser sysUser);
+	int saveAdminUser(SysUser sysUser);
 
 }

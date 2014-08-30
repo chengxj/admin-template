@@ -123,7 +123,7 @@ public class SysUserResource {
 	@AuthHelper("Delete User")
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{userId}")
 	@ResponseBody
-	public int delete(@PathVariable("userId") int userId,
+	public long delete(@PathVariable("userId") int userId,
 			@RequestParam("updatedTime") long updatedTime) {
 		return sysUserService.deleteWithLock(userId, updatedTime);
 	}

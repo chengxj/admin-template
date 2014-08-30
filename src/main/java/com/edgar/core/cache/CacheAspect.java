@@ -62,7 +62,7 @@ public class CacheAspect {
         /**
          * 插入记录的切面.
          *
-         * @param domain
+         * @param domains
          *                实体对象
          */
         @SuppressWarnings("rawtypes")

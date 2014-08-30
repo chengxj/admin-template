@@ -104,7 +104,7 @@ public class SysJobResource {
         @AuthHelper(value = "Delete Job", isRoot = true)
         @RequestMapping(method = RequestMethod.DELETE, value = "/{jobId}")
         @ResponseBody
-        public int delete(@PathVariable("jobId") int jobId,
+        public long delete(@PathVariable("jobId") int jobId,
                         @RequestParam("updatedTime") long updatedTime) {
                 return sysJobService.deleteWithLock(jobId, updatedTime);
         }

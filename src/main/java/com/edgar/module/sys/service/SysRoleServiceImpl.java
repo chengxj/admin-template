@@ -77,8 +77,8 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         @Override
         @Transactional
-        public int deleteWithLock(int roleId, long updatedTime) {
-                int result = sysRoleDao.deleteByPkAndVersion(roleId, updatedTime);
+        public long deleteWithLock(int roleId, long updatedTime) {
+                long result = sysRoleDao.deleteByPkAndVersion(roleId, updatedTime);
                 QueryExample example = QueryExample.newInstance();
                 example.equalsTo("roleId", roleId);
                 sysUserRoleDao.delete(example);

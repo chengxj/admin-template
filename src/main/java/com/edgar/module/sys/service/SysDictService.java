@@ -53,7 +53,7 @@ public interface SysDictService {
          *                时间戳
          * @return 如果删除成功，返回<code>1</code>
          */
-        int deleteWithLock(String dictCode, long updatedTime);
+        long deleteWithLock(String dictCode, long updatedTime);
 
         /**
          * 分页查询字典

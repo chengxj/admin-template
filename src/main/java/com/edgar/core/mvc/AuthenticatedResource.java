@@ -1,18 +1,13 @@
 package com.edgar.core.mvc;
 
-import com.edgar.core.auth.AccessToken;
-import com.edgar.core.auth.LoginCommand;
-import com.edgar.core.auth.LogoutCommand;
+import com.edgar.core.auth.*;
 import com.edgar.core.auth.stateless.StatelessUser;
-import com.edgar.core.auth.stateless.StatelessUserService;
 import com.edgar.core.command.CommandBus;
-import com.edgar.core.command.CommandResult;
-import com.edgar.core.shiro.*;
+import com.edgar.core.shiro.AuthHelper;
+import com.edgar.core.shiro.AuthType;
 import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.core.view.ResponseMessage;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +29,9 @@ public class AuthenticatedResource {
 
     @Autowired
     private CommandBus commandBus;
+
+    @Autowired
+    private AuthService authService;
 
     /**
      * 未登录用户
@@ -66,8 +64,8 @@ public class AuthenticatedResource {
     @AuthHelper(value = "Login", type = AuthType.SSL)
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ModelAndView login(@RequestBody LoginCommand loginCommand) {
-        CommandResult<AccessToken> result = commandBus.executeCommand(loginCommand);
-        return ResponseMessage.asModelAndView(result.getResult());
+        AccessToken token = authService.login(loginCommand);
+        return ResponseMessage.asModelAndView(token);
     }
 
 
@@ -80,9 +78,7 @@ public class AuthenticatedResource {
     @RequestMapping(method = RequestMethod.POST, value = "/logout")
     public ModelAndView logout() {
         StatelessUser user = (StatelessUser) RequestContextHolder.currentRequestAttributes().getAttribute(Constants.USER_KEY, RequestAttributes.SCOPE_REQUEST);
-        LogoutCommand command = new LogoutCommand();
-        command.setAccessToken(user.getAccessToken());
-        commandBus.executeCommand(command);
+        authService.logout(user.getAccessToken());
         return ResponseMessage.asModelAndView("Login Success");
     }
 }

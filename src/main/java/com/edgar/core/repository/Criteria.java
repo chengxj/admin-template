@@ -69,9 +69,8 @@ public class Criteria implements Comparable<Criteria> {
         if (op != criteria.op) return false;
         if (secondValue != null ? !secondValue.equals(criteria.secondValue) : criteria.secondValue != null)
             return false;
-        if (value != null ? !value.equals(criteria.value) : criteria.value != null) return false;
+        return !(value != null ? !value.equals(criteria.value) : criteria.value != null);
 
-        return true;
     }
 
     @Override

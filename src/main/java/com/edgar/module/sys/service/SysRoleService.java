@@ -80,6 +80,6 @@ public interface SysRoleService {
          *                时间戳
          * @return 如果删除成功，返回<code>1</code>
          */
-        int deleteWithLock(@Min(1) int roleId, @NotNull long updatedTime);
+        long deleteWithLock(@Min(1) int roleId, @NotNull long updatedTime);
 
 }

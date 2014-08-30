@@ -1,7 +1,5 @@
 package com.edgar.core.auth;
 
-import org.apache.shiro.authc.AuthenticationException;
-
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -25,7 +23,7 @@ public class AuthenticationRequestWrapper
             if (inputStream != null) {
                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 char[] charBuffer = new char[128];
-                int bytesRead = -1;
+                int bytesRead;
                 while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
                     stringBuilder.append(charBuffer, 0, bytesRead);
                 }
@@ -33,7 +31,7 @@ public class AuthenticationRequestWrapper
                 // make an empty string since there is no payload
                 stringBuilder.append("");
             }
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
 
         } finally {
             if (bufferedReader != null) {
@@ -56,13 +54,12 @@ public class AuthenticationRequestWrapper
             throws IOException {
 
         final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body.getBytes());
-        ServletInputStream inputStream = new ServletInputStream() {
+        return new ServletInputStream() {
             public int read()
                     throws IOException {
                 return byteArrayInputStream.read();
             }
         };
-        return inputStream;
     }
 
     public String getBody() {

@@ -71,7 +71,7 @@ public interface SysRouteService {
      * @param updatedTime 时间戳
      * @return 如果删除成功，返回<code>1</code>
      */
-    int deleteWithLock(int routeId, @Min(0) long updatedTime);
+    long deleteWithLock(int routeId, @Min(0) long updatedTime);
 
     /**
      * 查询所有路由，包括系统路由

@@ -55,52 +55,6 @@ public class PermissionServiceImpl implements PermissionService {
     @Autowired
     private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
 
-    // @Override
-    // public List<SysRoleMenu> getMenus(int roleId) {
-    // QueryExample example = QueryExample.newInstance();
-    // example.equalsTo("roleId", roleId);
-    // example.addField("resourceId");
-    // Set<Integer> roleResourceIds = new HashSet<Integer>(
-    // sysRoleResDao.querySingleColumn(example, Integer.class));
-    //
-    // example.clear();
-    // example.equalsTo("isRoot", 0);
-    // example.asc("sorted");
-    // // example.notEqualsTo("parentId", -1);
-    // List<SysMenu> sysMenus = sysMenuDao.query(example);
-    // List<SysMenuVo> sysMenuVos = new ArrayList<SysMenuVo>();
-    //
-    // for (SysMenu sysMenu : sysMenus) {
-    // SysMenuVo sysMenuVo = new SysMenuVo();
-    // BeanUtils.copyProperties(sysMenu, sysMenuVo);
-    //
-    // example.clear();
-    // example.equalsTo("menuId", sysMenu.getMenuId());
-    // example.addField("routeId");
-    // List<Integer> routeIds = sysMenuRouteDao.querySingleColumn(example,
-    // Integer.class);
-    // Set<Integer> resourceIds = new HashSet<Integer>();
-    // for (Integer routeId : routeIds) {
-    // example.clear();
-    // example.equalsTo("routeId", routeId);
-    // example.addField("resourceId");
-    //
-    // // resourceIds.addAll(sysRouteResDao.querySingleColumn(example,
-    // // Integer.class));
-    //
-    // }
-    // for (Integer resourceId : resourceIds) {
-    // SysResource resource = sysResourceDao.get(resourceId);
-    // SysResourceVo resourceVo = new SysResourceVo();
-    // BeanUtils.copyProperties(resource, resourceVo);
-    // resourceVo.setChecked(roleResourceIds.contains(resourceId));
-    // sysMenuVo.addResource(resourceVo);
-    // }
-    // sysMenuVos.add(sysMenuVo);
-    // }
-    // return sysMenuVos;
-    // }
-
     @Override
     public List<Integer> getMenu(int roleId) {
         QueryExample example = QueryExample.newInstance();

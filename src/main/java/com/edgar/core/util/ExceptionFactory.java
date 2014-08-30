@@ -146,8 +146,7 @@ public abstract class ExceptionFactory {
 
 	/**
 	 * 作业错误
-	 * 
-	 * @param
+	 *
 	 * @return SystemException
 	 */
 	public static SystemException job() {
@@ -200,8 +199,7 @@ public abstract class ExceptionFactory {
 	 * @return SystemException
 	 */
 	public static SystemException inValidParameter(String msg) {
-		SystemException e = new SystemException(BusinessCode.INVALID_PARAMETER,
-				msg);
-		return e;
+		return new SystemException(BusinessCode.INVALID_PARAMETER,
+                msg);
 	}
 }

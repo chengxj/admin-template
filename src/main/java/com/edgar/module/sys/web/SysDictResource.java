@@ -135,7 +135,7 @@ public class SysDictResource {
         @AuthHelper(value = "Delete Dictory", isRoot = true, type = AuthType.AUTHC)
         @RequestMapping(method = RequestMethod.DELETE, value = "/{dictCode}")
         @ResponseBody
-        public int delete(@PathVariable("dictCode") String dictCode,
+        public long delete(@PathVariable("dictCode") String dictCode,
                         @RequestParam("updatedTime") long updatedTime) {
                 return sysDictService.deleteWithLock(dictCode, updatedTime);
         }

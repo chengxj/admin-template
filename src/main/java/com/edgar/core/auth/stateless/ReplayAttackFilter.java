@@ -1,8 +1,6 @@
 package com.edgar.core.auth.stateless;
 
-import com.edgar.core.cache.CacheWrapper;
-import com.edgar.core.cache.EhCacheWrapper;
-import net.sf.ehcache.CacheManager;
+import com.edgar.core.auth.AuthService;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +11,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Administrator on 2014/8/17.
+ * 重放攻击的Filter.
  */
 public class ReplayAttackFilter extends AccessControlFilter {
 
-    private CacheWrapper<String, String> cacheWrapper;
+    /**
+     * 随机数
+     */
+    private static final String NONCE = "nonce";
+
+    /**
+     * 时间戳
+     */
+    private static final String TIMESTAMP = "timestamp";
 
     @Autowired
-    public void setCacheManager(CacheManager cacheManager) {
-        cacheWrapper = new EhCacheWrapper<String, String>("ReplayAttackCache", cacheManager);
-    }
+    private AuthService authService;
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
@@ -31,23 +35,21 @@ public class ReplayAttackFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        String nonce = request.getParameter("nonce");
-        long timestamp = NumberUtils.toLong(request.getParameter("timestamp"));
-        long currentTime = System.currentTimeMillis();
-        if (timestamp + 5 * 60 * 1000 < currentTime) {
-            onTimeout(response);
-            return false;
+        String nonce = request.getParameter(NONCE);
+        long timestamp = NumberUtils.toLong(request.getParameter(TIMESTAMP));
+        if (authService.isNewRequest(nonce, timestamp)) {
+            return true;
         }
-        String replayKey = nonce + "-" + timestamp;
-        if (cacheWrapper.get(replayKey) != null) {
-            onTimeout(response);
-            return false;
-        }
-        cacheWrapper.put(replayKey, replayKey);
-        return true;
+        onTimeout(response);
+        return false;
     }
 
-    // 登录失败时默认返回401状态码
+    /**
+     * 校验失败，返回401状态码
+     *
+     * @param response ServletResponse
+     * @throws IOException IOException
+     */
     private void onTimeout(ServletResponse response) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.setStatus(HttpServletResponse.SC_REQUEST_TIMEOUT);

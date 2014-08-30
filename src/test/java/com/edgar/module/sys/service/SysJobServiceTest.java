@@ -87,7 +87,7 @@ public class SysJobServiceTest {
                 sysJob.setEnabled(true);
                 sysJob.setJobName("测试作业");
                 when(sysJobDao.get(anyInt())).thenReturn(sysJob);
-                when(sysJobDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(1);
+                when(sysJobDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(1l);
                 doAnswer(new Answer<Object>() {
 
                         @Override
@@ -97,7 +97,7 @@ public class SysJobServiceTest {
                         }
                 }).when(jobScheduler).deleteJob(any(JobAdpater.class));
 
-                int result = sysJobService.deleteWithLock(1, 1L);
+                long result = sysJobService.deleteWithLock(1, 1L);
                 Assert.assertEquals(result, 1);
 
                 InOrder inOrder = inOrder(sysJobDao);

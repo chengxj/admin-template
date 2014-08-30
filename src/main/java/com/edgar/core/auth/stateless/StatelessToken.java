@@ -2,8 +2,6 @@ package com.edgar.core.auth.stateless;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
-import java.util.Map;
-
 /**
  * 无状态的TOKEN，用来校验rest API
  */

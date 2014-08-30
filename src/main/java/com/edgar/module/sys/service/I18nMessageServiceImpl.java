@@ -56,7 +56,7 @@ public class I18nMessageServiceImpl implements I18nMessageService {
     }
 
     @Override
-    public int deleteWithLock(int i18nId, long updatedTime) {
+    public long deleteWithLock(int i18nId, long updatedTime) {
         return i18nMessageDao.deleteByPkAndVersion(i18nId, updatedTime);
     }
 

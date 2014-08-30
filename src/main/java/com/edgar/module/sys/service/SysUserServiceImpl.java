@@ -3,9 +3,9 @@ package com.edgar.module.sys.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,31 +54,16 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	@Transactional
-	public void saveAdminUser(SysUser sysUser) {
-		validator.validator(sysUser);
-		sysUser.setUserId(IDUtils.getNextId());
-		sysUser.setIsRoot(false);
-		PasswordHelper.encryptPassword(sysUser);
-		sysUserDao.insert(sysUser);
-
+	public int saveAdminUser(SysUser sysUser) {
+        SysUserRoleCommand command = new SysUserRoleCommand();
+        BeanUtils.copyProperties(sysUser, command);
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("roleCode", "ROLE_CODE_ADMIN");
 		example.addField("roleId");
 		List<Integer> roleIds = sysRoleDao.querySingleColumn(example,
 				Integer.class);
-		if (CollectionUtils.isNotEmpty(roleIds)) {
-			List<SysUserRole> sysUserRoles = new ArrayList<SysUserRole>();
-			for (Integer roleId : roleIds) {
-				SysUserRole sysUserRole = new SysUserRole();
-				sysUserRole.setUserRoleId(IDUtils.getNextId());
-				sysUserRole.setUserId(sysUser.getUserId());
-				sysUserRole.setRoleId(roleId);
-				sysUserRoles.add(sysUserRole);
-			}
-			sysUserRoleDao.insert(sysUserRoles);
-		}
-
-		saveDefaultProfile(sysUser.getUserId());
+        command.setRoleIds(StringUtils.join(roleIds, ","));
+        return save(command);
 	}
 
 	@Override
@@ -123,7 +108,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 	@Override
 	@Transactional
-	public int deleteWithLock(int userId, long updatedTime) {
+	public long deleteWithLock(int userId, long updatedTime) {
 		deleteRoleByUser(userId);
 		deleteProfile(userId);
 		return sysUserDao.deleteByPkAndVersion(userId, updatedTime);

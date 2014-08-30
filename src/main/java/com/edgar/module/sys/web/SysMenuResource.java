@@ -109,7 +109,7 @@ public class SysMenuResource {
 	@AuthHelper(value = "Delete Menu", isRoot = true)
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{menuId}")
 	@ResponseBody
-	public int delete(@PathVariable("menuId") int menuId,
+	public long delete(@PathVariable("menuId") int menuId,
 			@RequestParam("updatedTime") long updatedTime) {
 		return sysMenuService.deleteWithLock(menuId, updatedTime);
 	}

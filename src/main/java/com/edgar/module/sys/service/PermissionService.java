@@ -49,13 +49,4 @@ public interface PermissionService {
 	 */
 	void savePermission(@NotNull PermissionCommand command);
 
-//	/**
-//	 * 查询角色权限
-//	 * 
-//	 * @param roleId
-//	 *            角色ID
-//	 * @return 权限的VO表
-//	 */
-//	List<SysMenuVo> getMenus(int roleId);
-
 }

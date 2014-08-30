@@ -76,15 +76,15 @@ public class SysRouteServiceTest {
 	@Test
 	public void testDelete() {
 		when(sysRouteDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(
-				1);
-		when(sysRoleRouteDao.delete(any(QueryExample.class))).thenReturn(1);
-		when(sysMenuRouteDao.delete(any(QueryExample.class))).thenReturn(1);
+				1l);
+		when(sysRoleRouteDao.delete(any(QueryExample.class))).thenReturn(1l);
+		when(sysMenuRouteDao.delete(any(QueryExample.class))).thenReturn(1l);
 
 		final QueryExample example = QueryExample.newInstance();
 		mockStatic(QueryExample.class);
 		when(QueryExample.newInstance()).thenReturn(example);
 
-		int result = sysRouteService.deleteWithLock(1, 1L);
+        long result = sysRouteService.deleteWithLock(1, 1L);
 		Assert.assertEquals(result, 1);
 		verify(sysRouteDao, only()).deleteByPkAndVersion(anyInt(), anyLong());
 		verify(sysRoleRouteDao, only()).delete(any(QueryExample.class));

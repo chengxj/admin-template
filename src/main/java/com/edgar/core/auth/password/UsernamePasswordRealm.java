@@ -1,14 +1,8 @@
 package com.edgar.core.auth.password;
 
-import java.util.List;
-
-import org.apache.shiro.authc.AccountException;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import com.edgar.module.sys.facade.UserFacde;
+import com.edgar.module.sys.repository.domain.SysUser;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -16,9 +10,6 @@ import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.edgar.module.sys.repository.domain.SysUser;
-import com.edgar.module.sys.service.SysUserService;
 
 /**
  * 自定义的Shiro Realm
@@ -32,7 +23,7 @@ public class UsernamePasswordRealm extends JdbcRealm {
             .getLogger(UsernamePasswordRealm.class);
 
     @Autowired
-    private SysUserService sysUserService;
+    private UserFacde userFacde;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -78,16 +69,12 @@ public class UsernamePasswordRealm extends JdbcRealm {
      * @return 登录用户
      */
     protected SysUser getUser(String username) {
-        logger.debug("user login : {}", username);
-        List<SysUser> sysUsers = sysUserService.queryByUsername(username);
-        if (sysUsers.isEmpty()) {
+        SysUser sysUser = userFacde.queryByUsername(username);
+        if (sysUser == null) {
             throw new UnknownAccountException("username cannot be null");
         }
-        if (sysUsers.size() > 1) {
-            throw new AuthenticationException(" usernmae [" + username
-                    + "] must be unique");
-        }
-        return sysUsers.get(0);
+        logger.debug("user login : {}", username);
+        return sysUser;
 
     }
 

@@ -39,7 +39,7 @@ public interface JobScheduler {
         /**
          * 更新一个作业
          * 
-         * @param job
+         * @param job 作业
          */
         void updateJob(JobAdpater job);
 

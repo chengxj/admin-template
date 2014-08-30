@@ -66,17 +66,17 @@ public class SysRoleServiceTest {
 
     @Test
     public void testDelete() {
-        when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1);
-        when(sysRoleDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(1);
-        when(sysRoleMenuDao.delete(any(QueryExample.class))).thenReturn(1);
-        when(sysRoleRouteDao.delete(any(QueryExample.class))).thenReturn(1);
-        when(sysRoleResDao.delete(any(QueryExample.class))).thenReturn(1);
+        when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1l);
+        when(sysRoleDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(1l);
+        when(sysRoleMenuDao.delete(any(QueryExample.class))).thenReturn(1l);
+        when(sysRoleRouteDao.delete(any(QueryExample.class))).thenReturn(1l);
+        when(sysRoleResDao.delete(any(QueryExample.class))).thenReturn(1l);
 
         final QueryExample example = QueryExample.newInstance();
         mockStatic(QueryExample.class);
         when(QueryExample.newInstance()).thenReturn(example);
 
-        int result = sysRoleService.deleteWithLock(1, 1L);
+        long result = sysRoleService.deleteWithLock(1, 1L);
         Assert.assertEquals(result, 1);
 
         verify(sysRoleDao, times(1)).deleteByPkAndVersion(anyInt(), anyLong());

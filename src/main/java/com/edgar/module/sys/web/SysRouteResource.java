@@ -109,7 +109,7 @@ public class SysRouteResource {
         @AuthHelper(value = "Delete Route", isRoot = true)
         @RequestMapping(method = RequestMethod.DELETE, value = "/{routeId}")
         @ResponseBody
-        public int delete(@PathVariable("routeId") int routeId,
+        public long delete(@PathVariable("routeId") int routeId,
                         @RequestParam("updatedTime") long updatedTime) {
                 return sysRouteService.deleteWithLock(routeId, updatedTime);
         }

@@ -112,7 +112,7 @@ public class I18nMessageResource {
         @AuthHelper(value = "Delete i18n", isRoot = true)
         @RequestMapping(method = RequestMethod.DELETE, value = "/{i18nId}")
         @ResponseBody
-        public int delete(@PathVariable("i18nId") int i18nId,
+        public long delete(@PathVariable("i18nId") int i18nId,
                         @RequestParam("updatedTime") long updatedTime) {
                 return i18nMessageService.deleteWithLock(i18nId, updatedTime);
         }

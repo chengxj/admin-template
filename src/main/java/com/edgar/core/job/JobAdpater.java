@@ -16,8 +16,7 @@ public class JobAdpater {
 
         public void setClazzName(String clazzName) {
                 this.clazzName = clazzName;
-                String jName = StringUtils.substringAfterLast(clazzName, ".");
-                this.jobName = jName;
+                this.jobName = StringUtils.substringAfterLast(clazzName, ".");
         }
 
         public String getCron() {

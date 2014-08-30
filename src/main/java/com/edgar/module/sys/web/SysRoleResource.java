@@ -106,7 +106,7 @@ public class SysRoleResource {
         @AuthHelper("Delete Role")
         @RequestMapping(method = RequestMethod.DELETE, value = "/{roleId}")
         @ResponseBody
-        public int delete(@PathVariable("roleId") int roleId,
+        public long delete(@PathVariable("roleId") int roleId,
                         @RequestParam("updatedTime") long updatedTime) {
                 return sysRoleService.deleteWithLock(roleId, updatedTime);
         }

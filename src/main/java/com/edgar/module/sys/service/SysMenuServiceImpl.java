@@ -136,14 +136,14 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	@Transactional
-	public int deleteWithLock(int menuId, long updatedTime) {
+	public long deleteWithLock(int menuId, long updatedTime) {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("parentId", menuId);
 		List<SysMenu> children = sysMenuDao.query(example);
 		for (SysMenu sysMenu : children) {
 			deleteMenuRelation(sysMenu.getMenuId());
 		}
-		int result = sysMenuDao.deleteByPkAndVersion(menuId, updatedTime);
+		long result = sysMenuDao.deleteByPkAndVersion(menuId, updatedTime);
 		deleteMenuRelation(menuId);
 		return result;
 	}

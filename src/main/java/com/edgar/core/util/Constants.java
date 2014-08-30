@@ -45,4 +45,14 @@ public abstract class Constants {
      */
     public static final String AUTH_TYPE_SSL = "ssl";
 
+    /**
+     * 加密算法
+     */
+    public static final String TOKEN_ALGORITHM_NAME = "MD5";
+
+    /**
+     * 迭代次数
+     */
+    public static final int TOKEN_HASH_ITERATIONS = 1024;
+
 }

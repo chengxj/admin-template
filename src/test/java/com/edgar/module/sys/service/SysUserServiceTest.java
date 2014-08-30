@@ -106,9 +106,9 @@ public class SysUserServiceTest {
 
         @Test
         public void tesetDeleteByVersion() {
-                when(sysUserDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(1);
-                when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1);
-                int result = sysUserService.deleteWithLock(1, 1L);
+                when(sysUserDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(1l);
+                when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1l);
+            long result = sysUserService.deleteWithLock(1, 1L);
                 Assert.assertEquals(1, result);
 
                 InOrder inOrder = inOrder(sysUserRoleDao, sysUserDao);
@@ -303,7 +303,7 @@ public class SysUserServiceTest {
                 PowerMockito.mockStatic(IDUtils.class);
                 when(IDUtils.getNextId()).thenReturn(1);
                 when(sysUserDao.update(any(SysUser.class))).thenReturn(1);
-                when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1);
+                when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1l);
                 when(sysUserRoleDao.insert(anyListOf(SysUserRole.class))).thenReturn(
                                 new int[] { 1 });
                 SysUserRoleCommand sysUser = new SysUserRoleCommand();
