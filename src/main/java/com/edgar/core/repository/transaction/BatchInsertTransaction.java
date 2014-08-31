@@ -43,14 +43,17 @@ public class BatchInsertTransaction<T> extends TransactionTemplate {
                         insertClause.populate(domain).addBatch();
                     }
                 }
-                for (SQLBindings sqlBindings : insertClause.getSQL()) {
-                    LOGGER.debug("insert {} \nSQL[{}] \nparams:{}", getPathBase()
-                            .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
-                }
-
+                log(insertClause);
                 return insertClause.execute();
             }
         });
+    }
+
+    private void log(SQLInsertClause insertClause) {
+        for (SQLBindings sqlBindings : insertClause.getSQL()) {
+            LOGGER.debug("insert {} \nSQL[{}] \nparams:{}", getPathBase()
+                    .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+        }
     }
 
     public static class Builder<T> extends TransactionBuilderTemplate {

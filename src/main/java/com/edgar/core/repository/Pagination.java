@@ -142,12 +142,9 @@ public final class Pagination<T> {
          * @return 下一页页码
          */
         public long getNextPage() {
-                if (this.page * this.pageSize <= this.totalRecords) {
-                        return this.page;
+                if (this.page >= this.totalPages) {
+                    return this.page;
                 }
-                // if (this.page == Global.MAX_PAGE) {
-                // return this.page;
-                // }
                 return this.page + 1;
         }
 

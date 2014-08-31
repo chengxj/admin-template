@@ -1,5 +1,7 @@
 package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.handler.SQLDeleteClauseWhereHandler;
+import com.edgar.core.repository.handler.SQLUpdateClauseWhereHandler;
 import com.edgar.core.repository.handler.WhereHandler;
 import com.mysema.query.sql.*;
 import com.mysema.query.sql.dml.DefaultMapper;
@@ -59,13 +61,7 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
     }
 
     private void where(final SQLUpdateClause updateClause) {
-        WhereHandler handler = new WhereHandler(pathBase, example) {
-
-            @Override
-            public void doHandle(BooleanExpression expression) {
-                updateClause.where(expression);
-            }
-        };
+        WhereHandler handler = new SQLUpdateClauseWhereHandler(pathBase, example, updateClause);
         handler.handle();
     }
 

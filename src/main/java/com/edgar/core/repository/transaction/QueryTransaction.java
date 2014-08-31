@@ -1,9 +1,7 @@
 package com.edgar.core.repository.transaction;
 
-import com.edgar.core.repository.handler.FieldHandler;
-import com.edgar.core.repository.handler.OrderHandler;
-import com.edgar.core.repository.handler.PageHandler;
-import com.edgar.core.repository.handler.WhereHandler;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.core.repository.handler.*;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.Path;
@@ -35,28 +33,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
         Assert.notNull(example);
         final SQLQuery sqlQuery = new SQLQuery(configuration);
         sqlQuery.from(pathBase);
-
-        WhereHandler whereHandler = new WhereHandler(pathBase, example) {
-
-            @Override
-            public void doHandle(BooleanExpression expression) {
-                sqlQuery.where(expression);
-            }
-        };
-        whereHandler.handle();
-        PageHandler pageHandler = new PageHandler(pathBase, example, sqlQuery);
-        pageHandler.handle();
-        OrderHandler orderHandler = new OrderHandler(pathBase, example, sqlQuery);
-        orderHandler.handle();
-        final List<Path<?>> returnPaths = new ArrayList<Path<?>>();
-        FieldHandler fieldHandler = new FieldHandler(pathBase, example) {
-            @Override
-            public void doHandle(List<Path<?>> paths) {
-                returnPaths.addAll(paths);
-            }
-        };
-        fieldHandler.handle();
-
+        final List<Path<?>> returnPaths = handle(sqlQuery);
         Path<?>[] pathArray = new Path<?>[returnPaths.size()];
         SQLBindings sqlBindings = sqlQuery.getSQL(returnPaths.toArray(pathArray));
         String sql = sqlBindings.getSQL();
@@ -65,6 +42,28 @@ public class QueryTransaction<T> extends TransactionTemplate {
                 .getTableName(), sql, args);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         return jdbcTemplate.query(sql, args.toArray(), rowMapper);
+    }
+
+    private List<Path<?>> handle(final SQLQuery sqlQuery) {
+        List<QueryExampleHandler> handlers = new ArrayList<QueryExampleHandler>();
+        WhereHandler whereHandler = new SQLQueryWhereHandler(pathBase, example, sqlQuery);
+        handlers.add(whereHandler);
+        PageHandler pageHandler = new PageHandler(pathBase, example, sqlQuery);
+        handlers.add(pageHandler);
+        OrderHandler orderHandler = new OrderHandler(pathBase, example, sqlQuery);
+        handlers.add(orderHandler);
+        final List<Path<?>> returnPaths = new ArrayList<Path<?>>();
+        FieldHandler fieldHandler = new FieldHandler(pathBase, example) {
+            @Override
+            public void doHandle(List<Path<?>> paths) {
+                returnPaths.addAll(paths);
+            }
+        };
+        handlers.add(fieldHandler);
+        for (QueryExampleHandler handler : handlers) {
+            handler.handle();
+        }
+        return returnPaths;
     }
 
     public static class Builder<T> extends TransactionBuilderTemplate {

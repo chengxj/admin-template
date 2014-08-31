@@ -1,5 +1,6 @@
 package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.handler.SQLDeleteClauseWhereHandler;
 import com.edgar.core.repository.handler.WhereHandler;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -30,13 +31,7 @@ public class DeleteByExampleTransaction extends TransactionTemplate {
             @Override
             public Long doInConnection(Connection connection) throws SQLException, DataAccessException {
                 final SQLDeleteClause deleteClause = new SQLDeleteClause(connection, configuration, pathBase);
-                WhereHandler handler = new WhereHandler(pathBase, example) {
-
-                    @Override
-                    public void doHandle(BooleanExpression expression) {
-                        deleteClause.where(expression);
-                    }
-                };
+                WhereHandler handler = new SQLDeleteClauseWhereHandler(pathBase, example, deleteClause);
                 handler.handle();
                 for (SQLBindings sqlBindings : deleteClause.getSQL()) {
                     LOGGER.debug("delete {} \nSQL[{}] \nparams:{}", getPathBase()

@@ -289,6 +289,28 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     }
 
     /**
+     * 返回主键值
+     *
+     * @return 如果主键只有一个，则直接返回该值，如果有多个，则返回MAP对象
+     */
+    public Object getPrimaryKeyValue(T domain) {
+        Assert.notEmpty(getPathBase().getPrimaryKey().getLocalColumns(),
+                getPathBase().getTableName() + "has 0 primaryKey");
+        SqlParameterSource source = new BeanPropertySqlParameterSource(domain);
+        if (getPathBase().getPrimaryKey().getLocalColumns().size() == 1) {
+            Path<?> path = getPathBase().getPrimaryKey().getLocalColumns()
+                    .get(0);
+            return source.getValue(path.getMetadata().getName());
+        }
+        Map<String, Object> pkMap = new HashMap<String, Object>();
+        for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
+            pkMap.put(path.getMetadata().getName(),
+                    source.getValue(path.getMetadata().getName()));
+        }
+        return pkMap;
+    }
+
+    /**
      * 返回主键的集合
      *
      * @return 主键的集合

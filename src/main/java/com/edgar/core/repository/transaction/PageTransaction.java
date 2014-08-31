@@ -67,7 +67,7 @@ public class PageTransaction<T> extends TransactionTemplate {
             COUNT_EXAMPLE.limit(0);
         }
         COUNT_EXAMPLE.offset(0);
-        TransactionBuilder countBuilder = new CountTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(pathBase).example(example);
+        TransactionBuilder countBuilder = new CountTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(pathBase).example(COUNT_EXAMPLE);
         Transaction countTransaction = countBuilder.build();
 
         return countTransaction.execute();
