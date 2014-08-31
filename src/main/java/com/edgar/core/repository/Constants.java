@@ -10,6 +10,16 @@ public class Constants {
 
     public static final Configuration CONFIGURATION = new Configuration(new MySQLTemplates());
 
+    /**
+     * 更新时间
+     */
+    public static final String UPDATED_TIME = "updatedTime";
+
+    /**
+     * 创建时间
+     */
+    public static final String CREATED_TIME = "createdTime";
+
     static {
         CONFIGURATION.addListener(new CacheListener());
     }

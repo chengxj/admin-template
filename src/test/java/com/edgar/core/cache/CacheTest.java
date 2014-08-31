@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,8 +24,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edgar.core.cache.CacheWrapper;
-import com.edgar.core.cache.EhCacheWrapper;
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysDict;
@@ -92,7 +89,7 @@ public class CacheTest {
                 sysDictDao.update(sysDict);
                 Assert.assertEquals(10, cacheManager.getCache("SysDictCache").getSize());
                 sysDict = sysDictDao.get("0001");
-                sysDictDao.updateByVersion(sysDict);
+                sysDictDao.updateWithVersion(sysDict);
                 Assert.assertEquals(10, cacheManager.getCache("SysDictCache").getSize());
                 sysDictDao.deleteByPk(sysDict.getDictCode());
                 Assert.assertEquals(9, cacheManager.getCache("SysDictCache").getSize());
@@ -125,7 +122,7 @@ public class CacheTest {
                 sysDictDao.update(sysDict);
                 Assert.assertEquals(10, cacheManager.getCache("SysDictCache").getSize());
                 sysDict = sysDictDao.get("0001");
-                sysDictDao.updateByVersion(sysDict);
+                sysDictDao.updateWithVersion(sysDict);
                 Assert.assertEquals(10, cacheManager.getCache("SysDictCache").getSize());
                 sysDictDao.deleteByPk(sysDict.getDictCode());
                 Assert.assertEquals(9, cacheManager.getCache("SysDictCache").getSize());

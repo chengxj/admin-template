@@ -282,7 +282,7 @@ public class SysUserServiceTest {
 
         @Test
         public void testUpdateUser() {
-                when(sysUserDao.update(any(SysUser.class))).thenReturn(1);
+                when(sysUserDao.update(any(SysUser.class))).thenReturn(1L);
                 SysUserRoleCommand sysUser = new SysUserRoleCommand();
                 sysUser.setUserId(1);
                 sysUser.setUsername("z123");
@@ -299,7 +299,7 @@ public class SysUserServiceTest {
         public void testUpdateUserOneRole() {
                 PowerMockito.mockStatic(IDUtils.class);
                 when(IDUtils.getNextId()).thenReturn(1);
-                when(sysUserDao.update(any(SysUser.class))).thenReturn(1);
+                when(sysUserDao.update(any(SysUser.class))).thenReturn(1L);
                 when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1l);
                 when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
                 SysUserRoleCommand sysUser = new SysUserRoleCommand();

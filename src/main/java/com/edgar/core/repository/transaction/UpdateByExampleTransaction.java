@@ -1,12 +1,12 @@
 package com.edgar.core.repository.transaction;
 
-import com.edgar.core.repository.handler.SQLDeleteClauseWhereHandler;
+import com.edgar.core.repository.Constants;
 import com.edgar.core.repository.handler.SQLUpdateClauseWhereHandler;
 import com.edgar.core.repository.handler.WhereHandler;
-import com.mysema.query.sql.*;
+import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.dml.DefaultMapper;
 import com.mysema.query.sql.dml.SQLUpdateClause;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.*;
 
 /**
  * 即使修改了实体的主键，SQLUpdateClause.populate(domain)方法也不会更新主键，如果实体的属性值为null，则不会更新。
@@ -28,10 +29,13 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
 
     private final boolean withNullBindings;
 
+    private Set<String> ignoreColumns = new HashSet<String>();
+
     public UpdateByExampleTransaction(Builder<T> builder) {
         super(builder);
         this.domain = builder.getDomain();
         this.withNullBindings = builder.isWithNullBindings();
+        this.ignoreColumns.addAll(builder.getIgnoreColumns());
     }
 
     public Long execute() {
@@ -51,12 +55,31 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
         });
     }
 
+    /**
+     * 因为需要忽略createdTime、updatedTime，所以并没有直接使用 updateClause.populate(domain)或updateClause.populate(domain, DefaultMapper.WITH_NULL_BINDINGS)来实现set
+     *
+     * @param updateClause
+     * @param obj
+     * @param mapper
+     */
+    public void populate(SQLUpdateClause updateClause, T obj, DefaultMapper mapper) {
+        Collection<? extends Path<?>> primaryKeyColumns = pathBase.getPrimaryKey() != null
+                ? pathBase.getPrimaryKey().getLocalColumns()
+                : Collections.<Path<?>>emptyList();
+        Map<Path<?>, Object> values = mapper.createMap(pathBase, obj);
+        for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {
+            if (!primaryKeyColumns.contains(entry.getKey()) && !ignoreColumns.contains(entry.getKey().getMetadata().getName())) {
+                updateClause.set((Path) entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
     private void set(SQLUpdateClause updateClause) {
         //不会更新主键
         if (withNullBindings) {
-            updateClause.populate(domain, DefaultMapper.WITH_NULL_BINDINGS);
+            populate(updateClause, domain, DefaultMapper.WITH_NULL_BINDINGS);
         } else {
-            updateClause.populate(domain);
+            populate(updateClause, domain, DefaultMapper.DEFAULT);
         }
     }
 
@@ -68,6 +91,7 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
     public static class Builder<T> extends TransactionBuilderTemplate {
         private T domain;
         private boolean withNullBindings = false;
+        private Set<String> ignoreColumns = new HashSet<String>();
 
         public Builder domain(T domain) {
             this.domain = domain;
@@ -76,6 +100,17 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
 
         public Builder withNullBindings(boolean withNullBindings) {
             this.withNullBindings = withNullBindings;
+            return this;
+        }
+
+        public Builder defaultIgnore() {
+            this.ignoreColumns.add(Constants.CREATED_TIME);
+            this.ignoreColumns.add(Constants.UPDATED_TIME);
+            return this;
+        }
+
+        public Builder addIgnore(String ignore) {
+            this.ignoreColumns.add(ignore);
             return this;
         }
 
@@ -90,6 +125,10 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
 
         public boolean isWithNullBindings() {
             return withNullBindings;
+        }
+
+        public Set<String> getIgnoreColumns() {
+            return ignoreColumns;
         }
     }
 }

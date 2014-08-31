@@ -364,7 +364,7 @@ public class CacheDisabledTest {
         List<TestTable> testTables = testTableDao.query(example);
         TestTable TestTable = testTables.get(0);
         TestTable.setParentCode("-1");
-        Assert.assertEquals(1, testTableDao.update(TestTable));
+        Assert.assertEquals(1, testTableDao.update(TestTable), 0);
         TestTable newTestTable = testTableDao.get(TestTable.getTestCode());
         Assert.assertNotNull(newTestTable.getTestCode());
         // Assert.assertNotEquals(newTestTable.getUpdatedTime(),
@@ -380,7 +380,7 @@ public class CacheDisabledTest {
         TestTable TestTable = testTables.get(0);
         TestTable.setParentCode("-1");
         TestTable.setUpdatedTime(new Timestamp(1000));
-        testTableDao.updateByVersion(TestTable);
+        testTableDao.updateWithVersion(TestTable);
     }
 
     @Transactional

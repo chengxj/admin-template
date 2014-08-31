@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
@@ -73,6 +74,8 @@ public class UpdateByExampleTransactionTest {
         TestTable domain = new TestTable();
         domain.setDictName("zzz");;
         domain.setTestCode("zzz");
+        domain.setCreatedTime(testTable.getCreatedTime());
+        domain.setUpdatedTime(testTable.getUpdatedTime());
         example.clear();
         example.equalsTo("testCode", testTable.getTestCode());
         example.equalsTo("updatedTime", testTable.getUpdatedTime());
@@ -81,10 +84,12 @@ public class UpdateByExampleTransactionTest {
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(1l, result, 0);
-        testTable = testTableDao.get(testTable.getTestCode());
-        Assert.assertNotNull(testTable.getParentCode());
-        Assert.assertNotEquals(testTable.getTestCode(), domain.getTestCode());
-        Assert.assertEquals(testTable.getDictName(), domain.getDictName());
+        TestTable testTable2 = testTableDao.get(testTable.getTestCode());
+        Assert.assertNotNull(testTable2.getParentCode());
+        Assert.assertNotEquals(testTable2.getTestCode(), domain.getTestCode());
+        Assert.assertEquals(testTable2.getDictName(), domain.getDictName());
+        Assert.assertEquals(testTable2.getCreatedTime(), testTable.getCreatedTime());
+        Assert.assertEquals(testTable2.getUpdatedTime(), testTable.getUpdatedTime());
     }
 
     @Test
@@ -138,4 +143,35 @@ public class UpdateByExampleTransactionTest {
         Assert.assertNotEquals(testTable.getTestCode(), domain.getTestCode());
         Assert.assertEquals(testTable.getDictName(), domain.getDictName());
     }
+
+    @Transactional
+    @Test
+    public void testUpdateByExampleWithIgnore() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(5);
+        QueryExample example = QueryExample.newInstance();
+        example.limit(1);
+        List<TestTable> testTables = testTableDao.query(example);
+        TestTable testTable = testTables.get(0);
+
+        TestTable domain = new TestTable();
+        domain.setDictName("zzz");;
+        domain.setTestCode("zzz");
+        domain.setCreatedTime(testTable.getCreatedTime());
+        domain.setUpdatedTime(testTable.getUpdatedTime());
+        example.clear();
+        example.equalsTo("testCode", testTable.getTestCode());
+        example.equalsTo("updatedTime", testTable.getUpdatedTime());
+
+        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<TestTable>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        Transaction transaction = builder.build();
+        Long result = transaction.execute();
+        Assert.assertEquals(1l, result, 0);
+        TestTable testTable2 = testTableDao.get(testTable.getTestCode());
+        Assert.assertNotNull(testTable2.getParentCode());
+        Assert.assertNotEquals(testTable2.getTestCode(), domain.getTestCode());
+        Assert.assertEquals(testTable2.getDictName(), domain.getDictName());
+        Assert.assertEquals(testTable2.getCreatedTime(), testTable.getCreatedTime());
+        Assert.assertNotEquals(testTable2.getUpdatedTime(), testTable.getUpdatedTime());
+    }
+
 }

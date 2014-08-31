@@ -85,7 +85,7 @@ public interface CrudRepository<PK, T> {
      * @param example 查询条件
      * @return 如果更新成功，返回1;如果更新失败，返回0
      */
-    int update(@NotNull T domain, @NotNull QueryExample example);
+    Long update(@NotNull T domain, @NotNull QueryExample example);
 
     /**
      * 根据主键更新记录
@@ -93,15 +93,7 @@ public interface CrudRepository<PK, T> {
      * @param domain 实体类
      * @return 如果更新成功，返回1;如果更新失败，返回0
      */
-    int update(@NotNull T domain);
-
-    /**
-     * 根据主键和版本号更新记录
-     *
-     * @param domain 实体类
-     * @return 如果更新成功，返回1;如果更新失败，返回0
-     */
-    int updateByVersion(@NotNull T domain);
+    Long update(@NotNull T domain);
 
     /**
      * 根据主键删除记录
@@ -129,27 +121,6 @@ public interface CrudRepository<PK, T> {
     Long delete(@NotNull QueryExample example);
 
     /**
-     * 根据查询条件查询列表
-     *
-     * @param example     查询条件
-     * @param extendQuery 扩展查询接口，如果需要除基本查询外的其他查询，如join，exists，min等，可以通过这个接口中的实现
-     * @return 实体类的列表
-     */
-    List<T> query(@NotNull QueryExample example, @NotNull ExtendQuery extendQuery);
-
-    /**
-     * 根据查询条件分页查询列表
-     *
-     * @param example     查询条件
-     * @param page        页码
-     * @param pageSize    每页显示的数量
-     * @param extendQuery 扩展查询接口，如果需要除基本查询外的其他查询，如join，exists，min等，可以通过这个接口中的实现
-     * @return 实体类的分页类
-     */
-    Pagination<T> pagination(@NotNull QueryExample example, @Min(1) int page,
-                             @Min(1) int pageSize, @NotNull ExtendQuery extendQuery);
-
-    /**
      * 根据查询条件，查询出单条记录
      *
      * @param example 查询记录
@@ -157,4 +128,5 @@ public interface CrudRepository<PK, T> {
      */
     T uniqueResult(@NotNull QueryExample example);
 
+    Long updateWithVersion(T domain);
 }

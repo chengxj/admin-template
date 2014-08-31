@@ -39,16 +39,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
             .getLogger(AbstractCrudRepositoryTemplate.class);
 
     /**
-     * 更新时间
-     */
-    private static final String UPDATED_TIME = "updatedTime";
-
-    /**
-     * 创建时间
-     */
-    private static final String CREATED_TIME = "createdTime";
-
-    /**
      * MySQL的模板
      */
     private SQLTemplates dialect;
@@ -58,17 +48,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     private JdbcTemplate jdbcTemplate;
 
     private Configuration configuration;
-
-    private static final ExtendQuery UNRESOLVED = new ExtendQuery() {
-
-        @Override
-        public void addReturnPath(List<Path<?>> paths) {
-        }
-
-        @Override
-        public void addExtend(SQLQuery sqlQuery) {
-        }
-    };
 
     @SuppressWarnings("unchecked")
     public AbstractCrudRepositoryTemplate() {
@@ -137,41 +116,9 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     }
 
     @Override
-    public List<T> query(final QueryExample example, ExtendQuery extendQuery) {
-        Assert.notNull(example);
-        TransactionBuilder builder = new QueryTransaction.Builder<T>().rowMapper(getRowMapper()).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
-        return transaction.execute();
-    }
-
-    @Override
     public Pagination<T> pagination(QueryExample example, int page, int pageSize) {
         Assert.notNull(example);
         TransactionBuilder builder = new PageTransaction.Builder<T>().rowMapper(getRowMapper()).page(page).pageSize(pageSize).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
-        Transaction transaction = builder.build();
-        return transaction.execute();
-    }
-
-    @Override
-    public Pagination<T> pagination(QueryExample example, int page,
-                                    int pageSize, ExtendQuery extendQuery) {
-        Assert.notNull(example);
-        TransactionBuilder builder = new PageTransaction.Builder<T>().rowMapper(getRowMapper()).page(page).pageSize(pageSize).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
-        Transaction transaction = builder.build();
-        return transaction.execute();
-    }
-
-    @Override
-    public Long insert(List<T> domains) {
-        Assert.notEmpty(domains, "domains cannot be empty");
-        TransactionBuilder builder = new BatchInsertTransaction.Builder<T>().domains(domains).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
-        Transaction transaction = builder.build();
-        return transaction.execute();
-    }
-
-    @Override
-    public Long insert(T domain) {
-        TransactionBuilder builder = new InsertTransaction.Builder<T>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
         Transaction transaction = builder.build();
         return transaction.execute();
     }
@@ -202,6 +149,21 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     }
 
     @Override
+    public Long insert(List<T> domains) {
+        Assert.notEmpty(domains, "domains cannot be empty");
+        TransactionBuilder builder = new BatchInsertTransaction.Builder<T>().domains(domains).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
+        Transaction transaction = builder.build();
+        return transaction.execute();
+    }
+
+    @Override
+    public Long insert(T domain) {
+        TransactionBuilder builder = new InsertTransaction.Builder<T>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
+        Transaction transaction = builder.build();
+        return transaction.execute();
+    }
+
+    @Override
     public Long deleteByPk(PK pk) {
         Assert.notNull(pk, "primaryKey cannot be null");
         QueryExample example = createExampleByPk(pk);
@@ -211,9 +173,8 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public Long deleteByPkAndVersion(PK pk, long updatedTime) {
         Assert.notNull(pk, "primaryKey cannot be null");
-        // Assert.hasText(updatedTime);
         QueryExample example = createExampleByPk(pk);
-        example.equalsTo(UPDATED_TIME, new Timestamp(updatedTime));
+        example.equalsTo(Constants.UPDATED_TIME, new Timestamp(updatedTime));
         long result = delete(example);
         if (result < 1) {
             throw ExceptionFactory.expired();
@@ -230,49 +191,41 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     }
 
     @Override
-    public int update(final T domain, QueryExample example) {
+    public Long update(final T domain, QueryExample example) {
         Assert.notNull(domain, "domain cannot be null");
-        Assert.notNull(example, "example cannot be null");
-        Set<String> pks = createPrimaryKeySet();
-        pks.add(CREATED_TIME);
-        pks.add(UPDATED_TIME);
-
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<T>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        if (example == null) {
+            QueryExample.newInstance();
+        }
+        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<T>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
-        Long result = transaction.execute();
-        return result.intValue();
+        return transaction.execute();
     }
 
     @Override
-    public int update(final T domain) {
+    public Long update(final T domain) {
         Assert.notNull(domain, "domain cannot be null");
+        QueryExample example = createUpdateExample(domain);
+        return update(domain, example);
+    }
+
+    @Override
+    public Long updateWithVersion(final T domain) {
+        Assert.notNull(domain, "domain cannot be null");
+        QueryExample example = createUpdateExampleWithVersion(domain);
+        return update(domain, example);
+    }
+
+    private QueryExample createUpdateExampleWithVersion(T domain) {
         Set<String> pks = new HashSet<String>();
         for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
             pks.add(path.getMetadata().getName());
         }
-        return updateByPk(domain, pks);
+        pks.add(Constants.UPDATED_TIME);
+
+        return createUpdateExample(domain, pks);
     }
 
-    @Override
-    public int updateByVersion(final T domain) {
-        Assert.notNull(domain, "domain cannot be null");
-        Set<String> pks = createPrimaryKeySet();
-        pks.add(UPDATED_TIME);
-        int result = updateByPk(domain, pks);
-        if (result < 1) {
-            throw ExceptionFactory.expired();
-        }
-        return result;
-    }
-
-    /**
-     * 根据字段，更新记录
-     *
-     * @param domain 实体类
-     * @param pks    用作查询条件的字段
-     * @return 如果更新成功，返回1，更新失败，返回0
-     */
-    private int updateByPk(final T domain, Set<String> pks) {
+    private QueryExample createUpdateExample(T domain, Set<String> pks) {
         QueryExample example = QueryExample.newInstance();
         SqlParameterSource source = new BeanPropertySqlParameterSource(domain);
         List<Path<?>> columns = getPathBase().getColumns();
@@ -285,7 +238,16 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
                 example.equalsTo(humpName, source.getValue(humpName));
             }
         }
-        return update(domain, example);
+        return example;
+    }
+
+    private QueryExample createUpdateExample(T domain) {
+        Set<String> pks = new HashSet<String>();
+        for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
+            pks.add(path.getMetadata().getName());
+        }
+
+        return createUpdateExample(domain, pks);
     }
 
     /**
@@ -311,19 +273,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     }
 
     /**
-     * 返回主键的集合
-     *
-     * @return 主键的集合
-     */
-    private Set<String> createPrimaryKeySet() {
-        Set<String> pks = new HashSet<String>();
-        for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
-            pks.add(path.getMetadata().getName());
-        }
-        return pks;
-    }
-
-    /**
      * 根据主键创建查询条件
      *
      * @param pk 主键
@@ -346,7 +295,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         }
         return example;
     }
-
 
 
     /**

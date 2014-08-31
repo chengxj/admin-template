@@ -63,7 +63,7 @@ public class CacheListener implements SQLListener {
         SQLSerializer serializer = new SQLSerializer(configuration, true);
         serializer.serializeUpdate(md, entity, updates);
         SQLBindings sqlBindings = createBindings(md, serializer);
-        LOGGER.error("update {} \nSQL[{}] \nparams:{}", entity
+        LOGGER.debug("update {} \nSQL[{}] \nparams:{}", entity
                 .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
     }
 
