@@ -11,18 +11,20 @@ import java.util.List;
 /**
  * Created by Administrator on 2014/8/29.
  */
-public abstract class FieldHandler extends QueryExampleHandlerTemplate {
-    public FieldHandler(RelationalPathBase<?> pathBase, QueryExample example) {
+public class FieldHandler extends QueryExampleHandlerTemplate {
+
+    final List<Path<?>> returnPaths;
+
+    public FieldHandler(RelationalPathBase<?> pathBase, QueryExample example, List<Path<?>> returnPaths) {
         super(pathBase, example);
+        this.returnPaths = returnPaths;
     }
 
     @Override
     public final void handle() {
         List<Path<?>> paths = getReturnPath();
-        doHandle(paths);
+        returnPaths.addAll(paths);
     }
-
-    public abstract void doHandle(List<Path<?>> paths);
 
     /**
      * 根据查询条件设置返回值

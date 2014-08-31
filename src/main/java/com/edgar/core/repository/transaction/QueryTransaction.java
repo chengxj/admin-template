@@ -24,6 +24,8 @@ public class QueryTransaction<T> extends TransactionTemplate {
 
     private RowMapper<T> rowMapper;
 
+    private final List<Path<?>> returnPaths = new ArrayList<Path<?>>();
+
     protected QueryTransaction(Builder<T> builder) {
         super(builder);
         this.rowMapper = builder.getRowMapper();
@@ -33,7 +35,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
         Assert.notNull(example);
         final SQLQuery sqlQuery = new SQLQuery(configuration);
         sqlQuery.from(pathBase);
-        final List<Path<?>> returnPaths = handle(sqlQuery);
+        handle(sqlQuery);
         Path<?>[] pathArray = new Path<?>[returnPaths.size()];
         SQLBindings sqlBindings = sqlQuery.getSQL(returnPaths.toArray(pathArray));
         String sql = sqlBindings.getSQL();
@@ -44,7 +46,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
         return jdbcTemplate.query(sql, args.toArray(), rowMapper);
     }
 
-    private List<Path<?>> handle(final SQLQuery sqlQuery) {
+    private void handle(final SQLQuery sqlQuery) {
         List<QueryExampleHandler> handlers = new ArrayList<QueryExampleHandler>();
         WhereHandler whereHandler = new SQLQueryWhereHandler(pathBase, example, sqlQuery);
         handlers.add(whereHandler);
@@ -52,18 +54,11 @@ public class QueryTransaction<T> extends TransactionTemplate {
         handlers.add(pageHandler);
         OrderHandler orderHandler = new OrderHandler(pathBase, example, sqlQuery);
         handlers.add(orderHandler);
-        final List<Path<?>> returnPaths = new ArrayList<Path<?>>();
-        FieldHandler fieldHandler = new FieldHandler(pathBase, example) {
-            @Override
-            public void doHandle(List<Path<?>> paths) {
-                returnPaths.addAll(paths);
-            }
-        };
+        FieldHandler fieldHandler = new FieldHandler(pathBase, example, returnPaths);
         handlers.add(fieldHandler);
         for (QueryExampleHandler handler : handlers) {
             handler.handle();
         }
-        return returnPaths;
     }
 
     public static class Builder<T> extends TransactionBuilderTemplate {
