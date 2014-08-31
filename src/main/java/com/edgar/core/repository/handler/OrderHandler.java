@@ -1,14 +1,14 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.handler;
 
+import com.edgar.core.repository.OrderBy;
+import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpressionBase;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Administrator on 2014/8/29.

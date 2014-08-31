@@ -51,7 +51,7 @@ public interface CrudRepository<PK, T> {
      * @param domain 实体类
      * @return 如果插入成功，返回1;如果插入失败，返回0
      */
-    int insert(@NotNull T domain);
+    Long insert(@NotNull T domain);
 
     /**
      * 向数据库中批量新增记录
@@ -59,7 +59,7 @@ public interface CrudRepository<PK, T> {
      * @param domains 实体类的集合
      * @return 如果插入成功，返回1;如果插入失败，返回0
      */
-    int[] insert(@NotEmpty List<T> domains);
+    Long insert(@NotEmpty List<T> domains);
 
     /**
      * 根据主键查询记录
@@ -77,14 +77,6 @@ public interface CrudRepository<PK, T> {
      * @return 实体类
      */
     T get(@NotNull PK pk);
-
-    // /**
-    // * 根据主键锁住行
-    // *
-    // * @param pk
-    // * 主键
-    // */
-    // void lock(@NotNull PK pk);
 
     /**
      * 根据条件更新记录，凡是不等于null的属性都会被更新
@@ -117,7 +109,7 @@ public interface CrudRepository<PK, T> {
      * @param pk 主键
      * @return 如果删除成功，返回1;如果删除失败，返回0
      */
-    long deleteByPk(@NotNull PK pk);
+    Long deleteByPk(@NotNull PK pk);
 
     /**
      * 根据主键和时间戳删除记录
@@ -126,7 +118,7 @@ public interface CrudRepository<PK, T> {
      * @param updatedTime 时间戳
      * @return 如果删除成功，返回1;如果删除失败，返回0
      */
-    long deleteByPkAndVersion(@NotNull PK pk, @Min(0) long updatedTime);
+    Long deleteByPkAndVersion(@NotNull PK pk, @Min(0) long updatedTime);
 
     /**
      * 如果条件删除记录
@@ -134,7 +126,7 @@ public interface CrudRepository<PK, T> {
      * @param example 查询条件
      * @return 返回成功删除的记录数
      */
-    long delete(@NotNull QueryExample example);
+    Long delete(@NotNull QueryExample example);
 
     /**
      * 根据查询条件查询列表

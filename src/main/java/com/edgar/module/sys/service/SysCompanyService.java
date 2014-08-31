@@ -11,9 +11,8 @@ public interface SysCompanyService {
 	 * 
 	 * @param command
 	 *            公司
-	 * @return 新增成功，返回1
 	 */
-	int save(SysCompanyCommand command);
+    void save(SysCompanyCommand command);
 
 	/**
 	 * 分页查询公司
@@ -34,9 +33,8 @@ public interface SysCompanyService {
 	 * 
 	 * @param companyId
 	 *            公司ID
-	 * @return 如果删除成功，返回1
 	 */
-	int delete(int companyId);
+    void delete(int companyId);
 
 	/**
 	 * 检查公司编码是否存在

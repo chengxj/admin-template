@@ -97,8 +97,7 @@ public class SysJobServiceTest {
                         }
                 }).when(jobScheduler).deleteJob(any(JobAdpater.class));
 
-                long result = sysJobService.deleteWithLock(1, 1L);
-                Assert.assertEquals(result, 1);
+                sysJobService.deleteWithLock(1, 1L);
 
                 InOrder inOrder = inOrder(sysJobDao);
                 inOrder.verify(sysJobDao, times(1)).get(anyInt());

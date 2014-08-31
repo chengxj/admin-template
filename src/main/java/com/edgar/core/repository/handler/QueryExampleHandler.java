@@ -1,4 +1,4 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.handler;
 
 /**
  * Created by Administrator on 2014/8/29.

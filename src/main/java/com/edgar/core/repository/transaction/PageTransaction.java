@@ -1,5 +1,8 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.Pagination;
+import com.edgar.core.repository.QueryExample;
+import com.rits.cloning.Cloner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,7 +23,7 @@ public class PageTransaction<T> extends TransactionTemplate {
 
     private int pageSize;
 
-    protected PageTransaction(PageTransactionBuilder<T> builder) {
+    protected PageTransaction(Builder builder) {
         super(builder);
         this.rowMapper = builder.getRowMapper();
         this.page = builder.getPage();
@@ -41,10 +44,8 @@ public class PageTransaction<T> extends TransactionTemplate {
         example.limit(pageSize);
         int offset = (page - 1) * pageSize;
         example.offset(offset);
-        TransactionBuilder countBuilder = new CountTransaction.CountTransactionBuilder().dataSource(dataSource).configuration(configuration).pathBase(pathBase).example(example);
-        Transaction countTransaction = countBuilder.build();
 
-        Long totalRecords = countTransaction.execute();
+        Long totalRecords = count();
         if (totalRecords <= offset) {
             page = (int) (totalRecords / pageSize);
             if (page == 0) {
@@ -52,34 +53,60 @@ public class PageTransaction<T> extends TransactionTemplate {
             }
             example.offset((page - 1) * pageSize);
         }
-        TransactionBuilder queryBuilder = new QueryTransaction.QueryTransactionBuilder<T>().rowMapper(rowMapper).dataSource(dataSource).configuration(configuration).pathBase(pathBase).example(example);
+        TransactionBuilder queryBuilder = new QueryTransaction.Builder<T>().rowMapper(rowMapper).dataSource(dataSource).configuration(configuration).pathBase(pathBase).example(example);
         Transaction query = queryBuilder.build();
         List<T> records = query.execute();
         return Pagination.newInstance(page, pageSize, totalRecords, records);
     }
 
-    public static class PageTransactionBuilder<T> extends TransactionBuilder {
+    private Long count() {
+        final QueryExample COUNT_EXAMPLE = cloneExample(example);
+        if (example.getMaxNumOfRecords() > 0) {
+            COUNT_EXAMPLE.limit(example.getMaxNumOfRecords());
+        } else {
+            COUNT_EXAMPLE.limit(0);
+        }
+        COUNT_EXAMPLE.offset(0);
+        TransactionBuilder countBuilder = new CountTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(pathBase).example(example);
+        Transaction countTransaction = countBuilder.build();
+
+        return countTransaction.execute();
+    }
+
+    /**
+     * 克隆查询条件
+     *
+     * @param example 查询条件
+     * @return 克隆后的查询条件
+     */
+    private QueryExample cloneExample(final QueryExample example) {
+        Cloner cloner = new Cloner();
+        return cloner.deepClone(example);
+    }
+
+    public static class Builder<T> extends TransactionBuilder {
         private RowMapper<T> rowMapper;
 
         private int page;
 
         private int pageSize;
+
         @Override
         public Transaction build() {
             return new PageTransaction<T>(this);
         }
 
-        public PageTransactionBuilder rowMapper(RowMapper<T> rowMapper) {
+        public Builder rowMapper(RowMapper<T> rowMapper) {
             this.rowMapper = rowMapper;
             return this;
         }
 
-        public PageTransactionBuilder page(int page) {
+        public Builder page(int page) {
             this.page = page;
             return this;
         }
 
-        public PageTransactionBuilder pageSize(int pageSize) {
+        public Builder pageSize(int pageSize) {
             this.pageSize = pageSize;
             return this;
         }

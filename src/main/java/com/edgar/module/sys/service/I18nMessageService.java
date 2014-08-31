@@ -20,17 +20,15 @@ public interface I18nMessageService {
      * 新增i18n
      *
      * @param i18n i18n
-     * @return 如果保存成功，返回<code>1</code>
      */
-    int save(@NotNull I18nMessage i18n);
+    void save(@NotNull I18nMessage i18n);
 
     /**
      * 修改i18n
      *
      * @param i18n i18n
-     * @return 如果保存成功，返回<code>1</code>
      */
-    int update(@NotNull I18nMessage i18n);
+    void update(@NotNull I18nMessage i18n);
 
     /**
      * 根据i18nID查询i18n
@@ -56,9 +54,8 @@ public interface I18nMessageService {
      *
      * @param i18nId      i18nID
      * @param updatedTime 时间戳
-     * @return 如果删除成功，返回<code>1</code>
      */
-    long deleteWithLock(@Min(1) int i18nId, @NotNull long updatedTime);
+    void deleteWithLock(@Min(1) int i18nId, @NotNull long updatedTime);
 
     /**
      * 校验i18n类是否已经存储

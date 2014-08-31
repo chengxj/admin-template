@@ -32,17 +32,15 @@ public interface SysRouteService {
      * 新增路由
      *
      * @param sysRoute 路由
-     * @return 如果保存成功，返回<code>1</code>
      */
-    int save(@NotNull SysRoute sysRoute);
+    void save(@NotNull SysRoute sysRoute);
 
     /**
      * 修改路由
      *
      * @param sysRoute 路由
-     * @return 如果保存成功，返回<code>1</code>
      */
-    int update(@NotNull SysRoute sysRoute);
+    void update(@NotNull SysRoute sysRoute);
 
     /**
      * 根据路由ID查询路由
@@ -69,9 +67,8 @@ public interface SysRouteService {
      *
      * @param routeId     路由ID
      * @param updatedTime 时间戳
-     * @return 如果删除成功，返回<code>1</code>
      */
-    long deleteWithLock(int routeId, @Min(0) long updatedTime);
+    void deleteWithLock(int routeId, @Min(0) long updatedTime);
 
     /**
      * 查询所有路由，包括系统路由

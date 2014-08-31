@@ -52,10 +52,9 @@ public class SysDictServiceTest {
     public void testSaveCodeTooLang() {
         final SysDict sysDict = new SysDict();
         sysDict.setDictCode("012345678901234567890123456789123");
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1);
+        when(sysDictDao.insert(any(SysDict.class)));
         try {
-            int result = sysDictService.save(sysDict);
-            Assert.assertEquals(1, result);
+            sysDictService.save(sysDict);
         } finally {
             verify(sysDictDao, never()).insert(any(SysDict.class));
         }
@@ -65,10 +64,9 @@ public class SysDictServiceTest {
     public void testSaveNullName() {
         final SysDict sysDict = new SysDict();
         sysDict.setDictCode("1");
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1);
+        when(sysDictDao.insert(any(SysDict.class)));
         try {
-            int result = sysDictService.save(sysDict);
-            Assert.assertEquals(1, result);
+            sysDictService.save(sysDict);
         } finally {
             verify(sysDictDao, never()).insert(any(SysDict.class));
         }
@@ -79,10 +77,9 @@ public class SysDictServiceTest {
         final SysDict sysDict = new SysDict();
         sysDict.setDictCode("1");
         sysDict.setDictName("012345678901234567890123456789123");
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1);
+        when(sysDictDao.insert(any(SysDict.class)));
         try {
-            int result = sysDictService.save(sysDict);
-            Assert.assertEquals(1, result);
+            sysDictService.save(sysDict);
         } finally {
             verify(sysDictDao, never()).insert(any(SysDict.class));
         }
@@ -93,10 +90,9 @@ public class SysDictServiceTest {
         final SysDict sysDict = new SysDict();
         sysDict.setDictCode("1!@#$");
         sysDict.setDictName("012345678901234");
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1);
+        when(sysDictDao.insert(any(SysDict.class)));
         try {
-            int result = sysDictService.save(sysDict);
-            Assert.assertEquals(1, result);
+            sysDictService.save(sysDict);
         } finally {
             verify(sysDictDao, never()).insert(any(SysDict.class));
         }
@@ -107,16 +103,15 @@ public class SysDictServiceTest {
         final SysDict sysDict = new SysDict();
         sysDict.setDictCode("1");
         sysDict.setDictName("1");
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1);
-        int result = sysDictService.save(sysDict);
-        Assert.assertEquals(1, result);
+        when(sysDictDao.insert(any(SysDict.class)));
+        sysDictService.save(sysDict);
         verify(sysDictDao).insert(any(SysDict.class));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSaveNull() {
         final SysDict sysDict = null;
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(0);
+        when(sysDictDao.insert(any(SysDict.class)));
         sysDictService.save(sysDict);
         verify(sysDictDao, never()).get(anyString());
         verify(sysDictDao, never()).insert(sysDict);
@@ -125,7 +120,7 @@ public class SysDictServiceTest {
     @Test(expected = IllegalArgumentException.class)
     public void testSaveDictCodeNull() {
         final SysDict sysDict = new SysDict();
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(0);
+        when(sysDictDao.insert(any(SysDict.class)));
         sysDictService.save(sysDict);
         verify(sysDictDao, never()).get(anyString());
         verify(sysDictDao, never()).insert(sysDict);
@@ -142,8 +137,7 @@ public class SysDictServiceTest {
                 new DuplicateKeyException("duplicate"));
         sysDictService.save(sysDict);
         verify(sysDictDao).insert(sysDict);
-        int result = sysDictService.save(sysDict);
-        Assert.assertEquals(0, result);
+        sysDictService.save(sysDict);
     }
 
     @Test
@@ -153,9 +147,8 @@ public class SysDictServiceTest {
         sysDict.setParentCode("1");
         sysDict.setDictName("1");
         when(sysDictDao.get("1")).thenReturn(new SysDict());
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1);
-        int result = sysDictService.save(sysDict);
-        Assert.assertEquals(1, result);
+        when(sysDictDao.insert(any(SysDict.class)));
+        sysDictService.save(sysDict);
         verify(sysDictDao, times(1)).get(anyString());
         verify(sysDictDao, times(1)).insert(sysDict);
     }
@@ -166,7 +159,7 @@ public class SysDictServiceTest {
         sysDict.setDictCode("12");
         sysDict.setParentCode("1");
         when(sysDictDao.get("1")).thenReturn(null);
-        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1);
+        when(sysDictDao.insert(any(SysDict.class)));
         sysDictService.save(sysDict);
         verify(sysDictDao, times(1)).get(anyString());
         verify(sysDictDao, never()).insert(sysDict);
@@ -178,9 +171,8 @@ public class SysDictServiceTest {
         sysDict.setDictCode("1");
         sysDict.setDictName("d");
         sysDict.setParentCode("1");
-        when(sysDictDao.update(any(SysDict.class))).thenReturn(1);
-        int result = sysDictService.update(sysDict);
-        Assert.assertEquals(1, result);
+        when(sysDictDao.update(any(SysDict.class)));
+        sysDictService.update(sysDict);
         verify(sysDictDao, times(1)).update(sysDict);
     }
 
@@ -203,9 +195,8 @@ public class SysDictServiceTest {
         sysDict.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
         when(sysDictDao.deleteByPkAndVersion(anyString(), anyLong())).thenReturn(1l);
         when(sysDictDao.delete(any(QueryExample.class))).thenReturn(1l);
-        long result = sysDictService.deleteWithLock(sysDict.getDictCode(), sysDict
+        sysDictService.deleteWithLock(sysDict.getDictCode(), sysDict
                 .getUpdatedTime().getTime());
-        Assert.assertEquals(1, result);
         verify(sysDictDao, times(1)).deleteByPkAndVersion(anyString(), anyLong());
         verify(sysDictDao, times(1)).delete(any(QueryExample.class));
     }
@@ -219,9 +210,8 @@ public class SysDictServiceTest {
         final SystemException e = new SystemException(BusinessCode.EXPIRED, "数据过期");
         when(sysDictDao.deleteByPkAndVersion(anyString(), anyLong())).thenThrow(e);
         when(sysDictDao.delete(any(QueryExample.class))).thenReturn(1l);
-        long result = sysDictService.deleteWithLock(sysDict.getDictCode(), sysDict
+        sysDictService.deleteWithLock(sysDict.getDictCode(), sysDict
                 .getUpdatedTime().getTime());
-        Assert.assertEquals(1, result);
         verify(sysDictDao, times(1)).deleteByPkAndVersion(anyString(), anyLong());
         verify(sysDictDao, times(1)).delete(any(QueryExample.class));
     }

@@ -25,18 +25,16 @@ public interface SysRoleService {
          * 
          * @param sysRole
          *                角色
-         * @return 如果保存成功，返回<code>1</code>
          */
-        int save(@NotNull SysRole sysRole);
+        void save(@NotNull SysRole sysRole);
 
         /**
          * 修改角色
          * 
          * @param sysRole
          *                角色
-         * @return 如果保存成功，返回<code>1</code>
          */
-        int update(@NotNull SysRole sysRole);
+        void update(@NotNull SysRole sysRole);
 
         /**
          * 根据角色ID查询角色
@@ -78,8 +76,7 @@ public interface SysRoleService {
          *                角色ID
          * @param updatedTime
          *                时间戳
-         * @return 如果删除成功，返回<code>1</code>
          */
-        long deleteWithLock(@Min(1) int roleId, @NotNull long updatedTime);
+        void deleteWithLock(@Min(1) int roleId, @NotNull long updatedTime);
 
 }

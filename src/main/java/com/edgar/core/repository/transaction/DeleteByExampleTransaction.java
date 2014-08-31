@@ -1,5 +1,6 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.handler.WhereHandler;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 public class DeleteByExampleTransaction extends TransactionTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteByExampleTransaction.class);
 
-    protected DeleteByExampleTransaction(DeleteByExampleTransactionBuilder builder) {
+    protected DeleteByExampleTransaction(Builder builder) {
         super(builder);
     }
 
@@ -36,15 +37,17 @@ public class DeleteByExampleTransaction extends TransactionTemplate {
                         deleteClause.where(expression);
                     }
                 };
-                SQLBindings sqlBindings = deleteClause.getSQL().get(0);
-                LOGGER.debug("update{} \nSQL{} \nparams:{}", getPathBase()
-                        .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+                handler.handle();
+                for (SQLBindings sqlBindings : deleteClause.getSQL()) {
+                    LOGGER.debug("delete {} \nSQL[{}] \nparams:{}", getPathBase()
+                            .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+                }
                 return deleteClause.execute();
             }
         });
     }
 
-    public static class DeleteByExampleTransactionBuilder extends TransactionBuilder {
+    public static class Builder extends TransactionBuilder {
         @Override
         public Transaction build() {
             return new DeleteByExampleTransaction(this);

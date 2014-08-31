@@ -36,20 +36,16 @@ public interface SysMenuService {
 	 * 
 	 * @param sysMenu
 	 *            菜单
-	 * @return 如果保存成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出
-	 *         {@link SystemException}
 	 */
-	int save(@NotNull SysMenuVo sysMenu);
+    void save(@NotNull SysMenuVo sysMenu);
 
 	/**
 	 * 修改菜单
 	 * 
 	 * @param sysMenu
 	 *            菜单
-	 * @return 如果保存成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出
-	 *         {@link SystemException}
 	 */
-	int update(@NotNull SysMenuVo sysMenu);
+    void update(@NotNull SysMenuVo sysMenu);
 
 	/**
 	 * 事件菜单ID和时间戳删除菜单
@@ -58,10 +54,8 @@ public interface SysMenuService {
 	 *            菜单ID
 	 * @param updatedTime
 	 *            时间戳
-	 * @return 如果删除成功，返回<code>1</code>，保存失败，返回<code>0</code>或者抛出
-	 *         {@link SystemException}
 	 */
-	long deleteWithLock(@Min(1) int menuId, @NotNull long updatedTime);
+    void deleteWithLock(@Min(1) int menuId, @NotNull long updatedTime);
 
 	/**
 	 * 查询菜单的列表

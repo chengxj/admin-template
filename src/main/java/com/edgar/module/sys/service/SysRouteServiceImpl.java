@@ -55,20 +55,20 @@ public class SysRouteServiceImpl implements SysRouteService {
 
 	@Override
 	@Transactional
-	public int save(SysRoute sysRoute) {
+	public void save(SysRoute sysRoute) {
 		Assert.notNull(sysRoute);
 		validator.validator(sysRoute);
 		sysRoute.setIsRoot(false);
 		sysRoute.setRouteId(IDUtils.getNextId());
-		return sysRouteDao.insert(sysRoute);
+		sysRouteDao.insert(sysRoute);
 	}
 
 	@Override
 	@Transactional
-	public int update(SysRoute sysRoute) {
+	public void update(SysRoute sysRoute) {
 		updateValidator.validator(sysRoute);
 		Assert.notNull(sysRoute);
-		return sysRouteDao.update(sysRoute);
+		sysRouteDao.update(sysRoute);
 	}
 
 	@Override
@@ -85,13 +85,12 @@ public class SysRouteServiceImpl implements SysRouteService {
 
 	@Override
 	@Transactional
-	public long deleteWithLock(int routeId, long updatedTime) {
-        long result = sysRouteDao.deleteByPkAndVersion(routeId, updatedTime);
+	public void deleteWithLock(int routeId, long updatedTime) {
+        sysRouteDao.deleteByPkAndVersion(routeId, updatedTime);
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("routeId", routeId);
 		sysRoleRouteDao.delete(example);
 		sysMenuRouteDao.delete(example);
-		return result;
 	}
 
     public void setSysRouteDao(CrudRepository<Integer, SysRoute> sysRouteDao) {

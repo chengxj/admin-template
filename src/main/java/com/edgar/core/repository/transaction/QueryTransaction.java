@@ -1,5 +1,9 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.handler.FieldHandler;
+import com.edgar.core.repository.handler.OrderHandler;
+import com.edgar.core.repository.handler.PageHandler;
+import com.edgar.core.repository.handler.WhereHandler;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.Path;
@@ -22,7 +26,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
 
     private RowMapper<T> rowMapper;
 
-    protected QueryTransaction(QueryTransactionBuilder<T> builder) {
+    protected QueryTransaction(Builder<T> builder) {
         super(builder);
         this.rowMapper = builder.getRowMapper();
     }
@@ -63,7 +67,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
         return jdbcTemplate.query(sql, args.toArray(), rowMapper);
     }
 
-    public static class QueryTransactionBuilder<T> extends TransactionBuilder {
+    public static class Builder<T> extends TransactionBuilder {
         private RowMapper<T> rowMapper;
 
         @Override
@@ -75,7 +79,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
             return rowMapper;
         }
 
-        public QueryTransactionBuilder<T> rowMapper(RowMapper<T> rowMapper) {
+        public Builder<T> rowMapper(RowMapper<T> rowMapper) {
             this.rowMapper = rowMapper;
             return this;
         }

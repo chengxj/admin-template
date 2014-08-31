@@ -1,9 +1,9 @@
 package com.edgar.core.repository;
 
 import com.edgar.core.repository.transaction.BatchInsertTransaction;
+import com.edgar.core.repository.transaction.DeleteByExampleTransaction;
 import com.edgar.core.repository.transaction.Transaction;
 import com.edgar.core.repository.transaction.TransactionBuilder;
-import com.edgar.core.repository.transaction.UpdateByExampleTransaction;
 import com.edgar.module.sys.repository.domain.TestTable;
 import com.edgar.module.sys.repository.querydsl.QTestTable;
 import com.mysema.query.sql.Configuration;
@@ -26,13 +26,15 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Administrator on 2014/8/31.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class})
-public class UpdateByExampleTransactionTest {
-
+public class DeleteByExampleTransactionTest {
     @Autowired
     private TestTableDao testTableDao;
 
@@ -67,78 +69,33 @@ public class UpdateByExampleTransactionTest {
 
     @Transactional
     @Test
-    public void testUpdateByExample() {
+    public void testDeleteByExample() {
         QueryExample example = QueryExample.newInstance();
         example.limit(1);
         List<TestTable> testTables = testTableDao.query(example);
         TestTable testTable = testTables.get(0);
 
-        TestTable domain = new TestTable();
-        domain.setDictName("zzz");;
-        domain.setTestCode("zzz");
         example.clear();
         example.equalsTo("testCode", testTable.getTestCode());
         example.equalsTo("updatedTime", testTable.getUpdatedTime());
 
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<TestTable>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new DeleteByExampleTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(1l, result, 0);
         testTable = testTableDao.get(testTable.getTestCode());
-        Assert.assertNotNull(testTable.getParentCode());
-        Assert.assertNotEquals(testTable.getTestCode(), domain.getTestCode());
-        Assert.assertEquals(testTable.getDictName(), domain.getDictName());
-    }
-
-    @Test
-    @Transactional
-    public void testUpdateByExampleWithNullBindings() {
-        QueryExample example = QueryExample.newInstance();
-        example.limit(1);
-        List<TestTable> testTables = testTableDao.query(example);
-        TestTable testTable = testTables.get(0);
-
-        TestTable domain = new TestTable();
-        domain.setDictName("zzz");;
-        domain.setTestCode("zzz");
-        domain.setParentCode("-1");
-        example.clear();
-        example.equalsTo("testCode", testTable.getTestCode());
-        example.equalsTo("updatedTime", testTable.getUpdatedTime());
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<TestTable>().domain(domain).withNullBindings(true).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
-        Long result = transaction.execute();
-        Assert.assertEquals(1l, result, 0);
-        testTable = testTableDao.get(testTable.getTestCode());
-        Assert.assertNotNull(testTable.getParentCode());
-        Assert.assertNull(testTable.getSorted());
-        Assert.assertNotEquals(testTable.getTestCode(), domain.getTestCode());
-        Assert.assertEquals(testTable.getDictName(), domain.getDictName());
+        Assert.assertNull(testTable);
     }
 
     @Transactional
     @Test
-    public void testUpdateByExampleNotEquals() {
+    public void testDeleteByExampleNotEquals() {
 
         QueryExample example = QueryExample.newInstance();
-        example.limit(1);
-        List<TestTable> testTables = testTableDao.query(example);
-        TestTable testTable = testTables.get(0);
-
-        TestTable domain = new TestTable();
-        domain.setDictName("zzz");;
-        domain.setTestCode("zzz");
-        domain.setParentCode("-1");
-        example.clear();
         example.notEqualsTo("testCode", "0001");
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<TestTable>().domain(domain).withNullBindings(true).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new DeleteByExampleTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(9l, result, 0);
-        testTable = testTableDao.get(testTable.getTestCode());
-        Assert.assertNotNull(testTable.getParentCode());
-        Assert.assertNull(testTable.getSorted());
-        Assert.assertNotEquals(testTable.getTestCode(), domain.getTestCode());
-        Assert.assertEquals(testTable.getDictName(), domain.getDictName());
     }
 }

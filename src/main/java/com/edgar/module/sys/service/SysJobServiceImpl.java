@@ -38,26 +38,25 @@ public class SysJobServiceImpl implements SysJobService {
 
     @Override
     @Transactional
-    public int save(SysJob sysJob) {
+    public void save(SysJob sysJob) {
         Assert.notNull(sysJob);
         sysJob.setJobId(IDUtils.getNextId());
         validator.validator(sysJob);
-        int result = sysJobDao.insert(sysJob);
+        sysJobDao.insert(sysJob);
         if (BooleanUtils.isTrue(sysJob.getEnabled())) {
             JobAdpater job = new JobAdpater();
             job.setClazzName(sysJob.getClazzName());
             job.setCron(sysJob.getCron());
             jobScheduler.addAndStartJob(job);
         }
-        return result;
     }
 
     @Override
     @Transactional
-    public int update(SysJob sysJob) {
+    public void update(SysJob sysJob) {
         Assert.notNull(sysJob);
         updateValidator.validator(sysJob);
-        int result = sysJobDao.update(sysJob);
+        sysJobDao.update(sysJob);
         if (BooleanUtils.isTrue(sysJob.getEnabled())) {
             JobAdpater job = new JobAdpater();
             job.setClazzName(sysJob.getClazzName());
@@ -69,7 +68,6 @@ public class SysJobServiceImpl implements SysJobService {
             job.setCron(sysJob.getCron());
             jobScheduler.deleteJob(job);
         }
-        return result;
     }
 
     @Override
@@ -89,14 +87,13 @@ public class SysJobServiceImpl implements SysJobService {
 
     @Override
     @Transactional
-    public long deleteWithLock(int jobId, long updatedTime) {
+    public void deleteWithLock(int jobId, long updatedTime) {
         SysJob sysJob = get(jobId);
-        long result = sysJobDao.deleteByPkAndVersion(jobId, updatedTime);
+        sysJobDao.deleteByPkAndVersion(jobId, updatedTime);
         JobAdpater job = new JobAdpater();
         job.setClazzName(sysJob.getClazzName());
         job.setCron(sysJob.getCron());
         jobScheduler.deleteJob(job);
-        return result;
     }
 
     @Override

@@ -56,4 +56,18 @@ public final class ResponseMessage {
 		// map.put("code", 500);
 		return new ModelAndView(jsonView, map);
 	}
+
+    /**
+     * 根据参数返回视图
+     *
+     * @return 视图
+     */
+    public static ModelAndView success() {
+        MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
+        jsonView.setExtractValueFromSingleKeyModel(true);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("message", "success");
+        // map.put("code", 500);
+        return new ModelAndView(jsonView, map);
+    }
 }

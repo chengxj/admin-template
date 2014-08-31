@@ -31,18 +31,16 @@ public interface SysDictService {
          * 
          * @param sysDict
          *                字典
-         * @return 如果保存成功，返回<code>1</code>
          */
-        int save(SysDict sysDict);
+        void save(SysDict sysDict);
 
         /**
          * 更新字典
          * 
          * @param sysDict
          *                字典
-         * @return 如果保存成功，返回<code>1</code>
          */
-        int update(SysDict sysDict);
+        void update(SysDict sysDict);
 
         /**
          * 根据字典编码和时间戳删除字典
@@ -51,9 +49,8 @@ public interface SysDictService {
          *                字典编码
          * @param updatedTime
          *                时间戳
-         * @return 如果删除成功，返回<code>1</code>
          */
-        long deleteWithLock(String dictCode, long updatedTime);
+        void deleteWithLock(String dictCode, long updatedTime);
 
         /**
          * 分页查询字典

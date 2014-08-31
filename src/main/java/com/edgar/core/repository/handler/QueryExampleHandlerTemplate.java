@@ -1,5 +1,6 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.handler;
 
+import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.Path;
 import org.apache.commons.lang.StringUtils;

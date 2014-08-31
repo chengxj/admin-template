@@ -1,7 +1,8 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.handler;
 
+import com.edgar.core.repository.Criteria;
+import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Ops;

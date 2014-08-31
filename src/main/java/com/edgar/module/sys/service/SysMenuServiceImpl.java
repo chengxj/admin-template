@@ -55,7 +55,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	@Transactional
-	public int save(SysMenuVo sysMenu) {
+	public void save(SysMenuVo sysMenu) {
 		Assert.notNull(sysMenu);
 		sysMenu.setIsRoot(false);
 		if (sysMenu.getParentId() == null || sysMenu.getParentId() == 0) {
@@ -66,12 +66,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 			sysMenu.setMenuType("button");
 		}
 		sysMenu.setMenuId(IDUtils.getNextId());
-		int result = sysMenuDao.insert(sysMenu);
+		sysMenuDao.insert(sysMenu);
 
 		insertMenuRoute(sysMenu);
 		insertMenuRes(sysMenu);
 		checkMenu(sysMenu);
-		return result;
 	}
 
 	private void checkMenu(SysMenuVo sysMenu) {
@@ -113,9 +112,9 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	@Transactional
-	public int update(SysMenuVo sysMenu) {
+	public void update(SysMenuVo sysMenu) {
 		updateValidator.validator(sysMenu);
-		int result = sysMenuDao.update(sysMenu);
+		sysMenuDao.update(sysMenu);
 
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("menuId", sysMenu.getMenuId());
@@ -123,7 +122,6 @@ public class SysMenuServiceImpl implements SysMenuService {
 		sysMenuResDao.delete(example);
 		insertMenuRoute(sysMenu);
 		insertMenuRes(sysMenu);
-		return result;
 	}
 
 	private void deleteMenuRelation(int menuId) {
@@ -136,16 +134,15 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	@Transactional
-	public long deleteWithLock(int menuId, long updatedTime) {
+	public void deleteWithLock(int menuId, long updatedTime) {
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("parentId", menuId);
 		List<SysMenu> children = sysMenuDao.query(example);
 		for (SysMenu sysMenu : children) {
 			deleteMenuRelation(sysMenu.getMenuId());
 		}
-		long result = sysMenuDao.deleteByPkAndVersion(menuId, updatedTime);
+		 sysMenuDao.deleteByPkAndVersion(menuId, updatedTime);
 		deleteMenuRelation(menuId);
-		return result;
 	}
 
 	@Override

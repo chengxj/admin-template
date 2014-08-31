@@ -44,18 +44,18 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         @Override
         @Transactional
-        public int save(SysRole sysRole) {
+        public void save(SysRole sysRole) {
                 validator.validator(sysRole);
                 sysRole.setIsRoot(false);
                 sysRole.setRoleId(IDUtils.getNextId());
-                return sysRoleDao.insert(sysRole);
+                sysRoleDao.insert(sysRole);
         }
 
         @Override
         @Transactional
-        public int update(SysRole sysRole) {
+        public void update(SysRole sysRole) {
                 updateValidator.validator(sysRole);
-                return sysRoleDao.update(sysRole);
+                sysRoleDao.update(sysRole);
         }
 
         @Override
@@ -77,15 +77,14 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         @Override
         @Transactional
-        public long deleteWithLock(int roleId, long updatedTime) {
-                long result = sysRoleDao.deleteByPkAndVersion(roleId, updatedTime);
+        public void deleteWithLock(int roleId, long updatedTime) {
+                sysRoleDao.deleteByPkAndVersion(roleId, updatedTime);
                 QueryExample example = QueryExample.newInstance();
                 example.equalsTo("roleId", roleId);
                 sysUserRoleDao.delete(example);
                 sysRoleRouteDao.delete(example);
                 sysRoleMenuDao.delete(example);
                 sysRoleResDao.delete(example);
-                return result;
         }
 
     public void setSysRoleRouteDao(CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao) {

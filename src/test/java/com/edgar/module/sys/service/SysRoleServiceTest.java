@@ -76,8 +76,7 @@ public class SysRoleServiceTest {
         mockStatic(QueryExample.class);
         when(QueryExample.newInstance()).thenReturn(example);
 
-        long result = sysRoleService.deleteWithLock(1, 1L);
-        Assert.assertEquals(result, 1);
+        sysRoleService.deleteWithLock(1, 1L);
 
         verify(sysRoleDao, times(1)).deleteByPkAndVersion(anyInt(), anyLong());
         verify(sysUserRoleDao, only()).delete(any(QueryExample.class));

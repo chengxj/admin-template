@@ -1,5 +1,6 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.handler.WhereHandler;
 import com.mysema.query.sql.*;
 import com.mysema.query.sql.dml.DefaultMapper;
 import com.mysema.query.sql.dml.SQLUpdateClause;
@@ -10,7 +11,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -26,7 +26,7 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
 
     private final boolean withNullBindings;
 
-    public UpdateByExampleTransaction(UpdateByExampleTransactionBuilder<T> builder) {
+    public UpdateByExampleTransaction(Builder<T> builder) {
         super(builder);
         this.domain = builder.getDomain();
         this.withNullBindings = builder.isWithNullBindings();
@@ -40,9 +40,10 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
                 final SQLUpdateClause updateClause = new SQLUpdateClause(connection, configuration, pathBase);
                 where(updateClause);
                 set(updateClause);
-                SQLBindings sqlBindings = updateClause.getSQL().get(0);
-                LOGGER.debug("update {} \nSQL[{}] \nparams:{}", getPathBase()
-                        .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+                for (SQLBindings sqlBindings : updateClause.getSQL()) {
+                    LOGGER.debug("update {} \nSQL[{}] \nparams:{}", getPathBase()
+                            .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+                }
                 return updateClause.execute();
             }
         });
@@ -68,16 +69,16 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
         handler.handle();
     }
 
-    public static class UpdateByExampleTransactionBuilder<T> extends TransactionBuilder {
+    public static class Builder<T> extends TransactionBuilder {
         private T domain;
         private boolean withNullBindings = false;
 
-        public UpdateByExampleTransactionBuilder domain(T domain) {
+        public Builder domain(T domain) {
             this.domain = domain;
             return this;
         }
 
-        public UpdateByExampleTransactionBuilder withNullBindings(boolean withNullBindings) {
+        public Builder withNullBindings(boolean withNullBindings) {
             this.withNullBindings = withNullBindings;
             return this;
         }

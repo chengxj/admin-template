@@ -25,13 +25,13 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
 	@Override
 	@Transactional
-	public int save(SysCompanyCommand command) {
+	public void save(SysCompanyCommand command) {
 		SysCompany sysCompany = new SysCompany();
 		sysCompany.setCompanyId(IDUtils.getNextId());
 		sysCompany.setIsDel(false);
 		sysCompany.setCompanyCode(command.getCompanyCode());
 		sysCompany.setCompanyName(command.getCompanyName());
-		int result = sysCompanyDao.insert(sysCompany);
+		sysCompanyDao.insert(sysCompany);
 
 		SysUser sysUser = new SysUser();
 		sysUser.setUsername(command.getUsername());
@@ -40,8 +40,6 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 		sysUser.setPassword(command.getPassword());
 
 		sysUserService.saveAdminUser(sysUser);
-
-		return result;
 	}
 
 	@Override
@@ -52,11 +50,11 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 	}
 
 	@Override
-	public int delete(int companyId) {
+	public void delete(int companyId) {
 		SysCompany company = new SysCompany();
 		company.setCompanyId(companyId);
 		company.setIsDel(true);
-		return sysCompanyDao.update(company);
+		sysCompanyDao.update(company);
 	}
 
 	@Override

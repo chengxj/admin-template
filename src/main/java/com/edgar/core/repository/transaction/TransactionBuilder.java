@@ -1,9 +1,8 @@
-package com.edgar.core.repository;
+package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.SQLTemplates;
-import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
 

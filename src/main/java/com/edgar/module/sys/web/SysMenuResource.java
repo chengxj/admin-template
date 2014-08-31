@@ -46,8 +46,9 @@ public class SysMenuResource {
 	@AuthHelper(value = "Create Menu", isRoot = true)
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public int save(@RequestBody SysMenuVo sysMenu) {
-		return sysMenuService.save(sysMenu);
+	public ModelAndView save(@RequestBody SysMenuVo sysMenu) {
+		 sysMenuService.save(sysMenu);
+        return ResponseMessage.success();
 	}
 
 	/**
@@ -62,10 +63,11 @@ public class SysMenuResource {
 	@AuthHelper(value = "Update Menu", isRoot = true)
 	@RequestMapping(method = RequestMethod.PUT, value = "/{menuId}")
 	@ResponseBody
-	public int update(@PathVariable("menuId") int menuId,
+	public ModelAndView update(@PathVariable("menuId") int menuId,
 			@RequestBody SysMenuVo sysMenu) {
 		sysMenu.setMenuId(menuId);
-		return sysMenuService.update(sysMenu);
+		sysMenuService.update(sysMenu);
+        return ResponseMessage.success();
 	}
 
 	/**
@@ -109,9 +111,10 @@ public class SysMenuResource {
 	@AuthHelper(value = "Delete Menu", isRoot = true)
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{menuId}")
 	@ResponseBody
-	public long delete(@PathVariable("menuId") int menuId,
-			@RequestParam("updatedTime") long updatedTime) {
-		return sysMenuService.deleteWithLock(menuId, updatedTime);
+	public ModelAndView delete(@PathVariable("menuId") int menuId,
+                               @RequestParam("updatedTime") long updatedTime) {
+		 sysMenuService.deleteWithLock(menuId, updatedTime);
+        return ResponseMessage.success();
 	}
 
 	/**

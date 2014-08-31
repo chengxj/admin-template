@@ -22,17 +22,15 @@ public interface SysJobService {
      * 新增作业
      *
      * @param sysJob 作业
-     * @return 如果保存成功，返回<code>1</code>
      */
-    int save(@NotNull SysJob sysJob);
+    void save(@NotNull SysJob sysJob);
 
     /**
      * 修改作业
      *
      * @param sysJob 作业
-     * @return 如果保存成功，返回<code>1</code>
      */
-    int update(@NotNull SysJob sysJob);
+    void update(@NotNull SysJob sysJob);
 
     /**
      * 根据作业ID查询作业
@@ -67,9 +65,8 @@ public interface SysJobService {
      *
      * @param jobId       作业ID
      * @param updatedTime 时间戳
-     * @return 如果删除成功，返回<code>1</code>
      */
-    long deleteWithLock(@Min(1) int jobId, @NotNull long updatedTime);
+    void deleteWithLock(@Min(1) int jobId, @NotNull long updatedTime);
 
     /**
      * 校验作业类是否已经存储

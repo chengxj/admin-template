@@ -30,14 +30,14 @@ public class I18nMessageServiceImpl implements I18nMessageService {
     private CrudRepository<Integer, I18nMessage> i18nMessageDao;
 
     @Override
-    public int save(I18nMessage i18n) {
+    public void save(I18nMessage i18n) {
         i18n.setI18nId(IDUtils.getNextId());
-        return i18nMessageDao.insert(i18n);
+        i18nMessageDao.insert(i18n);
     }
 
     @Override
-    public int update(I18nMessage i18n) {
-        return i18nMessageDao.update(i18n);
+    public void update(I18nMessage i18n) {
+        i18nMessageDao.update(i18n);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class I18nMessageServiceImpl implements I18nMessageService {
     }
 
     @Override
-    public long deleteWithLock(int i18nId, long updatedTime) {
-        return i18nMessageDao.deleteByPkAndVersion(i18nId, updatedTime);
+    public void deleteWithLock(int i18nId, long updatedTime) {
+        i18nMessageDao.deleteByPkAndVersion(i18nId, updatedTime);
     }
 
     @Override

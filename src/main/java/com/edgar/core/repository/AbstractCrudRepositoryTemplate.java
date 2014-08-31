@@ -1,7 +1,7 @@
 package com.edgar.core.repository;
 
+import com.edgar.core.repository.transaction.*;
 import com.edgar.core.util.ExceptionFactory;
-import com.edgar.module.sys.repository.domain.TestTable;
 import com.edgar.module.sys.repository.querydsl.QTestTable;
 import com.mysema.query.sql.*;
 import com.mysema.query.support.Expressions;
@@ -12,8 +12,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpressionBase;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +19,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
 import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
 import java.util.*;
-
-import static com.edgar.core.repository.DeleteByExampleTransaction.*;
 
 /**
  * DAO的父类
@@ -130,7 +126,10 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 
     @Override
     public List<T> query(final QueryExample example) {
-        return query(example, UNRESOLVED);
+        Assert.notNull(example);
+        TransactionBuilder builder = new QueryTransaction.Builder<T>().rowMapper(getRowMapper()).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        Transaction transaction = builder.build();
+        return transaction.execute();
     }
 
     @Override
@@ -138,64 +137,49 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
                                          Class<E> elementType) {
         Assert.notNull(example);
         Assert.notEmpty(example.getFields(), "fields cannot be null");
-        SQLQuery sqlQuery = createSQLQuery(example);
-        List<Path<?>> paths = getReturnPath(example);
-        Path<?>[] pathArray = new Path<?>[paths.size()];
-        SQLBindings sqlBindings = sqlQuery.getSQL(paths.toArray(pathArray));
-        String sql = sqlBindings.getSQL();
-        List<Object> args = sqlBindings.getBindings();
-        LOGGER.debug("query {} \nSQL:{} \nparams:{}", getPathBase()
-                .getTableName(), sql, args);
-        return jdbcTemplate.queryForList(sql, args.toArray(), elementType);
+        TransactionBuilder builder = new QueryTransaction.Builder<E>().rowMapper(new SingleColumnRowMapper<E>(elementType)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        Transaction transaction = builder.build();
+        return transaction.execute();
     }
 
     @Override
     public List<T> query(final QueryExample example, ExtendQuery extendQuery) {
         Assert.notNull(example);
-        TransactionBuilder builder = new QueryTransaction.QueryTransactionBuilder<T>().rowMapper(getRowMapper()).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new QueryTransaction.Builder<T>().rowMapper(getRowMapper()).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         return transaction.execute();
     }
 
     @Override
     public Pagination<T> pagination(QueryExample example, int page, int pageSize) {
-        return pagination(example, page, pageSize, UNRESOLVED);
+        Assert.notNull(example);
+        TransactionBuilder builder = new PageTransaction.Builder<T>().rowMapper(getRowMapper()).page(page).pageSize(pageSize).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
+        Transaction transaction = builder.build();
+        return transaction.execute();
     }
 
     @Override
     public Pagination<T> pagination(QueryExample example, int page,
                                     int pageSize, ExtendQuery extendQuery) {
         Assert.notNull(example);
-        TransactionBuilder builder = new PageTransaction.PageTransactionBuilder<T>().rowMapper(getRowMapper()).page(page).pageSize(pageSize).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
+        TransactionBuilder builder = new PageTransaction.Builder<T>().rowMapper(getRowMapper()).page(page).pageSize(pageSize).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
         return transaction.execute();
     }
 
     @Override
-    public int[] insert(List<T> domains) {
+    public Long insert(List<T> domains) {
         Assert.notEmpty(domains, "domains cannot be empty");
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName(getPathBase().getTableName());
-        List<SqlParameterSource> sources = new ArrayList<SqlParameterSource>(
-                domains.size());
-        for (T domain : domains) {
-            sources.add(new BeanPropertySqlParameterSource(domain));
-            LOGGER.debug("batch insert {} \nproperties:{}", getPathBase()
-                    .getTableName(), ToStringBuilder.reflectionToString(domain,
-                    ToStringStyle.SHORT_PREFIX_STYLE));
-        }
-        return jdbcInsert.executeBatch(sources
-                .toArray(new SqlParameterSource[sources.size()]));
+        TransactionBuilder builder = new BatchInsertTransaction.Builder<T>().domains(domains).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
+        Transaction transaction = builder.build();
+        return transaction.execute();
     }
 
     @Override
-    public int insert(T domain) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName(getPathBase().getTableName());
-        LOGGER.debug("insert {} \nproperties:{}", getPathBase().getTableName(),
-                ToStringBuilder.reflectionToString(domain,
-                        ToStringStyle.SHORT_PREFIX_STYLE));
-        return jdbcInsert.execute(new BeanPropertySqlParameterSource(domain));
+    public Long insert(T domain) {
+        TransactionBuilder builder = new InsertTransaction.Builder<T>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
+        Transaction transaction = builder.build();
+        return transaction.execute();
     }
 
     @Override
@@ -224,14 +208,14 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     }
 
     @Override
-    public long deleteByPk(PK pk) {
+    public Long deleteByPk(PK pk) {
         Assert.notNull(pk, "primaryKey cannot be null");
         QueryExample example = createExampleByPk(pk);
         return delete(example);
     }
 
     @Override
-    public long deleteByPkAndVersion(PK pk, long updatedTime) {
+    public Long deleteByPkAndVersion(PK pk, long updatedTime) {
         Assert.notNull(pk, "primaryKey cannot be null");
         // Assert.hasText(updatedTime);
         QueryExample example = createExampleByPk(pk);
@@ -244,62 +228,25 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     }
 
     @Override
-    public long delete(final QueryExample example) {
-        TransactionBuilder builder = new DeleteByExampleTransaction.DeleteByExampleTransactionBuilder().configuration(configuration).pathBase(getPathBase()).example(example);
+    public Long delete(final QueryExample example) {
+        TransactionBuilder builder = new DeleteByExampleTransaction.Builder().configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
-        return result.longValue();
+        return transaction.execute();
     }
 
     @Override
     public int update(final T domain, QueryExample example) {
         Assert.notNull(domain, "domain cannot be null");
-        if (example == null) {
-            example = QueryExample.newInstance();
-        }
+        Assert.notNull(example, "example cannot be null");
         Set<String> pks = createPrimaryKeySet();
         pks.add(CREATED_TIME);
         pks.add(UPDATED_TIME);
 
-        StringBuilder updateSql = new StringBuilder("update ").append(
-                getPathBase().getTableName()).append(" set ");
-
-        SQLQuery sqlQuery = createSQLQuery(example);
-        SQLBindings sqlBindings = sqlQuery.getSQL(getPathBase().getColumns()
-                .get(0));
-        String whereSql = StringUtils.substringAfter(sqlBindings.getSQL(),
-                "where");
-        List<Object> whereArgs = sqlBindings.getBindings();
-
-        List<String> setString = new ArrayList<String>();
-        List<Object> args = new ArrayList<Object>();
-        SqlParameterSource source = new BeanPropertySqlParameterSource(domain);
-        List<Path<?>> columns = getPathBase().getColumns();
-        for (Path<?> path : columns) {
-            String name = path.getMetadata().getName();
-            String humpName = humpName(name);
-            if (pks.contains(name)) {
-                continue;
-            }
-            Object value = source.getValue(humpName);
-            if (value != null) {
-                if (value instanceof String
-                        && StringUtils.isBlank(value.toString())) {
-                    continue;
-                }
-                setString.add(underscoreName(name) + " = ?");
-                args.add(value);
-            }
-        }
-        Assert.notEmpty(setString, "update sql error");
-        updateSql.append(StringUtils.join(setString.iterator(), " , "));
-        if (StringUtils.isNotBlank(whereSql)) {
-            updateSql.append(" where ").append(whereSql);
-            args.addAll(whereArgs);
-        }
-        LOGGER.debug("update{} \nSQL{} \nparams:{}", getPathBase()
-                .getTableName(), updateSql, args);
-        return jdbcTemplate.update(updateSql.toString(), args.toArray());
+        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<T>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        Transaction transaction = builder.build();
+        Long result = transaction.execute();
+        return result.intValue();
     }
 
     @Override

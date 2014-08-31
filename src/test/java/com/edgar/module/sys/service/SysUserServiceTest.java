@@ -108,8 +108,7 @@ public class SysUserServiceTest {
         public void tesetDeleteByVersion() {
                 when(sysUserDao.deleteByPkAndVersion(anyInt(), anyLong())).thenReturn(1l);
                 when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1l);
-            long result = sysUserService.deleteWithLock(1, 1L);
-                Assert.assertEquals(1, result);
+            sysUserService.deleteWithLock(1, 1L);
 
                 InOrder inOrder = inOrder(sysUserRoleDao, sysUserDao);
                 inOrder.verify(sysUserRoleDao, times(1)).delete(any(QueryExample.class));
@@ -186,7 +185,7 @@ public class SysUserServiceTest {
         public void testSaveUserNoRole() {
                 PowerMockito.mockStatic(IDUtils.class);
                 when(IDUtils.getNextId()).thenReturn(1);
-                when(sysUserDao.insert(any(SysUser.class))).thenReturn(1);
+                when(sysUserDao.insert(any(SysUser.class)));
                 SysUserRoleCommand sysUser = new SysUserRoleCommand();
                 sysUser.setUsername("z123");
                 sysUser.setPassword("2322434");
@@ -205,9 +204,8 @@ public class SysUserServiceTest {
         public void testSaveUserOneRole() {
                 PowerMockito.mockStatic(IDUtils.class);
                 when(IDUtils.getNextId()).thenReturn(1);
-                when(sysUserDao.insert(any(SysUser.class))).thenReturn(1);
-                when(sysUserRoleDao.insert(anyListOf(SysUserRole.class))).thenReturn(
-                                new int[] { 1 });
+                when(sysUserDao.insert(any(SysUser.class)));
+                when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
                 SysUserRoleCommand sysUser = new SysUserRoleCommand();
                 sysUser.setRoleIds("1");
                 sysUser.setUsername("z123");
@@ -225,9 +223,8 @@ public class SysUserServiceTest {
         public void testSaveUserTwoRole() {
                 PowerMockito.mockStatic(IDUtils.class);
                 when(IDUtils.getNextId()).thenReturn(1);
-                when(sysUserDao.insert(any(SysUser.class))).thenReturn(1);
-                when(sysUserRoleDao.insert(anyListOf(SysUserRole.class))).thenReturn(
-                                new int[] { 1, 1 });
+                when(sysUserDao.insert(any(SysUser.class)));
+                when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
                 SysUserRoleCommand sysUser = new SysUserRoleCommand();
                 sysUser.setRoleIds("1,2");
                 sysUser.setUsername("z123");
@@ -304,8 +301,7 @@ public class SysUserServiceTest {
                 when(IDUtils.getNextId()).thenReturn(1);
                 when(sysUserDao.update(any(SysUser.class))).thenReturn(1);
                 when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1l);
-                when(sysUserRoleDao.insert(anyListOf(SysUserRole.class))).thenReturn(
-                                new int[] { 1 });
+                when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
                 SysUserRoleCommand sysUser = new SysUserRoleCommand();
                 sysUser.setUserId(1);
                 sysUser.setUsername("z123");

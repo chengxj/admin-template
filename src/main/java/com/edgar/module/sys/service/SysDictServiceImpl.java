@@ -41,7 +41,7 @@ public class SysDictServiceImpl implements SysDictService {
 
     @Override
     @Transactional
-    public int save(SysDict sysDict) {
+    public void save(SysDict sysDict) {
         Assert.notNull(sysDict);
         Assert.hasText(sysDict.getDictCode());
         if (sysDict.getSorted() == null) {
@@ -51,7 +51,7 @@ public class SysDictServiceImpl implements SysDictService {
             sysDict.setParentCode("-1");
         }
         validator.validator(sysDict);
-        int result = sysDictDao.insert(sysDict);
+        sysDictDao.insert(sysDict);
         if (!"-1".equals(sysDict.getParentCode())) {
             SysDict parentDict = get(sysDict.getParentCode());
             if (parentDict == null) {
@@ -59,16 +59,14 @@ public class SysDictServiceImpl implements SysDictService {
             }
         }
         saveOrUpdateDict(sysDict);
-        return result;
     }
 
     @Override
     @Transactional
-    public int update(SysDict sysDict) {
+    public void update(SysDict sysDict) {
         validator.validator(sysDict);
-        int result = sysDictDao.update(sysDict);
+        sysDictDao.update(sysDict);
         saveOrUpdateDict(sysDict);
-        return result;
     }
 
     /*
@@ -76,15 +74,14 @@ public class SysDictServiceImpl implements SysDictService {
      */
     @Override
     @Transactional
-    public long deleteWithLock(String dictCode, long updatedTime) {
+    public void deleteWithLock(String dictCode, long updatedTime) {
         QueryExample example = QueryExample.newInstance();
         example.equalsTo("parentCode", dictCode);
         sysDictDao.delete(example);
-        long result = sysDictDao.deleteByPkAndVersion(dictCode, updatedTime);
+        sysDictDao.deleteByPkAndVersion(dictCode, updatedTime);
         SysDict sysDict = new SysDict();
         sysDict.setDictCode(dictCode);
         deleteDict(sysDict);
-        return result;
     }
 
     @Override
