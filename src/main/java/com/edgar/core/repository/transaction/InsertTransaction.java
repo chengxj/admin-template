@@ -48,7 +48,7 @@ public class InsertTransaction<T> extends TransactionTemplate {
         });
     }
 
-    public static class Builder<T> extends TransactionBuilder {
+    public static class Builder<T> extends TransactionBuilderTemplate {
         private T domain;
         private boolean withNullBindings = false;
 

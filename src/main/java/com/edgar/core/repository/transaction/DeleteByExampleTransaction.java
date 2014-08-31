@@ -47,7 +47,7 @@ public class DeleteByExampleTransaction extends TransactionTemplate {
         });
     }
 
-    public static class Builder extends TransactionBuilder {
+    public static class Builder extends TransactionBuilderTemplate {
         @Override
         public Transaction build() {
             return new DeleteByExampleTransaction(this);

@@ -1,9 +1,6 @@
 package com.edgar.core.repository;
 
-import com.edgar.core.repository.transaction.BatchInsertTransaction;
-import com.edgar.core.repository.transaction.Transaction;
-import com.edgar.core.repository.transaction.TransactionBuilder;
-import com.edgar.core.repository.transaction.UpdateByExampleTransaction;
+import com.edgar.core.repository.transaction.*;
 import com.edgar.module.sys.repository.domain.TestTable;
 import com.edgar.module.sys.repository.querydsl.QTestTable;
 import com.mysema.query.sql.Configuration;

@@ -65,7 +65,7 @@ public class PageTransactionTest {
     public void testQuery() {
         QueryExample example = QueryExample.newInstance();
         example = QueryExample.newInstance();
-        TransactionBuilder builder = new CountTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilderTemplate builder = new CountTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long count = transaction.execute();
         Assert.assertEquals(10, count, 0);

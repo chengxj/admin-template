@@ -19,7 +19,7 @@ public abstract class TransactionTemplate implements Transaction {
 
     protected QueryExample example;
 
-    protected TransactionTemplate(TransactionBuilder builder) {
+    protected TransactionTemplate(TransactionBuilderTemplate builder) {
         this.configuration = builder.getConfiguration();
         this.pathBase = builder.getPathBase();
         this.dataSource = builder.getDataSource();

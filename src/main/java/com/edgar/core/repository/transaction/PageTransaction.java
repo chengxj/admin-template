@@ -84,7 +84,7 @@ public class PageTransaction<T> extends TransactionTemplate {
         return cloner.deepClone(example);
     }
 
-    public static class Builder<T> extends TransactionBuilder {
+    public static class Builder<T> extends TransactionBuilderTemplate {
         private RowMapper<T> rowMapper;
 
         private int page;

@@ -69,7 +69,7 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
         handler.handle();
     }
 
-    public static class Builder<T> extends TransactionBuilder {
+    public static class Builder<T> extends TransactionBuilderTemplate {
         private T domain;
         private boolean withNullBindings = false;
 

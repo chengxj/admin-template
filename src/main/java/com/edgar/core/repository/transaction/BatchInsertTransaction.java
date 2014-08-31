@@ -53,7 +53,7 @@ public class BatchInsertTransaction<T> extends TransactionTemplate {
         });
     }
 
-    public static class Builder<T> extends TransactionBuilder {
+    public static class Builder<T> extends TransactionBuilderTemplate {
         private List<T> domains;
         private boolean withNullBindings = false;
 

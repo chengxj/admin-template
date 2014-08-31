@@ -67,7 +67,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
         return jdbcTemplate.query(sql, args.toArray(), rowMapper);
     }
 
-    public static class Builder<T> extends TransactionBuilder {
+    public static class Builder<T> extends TransactionBuilderTemplate {
         private RowMapper<T> rowMapper;
 
         @Override
