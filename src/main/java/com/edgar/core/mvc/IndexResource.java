@@ -5,7 +5,7 @@ import java.util.*;
 import com.edgar.core.auth.stateless.StatelessUser;
 import com.edgar.core.shiro.*;
 import com.edgar.core.util.Constants;
-import com.edgar.module.sys.repository.domain.SysRole;
+import com.edgar.module.sys.repository.domain.*;
 import com.edgar.module.sys.service.SysRouteService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.edgar.core.util.ExceptionFactory;
-import com.edgar.module.sys.repository.domain.SysMenu;
-import com.edgar.module.sys.repository.domain.SysRoute;
-import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.service.PermissionService;
 import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.service.SysUserService;
@@ -80,9 +77,10 @@ public class IndexResource {
 	public Map<String, Object> getUserData() {
         StatelessUser user = (StatelessUser) RequestContextHolder.currentRequestAttributes().getAttribute(Constants.USER_KEY, RequestAttributes.SCOPE_REQUEST);
      Set<Integer> roleIds = new LinkedHashSet<Integer>();
-        List<SysRole> roles = user.getRoles();
-        for (SysRole sysRole : roles) {
-            roleIds.add(sysRole.getRoleId());
+        List<SysUserRole> roles =  sysUserService.getRoles(user.getUserId());
+
+        for (SysUserRole sysUserRole : roles) {
+            roleIds.add(sysUserRole.getRoleId());
         }
 		if (roleIds.isEmpty()) {
 			throw ExceptionFactory.isNull();

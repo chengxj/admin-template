@@ -52,7 +52,7 @@ public class ReplayAttackFilter extends AccessControlFilter {
      */
     private void onTimeout(ServletResponse response) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setStatus(HttpServletResponse.SC_REQUEST_TIMEOUT);
+        httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         httpResponse.getWriter().write("Request timed out!");
     }
 }

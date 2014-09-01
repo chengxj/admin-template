@@ -40,7 +40,8 @@ public class UserFacdeImpl implements UserFacde {
      * @param userId 用户ID
      * @return 角色的集合
      */
-    private List<SysRole> getRolesForUser(int userId) {
+    @Override
+    public List<SysRole> getRolesForUser(int userId) {
 
         List<SysUserRole> sysUserRoles = sysUserService.getRoles(userId);
         List<SysRole> roles = new ArrayList<SysRole>();
@@ -70,8 +71,10 @@ public class UserFacdeImpl implements UserFacde {
     public SysUser queryByUsername(String username) {
         List<SysUser> sysUsers = sysUserService.queryByUsername(username);
         if (CollectionUtils.isNotEmpty(sysUsers)) {
+            SysUser sysUser = sysUsers.get(0);
             return sysUsers.get(0);
         }
         return null;
     }
+
 }

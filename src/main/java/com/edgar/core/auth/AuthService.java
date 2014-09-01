@@ -114,6 +114,7 @@ public class AuthService {
         statelessUser.setFullName(sysUser.getFullName());
         statelessUser.setEmail(sysUser.getEmail());
         statelessUser.setAccessToken(accessToken);
+        statelessUser.setRoles(userFacde.getRolesForUser(sysUser.getUserId()));
         return statelessUser;
     }
 
