@@ -210,7 +210,7 @@ function httpInterceptor($httpProvider) {
                 if (secretKey == undefined || secretKey == null) {
                     secretKey = "";
                 }
-                config.params.accessToken = accessToken;;
+                config.params.accessToken = accessToken;
                 //HMAC签名
                 //对排序后与URL一起签名
                 if (config.url.indexOf(".html") < 0 && config.url.indexOf(".json") < 0) {
