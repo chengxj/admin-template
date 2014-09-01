@@ -184,7 +184,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 
     @Override
     public Long delete(final QueryExample example) {
-        TransactionBuilder builder = new DeleteByExampleTransaction.Builder().configuration(configuration).pathBase(getPathBase()).example(example);
+        TransactionBuilder builder = new DeleteByExampleTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         return transaction.execute();
