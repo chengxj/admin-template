@@ -100,7 +100,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public List<T> query(final QueryExample example) {
         Assert.notNull(example);
-        TransactionBuilder builder = new QueryTransaction.Builder<T>().rowMapper(getRowMapper()).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new QueryTransaction.Builder<T>().rowMapper(getRowMapper()).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
         return transaction.execute();
     }
@@ -110,7 +110,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
                                          Class<E> elementType) {
         Assert.notNull(example);
         Assert.notEmpty(example.getFields(), "fields cannot be null");
-        TransactionBuilder builder = new QueryTransaction.Builder<E>().rowMapper(new SingleColumnRowMapper<E>(elementType)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new QueryTransaction.Builder<E>().rowMapper(new SingleColumnRowMapper<E>(elementType)).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
         return transaction.execute();
     }
@@ -151,14 +151,14 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public Long insert(List<T> domains) {
         Assert.notEmpty(domains, "domains cannot be empty");
-        TransactionBuilder builder = new BatchInsertTransaction.Builder<T>().domains(domains).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
+        TransactionBuilder builder = new BatchInsertTransaction.Builder<T>().domains(domains).dataSource(dataSource).configuration(configuration).pathBase(getPathBase());
         Transaction transaction = builder.build();
         return transaction.execute();
     }
 
     @Override
     public Long insert(T domain) {
-        TransactionBuilder builder = new InsertTransaction.Builder<T>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
+        TransactionBuilder builder = new InsertTransaction.Builder<T>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(getPathBase());
         Transaction transaction = builder.build();
         return transaction.execute();
     }
@@ -196,7 +196,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         if (example == null) {
             QueryExample.newInstance();
         }
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<T>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<T>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
         return transaction.execute();
     }
