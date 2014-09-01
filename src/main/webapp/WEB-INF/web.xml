@@ -81,6 +81,14 @@
 
         <init-param>
             <param-name>cors.allowOrigin</param-name>
+            <param-value>	http://10.4.7.15:8080 	http://localhost:8080</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.supportedMethods</param-name>
+            <param-value>GET, POST, HEAD, PUT, DELETE</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.supportedHeaders</param-name>
             <param-value>*</param-value>
         </init-param>
     </filter>

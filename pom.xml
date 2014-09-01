@@ -380,7 +380,7 @@
                     <path>/</path>
                     <port>8080</port>
                     <httpsPort>8443</httpsPort>
-                    <keystoreFile>${project.basedir}/certificates/localhost.keystore</keystoreFile>
+                    <keystoreFile>${project.basedir}/certificates/15.keystore</keystoreFile>
                     <keystorePass>123456</keystorePass>
                 </configuration>
             </plugin>

@@ -1,5 +1,18 @@
 'use strict';
 
+function browserSupportsCors() {
+    if ("withCredentials" in new XMLHttpRequest())
+        return true;
+    else if (typeof XDomainRequest == "object")
+        return true;
+    else
+        return false;
+}
+
+if (!browserSupportsCors()) {
+    alert("浏览器不支持CORS！");
+}
+
 if (!String.prototype.trim) {
     String.prototype.trim = function () {
         return this.replace(/^\s+|\s+$/g, '');
