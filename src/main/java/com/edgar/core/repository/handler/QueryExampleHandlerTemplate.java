@@ -42,29 +42,6 @@ public abstract class QueryExampleHandlerTemplate implements QueryExampleHandler
     }
 
     /**
-     * 字符串转换，将alarmUserCode转换为alarm_user_code
-     *
-     * @param source
-     *            需要转换的字符串
-     * @return 转换后的字符串
-     */
-    protected String underscoreName(String source) {
-        Assert.hasLength(source);
-        StringBuilder result = new StringBuilder();
-        result.append(source.substring(0, 1).toLowerCase());
-        for (int i = 1; i < source.length(); i++) {
-            String s = source.substring(i, i + 1);
-            String slc = s.toLowerCase();
-            if (!s.equals(slc)) {
-                result.append("_").append(slc);
-            } else {
-                result.append(s);
-            }
-        }
-        return result.toString();
-    }
-
-    /**
      * 检查字段是否是数据库的字段
      *
      * @param path

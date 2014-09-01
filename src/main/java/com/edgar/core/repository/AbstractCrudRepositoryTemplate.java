@@ -290,7 +290,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
             for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
                 String name = path.getMetadata().getName();
                 String humpName = humpName(name);
-                example.equalsTo(humpName, source.getValue(humpName));
+                example.equalsTo(humpName, source.getValue(name));
             }
         }
         return example;
