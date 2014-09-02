@@ -186,7 +186,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     public Long delete(final QueryExample example) {
         TransactionBuilder builder = new DeleteByExampleTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
-        Long result = transaction.execute();
         return transaction.execute();
     }
 
@@ -212,7 +211,11 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     public Long updateWithVersion(final T domain) {
         Assert.notNull(domain, "domain cannot be null");
         QueryExample example = createUpdateExampleWithVersion(domain);
-        return update(domain, example);
+        Long result = update(domain, example);
+        if (result < 1) {
+            throw ExceptionFactory.expired();
+        }
+        return result;
     }
 
     private QueryExample createUpdateExampleWithVersion(T domain) {
