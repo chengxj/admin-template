@@ -3,16 +3,11 @@ package com.edgar.core.repository;
 import com.edgar.core.repository.transaction.*;
 import com.edgar.core.util.ExceptionFactory;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Path;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -162,7 +157,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 
     @Override
     public Long delete(final QueryExample example) {
-        TransactionBuilder builder = new DeleteByExampleTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
+        TransactionBuilder builder = new DeleteTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
         return transaction.execute();
     }
@@ -174,7 +169,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         if (example == null) {
             QueryExample.newInstance();
         }
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<T>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
+        TransactionBuilder builder = new UpdateTransaction.Builder<T>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
         Transaction transaction = builder.build();
         return transaction.execute();
     }

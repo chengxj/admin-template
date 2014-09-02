@@ -31,7 +31,7 @@ import java.util.List;
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class})
-public class DeleteByExampleTransactionTest {
+public class DeleteTransactionTest {
     @Autowired
     private TestTableDao testTableDao;
 
@@ -76,7 +76,7 @@ public class DeleteByExampleTransactionTest {
         example.equalsTo("testCode", testTable.getTestCode());
         example.equalsTo("updatedTime", testTable.getUpdatedTime());
 
-        TransactionBuilder builder = new DeleteByExampleTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new DeleteTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(1l, result, 0);
@@ -90,7 +90,7 @@ public class DeleteByExampleTransactionTest {
 
         QueryExample example = QueryExample.newInstance();
         example.notEqualsTo("testCode", "0001");
-        TransactionBuilder builder = new DeleteByExampleTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new DeleteTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(9l, result, 0);

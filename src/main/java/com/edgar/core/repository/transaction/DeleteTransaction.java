@@ -4,7 +4,6 @@ import com.edgar.core.repository.handler.SQLDeleteClauseWhereHandler;
 import com.edgar.core.repository.handler.WhereHandler;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.dml.SQLDeleteClause;
-import com.mysema.query.types.expr.BooleanExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -17,10 +16,10 @@ import java.sql.SQLException;
 /**
  * Created by Administrator on 2014/8/29.
  */
-public class DeleteByExampleTransaction extends TransactionTemplate {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteByExampleTransaction.class);
+public class DeleteTransaction extends TransactionTemplate {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteTransaction.class);
 
-    protected DeleteByExampleTransaction(Builder builder) {
+    protected DeleteTransaction(Builder builder) {
         super(builder);
     }
 
@@ -45,7 +44,7 @@ public class DeleteByExampleTransaction extends TransactionTemplate {
     public static class Builder extends TransactionBuilderTemplate {
         @Override
         public Transaction build() {
-            return new DeleteByExampleTransaction(this);
+            return new DeleteTransaction(this);
         }
     }
 }

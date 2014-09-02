@@ -21,9 +21,9 @@ import java.util.*;
  * 即使修改了实体的主键，SQLUpdateClause.populate(domain)方法也不会更新主键，如果实体的属性值为null，则不会更新。
  * withNullBindings：false会忽略domain中的null值
  */
-public class UpdateByExampleTransaction<T> extends TransactionTemplate {
+public class UpdateTransaction<T> extends TransactionTemplate {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateByExampleTransaction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdateTransaction.class);
 
     private final T domain;
 
@@ -31,7 +31,7 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
 
     private final Set<String> ignoreColumns = new HashSet<String>();
 
-    public UpdateByExampleTransaction(Builder<T> builder) {
+    public UpdateTransaction(Builder<T> builder) {
         super(builder);
         this.domain = builder.getDomain();
         this.withNullBindings = builder.isWithNullBindings();
@@ -116,7 +116,7 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
 
         @Override
         public Transaction build() {
-            return new UpdateByExampleTransaction(this);
+            return new UpdateTransaction(this);
         }
 
         public T getDomain() {

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class})
-public class UpdateByExampleTransactionTest {
+public class UpdateTransactionTest {
 
     @Autowired
     private TestTableDao testTableDao;
@@ -80,7 +80,7 @@ public class UpdateByExampleTransactionTest {
         example.equalsTo("testCode", testTable.getTestCode());
         example.equalsTo("updatedTime", testTable.getUpdatedTime());
 
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<TestTable>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new UpdateTransaction.Builder<TestTable>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(1l, result, 0);
@@ -107,7 +107,7 @@ public class UpdateByExampleTransactionTest {
         example.clear();
         example.equalsTo("testCode", testTable.getTestCode());
         example.equalsTo("updatedTime", testTable.getUpdatedTime());
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<TestTable>().domain(domain).withNullBindings(true).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new UpdateTransaction.Builder<TestTable>().domain(domain).withNullBindings(true).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(1l, result, 0);
@@ -133,7 +133,7 @@ public class UpdateByExampleTransactionTest {
         domain.setParentCode("-1");
         example.clear();
         example.notEqualsTo("testCode", "0001");
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<TestTable>().domain(domain).withNullBindings(true).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new UpdateTransaction.Builder<TestTable>().domain(domain).withNullBindings(true).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(9l, result, 0);
@@ -162,7 +162,7 @@ public class UpdateByExampleTransactionTest {
         example.equalsTo("testCode", testTable.getTestCode());
         example.equalsTo("updatedTime", testTable.getUpdatedTime());
 
-        TransactionBuilder builder = new UpdateByExampleTransaction.Builder<TestTable>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
+        TransactionBuilder builder = new UpdateTransaction.Builder<TestTable>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
         Transaction transaction = builder.build();
         Long result = transaction.execute();
         Assert.assertEquals(1l, result, 0);
