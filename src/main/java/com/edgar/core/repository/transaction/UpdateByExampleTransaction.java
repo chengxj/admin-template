@@ -25,11 +25,11 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateByExampleTransaction.class);
 
-    private T domain;
+    private final T domain;
 
     private final boolean withNullBindings;
 
-    private Set<String> ignoreColumns = new HashSet<String>();
+    private final Set<String> ignoreColumns = new HashSet<String>();
 
     public UpdateByExampleTransaction(Builder<T> builder) {
         super(builder);
@@ -91,7 +91,7 @@ public class UpdateByExampleTransaction<T> extends TransactionTemplate {
     public static class Builder<T> extends TransactionBuilderTemplate {
         private T domain;
         private boolean withNullBindings = false;
-        private Set<String> ignoreColumns = new HashSet<String>();
+        private final Set<String> ignoreColumns = new HashSet<String>();
 
         public Builder domain(T domain) {
             this.domain = domain;

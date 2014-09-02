@@ -9,7 +9,7 @@ import com.mysema.query.types.expr.BooleanExpression;
  * Created by Administrator on 2014/8/31.
  */
 public class SQLQueryWhereHandler extends WhereHandler {
-    private SQLQuery sqlQuery;
+    private final SQLQuery sqlQuery;
 
     public SQLQueryWhereHandler(RelationalPathBase<?> pathBase, QueryExample example, SQLQuery sqlQuery) {
         super(pathBase, example);

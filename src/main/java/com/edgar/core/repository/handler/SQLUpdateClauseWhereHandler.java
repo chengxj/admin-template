@@ -12,7 +12,7 @@ import com.mysema.query.types.expr.BooleanExpression;
  */
 public class SQLUpdateClauseWhereHandler extends WhereHandler {
 
-    private SQLUpdateClause updateClause;
+    private final SQLUpdateClause updateClause;
 
     public SQLUpdateClauseWhereHandler(RelationalPathBase<?> pathBase, QueryExample example, SQLUpdateClause updateClause) {
         super(pathBase, example);

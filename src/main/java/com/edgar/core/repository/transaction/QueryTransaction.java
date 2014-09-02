@@ -22,7 +22,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(QueryTransaction.class);
 
-    private RowMapper<T> rowMapper;
+    private final RowMapper<T> rowMapper;
 
     private final List<Path<?>> returnPaths = new ArrayList<Path<?>>();
 

@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class OrderHandler extends QueryExampleHandlerTemplate {
 
-    private SQLQuery sqlQuery;
+    private final SQLQuery sqlQuery;
 
     public OrderHandler(RelationalPathBase<?> pathBase, QueryExample example, SQLQuery sqlQuery) {
         super(pathBase, example);

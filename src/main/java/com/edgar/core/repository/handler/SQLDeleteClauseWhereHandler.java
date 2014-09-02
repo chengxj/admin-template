@@ -10,7 +10,7 @@ import com.mysema.query.types.expr.BooleanExpression;
  */
 public class SQLDeleteClauseWhereHandler extends WhereHandler {
 
-    private SQLDeleteClause deleteClause;
+    private final SQLDeleteClause deleteClause;
 
     public SQLDeleteClauseWhereHandler(RelationalPathBase<?> pathBase, QueryExample example, SQLDeleteClause deleteClause) {
         super(pathBase, example);

@@ -29,13 +29,12 @@ public abstract class AbstractValidatorTemplate implements ValidatorStrategy {
 	protected abstract Validator createValidator();
 
 	@Override
-	public final boolean validator(Object target) {
+	public final void validator(Object target) {
 		Set<ConstraintViolation<Object>> constraintViolations = validator
 				.validate(target);
 		if (!constraintViolations.isEmpty()) {
 			throw ExceptionFactory.inValid(constraintViolations);
 		}
-		return true;
 	}
 
 }

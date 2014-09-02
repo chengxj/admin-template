@@ -36,25 +36,15 @@ import java.util.*;
  */
 public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         CrudRepository<PK, T> {
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(AbstractCrudRepositoryTemplate.class);
-
-    /**
-     * MySQL的模板
-     */
-    private SQLTemplates dialect;
 
     private final Class<T> entityBeanType;
 
-    private JdbcTemplate jdbcTemplate;
-
-    private Configuration configuration;
+    private final Configuration configuration;
 
     @SuppressWarnings("unchecked")
     public AbstractCrudRepositoryTemplate() {
         this.entityBeanType = (Class<T>) (((ParameterizedType) (getClass()
                 .getGenericSuperclass())).getActualTypeArguments()[1]);
-        setDialect();
         configuration = Constants.CONFIGURATION;
     }
 
@@ -72,13 +62,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
      */
     public boolean cacheEnabled() {
         return false;
-    }
-
-    /**
-     * 设置数据库方言
-     */
-    protected void setDialect() {
-        this.dialect = new MySQLTemplates();
     }
 
     @Autowired
@@ -184,6 +167,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         return transaction.execute();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Long update(final T domain, QueryExample example) {
         Assert.notNull(domain, "domain cannot be null");

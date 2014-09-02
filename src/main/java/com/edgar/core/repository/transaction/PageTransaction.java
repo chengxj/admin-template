@@ -17,11 +17,11 @@ public class PageTransaction<T> extends TransactionTemplate {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(PageTransaction.class);
 
-    private RowMapper<T> rowMapper;
+    private final RowMapper<T> rowMapper;
 
     private int page;
 
-    private int pageSize;
+    private final int pageSize;
 
     protected PageTransaction(Builder builder) {
         super(builder);

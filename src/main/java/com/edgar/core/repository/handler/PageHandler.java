@@ -8,7 +8,7 @@ import com.mysema.query.sql.SQLQuery;
  * Created by Administrator on 2014/8/29.
  */
 public class PageHandler extends QueryExampleHandlerTemplate {
-    private SQLQuery sqlQuery;
+    private final SQLQuery sqlQuery;
 
     public PageHandler(RelationalPathBase<?> pathBase, QueryExample example, SQLQuery sqlQuery) {
         super(pathBase, example);

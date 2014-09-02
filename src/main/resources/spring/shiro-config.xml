@@ -95,7 +95,7 @@
     <!--重放攻击的filter-->
     <bean id="replayAttackFilter" class="com.edgar.core.auth.stateless.ReplayAttackFilter"/>
     <bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">
-        <property name="port" value="443"/>
+        <property name="port" value="${httpsPort}"/>
     </bean>
 
     <bean id="passwordMatcher"

@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class InsertTransaction<T> extends TransactionTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(InsertTransaction.class);
 
-    private T domain;
+    private final T domain;
 
     private final boolean withNullBindings;
 

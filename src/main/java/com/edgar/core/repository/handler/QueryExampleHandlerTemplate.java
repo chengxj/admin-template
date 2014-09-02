@@ -10,9 +10,9 @@ import org.springframework.util.Assert;
  * Created by Administrator on 2014/8/26.
  */
 public abstract class QueryExampleHandlerTemplate implements QueryExampleHandler {
-    protected RelationalPathBase<?> pathBase;
+    protected final RelationalPathBase<?> pathBase;
 
-    protected QueryExample example;
+    protected final QueryExample example;
 
     public QueryExampleHandlerTemplate(RelationalPathBase<?> pathBase, QueryExample example) {
         this.pathBase = pathBase;

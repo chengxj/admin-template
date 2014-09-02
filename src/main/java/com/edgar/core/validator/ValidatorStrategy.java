@@ -13,8 +13,7 @@ public interface ValidatorStrategy {
          * 
          * @param target
          *                需要校验的对象
-         * @return 如果通过校验，返回true
          */
-        boolean validator(Object target);
+        void validator(Object target);
 
 }

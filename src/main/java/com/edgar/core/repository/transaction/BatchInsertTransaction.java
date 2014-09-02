@@ -19,7 +19,7 @@ import java.util.List;
 public class BatchInsertTransaction<T> extends TransactionTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchInsertTransaction.class);
 
-    private List<T> domains;
+    private final List<T> domains;
 
     private final boolean withNullBindings;
 
@@ -62,11 +62,6 @@ public class BatchInsertTransaction<T> extends TransactionTemplate {
 
         public Builder domains(List<T> domains) {
             this.domains = domains;
-            return this;
-        }
-
-        public Builder withNullBindings(boolean withNullBindings) {
-            this.withNullBindings = withNullBindings;
             return this;
         }
 

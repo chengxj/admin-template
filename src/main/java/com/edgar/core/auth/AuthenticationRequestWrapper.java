@@ -10,7 +10,7 @@ public class AuthenticationRequestWrapper
 
     private final String body;
 
-    public AuthenticationRequestWrapper(HttpServletRequest request) throws IOException {
+    public AuthenticationRequestWrapper(HttpServletRequest request) {
 
         super(request);
 

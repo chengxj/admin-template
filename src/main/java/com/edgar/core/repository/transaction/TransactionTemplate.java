@@ -11,13 +11,13 @@ import javax.sql.DataSource;
  */
 public abstract class TransactionTemplate implements Transaction {
 
-    protected Configuration configuration;
+    protected final Configuration configuration;
 
-    protected RelationalPathBase<?> pathBase;
+    protected final RelationalPathBase<?> pathBase;
 
-    protected DataSource dataSource;
+    protected final DataSource dataSource;
 
-    protected QueryExample example;
+    protected final QueryExample example;
 
     protected TransactionTemplate(TransactionBuilderTemplate builder) {
         this.configuration = builder.getConfiguration();

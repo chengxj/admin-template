@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.edgar.core.view.ResponseMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import com.edgar.module.sys.service.PermissionCommand;
 import com.edgar.module.sys.service.PermissionService;
 import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.service.SysMenuVo;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 角色授权的rest
@@ -46,9 +48,9 @@ public class SysPermissionResource {
 	@AuthHelper("Save Permisison")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public int savePermission(@RequestBody PermissionCommand command) {
+	public ModelAndView savePermission(@RequestBody PermissionCommand command) {
 		permissionService.savePermission(command);
-		return 1;
+		return ResponseMessage.success();
 	}
 
 	/**
