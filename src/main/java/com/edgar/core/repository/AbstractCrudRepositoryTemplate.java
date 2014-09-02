@@ -2,14 +2,15 @@ package com.edgar.core.repository;
 
 import com.edgar.core.repository.transaction.*;
 import com.edgar.core.util.ExceptionFactory;
-import com.edgar.module.sys.repository.querydsl.QTestTable;
-import com.mysema.query.sql.*;
+import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Path;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -82,12 +83,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 
     @Autowired
     private DataSource dataSource;
-
-    @Autowired
-    @Qualifier("jdbcTemplate")
-    protected void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public Class<T> getEntityBeanType() {
         return entityBeanType;

@@ -555,7 +555,6 @@
 					<packageName>com.edgar.module.sys.repository.querydsl</packageName>
 					<beanPackageName>com.edgar.module.sys.repository.domain</beanPackageName>
 					<lowerCase>true</lowerCase>
-					<!-- <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder> -->
 					<targetFolder>${project.basedir}/src/main/java</targetFolder>
 					<exportBeans>true</exportBeans>
 					<!-- https://github.com/mysema/querydsl/blob/master/querydsl-maven-plugin/src/main/java/com/mysema/query/maven/AbstractMetaDataExportMojo.java 
