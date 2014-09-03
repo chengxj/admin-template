@@ -25,6 +25,19 @@ public class AccessToken {
      */
     private String username;
 
+    /**
+     * 创建时间
+     */
+    private long createdTime;
+
+    public long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(long createdTime) {
+        this.createdTime = createdTime;
+    }
+
     public String getUsername() {
         return username;
     }
