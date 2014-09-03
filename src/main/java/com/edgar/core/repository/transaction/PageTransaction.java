@@ -23,11 +23,14 @@ public class PageTransaction<T> extends TransactionTemplate {
 
     private final int pageSize;
 
-    protected PageTransaction(Builder builder) {
-        super(builder);
-        this.rowMapper = builder.getRowMapper();
-        this.page = builder.getPage();
-        this.pageSize = builder.getPageSize();
+    private final QueryExample example;
+
+    protected PageTransaction(TransactionConfig config, QueryExample example, int page, int pageSize, RowMapper<T> rowMapper) {
+        super(config);
+        this.example = example;
+        this.page = page;
+        this.pageSize = pageSize;
+        this.rowMapper = rowMapper;
     }
 
     public Pagination<T> execute() {
@@ -53,8 +56,8 @@ public class PageTransaction<T> extends TransactionTemplate {
             }
             example.offset((page - 1) * pageSize);
         }
-        TransactionBuilder queryBuilder = new QueryTransaction.Builder<T>().rowMapper(rowMapper).dataSource(dataSource).configuration(configuration).pathBase(pathBase).example(example);
-        Transaction query = queryBuilder.build();
+
+        Transaction query = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<T> records = query.execute();
         return Pagination.newInstance(page, pageSize, totalRecords, records);
     }
@@ -67,10 +70,8 @@ public class PageTransaction<T> extends TransactionTemplate {
             COUNT_EXAMPLE.limit(0);
         }
         COUNT_EXAMPLE.offset(0);
-        TransactionBuilder countBuilder = new CountTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(pathBase).example(COUNT_EXAMPLE);
-        Transaction countTransaction = countBuilder.build();
-
-        return countTransaction.execute();
+        Transaction transaction = TransactionFactory.createCountTransaction(config, COUNT_EXAMPLE);
+        return transaction.execute();
     }
 
     /**
@@ -84,43 +85,4 @@ public class PageTransaction<T> extends TransactionTemplate {
         return cloner.deepClone(example);
     }
 
-    public static class Builder<T> extends TransactionBuilderTemplate {
-        private RowMapper<T> rowMapper;
-
-        private int page;
-
-        private int pageSize;
-
-        @Override
-        public Transaction build() {
-            return new PageTransaction<T>(this);
-        }
-
-        public Builder rowMapper(RowMapper<T> rowMapper) {
-            this.rowMapper = rowMapper;
-            return this;
-        }
-
-        public Builder page(int page) {
-            this.page = page;
-            return this;
-        }
-
-        public Builder pageSize(int pageSize) {
-            this.pageSize = pageSize;
-            return this;
-        }
-
-        public RowMapper<T> getRowMapper() {
-            return rowMapper;
-        }
-
-        public int getPage() {
-            return page;
-        }
-
-        public int getPageSize() {
-            return pageSize;
-        }
-    }
 }

@@ -22,10 +22,10 @@ public class InsertTransaction<T> extends TransactionTemplate {
 
     private final boolean withNullBindings;
 
-    public InsertTransaction(Builder<T> builder) {
-        super(builder);
-        this.domain = builder.getDomain();
-        this.withNullBindings = builder.isWithNullBindings();
+    protected InsertTransaction(TransactionConfig config, T domain, boolean withNullBindings) {
+        super(config);
+        this.domain = domain;
+        this.withNullBindings = withNullBindings;
     }
 
     @Override
@@ -48,31 +48,4 @@ public class InsertTransaction<T> extends TransactionTemplate {
         });
     }
 
-    public static class Builder<T> extends TransactionBuilderTemplate {
-        private T domain;
-        private boolean withNullBindings = false;
-
-        public Builder domain(T domain) {
-            this.domain = domain;
-            return this;
-        }
-
-        public Builder withNullBindings(boolean withNullBindings) {
-            this.withNullBindings = withNullBindings;
-            return this;
-        }
-
-        @Override
-        public Transaction build() {
-            return new InsertTransaction(this);
-        }
-
-        public T getDomain() {
-            return domain;
-        }
-
-        public boolean isWithNullBindings() {
-            return withNullBindings;
-        }
-    }
 }

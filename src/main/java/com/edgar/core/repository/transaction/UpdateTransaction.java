@@ -1,6 +1,6 @@
 package com.edgar.core.repository.transaction;
 
-import com.edgar.core.repository.Constants;
+import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.handler.SQLUpdateClauseWhereHandler;
 import com.edgar.core.repository.handler.WhereHandler;
 import com.mysema.query.sql.SQLBindings;
@@ -29,13 +29,16 @@ public class UpdateTransaction<T> extends TransactionTemplate {
 
     private final boolean withNullBindings;
 
+    private final QueryExample example;
+
     private final Set<String> ignoreColumns = new HashSet<String>();
 
-    public UpdateTransaction(Builder<T> builder) {
-        super(builder);
-        this.domain = builder.getDomain();
-        this.withNullBindings = builder.isWithNullBindings();
-        this.ignoreColumns.addAll(builder.getIgnoreColumns());
+    protected UpdateTransaction(TransactionConfig config, T domain, boolean withNullBindings, QueryExample example, String ... ignore) {
+        super(config);
+        this.domain = domain;
+        this.withNullBindings = withNullBindings;
+        this.example = example;
+        Collections.addAll(ignoreColumns, ignore);
     }
 
     public Long execute() {
@@ -88,47 +91,4 @@ public class UpdateTransaction<T> extends TransactionTemplate {
         handler.handle();
     }
 
-    public static class Builder<T> extends TransactionBuilderTemplate {
-        private T domain;
-        private boolean withNullBindings = false;
-        private final Set<String> ignoreColumns = new HashSet<String>();
-
-        public Builder domain(T domain) {
-            this.domain = domain;
-            return this;
-        }
-
-        public Builder withNullBindings(boolean withNullBindings) {
-            this.withNullBindings = withNullBindings;
-            return this;
-        }
-
-        public Builder defaultIgnore() {
-            this.ignoreColumns.add(Constants.CREATED_TIME);
-            this.ignoreColumns.add(Constants.UPDATED_TIME);
-            return this;
-        }
-
-        public Builder addIgnore(String ignore) {
-            this.ignoreColumns.add(ignore);
-            return this;
-        }
-
-        @Override
-        public Transaction build() {
-            return new UpdateTransaction(this);
-        }
-
-        public T getDomain() {
-            return domain;
-        }
-
-        public boolean isWithNullBindings() {
-            return withNullBindings;
-        }
-
-        public Set<String> getIgnoreColumns() {
-            return ignoreColumns;
-        }
-    }
 }

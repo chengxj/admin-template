@@ -23,10 +23,10 @@ public class BatchInsertTransaction<T> extends TransactionTemplate {
 
     private final boolean withNullBindings;
 
-    public BatchInsertTransaction(Builder<T> builder) {
-        super(builder);
-        this.domains = builder.getDomains();
-        this.withNullBindings = builder.isWithNullBindings();
+    protected BatchInsertTransaction(TransactionConfig config, List<T> domains, boolean withNullBindings) {
+        super(config);
+        this.domains = domains;
+        this.withNullBindings = withNullBindings;
     }
 
     @Override
@@ -56,26 +56,4 @@ public class BatchInsertTransaction<T> extends TransactionTemplate {
         }
     }
 
-    public static class Builder<T> extends TransactionBuilderTemplate {
-        private List<T> domains;
-        private boolean withNullBindings = false;
-
-        public Builder domains(List<T> domains) {
-            this.domains = domains;
-            return this;
-        }
-
-        @Override
-        public Transaction build() {
-            return new BatchInsertTransaction(this);
-        }
-
-        public List<T> getDomains() {
-            return domains;
-        }
-
-        public boolean isWithNullBindings() {
-            return withNullBindings;
-        }
-    }
 }

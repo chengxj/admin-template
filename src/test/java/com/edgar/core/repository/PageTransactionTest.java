@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -39,8 +40,14 @@ public class PageTransactionTest {
 
     private Configuration configuration = Constants.CONFIGURATION;
 
+    private TransactionConfig config;
+
+    private RowMapper<TestTable> rowMapper = BeanPropertyRowMapper.newInstance(TestTable.class);
+
+
     @Before
     public void setUp() {
+        config = new TransactionConfig(dataSource, configuration, QTestTable.testTable);
         List<TestTable> testTables = new ArrayList<TestTable>();
         for (int i = 0; i < 10; i++) {
             TestTable testTable = new TestTable();
@@ -50,8 +57,8 @@ public class PageTransactionTest {
             testTable.setSorted(9999);
             testTables.add(testTable);
         }
-        TransactionBuilder builder = new BatchInsertTransaction.Builder<TestTable>().domains(testTables).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
-        Transaction transaction = builder.build();
+
+        Transaction transaction = TransactionFactory.createDefaultBatchInsertTransaction(config, testTables);
         transaction.execute();
     }
 
@@ -62,43 +69,10 @@ public class PageTransactionTest {
 
     @Transactional
     @Test
-    public void testQuery() {
-        QueryExample example = QueryExample.newInstance();
-        example = QueryExample.newInstance();
-        TransactionBuilderTemplate builder = new CountTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
-        Long count = transaction.execute();
-        Assert.assertEquals(10, count, 0);
-
-        example.limit(5);
-        builder.example(example);
-        transaction = builder.build();
-        count = transaction.execute();
-        Assert.assertEquals(5, count, 0);
-        example.equalsTo("testCode", "0001");
-        builder.example(example);
-        transaction = builder.build();
-        count = transaction.execute();
-        Assert.assertEquals(1, count, 0);
-
-        example.clear();
-        example.limit(10);
-        example.greaterThan("test_code", "0001");
-        example.asc("sorted");
-        example.desc("testCode");
-        builder.example(example);
-        transaction = builder.build();
-        count = transaction.execute();
-        Assert.assertEquals(8, count, 0);
-    }
-
-    @Transactional
-    @Test
     public void testPage() {
         QueryExample example = QueryExample.newInstance();
 
-        TransactionBuilder builder = new PageTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).page(1).pageSize(10).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction  = TransactionFactory.createPageTransaction(config, example, 1, 10, rowMapper);
         Pagination<TestTable> testTables = transaction.execute();
 
         Assert.assertEquals(1, testTables.getPage());
@@ -107,8 +81,7 @@ public class PageTransactionTest {
         Assert.assertEquals(1, testTables.getPrevPage());
         Assert.assertEquals(1, testTables.getNextPage());
 
-        builder = new PageTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).page(2).pageSize(10).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        transaction = builder.build();
+        transaction  = TransactionFactory.createPageTransaction(config, example, 2, 10, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(10, testTables.getRecords().size());
         Assert.assertEquals(1, testTables.getPage());
@@ -117,8 +90,7 @@ public class PageTransactionTest {
         Assert.assertEquals(1, testTables.getPrevPage());
         Assert.assertEquals(1, testTables.getNextPage());
 
-        builder = new PageTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).page(3).pageSize(5).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        transaction = builder.build();
+        transaction  = TransactionFactory.createPageTransaction(config, example, 3, 5, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(2, testTables.getPage());
         Assert.assertEquals((testTables.getTotalRecords() + testTables.getPageSize() - 1)
@@ -132,8 +104,8 @@ public class PageTransactionTest {
     public void testGreatThanMaxPage() {
         QueryExample example = QueryExample.newInstance();
         example.setMaxNumOfRecords(1000);
-        TransactionBuilder builder = new PageTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).page(200).pageSize(10).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+
+        Transaction transaction  = TransactionFactory.createPageTransaction(config, example, 200, 10, rowMapper);
         Pagination<TestTable> testTables = transaction.execute();
     }
 }

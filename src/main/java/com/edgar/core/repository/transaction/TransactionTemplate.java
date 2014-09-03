@@ -1,6 +1,5 @@
 package com.edgar.core.repository.transaction;
 
-import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPathBase;
 
@@ -17,13 +16,13 @@ public abstract class TransactionTemplate implements Transaction {
 
     protected final DataSource dataSource;
 
-    protected final QueryExample example;
+    protected final TransactionConfig config;
 
-    protected TransactionTemplate(TransactionBuilderTemplate builder) {
-        this.configuration = builder.getConfiguration();
-        this.pathBase = builder.getPathBase();
-        this.dataSource = builder.getDataSource();
-        this.example = builder.getExample();
+    protected TransactionTemplate(TransactionConfig config) {
+        this.config = config;
+        this.configuration = config.getConfiguration();
+        this.pathBase = config.getPathBase();
+        this.dataSource = config.getDataSource();
     }
 
     public Configuration getConfiguration() {
@@ -38,8 +37,5 @@ public abstract class TransactionTemplate implements Transaction {
         return dataSource;
     }
 
-    public QueryExample getExample() {
-        return example;
-    }
 
 }

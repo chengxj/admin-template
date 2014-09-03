@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.SingleColumnRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,8 +40,14 @@ public class QueryTransactionTest {
 
     private Configuration configuration = Constants.CONFIGURATION;
 
+    private TransactionConfig config;
+
+    private RowMapper<TestTable> rowMapper = BeanPropertyRowMapper.newInstance(TestTable.class);
+
+
     @Before
     public void setUp() {
+        config = new TransactionConfig(dataSource, configuration, QTestTable.testTable);
         List<TestTable> testTables = new ArrayList<TestTable>();
         for (int i = 0; i < 10; i++) {
             TestTable testTable = new TestTable();
@@ -51,8 +57,8 @@ public class QueryTransactionTest {
             testTable.setSorted(9999);
             testTables.add(testTable);
         }
-        TransactionBuilder builder = new BatchInsertTransaction.Builder<TestTable>().domains(testTables).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
-        Transaction transaction = builder.build();
+
+        Transaction transaction = TransactionFactory.createDefaultBatchInsertTransaction(config, testTables);
         transaction.execute();
     }
 
@@ -66,19 +72,16 @@ public class QueryTransactionTest {
     public void testQuery() {
         QueryExample example = QueryExample.newInstance();
         example = QueryExample.newInstance();
-        TransactionBuilderTemplate builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
 
         example.limit(10);
-        builder.example(example);
-        transaction = builder.build();
+        transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
         example.equalsTo("testCode", "0001");
-        builder.example(example);
-        transaction = builder.build();
+        transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(1, testTables.size());
 
@@ -87,8 +90,7 @@ public class QueryTransactionTest {
         example.greaterThan("test_code", "0001");
         example.asc("sorted");
         example.desc("testCode");
-        builder.example(example);
-        transaction = builder.build();
+        transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(8, testTables.size());
     }
@@ -99,8 +101,8 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.addField("testCode");
-        TransactionBuilderTemplate builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
         for (TestTable TestTable : testTables) {
@@ -110,8 +112,7 @@ public class QueryTransactionTest {
         example.clear();
         example.limit(10);
         example.addField("testCodeew");
-        builder.example(example);
-        transaction = builder.build();
+        transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
         for (TestTable TestTable : testTables) {
@@ -126,8 +127,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.notEqualsTo("testCode", "0001");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(9, testTables.size());
     }
@@ -138,8 +138,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.greaterThan("testCode", "0001");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(8, testTables.size());
     }
@@ -150,8 +149,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.greaterThanOrEqualTo("testCode", "0001");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(9, testTables.size());
     }
@@ -162,8 +160,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.lessThan("testCode", "0004");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(4, testTables.size());
     }
@@ -174,8 +171,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.lessThanOrEqualTo("testCode", "0004");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(5, testTables.size());
     }
@@ -186,8 +182,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.like("testCode", "000%");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
     }
@@ -198,8 +193,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.notLike("testCode", "0000001%");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
     }
@@ -210,8 +204,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.beginWtih("testCode", "000");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
     }
@@ -222,8 +215,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.notBeginWith("testCode", "000");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(0, testTables.size());
     }
@@ -234,8 +226,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.contain("testCode", "00");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
     }
@@ -246,8 +237,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.notContain("testCode", "00");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(0, testTables.size());
     }
@@ -258,8 +248,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.isNull("testCode");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(0, testTables.size());
     }
@@ -270,8 +259,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.isNotNull("testCode");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
     }
@@ -282,8 +270,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.between("testCode", "0001", "0002");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(2, testTables.size());
     }
@@ -294,8 +281,7 @@ public class QueryTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.limit(10);
         example.notBetween("testCode", "0001", "0002");
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(8, testTables.size());
     }
@@ -309,8 +295,7 @@ public class QueryTransactionTest {
         in.add("0001");
         in.add("0002");
         example.in("testCode", in);
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(2, testTables.size());
     }
@@ -324,8 +309,7 @@ public class QueryTransactionTest {
         in.add("0001");
         in.add("0002");
         example.notIn("testCode", in);
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(8, testTables.size());
     }
@@ -337,14 +321,12 @@ public class QueryTransactionTest {
         example.equalsTo("testCode", "0001");
         example.addField("testCode");
 
-        TransactionBuilderTemplate builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).rowMapper(new SingleColumnRowMapper(String.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
 
         List<String> testTables = transaction.execute();
         Assert.assertEquals(1, testTables.size());
         example.addField("dictName");
-        builder.example(example);
-        transaction = builder.build();
+        transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         try {
             testTables = transaction.execute();;
             Assert.assertEquals(1, testTables.size());

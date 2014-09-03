@@ -5,10 +5,12 @@ import com.edgar.module.sys.repository.domain.TestTable;
 import com.edgar.module.sys.repository.querydsl.QTestTable;
 import com.mysema.query.sql.Configuration;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,13 +38,22 @@ public class InsertTransactionTest {
 
     private Configuration configuration = Constants.CONFIGURATION;
 
+
+    private TransactionConfig config;
+
+    private RowMapper<TestTable> rowMapper = BeanPropertyRowMapper.newInstance(TestTable.class);
+
+    @Before
+    public void setUp() {
+        config = new TransactionConfig(dataSource, configuration, QTestTable.testTable);
+    }
+
     @Transactional
     @Test
     public void testInsert() {
         QueryExample example = QueryExample.newInstance();
         example = QueryExample.newInstance();
-        TransactionBuilder builder = new QueryTransaction.Builder<TestTable>().rowMapper(BeanPropertyRowMapper.newInstance(TestTable.class)).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         List<TestTable> testTables = transaction.execute();
         Assert.assertEquals(0, testTables.size());
 
@@ -53,13 +64,12 @@ public class InsertTransactionTest {
             testTable.setDictName("000" + i);
             testTable.setParentCode("-1");
             testTable.setSorted(9999);
-            TransactionBuilder insertbuilder = new InsertTransaction.Builder<TestTable>().domain(testTable).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
-            transaction = insertbuilder.build();
+            transaction = TransactionFactory.createDefaultInsertTransaction(config, testTable);
             Long result = transaction.execute();
             Assert.assertEquals(1l, result, 0);
         }
 
-        transaction = builder.build();
+        transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(10, testTables.size());
     }

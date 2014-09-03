@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,8 +40,14 @@ public class CountTransactionTest {
 
     private Configuration configuration = Constants.CONFIGURATION;
 
+    private TransactionConfig config;
+
+    private RowMapper<TestTable> rowMapper = BeanPropertyRowMapper.newInstance(TestTable.class);
+
+
     @Before
     public void setUp() {
+        config = new TransactionConfig(dataSource, configuration, QTestTable.testTable);
         List<TestTable> testTables = new ArrayList<TestTable>();
         for (int i = 0; i < 10; i++) {
             TestTable testTable = new TestTable();
@@ -49,8 +57,8 @@ public class CountTransactionTest {
             testTable.setSorted(9999);
             testTables.add(testTable);
         }
-        TransactionBuilder builder = new BatchInsertTransaction.Builder<TestTable>().domains(testTables).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
-        Transaction transaction = builder.build();
+
+        Transaction transaction = TransactionFactory.createDefaultBatchInsertTransaction(config, testTables);
         transaction.execute();
     }
 
@@ -64,19 +72,16 @@ public class CountTransactionTest {
     public void testQuery() {
         QueryExample example = QueryExample.newInstance();
         example = QueryExample.newInstance();
-        TransactionBuilderTemplate builder = new CountTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createCountTransaction(config, example);
         Long count = transaction.execute();
         Assert.assertEquals(10, count, 0);
 
         example.limit(5);
-        builder.example(example);
-        transaction = builder.build();
+        transaction =  TransactionFactory.createCountTransaction(config, example);
         count = transaction.execute();
         Assert.assertEquals(5, count, 0);
         example.equalsTo("testCode", "0001");
-        builder.example(example);
-        transaction = builder.build();
+        transaction =  TransactionFactory.createCountTransaction(config, example);
         count = transaction.execute();
         Assert.assertEquals(1, count, 0);
 
@@ -85,8 +90,7 @@ public class CountTransactionTest {
         example.greaterThan("test_code", "0001");
         example.asc("sorted");
         example.desc("testCode");
-        builder.example(example);
-        transaction = builder.build();
+        transaction =  TransactionFactory.createCountTransaction(config, example);
         count = transaction.execute();
         Assert.assertEquals(8, count, 0);
     }

@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -43,8 +45,13 @@ public class DeleteTransactionTest {
 
     private Configuration configuration = Constants.CONFIGURATION;
 
+    private TransactionConfig config;
+
+    private RowMapper<TestTable> rowMapper = BeanPropertyRowMapper.newInstance(TestTable.class);
+
     @Before
     public void setUp() {
+        config = new TransactionConfig(dataSource, configuration, QTestTable.testTable);
         List<TestTable> testTables = new ArrayList<TestTable>();
         for (int i = 0; i < 10; i++) {
             TestTable testTable = new TestTable();
@@ -54,8 +61,8 @@ public class DeleteTransactionTest {
             testTable.setSorted(9999);
             testTables.add(testTable);
         }
-        TransactionBuilder builder = new BatchInsertTransaction.Builder<TestTable>().domains(testTables).dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable);
-        Transaction transaction = builder.build();
+
+        Transaction transaction = TransactionFactory.createDefaultBatchInsertTransaction(config, testTables);
         transaction.execute();
     }
 
@@ -76,8 +83,7 @@ public class DeleteTransactionTest {
         example.equalsTo("testCode", testTable.getTestCode());
         example.equalsTo("updatedTime", testTable.getUpdatedTime());
 
-        TransactionBuilder builder = new DeleteTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createDeleteTransaction(config, example);
         Long result = transaction.execute();
         Assert.assertEquals(1l, result, 0);
         testTable = testTableDao.get(testTable.getTestCode());
@@ -90,8 +96,7 @@ public class DeleteTransactionTest {
 
         QueryExample example = QueryExample.newInstance();
         example.notEqualsTo("testCode", "0001");
-        TransactionBuilder builder = new DeleteTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(QTestTable.testTable).example(example);
-        Transaction transaction = builder.build();
+        Transaction transaction = TransactionFactory.createDeleteTransaction(config, example);
         Long result = transaction.execute();
         Assert.assertEquals(9l, result, 0);
     }

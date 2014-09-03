@@ -5,7 +5,6 @@ import com.edgar.core.repository.handler.*;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.BooleanExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,11 +23,14 @@ public class QueryTransaction<T> extends TransactionTemplate {
 
     private final RowMapper<T> rowMapper;
 
+    private final QueryExample example;
+
     private final List<Path<?>> returnPaths = new ArrayList<Path<?>>();
 
-    protected QueryTransaction(Builder<T> builder) {
-        super(builder);
-        this.rowMapper = builder.getRowMapper();
+    protected QueryTransaction(TransactionConfig config, QueryExample example, RowMapper<T> rowMapper) {
+        super(config);
+        this.example = example;
+        this.rowMapper = rowMapper;
     }
 
     public List<T> execute() {
@@ -58,24 +60,6 @@ public class QueryTransaction<T> extends TransactionTemplate {
         handlers.add(fieldHandler);
         for (QueryExampleHandler handler : handlers) {
             handler.handle();
-        }
-    }
-
-    public static class Builder<T> extends TransactionBuilderTemplate {
-        private RowMapper<T> rowMapper;
-
-        @Override
-        public Transaction build() {
-            return new QueryTransaction<T>(this);
-        }
-
-        public RowMapper<T> getRowMapper() {
-            return rowMapper;
-        }
-
-        public Builder<T> rowMapper(RowMapper<T> rowMapper) {
-            this.rowMapper = rowMapper;
-            return this;
         }
     }
 

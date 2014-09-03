@@ -1,5 +1,6 @@
 package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.handler.SQLDeleteClauseWhereHandler;
 import com.edgar.core.repository.handler.WhereHandler;
 import com.mysema.query.sql.SQLBindings;
@@ -19,8 +20,11 @@ import java.sql.SQLException;
 public class DeleteTransaction extends TransactionTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(DeleteTransaction.class);
 
-    protected DeleteTransaction(Builder builder) {
-        super(builder);
+    private final QueryExample example;
+
+    protected DeleteTransaction(TransactionConfig config, QueryExample example) {
+        super(config);
+        this.example = example;
     }
 
     @Override
@@ -41,10 +45,4 @@ public class DeleteTransaction extends TransactionTemplate {
         });
     }
 
-    public static class Builder extends TransactionBuilderTemplate {
-        @Override
-        public Transaction build() {
-            return new DeleteTransaction(this);
-        }
-    }
 }

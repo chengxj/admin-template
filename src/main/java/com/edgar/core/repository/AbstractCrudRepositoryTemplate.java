@@ -73,8 +73,8 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public List<T> query(final QueryExample example) {
         Assert.notNull(example);
-        TransactionBuilder builder = new QueryTransaction.Builder<T>().rowMapper(getRowMapper()).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
-        Transaction transaction = builder.build();
+        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, getRowMapper());
         return transaction.execute();
     }
 
@@ -83,16 +83,16 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
                                          Class<E> elementType) {
         Assert.notNull(example);
         Assert.notEmpty(example.getFields(), "fields cannot be null");
-        TransactionBuilder builder = new QueryTransaction.Builder<E>().rowMapper(new SingleColumnRowMapper<E>(elementType)).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
-        Transaction transaction = builder.build();
+        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
+        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, new SingleColumnRowMapper<E>(elementType));
         return transaction.execute();
     }
 
     @Override
     public Pagination<T> pagination(QueryExample example, int page, int pageSize) {
         Assert.notNull(example);
-        TransactionBuilder builder = new PageTransaction.Builder<T>().rowMapper(getRowMapper()).page(page).pageSize(pageSize).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
-        Transaction transaction = builder.build();
+        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
+        Transaction transaction = TransactionFactory.createPageTransaction(config, example, page, pageSize, getRowMapper());
         return transaction.execute();
     }
 
@@ -124,15 +124,15 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public Long insert(List<T> domains) {
         Assert.notEmpty(domains, "domains cannot be empty");
-        TransactionBuilder builder = new BatchInsertTransaction.Builder<T>().domains(domains).dataSource(dataSource).configuration(configuration).pathBase(getPathBase());
-        Transaction transaction = builder.build();
+        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
+        Transaction transaction = TransactionFactory.createDefaultBatchInsertTransaction(config, domains);
         return transaction.execute();
     }
 
     @Override
     public Long insert(T domain) {
-        TransactionBuilder builder = new InsertTransaction.Builder<T>().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(getPathBase());
-        Transaction transaction = builder.build();
+        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
+        Transaction transaction = TransactionFactory.createDefaultInsertTransaction(config, domain);
         return transaction.execute();
     }
 
@@ -157,8 +157,8 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 
     @Override
     public Long delete(final QueryExample example) {
-        TransactionBuilder builder = new DeleteTransaction.Builder().dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
-        Transaction transaction = builder.build();
+        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
+        Transaction transaction = TransactionFactory.createDeleteTransaction(config, example);
         return transaction.execute();
     }
 
@@ -169,8 +169,8 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         if (example == null) {
             QueryExample.newInstance();
         }
-        TransactionBuilder builder = new UpdateTransaction.Builder<T>().defaultIgnore().domain(domain).dataSource(dataSource).configuration(configuration).pathBase(getPathBase()).example(example);
-        Transaction transaction = builder.build();
+        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
+        Transaction transaction = TransactionFactory.createDefaultUpdateTransaction(config, domain, example);
         return transaction.execute();
     }
 

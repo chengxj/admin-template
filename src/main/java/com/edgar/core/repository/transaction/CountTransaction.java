@@ -1,9 +1,9 @@
 package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.handler.*;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.types.expr.BooleanExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,8 +19,11 @@ public class CountTransaction extends TransactionTemplate {
     private static final Logger LOGGER = LoggerFactory
             .getLogger(CountTransaction.class);
 
-    protected CountTransaction(Builder builder) {
-        super(builder);
+    private final QueryExample example;
+
+    protected CountTransaction(TransactionConfig config, QueryExample example) {
+        super(config);
+        this.example = example;
     }
 
     public Long execute() {
@@ -53,10 +56,4 @@ public class CountTransaction extends TransactionTemplate {
         }
     }
 
-    public static class Builder extends TransactionBuilderTemplate {
-        @Override
-        public Transaction build() {
-            return new CountTransaction(this);
-        }
-    }
 }
