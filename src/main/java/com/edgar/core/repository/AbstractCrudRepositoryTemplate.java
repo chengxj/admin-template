@@ -50,6 +50,10 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
      */
     public abstract RelationalPathBase<?> getPathBase();
 
+    public TransactionConfig config() {
+        return new TransactionConfig(dataSource, configuration, getPathBase());
+    }
+
     /**
      * 是否开启缓存
      *
@@ -73,8 +77,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public List<T> query(final QueryExample example) {
         Assert.notNull(example);
-        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
-        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, getRowMapper());
+        Transaction transaction = TransactionFactory.createQueryTransaction(config(), example, getRowMapper());
         return transaction.execute();
     }
 
@@ -83,16 +86,14 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
                                          Class<E> elementType) {
         Assert.notNull(example);
         Assert.notEmpty(example.getFields(), "fields cannot be null");
-        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
-        Transaction transaction = TransactionFactory.createQueryTransaction(config, example, new SingleColumnRowMapper<E>(elementType));
+        Transaction transaction = TransactionFactory.createQueryTransaction(config(), example, new SingleColumnRowMapper<E>(elementType));
         return transaction.execute();
     }
 
     @Override
     public Pagination<T> pagination(QueryExample example, int page, int pageSize) {
         Assert.notNull(example);
-        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
-        Transaction transaction = TransactionFactory.createPageTransaction(config, example, page, pageSize, getRowMapper());
+        Transaction transaction = TransactionFactory.createPageTransaction(config(), example, page, pageSize, getRowMapper());
         return transaction.execute();
     }
 
@@ -124,15 +125,13 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public Long insert(List<T> domains) {
         Assert.notEmpty(domains, "domains cannot be empty");
-        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
-        Transaction transaction = TransactionFactory.createDefaultBatchInsertTransaction(config, domains);
+        Transaction transaction = TransactionFactory.createDefaultBatchInsertTransaction(config(), domains);
         return transaction.execute();
     }
 
     @Override
     public Long insert(T domain) {
-        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
-        Transaction transaction = TransactionFactory.createDefaultInsertTransaction(config, domain);
+        Transaction transaction = TransactionFactory.createDefaultInsertTransaction(config(), domain);
         return transaction.execute();
     }
 
@@ -157,8 +156,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
 
     @Override
     public Long delete(final QueryExample example) {
-        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
-        Transaction transaction = TransactionFactory.createDeleteTransaction(config, example);
+        Transaction transaction = TransactionFactory.createDeleteTransaction(config(), example);
         return transaction.execute();
     }
 
@@ -169,8 +167,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         if (example == null) {
             QueryExample.newInstance();
         }
-        TransactionConfig config = new TransactionConfig(dataSource, configuration, getPathBase());
-        Transaction transaction = TransactionFactory.createDefaultUpdateTransaction(config, domain, example);
+        Transaction transaction = TransactionFactory.createDefaultUpdateTransaction(config(), domain, example);
         return transaction.execute();
     }
 
