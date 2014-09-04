@@ -10,6 +10,8 @@ package com.edgar.core.auth;
 public class RefreshCommand {
     private String accessToken;
 
+    private String refreshToken;
+
     public String getAccessToken() {
         return accessToken;
     }
@@ -25,6 +27,4 @@ public class RefreshCommand {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
-
-    private String refreshToken;
 }

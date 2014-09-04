@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
@@ -69,14 +70,18 @@ public class AuthenticatedResource {
     }
 
     /**
-     * 用户登录
+     * 刷新Token
      *
-     * @param refreshCommand 刷新的TOKEN
+     * @param accessToken accessToken
+     * @param refreshToken refreshToken
      * @return 登录成功的视图
      */
-    @AuthHelper(value = "Refresh", type = AuthType.SSL)
-    @RequestMapping(method = RequestMethod.POST, value = "/refresh")
-    public ModelAndView refresh(@RequestBody RefreshCommand refreshCommand) {
+    @AuthHelper(value = "Refresh Token", type = AuthType.SSL)
+    @RequestMapping(method = RequestMethod.GET, value = "/refresh")
+    public ModelAndView refresh(@RequestParam("accessToken") String accessToken, @RequestParam("refreshToken") String refreshToken) {
+        RefreshCommand refreshCommand = new RefreshCommand();
+        refreshCommand.setAccessToken(accessToken);
+        refreshCommand.setRefreshToken(refreshToken);
         AccessToken token = authService.refresh(refreshCommand);
         return ResponseMessage.asModelAndView(token);
     }

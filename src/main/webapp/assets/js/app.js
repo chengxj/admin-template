@@ -85,7 +85,7 @@ angular
                 if ($rootScope.accessToken && $rootScope.refreshToken) {
                     $rootScope.refreshTokenFun();
                 }
-            }, $rootScope.expiresIn);
+            }, 5000);
         }
 
         $rootScope.$on("login", function(event, data) {
@@ -93,7 +93,7 @@ angular
         });
 
         $rootScope.refreshTokenFun = function() {
-            $http.post("https://10.4.7.15/auth/refresh", {accessToken : $rootScope.accessToken, refreshToken : $rootScope.refreshToken}).success(
+            $http.get("https://10.4.7.15/auth/refresh",{params: {accessToken : $rootScope.accessToken, refreshToken : $rootScope.refreshToken}} ).success(
                 function (data) {
                     $rootScope.loginSuccess(data);
 
@@ -153,10 +153,7 @@ angular
                 $rootScope.leftMenus = _.sortBy(menus, function(v, i) {
                     return v.sorted;
                 });
-                if (!$rootScope.hasLoadRoute) {
-                    $rootScope.loadRoute(data.routes);
-                    $rootScope.hasLoadRoute = true;
-                }
+                $rootScope.loadRoute(data.routes);
                 if (data.user.profile && data.user.profile.language) {
                     $translate.use(data.user.profile.language);
                 }
@@ -188,8 +185,7 @@ angular
                 $rootScope.loginUser = null;
                 $rootScope.accessToken =null;
                 $rootScope.secretKey = null;
-//                $rootScope.refreshToken = null;
-                $rootScope.hasLoadRoute = false;
+                $rootScope.refreshToken = null;
                 $("body").trigger("unlogin");
                 if ($rootScope.refresh) {
                     $interval.cancel($rootScope.refresh);

@@ -165,7 +165,7 @@ public class AuthService {
         token.setAccessToken(createToken(username, 30 * 3600 * 1000));
         token.setRefreshToken(createToken(username, 60 * 3600 * 1000));
         token.setSecretKey(createToken(username, 30 * 3600 * 1000));
-        token.setExpiresIn("" + 5 * 60 * 1000);
+        token.setExpiresIn("" + 30 * 60 * 1000);
         token.setServerTime("" + System.currentTimeMillis());
         return token;
     }
