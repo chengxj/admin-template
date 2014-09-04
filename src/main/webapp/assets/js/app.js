@@ -69,8 +69,18 @@ angular
             $rootScope.accessToken = data.accessToken;
             $rootScope.secretKey =data.secretKey;
             $rootScope.refreshToken = data.refreshToken;
-            $rootScope.expiresIn = new Number(data.expiresIn) - 3 * 60 * 1000;
-            $rootScope.loadUser();
+            var expiresIn = new Number(data.expiresIn) - 3 * 60 * 1000;
+            if (expiresIn <= 0) {
+                $rootScope.expiresIn = data.expiresIn - 1000;
+            } else {
+                $rootScope.expiresIn = expiresIn;
+            }
+            if (!$rootScope.loginUser) {
+                $rootScope.loadUser();
+            }
+            if ($rootScope.refresh) {
+                $interval.cancel($rootScope.refresh);
+            }
             $rootScope.refresh = $interval(function() {
                 if ($rootScope.accessToken && $rootScope.refreshToken) {
                     $rootScope.refreshTokenFun();
@@ -143,7 +153,10 @@ angular
                 $rootScope.leftMenus = _.sortBy(menus, function(v, i) {
                     return v.sorted;
                 });
-                $rootScope.loadRoute(data.routes);
+                if (!$rootScope.hasLoadRoute) {
+                    $rootScope.loadRoute(data.routes);
+                    $rootScope.hasLoadRoute = true;
+                }
                 if (data.user.profile && data.user.profile.language) {
                     $translate.use(data.user.profile.language);
                 }
@@ -176,6 +189,7 @@ angular
                 $rootScope.accessToken =null;
                 $rootScope.secretKey = null;
 //                $rootScope.refreshToken = null;
+                $rootScope.hasLoadRoute = false;
                 $("body").trigger("unlogin");
                 if ($rootScope.refresh) {
                     $interval.cancel($rootScope.refresh);
@@ -236,10 +250,18 @@ function httpInterceptor($httpProvider) {
     $httpProvider.interceptors.push(function ($q) {
         return {
             'request': function(config) {
+                if (config.url.indexOf(".html") > 0) {
+                    return config;
+                }
+                if (config.url.indexOf(".js") > 0) {
+                    return config;
+                }
+                if (config.url.indexOf(".css") > 0) {
+                    return config;
+                }
                 var serverTime = $.localStorage.get("serverTime");
                 var clientTime = $.localStorage.get("clientTime");
                 var timeDiff = clientTime - serverTime;
-
                 if (config && config.params) {
                     config.params.timestamp = new Date().getTime() - timeDiff;
                 } else {
@@ -249,9 +271,6 @@ function httpInterceptor($httpProvider) {
                     return config;
                 }
                 if (config.url.indexOf("/auth/refresh") > 0) {
-                    return config;
-                }
-                if (config.url.indexOf(".html") > 0) {
                     return config;
                 }
 
