@@ -68,6 +68,19 @@ public class AuthenticatedResource {
         return ResponseMessage.asModelAndView(token);
     }
 
+    /**
+     * 用户登录
+     *
+     * @param refreshCommand 刷新的TOKEN
+     * @return 登录成功的视图
+     */
+    @AuthHelper(value = "Refresh", type = AuthType.SSL)
+    @RequestMapping(method = RequestMethod.POST, value = "/refresh")
+    public ModelAndView refresh(@RequestBody RefreshCommand refreshCommand) {
+        AccessToken token = authService.refresh(refreshCommand);
+        return ResponseMessage.asModelAndView(token);
+    }
+
 
     /**
      * 用户注销

@@ -18,7 +18,7 @@ public class AccessToken {
     /**
      * Access Token的有效期，以秒为单位
      */
-    private long expiresIn;
+    private String expiresIn;
 
     /**
      * 用户名
@@ -28,14 +28,14 @@ public class AccessToken {
     /**
      * 创建时间
      */
-    private long createdTime;
+    private String serverTime;
 
-    public long getCreatedTime() {
-        return createdTime;
+    public String getServerTime() {
+        return serverTime;
     }
 
-    public void setCreatedTime(long createdTime) {
-        this.createdTime = createdTime;
+    public void setServerTime(String serverTime) {
+        this.serverTime = serverTime;
     }
 
     public String getUsername() {
@@ -70,11 +70,11 @@ public class AccessToken {
         this.secretKey = secretKey;
     }
 
-    public long getExpiresIn() {
+    public String getExpiresIn() {
         return expiresIn;
     }
 
-    public void setExpiresIn(long expiresIn) {
+    public void setExpiresIn(String expiresIn) {
         this.expiresIn = expiresIn;
     }
 }

@@ -52,14 +52,52 @@ if (!Array.prototype.indexOf) {
 angular
     .module('rootApp', ["ngRoute", "app.directives", "app.filters", "routeResolverServices", "app.services", "pascalprecht.translate"])
     .run(
-    function ($route, $rootScope, $http, $timeout, $translate, $routeProvider, $routeResolverProvider) {
+    function ($route, $rootScope, $http, $timeout, $interval, $translate, $routeProvider, $routeResolverProvider) {
         $( "body").on("login", function() {
             $(".login").hide();
         }).on("unlogin", function() {
             $rootScope.loginUser = undefined;
             $(".login").show();
         });
+
+        $rootScope.loginSuccess = function(data) {
+            $.localStorage.set("accessToken", data.accessToken);
+            $.localStorage.set("refreshToken", data.refreshToken);
+            $.localStorage.set("secretKey", data.secretKey);
+            $.localStorage.set("serverTime", data.serverTime);
+            $.localStorage.set("clientTime", new Date().getTime());
+            $rootScope.accessToken = data.accessToken;
+            $rootScope.secretKey =data.secretKey;
+            $rootScope.refreshToken = data.refreshToken;
+            $rootScope.expiresIn = new Number(data.expiresIn) - 3 * 60 * 1000;
+            $rootScope.loadUser();
+            $rootScope.refresh = $interval(function() {
+                if ($rootScope.accessToken && $rootScope.refreshToken) {
+                    $rootScope.refreshTokenFun();
+                }
+            }, $rootScope.expiresIn);
+        }
+
+        $rootScope.$on("login", function(event, data) {
+            $rootScope.loginSuccess(data);
+        });
+
+        $rootScope.refreshTokenFun = function() {
+            $http.post("https://10.4.7.15/auth/refresh", {accessToken : $rootScope.accessToken, refreshToken : $rootScope.refreshToken}).success(
+                function (data) {
+                    $rootScope.loginSuccess(data);
+
+                }).error(function() {
+                    if ($rootScope.refresh) {
+                        $interval.cancel($rootScope.refresh);
+                    }
+                });
+        }
+        $rootScope.refreshToken = $.localStorage.get("refreshToken");
         $rootScope.accessToken = $.localStorage.get("accessToken");
+        if ($rootScope.refreshToken &&  $rootScope.accessToken) {
+            $rootScope.refreshTokenFun();
+        }
 
         $rootScope.loadRoute = function(routes) {
             var route = $routeResolverProvider.route
@@ -113,7 +151,8 @@ angular
                 $("body").trigger("login");
                 $timeout(function () {
                     App.init();
-                })
+                });
+
             });
         }
         $rootScope.$on('$viewContentLoaded', function () {
@@ -121,16 +160,26 @@ angular
             App.runHeight();
         });
 
+
         $rootScope.$watch("accessToken", function(value) {
-            if (value) {
-                $rootScope.loadUser();
-            } else {
+            if (!value) {
                 $("body").trigger("unlogin");
             }
         });
+
         $rootScope.logout = function () {
             $http.post('auth/logout').success(function (data) {
+                $.localStorage.remove("accessToken");
+//                $.localStorage.remove("refreshToken");
+                $.localStorage.remove("secretKey");
+                $rootScope.loginUser = null;
+                $rootScope.accessToken =null;
+                $rootScope.secretKey = null;
+//                $rootScope.refreshToken = null;
                 $("body").trigger("unlogin");
+                if ($rootScope.refresh) {
+                    $interval.cancel($rootScope.refresh);
+                }
             }).error(function () {
                 $timeout(function () {
                     $("body").trigger("unlogin");
@@ -187,12 +236,19 @@ function httpInterceptor($httpProvider) {
     $httpProvider.interceptors.push(function ($q) {
         return {
             'request': function(config) {
+                var serverTime = $.localStorage.get("serverTime");
+                var clientTime = $.localStorage.get("clientTime");
+                var timeDiff = clientTime - serverTime;
+
                 if (config && config.params) {
-                    config.params.timestamp = new Date().getTime();
+                    config.params.timestamp = new Date().getTime() - timeDiff;
                 } else {
-                    config.params = {timestamp:new Date().getTime()};
+                    config.params = {timestamp:new Date().getTime() - timeDiff};
                 }
-                if (config.url.indexOf("/login") > 0) {
+                if (config.url.indexOf("/auth/login") > 0) {
+                    return config;
+                }
+                if (config.url.indexOf("/auth/refresh") > 0) {
                     return config;
                 }
                 if (config.url.indexOf(".html") > 0) {

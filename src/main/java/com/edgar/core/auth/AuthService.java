@@ -25,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 用户权限的业务逻辑
@@ -37,6 +39,8 @@ public class AuthService {
 
     private CacheWrapper<String, String> replyAttackCacheWrapper;
 
+    private CacheWrapper<String, AccessToken> refreshTokenCacheWrapper;
+
     @Autowired
     private UserFacde userFacde;
 
@@ -44,6 +48,7 @@ public class AuthService {
     public void setCacheManager(CacheManager cacheManager) {
         accessTokenCacheWrapper = new EhCacheWrapper<String, AccessToken>("StatelessCache", cacheManager);
         replyAttackCacheWrapper = new EhCacheWrapper<String, String>("ReplayAttackCache", cacheManager);
+        refreshTokenCacheWrapper = new EhCacheWrapper<String, AccessToken>("RefreshTokenCache", cacheManager);
     }
 
     /**
@@ -143,6 +148,7 @@ public class AuthService {
         Assert.notNull(username);
         AccessToken accessToken = newToken(username);
         accessTokenCacheWrapper.put(accessToken.getAccessToken(), accessToken);
+        refreshTokenCacheWrapper.put(accessToken.getAccessToken(), accessToken);
         LOGGER.debug("crate new token : {}", accessToken.getAccessToken());
         return accessToken;
     }
@@ -159,8 +165,8 @@ public class AuthService {
         token.setAccessToken(createToken(username, 30 * 3600 * 1000));
         token.setRefreshToken(createToken(username, 60 * 3600 * 1000));
         token.setSecretKey(createToken(username, 30 * 3600 * 1000));
-        token.setExpiresIn(30 * 3600 * 1000);
-        token.setCreatedTime(System.currentTimeMillis());
+        token.setExpiresIn("" + 5 * 60 * 1000);
+        token.setServerTime("" + System.currentTimeMillis());
         return token;
     }
 
@@ -178,5 +184,20 @@ public class AuthService {
         token.append(salt);
         token.append(System.currentTimeMillis() + expiresIn);
         return new SimpleHash(Constants.TOKEN_ALGORITHM_NAME, key, ByteSource.Util.bytes(token.toString()), Constants.TOKEN_HASH_ITERATIONS).toHex();
+    }
+
+    public AccessToken refresh(RefreshCommand command) {
+        String accessToken = command.getAccessToken();
+        String refreshToken = command.getRefreshToken();
+        Assert.hasText(accessToken);
+        Assert.hasText(refreshToken);
+
+        AccessToken serverToken = refreshTokenCacheWrapper.get(accessToken);
+        if (serverToken != null && refreshToken.equals(serverToken.getRefreshToken())) {
+            refreshTokenCacheWrapper.remove(accessToken);
+            AccessToken token = tokenHandler(serverToken.getUsername());
+            return token;
+        }
+        throw ExceptionFactory.unAuthorized();
     }
 }
