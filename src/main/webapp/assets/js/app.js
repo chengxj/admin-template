@@ -85,7 +85,7 @@ angular
                 if ($rootScope.accessToken && $rootScope.refreshToken) {
                     $rootScope.refreshTokenFun();
                 }
-            }, 5000);
+            }, $rootScope.expiresIn);
         }
 
         $rootScope.$on("login", function(event, data) {
