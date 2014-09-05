@@ -96,6 +96,6 @@ public class AuthenticatedResource {
     public ModelAndView logout() {
         StatelessUser user = (StatelessUser) RequestContextHolder.currentRequestAttributes().getAttribute(Constants.USER_KEY, RequestAttributes.SCOPE_REQUEST);
         authService.logout(user.getAccessToken());
-        return ResponseMessage.asModelAndView("Login Success");
+        return ResponseMessage.asModelAndView("Logout Success");
     }
 }

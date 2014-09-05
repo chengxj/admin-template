@@ -57,6 +57,7 @@ public class FilterChainDefinitionsLoader {
                 filterChainDefinitionMap.put("/app/**", "anon");
                 filterChainDefinitionMap.put("/assets/**", "anon");
                 filterChainDefinitionMap.put("/js/**", "anon");
+                filterChainDefinitionMap.put("/monitoring", "anon");
         }
 
         /**

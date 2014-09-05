@@ -69,6 +69,7 @@ angular
             $rootScope.accessToken = data.accessToken;
             $rootScope.secretKey =data.secretKey;
             $rootScope.refreshToken = data.refreshToken;
+
             var expiresIn = new Number(data.expiresIn) - 3 * 60 * 1000;
             if (expiresIn <= 0) {
                 $rootScope.expiresIn = data.expiresIn - 1000;
@@ -242,6 +243,10 @@ angular
                     .preferredLanguage("en");
             } ]);
 
+function hmac256(baseString, secretKey) {
+    return CryptoJS.HmacSHA256(baseString, secretKey).toString();
+}
+
 function httpInterceptor($httpProvider) {
     $httpProvider.interceptors.push(function ($q) {
         return {
@@ -294,7 +299,7 @@ function httpInterceptor($httpProvider) {
                         queryArray = queryArray.concat(getArray(angular.fromJson(data)));
                     }
                     var baseString = config.method + config.url + "?" + queryArray.join("&");
-                    config.params.digest = CryptoJS.HmacSHA256(baseString, secretKey).toString();
+                    config.params.digest = hmac256(baseString, secretKey);
                 }
 
                 return config;
