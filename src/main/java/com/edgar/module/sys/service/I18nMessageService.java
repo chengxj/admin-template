@@ -4,6 +4,7 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.I18nMessage;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import java.io.IOException;
  * @author Edgar Zhang
  * @version 1.0
  */
+@Validated
 public interface I18nMessageService {
     /**
      * 新增i18n

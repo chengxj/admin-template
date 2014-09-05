@@ -86,7 +86,7 @@
 //                verifyStatic();
 //                QueryExample.newInstance();
 //                Assert.assertTrue(example.containCriteria(new Criteria("roleId",
-//                                SqlOperator.EQUALS_TO, 1)));
+//                                SqlOperator.EQ, 1)));
 //        }
 //
 //        @Test
@@ -101,7 +101,7 @@
 //                verifyStatic();
 //                QueryExample.newInstance();
 //                Assert.assertTrue(example.containCriteria(new Criteria("roleId",
-//                                SqlOperator.EQUALS_TO, 1)));
+//                                SqlOperator.EQ, 1)));
 //        }
 //
 //        @Test
@@ -116,7 +116,7 @@
 //                verifyStatic();
 //                QueryExample.newInstance();
 //                Assert.assertTrue(example.containCriteria(new Criteria("roleId",
-//                                SqlOperator.EQUALS_TO, 1)));
+//                                SqlOperator.EQ, 1)));
 //        }
 //
 //        @Test

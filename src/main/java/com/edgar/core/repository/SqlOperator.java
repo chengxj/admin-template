@@ -13,27 +13,27 @@ public enum SqlOperator {
         /**
          * =
          */
-        EQUALS_TO,
+        EQ,
         /**
          * <>
          */
-        NOT_EQUALS_TO,
+        NE,
         /**
          * >
          */
-        GREATER_THAN,
+        GT,
         /**
          * >=
          */
-        GREATER_THAN_AND_EQUALS_TO,
+        GOE,
         /**
          * 小于
          */
-        LESS_THAN,
+        LT,
         /**
          * <=
          */
-        LESS_THAN_AND_EQUALS_TO,
+        LOE,
         /**
          * like
          */

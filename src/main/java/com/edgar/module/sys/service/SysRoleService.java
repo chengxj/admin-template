@@ -1,15 +1,13 @@
 package com.edgar.module.sys.service;
 
-import java.util.List;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysRole;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 角色的业务逻辑接口

@@ -101,7 +101,7 @@ public class SysMenuServiceTest {
 //                verifyStatic(only());
 //                QueryExample.newInstance();
 //                Assert.assertTrue(example.getCriterias().contains(
-//                                new Criteria("menuId", SqlOperator.EQUALS_TO, 1)));
+//                                new Criteria("menuId", SqlOperator.EQ, 1)));
 //        }
 //
 //        @Test
@@ -116,7 +116,7 @@ public class SysMenuServiceTest {
 //                List<SysMenu> result = sysMenuService.query(example);
 //                Assert.assertEquals(sysMenus, result);
 //                Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
-//                                SqlOperator.EQUALS_TO, 0)));
+//                                SqlOperator.EQ, 0)));
 //                verify(sysMenuDao, times(1)).query(any(QueryExample.class));
 //        }
 //
@@ -325,7 +325,7 @@ public class SysMenuServiceTest {
 //                verifyStatic(only());
 //                QueryExample.newInstance();
 //                Assert.assertTrue(example.containCriteria(new Criteria("menuId",
-//                                SqlOperator.EQUALS_TO, 1)));
+//                                SqlOperator.EQ, 1)));
 //        }
 
 //        @Test
@@ -343,7 +343,7 @@ public class SysMenuServiceTest {
 //                verifyStatic(only());
 //                QueryExample.newInstance();
 //                Assert.assertTrue(example.containCriteria(new Criteria("menuId",
-//                                SqlOperator.EQUALS_TO, 1)));
+//                                SqlOperator.EQ, 1)));
 //        }
 //
 //        @Test
@@ -370,7 +370,7 @@ public class SysMenuServiceTest {
 //                verifyStatic(only());
 //                IDUtils.getNextId();
 //                Assert.assertTrue(example.containCriteria(new Criteria("menuId",
-//                                SqlOperator.EQUALS_TO, 1)));
+//                                SqlOperator.EQ, 1)));
 //        }
 //
 //        @Test
@@ -403,7 +403,7 @@ public class SysMenuServiceTest {
 //                        verifyStatic(only());
 //                        IDUtils.getNextId();
 //                        Assert.assertTrue(example.containCriteria(new Criteria("menuId",
-//                                        SqlOperator.EQUALS_TO, 1)));
+//                                        SqlOperator.EQ, 1)));
 //                }
 //        }
 

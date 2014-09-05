@@ -91,7 +91,7 @@ public class SysRouteServiceTest {
 		verifyStatic(only());
 		QueryExample.newInstance();
 		Assert.assertTrue(example.getCriterias().contains(
-				new Criteria("routeId", SqlOperator.EQUALS_TO, 1)));
+				new Criteria("routeId", SqlOperator.EQ, 1)));
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class SysRouteServiceTest {
 				.pagination(example, 1, 10);
 		Assert.assertEquals(pagination, result);
 		Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
-				SqlOperator.EQUALS_TO, 0)));
+				SqlOperator.EQ, 0)));
 		verify(sysRouteDao, times(1)).pagination(same(example), anyInt(),
 				anyInt());
 	}
@@ -125,7 +125,7 @@ public class SysRouteServiceTest {
 		List<SysRoute> result = sysRouteService.findAll();
 		Assert.assertEquals(sysRoutes, result);
 		Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
-				SqlOperator.EQUALS_TO, 0)));
+				SqlOperator.EQ, 0)));
 		verify(sysRouteDao, times(1)).query(any(QueryExample.class));
 	}
 

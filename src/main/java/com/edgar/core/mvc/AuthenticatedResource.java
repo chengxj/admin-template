@@ -1,8 +1,10 @@
 package com.edgar.core.mvc;
 
-import com.edgar.core.auth.*;
+import com.edgar.core.auth.AccessToken;
+import com.edgar.core.auth.AuthService;
+import com.edgar.core.auth.LoginCommand;
+import com.edgar.core.auth.RefreshCommand;
 import com.edgar.core.auth.stateless.StatelessUser;
-import com.edgar.core.command.CommandBus;
 import com.edgar.core.shiro.AuthHelper;
 import com.edgar.core.shiro.AuthType;
 import com.edgar.core.util.Constants;
@@ -27,9 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/auth")
 public class AuthenticatedResource {
-
-    @Autowired
-    private CommandBus commandBus;
 
     @Autowired
     private AuthService authService;
@@ -93,7 +92,7 @@ public class AuthenticatedResource {
      * @return 注销成功的视图
      */
     @AuthHelper(value = "Logout", type = AuthType.AUTHC)
-    @RequestMapping(method = RequestMethod.POST, value = "/logout")
+    @RequestMapping(method = RequestMethod.GET, value = "/logout")
     public ModelAndView logout() {
         StatelessUser user = (StatelessUser) RequestContextHolder.currentRequestAttributes().getAttribute(Constants.USER_KEY, RequestAttributes.SCOPE_REQUEST);
         authService.logout(user.getAccessToken());

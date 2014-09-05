@@ -66,9 +66,9 @@ public class SysResourceServiceTest {
                 Pagination<SysResource> result = sysResourceService.pagination(example, 1, 10);
                 Assert.assertEquals(pagination, result);
                 Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
-                                SqlOperator.EQUALS_TO, 0)));
+                                SqlOperator.EQ, 0)));
                 Assert.assertTrue(example.containCriteria(new Criteria("authType",
-                                SqlOperator.EQUALS_TO, Constants.AUTH_TYPE_REST)));
+                                SqlOperator.EQ, Constants.AUTH_TYPE_REST)));
                 verify(sysResourceDao, times(1)).pagination(same(example), anyInt(), anyInt());
         }
 
@@ -84,9 +84,9 @@ public class SysResourceServiceTest {
                 List<SysResource> result = sysResourceService.findAll();
                 Assert.assertEquals(sysResources, result);
                 Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
-                                SqlOperator.EQUALS_TO, 0)));
+                                SqlOperator.EQ, 0)));
                 Assert.assertTrue(example.containCriteria(new Criteria("authType",
-                                SqlOperator.EQUALS_TO, Constants.AUTH_TYPE_REST)));
+                                SqlOperator.EQ, Constants.AUTH_TYPE_REST)));
                 verify(sysResourceDao, times(1)).query(any(QueryExample.class));
                 verifyStatic(only());
                 QueryExample.newInstance();

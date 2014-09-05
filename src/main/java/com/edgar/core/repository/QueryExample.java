@@ -190,7 +190,7 @@ public class QueryExample {
          */
         public QueryExample equalsTo(String field, Object value) {
                 Assert.notNull(value);
-                return addCriteria(field, SqlOperator.EQUALS_TO, value);
+                return addCriteria(field, SqlOperator.EQ, value);
         }
 
         /**
@@ -204,7 +204,7 @@ public class QueryExample {
          */
         public QueryExample notEqualsTo(String field, Object value) {
                 Assert.notNull(value);
-                return addCriteria(field, SqlOperator.NOT_EQUALS_TO, value);
+                return addCriteria(field, SqlOperator.NE, value);
         }
 
         /**
@@ -218,7 +218,7 @@ public class QueryExample {
          */
         public QueryExample greaterThan(String field, Object value) {
                 Assert.notNull(value);
-                return addCriteria(field, SqlOperator.GREATER_THAN, value);
+                return addCriteria(field, SqlOperator.GT, value);
         }
 
         /**
@@ -232,7 +232,7 @@ public class QueryExample {
          */
         public QueryExample greaterThanOrEqualTo(String field, Object value) {
                 Assert.notNull(value);
-                return addCriteria(field, SqlOperator.GREATER_THAN_AND_EQUALS_TO, value);
+                return addCriteria(field, SqlOperator.GOE, value);
         }
 
         /**
@@ -246,7 +246,7 @@ public class QueryExample {
          */
         public QueryExample lessThan(String field, Object value) {
                 Assert.notNull(value);
-                return addCriteria(field, SqlOperator.LESS_THAN, value);
+                return addCriteria(field, SqlOperator.LT, value);
         }
 
         /**
@@ -260,7 +260,7 @@ public class QueryExample {
          */
         public QueryExample lessThanOrEqualTo(String field, Object value) {
                 Assert.notNull(value);
-                return addCriteria(field, SqlOperator.LESS_THAN_AND_EQUALS_TO, value);
+                return addCriteria(field, SqlOperator.LOE, value);
         }
 
         /**

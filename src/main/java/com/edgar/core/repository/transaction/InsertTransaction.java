@@ -35,17 +35,26 @@ public class InsertTransaction<T> extends TransactionTemplate {
             @Override
             public Long doInConnection(Connection connection) throws SQLException, DataAccessException {
                 final SQLInsertClause insertClause = new SQLInsertClause(connection, configuration, pathBase);
-                if (withNullBindings) {
-                    insertClause.populate(domain, DefaultMapper.WITH_NULL_BINDINGS);
-                } else {
-                    insertClause.populate(domain);
-                }
-                SQLBindings sqlBindings = insertClause.getSQL().get(0);
-                LOGGER.debug("insert {} \nSQL[{}] \nparams:{}", getPathBase()
-                        .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+                populate(insertClause);
+                log(insertClause);
                 return insertClause.execute();
             }
         });
+    }
+
+    private void populate(SQLInsertClause insertClause) {
+        if (withNullBindings) {
+            insertClause.populate(domain, DefaultMapper.WITH_NULL_BINDINGS);
+        } else {
+            insertClause.populate(domain);
+        }
+    }
+
+    private void log(SQLInsertClause insertClause) {
+        for (SQLBindings sqlBindings : insertClause.getSQL()) {
+            LOGGER.debug("insert {} \nSQL[{}] \nparams:{}", getPathBase()
+                    .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+        }
     }
 
 }

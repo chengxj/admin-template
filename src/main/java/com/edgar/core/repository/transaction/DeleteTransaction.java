@@ -1,10 +1,10 @@
 package com.edgar.core.repository.transaction;
 
 import com.edgar.core.repository.QueryExample;
-import com.edgar.core.repository.handler.SQLDeleteClauseWhereHandler;
-import com.edgar.core.repository.handler.WhereHandler;
+import com.edgar.core.repository.QueryExampleHelper;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.dml.SQLDeleteClause;
+import com.mysema.query.types.expr.BooleanExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -34,8 +34,9 @@ public class DeleteTransaction extends TransactionTemplate {
             @Override
             public Long doInConnection(Connection connection) throws SQLException, DataAccessException {
                 final SQLDeleteClause deleteClause = new SQLDeleteClause(connection, configuration, pathBase);
-                WhereHandler handler = new SQLDeleteClauseWhereHandler(pathBase, example, deleteClause);
-                handler.handle();
+                for (BooleanExpression expression : QueryExampleHelper.getExpressions(pathBase, example)) {
+                    deleteClause.where(expression);
+                }
                 for (SQLBindings sqlBindings : deleteClause.getSQL()) {
                     LOGGER.debug("delete {} \nSQL[{}] \nparams:{}", getPathBase()
                             .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());

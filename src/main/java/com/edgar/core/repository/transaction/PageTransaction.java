@@ -34,9 +34,9 @@ public class PageTransaction<T> extends TransactionTemplate {
     }
 
     public Pagination<T> execute() {
-        Assert.notNull(example);
         LOGGER.debug("pagination query {},page:{},pageSize:{}", pathBase
                 .getTableName(), page, pageSize);
+        Assert.notNull(example);
         Assert.isTrue(page > 0, "page must > 1");
         Assert.isTrue(pageSize > 0, "pageSize must > 0");
         if (example.getMaxNumOfRecords() > 0) {
@@ -44,11 +44,19 @@ public class PageTransaction<T> extends TransactionTemplate {
                     "page * pageSize cannot >：" + example.getMaxNumOfRecords());
         }
 
-        example.limit(pageSize);
-        int offset = (page - 1) * pageSize;
-        example.offset(offset);
+        int offset = calCountOffset();
 
         Long totalRecords = count();
+        calQueryOffset(offset, totalRecords);
+        return Pagination.newInstance(page, pageSize, totalRecords, query());
+    }
+
+    private List<T> query() {
+        Transaction query = TransactionFactory.createQueryTransaction(config, example, rowMapper);
+        return query.execute();
+    }
+
+    private void calQueryOffset(int offset, Long totalRecords) {
         if (totalRecords <= offset) {
             page = (int) (totalRecords / pageSize);
             if (page == 0) {
@@ -56,10 +64,13 @@ public class PageTransaction<T> extends TransactionTemplate {
             }
             example.offset((page - 1) * pageSize);
         }
+    }
 
-        Transaction query = TransactionFactory.createQueryTransaction(config, example, rowMapper);
-        List<T> records = query.execute();
-        return Pagination.newInstance(page, pageSize, totalRecords, records);
+    private int calCountOffset() {
+        example.limit(pageSize);
+        int offset = (page - 1) * pageSize;
+        example.offset(offset);
+        return offset;
     }
 
     private Long count() {

@@ -85,7 +85,7 @@ public class SysRoleServiceTest {
         verifyStatic(only());
         QueryExample.newInstance();
         Assert.assertTrue(example.getCriterias().contains(
-                new Criteria("roleId", SqlOperator.EQUALS_TO, 1)));
+                new Criteria("roleId", SqlOperator.EQ, 1)));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class SysRoleServiceTest {
         List<SysRole> result = sysRoleService.query(example);
         Assert.assertEquals(sysRoles, result);
         Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
-                SqlOperator.EQUALS_TO, 0)));
+                SqlOperator.EQ, 0)));
         verify(sysRoleDao, times(1)).query(any(QueryExample.class));
     }
 
@@ -116,7 +116,7 @@ public class SysRoleServiceTest {
         Pagination<SysRole> result = sysRoleService.pagination(example, 1, 10);
         Assert.assertEquals(pagination, result);
         Assert.assertTrue(example.containCriteria(new Criteria("isRoot",
-                SqlOperator.EQUALS_TO, 0)));
+                SqlOperator.EQ, 0)));
         verify(sysRoleDao, times(1)).pagination(same(example), anyInt(), anyInt());
     }
 

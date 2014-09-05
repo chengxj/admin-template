@@ -178,7 +178,7 @@ angular
         });
 
         $rootScope.logout = function () {
-            $http.post('auth/logout').success(function (data) {
+            $http.get('auth/logout').success(function (data) {
                 $.localStorage.remove("accessToken");
 //                $.localStorage.remove("refreshToken");
                 $.localStorage.remove("secretKey");

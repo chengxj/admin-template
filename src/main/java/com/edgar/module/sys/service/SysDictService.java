@@ -1,12 +1,11 @@
 package com.edgar.module.sys.service;
 
-import java.util.List;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysDict;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 /**
  * 系统字典的业务逻辑类

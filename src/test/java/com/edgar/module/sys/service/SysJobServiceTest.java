@@ -43,7 +43,6 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.SqlOperator;
 import com.edgar.module.sys.repository.domain.SysJob;
-import com.edgar.module.sys.service.SysJobServiceImpl;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ IDUtils.class, QueryExample.class })
@@ -146,7 +145,7 @@ public class SysJobServiceTest {
                 List<SysJob> result = sysJobService.findEnabledJob();
                 Assert.assertEquals(sysJobs, result);
                 Assert.assertTrue(example.containCriteria(new Criteria("enabled",
-                                SqlOperator.EQUALS_TO, 1)));
+                                SqlOperator.EQ, 1)));
                 verify(sysJobDao, times(1)).query(any(QueryExample.class));
         }
 
@@ -162,7 +161,7 @@ public class SysJobServiceTest {
                 boolean result = sysJobService.checkClazzName("com.edgar.job.DayJob");
                 Assert.assertFalse(result);
                 Assert.assertTrue(example.containCriteria(new Criteria("clazzName",
-                                SqlOperator.EQUALS_TO, "com.edgar.job.DayJob")));
+                                SqlOperator.EQ, "com.edgar.job.DayJob")));
                 verify(sysJobDao, times(1)).query(any(QueryExample.class));
         }
 
@@ -177,7 +176,7 @@ public class SysJobServiceTest {
                 boolean result = sysJobService.checkClazzName("com.edgar.job.DayJob");
                 Assert.assertTrue(result);
                 Assert.assertTrue(example.containCriteria(new Criteria("clazzName",
-                                SqlOperator.EQUALS_TO, "com.edgar.job.DayJob")));
+                                SqlOperator.EQ, "com.edgar.job.DayJob")));
                 verify(sysJobDao, times(1)).query(any(QueryExample.class));
         }
 

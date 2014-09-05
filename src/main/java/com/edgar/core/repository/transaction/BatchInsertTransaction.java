@@ -36,17 +36,21 @@ public class BatchInsertTransaction<T> extends TransactionTemplate {
             @Override
             public Long doInConnection(Connection connection) throws SQLException, DataAccessException {
                 final SQLInsertClause insertClause = new SQLInsertClause(connection, configuration, pathBase);
-                for (T domain : domains) {
-                    if (withNullBindings) {
-                        insertClause.populate(domain, DefaultMapper.WITH_NULL_BINDINGS).addBatch();
-                    } else {
-                        insertClause.populate(domain).addBatch();
-                    }
-                }
+                addBatch(insertClause);
                 log(insertClause);
                 return insertClause.execute();
             }
         });
+    }
+
+    private void addBatch(SQLInsertClause insertClause) {
+        for (T domain : domains) {
+            if (withNullBindings) {
+                insertClause.populate(domain, DefaultMapper.WITH_NULL_BINDINGS).addBatch();
+            } else {
+                insertClause.populate(domain).addBatch();
+            }
+        }
     }
 
     private void log(SQLInsertClause insertClause) {

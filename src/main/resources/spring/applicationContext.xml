@@ -9,6 +9,20 @@
 
 	<aop:aspectj-autoproxy />
 	<!-- <aop:config proxy-target-class="true"/> -->
+    <bean id="facadeMonitoringAdvisor" class="net.bull.javamelody.MonitoringSpringAdvisor">
+        <property name="pointcut">
+            <bean class="org.springframework.aop.support.JdkRegexpMethodPointcut" >
+                <property name="patterns">
+                    <list>
+                        <value>com.edgar..*Service.*</value>
+                        <value>.*CrudRepository.*</value>
+                        <value>.*CommandHandler.*</value>
+                        <value>com.edgar..*Facde.*</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 			<!--<property name="validationMessageSource" ref="messageSource" />-->

@@ -1,8 +1,11 @@
 package com.edgar.core.mail;
 
+import org.springframework.validation.annotation.Validated;
+
 import java.util.List;
 import java.util.Map;
 
+@Validated
 public interface MailService {
 
         /**

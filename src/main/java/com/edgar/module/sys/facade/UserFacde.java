@@ -2,6 +2,7 @@ package com.edgar.module.sys.facade;
 
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 /**
  * 系统用户的facade接口
  */
+@Validated
 public interface UserFacde {
 
     /**

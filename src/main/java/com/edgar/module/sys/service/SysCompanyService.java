@@ -3,7 +3,9 @@ package com.edgar.module.sys.service;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysCompany;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 public interface SysCompanyService {
 
 	/**

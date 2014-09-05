@@ -1,7 +1,5 @@
 package com.edgar.core.command;
 
-import net.bull.javamelody.MonitoredWithSpring;
-
 /**
  * 命令的处理类.
  * 
@@ -10,7 +8,6 @@ import net.bull.javamelody.MonitoredWithSpring;
  * 
  * @param <T> 命令对象
  */
-@MonitoredWithSpring
 public interface CommandHandler<T extends Command> {
 
         /**

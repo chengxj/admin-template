@@ -1,14 +1,12 @@
 package com.edgar.module.sys.service;
 
-import java.util.List;
+import com.edgar.module.sys.repository.domain.SysResource;
+import com.edgar.module.sys.repository.domain.SysRoute;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.annotation.Validated;
-
-import com.edgar.module.sys.repository.domain.SysResource;
-import com.edgar.module.sys.repository.domain.SysRoute;
+import java.util.List;
 
 @Validated
 public interface PermissionService {

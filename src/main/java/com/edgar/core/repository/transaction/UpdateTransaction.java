@@ -1,12 +1,12 @@
 package com.edgar.core.repository.transaction;
 
 import com.edgar.core.repository.QueryExample;
-import com.edgar.core.repository.handler.SQLUpdateClauseWhereHandler;
-import com.edgar.core.repository.handler.WhereHandler;
+import com.edgar.core.repository.QueryExampleHelper;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.dml.DefaultMapper;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.BooleanExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -33,7 +33,7 @@ public class UpdateTransaction<T> extends TransactionTemplate {
 
     private final Set<String> ignoreColumns = new HashSet<String>();
 
-    protected UpdateTransaction(TransactionConfig config, T domain, boolean withNullBindings, QueryExample example, String ... ignore) {
+    protected UpdateTransaction(TransactionConfig config, T domain, boolean withNullBindings, QueryExample example, String... ignore) {
         super(config);
         this.domain = domain;
         this.withNullBindings = withNullBindings;
@@ -47,15 +47,19 @@ public class UpdateTransaction<T> extends TransactionTemplate {
             @Override
             public Long doInConnection(Connection connection) throws SQLException, DataAccessException {
                 final SQLUpdateClause updateClause = new SQLUpdateClause(connection, configuration, pathBase);
-                where(updateClause);
-                set(updateClause);
-                for (SQLBindings sqlBindings : updateClause.getSQL()) {
-                    LOGGER.debug("update {} \nSQL[{}] \nparams:{}", getPathBase()
-                            .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
-                }
+                addSpec(updateClause);
+                populate(updateClause);
+                log(updateClause);
                 return updateClause.execute();
             }
         });
+    }
+
+    private void log(SQLUpdateClause updateClause) {
+        for (SQLBindings sqlBindings : updateClause.getSQL()) {
+            LOGGER.debug("update {} \nSQL[{}] \nparams:{}", getPathBase()
+                    .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+        }
     }
 
     /**
@@ -77,7 +81,7 @@ public class UpdateTransaction<T> extends TransactionTemplate {
         }
     }
 
-    private void set(SQLUpdateClause updateClause) {
+    private void populate(SQLUpdateClause updateClause) {
         //不会更新主键
         if (withNullBindings) {
             populate(updateClause, domain, DefaultMapper.WITH_NULL_BINDINGS);
@@ -86,9 +90,10 @@ public class UpdateTransaction<T> extends TransactionTemplate {
         }
     }
 
-    private void where(final SQLUpdateClause updateClause) {
-        WhereHandler handler = new SQLUpdateClauseWhereHandler(pathBase, example, updateClause);
-        handler.handle();
+    private void addSpec(final SQLUpdateClause updateClause) {
+        for (BooleanExpression expression : QueryExampleHelper.getExpressions(pathBase, example)) {
+            updateClause.where(expression);
+        }
     }
 
 }
