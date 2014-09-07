@@ -1,6 +1,5 @@
 package com.edgar.core.repository;
 
-import com.edgar.core.exception.SystemException;
 import com.edgar.module.sys.repository.domain.Test2Table;
 import com.edgar.module.sys.repository.domain.TestTable;
 import net.sf.ehcache.CacheManager;
@@ -440,7 +439,7 @@ public class DaoTest {
     }
 
     @Transactional
-    @Test(expected = SystemException.class)
+    @Test(expected = StaleObjectStateException.class)
     public void testUpdateByVersion() {
         QueryExample example = QueryExample.newInstance();
         example.limit(1);
@@ -528,7 +527,7 @@ public class DaoTest {
     }
 
     @Transactional
-    @Test(expected = SystemException.class)
+    @Test(expected = StaleObjectStateException.class)
     public void testDeleteByPKAndVersion() {
         QueryExample example = QueryExample.newInstance();
         example.limit(1);

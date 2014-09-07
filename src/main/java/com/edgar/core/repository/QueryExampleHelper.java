@@ -9,6 +9,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpressionBase;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.util.Assert;
 
 import java.util.*;
@@ -21,6 +23,56 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public abstract class QueryExampleHelper {
+
+    public static QueryExample createUpdateExample(RelationalPathBase<?> pathBase,Object domain, Set<String> pks) {
+        QueryExample example = QueryExample.newInstance();
+        SqlParameterSource source = new BeanPropertySqlParameterSource(domain);
+        List<Path<?>> columns = pathBase.getColumns();
+        for (Path<?> path : columns) {
+            String name = path.getMetadata().getName();
+            String humpName = humpName(name);
+            if (pks.contains(name)) {
+                Assert.notNull(source.getValue(humpName), "the value of "
+                        + name + "cannot be null");
+                example.equalsTo(humpName, source.getValue(humpName));
+            }
+        }
+        return example;
+    }
+
+    public static QueryExample createUpdateExample(RelationalPathBase<?> pathBase,Object domain) {
+        Set<String> pks = new HashSet<String>();
+        for (Path<?> path : pathBase.getPrimaryKey().getLocalColumns()) {
+            pks.add(path.getMetadata().getName());
+        }
+        return createUpdateExample(pathBase, domain, pks);
+    }
+
+    /**
+     * 根据主键创建查询条件
+     *
+     * @param pathBase Querydsl query type
+     * @param pk 主键
+     * @return 查询条件
+     */
+    public static QueryExample createExampleByPk(RelationalPathBase<?> pathBase,Object pk) {
+        int numOfPk = pathBase.getPrimaryKey().getLocalColumns().size();
+        Assert.isTrue(numOfPk > 0, "primaryKey not exists");
+        QueryExample example = QueryExample.newInstance();
+        if (numOfPk == 1) {
+            example.equalsTo(pathBase.getPrimaryKey().getLocalColumns()
+                    .get(0).getMetadata().getName(), pk);
+        } else {
+            SqlParameterSource source = new BeanPropertySqlParameterSource(pk);
+            for (Path<?> path : pathBase.getPrimaryKey().getLocalColumns()) {
+                String name = path.getMetadata().getName();
+                String humpName = humpName(name);
+                example.equalsTo(humpName, source.getValue(name));
+            }
+        }
+        return example;
+    }
+    
     public static final List<BooleanExpression> getExpressions(RelationalPathBase<?> pathBase, QueryExample example) {
         List<BooleanExpression> expressions = new ArrayList<BooleanExpression>();
         if (example.isValid()) {

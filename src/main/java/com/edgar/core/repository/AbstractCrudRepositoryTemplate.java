@@ -1,11 +1,11 @@
 package com.edgar.core.repository;
 
-import com.edgar.core.repository.transaction.*;
-import com.edgar.core.util.ExceptionFactory;
+import com.edgar.core.repository.transaction.Transaction;
+import com.edgar.core.repository.transaction.TransactionConfig;
+import com.edgar.core.repository.transaction.TransactionFactory;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.Path;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -100,14 +100,14 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public T get(PK pk) {
         Assert.notNull(pk, "primaryKey cannot be null");
-        QueryExample example = createExampleByPk(pk);
+        QueryExample example = QueryExampleHelper.createExampleByPk(getPathBase(), pk);
         return uniqueResult(example);
     }
 
     @Override
     public T get(PK pk, List<String> fields) {
         Assert.notNull(pk, "primaryKey cannot be null");
-        QueryExample example = createExampleByPk(pk);
+        QueryExample example = QueryExampleHelper.createExampleByPk(getPathBase(), pk);
         example.addFields(fields);
         return uniqueResult(example);
     }
@@ -138,18 +138,18 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public Long deleteByPk(PK pk) {
         Assert.notNull(pk, "primaryKey cannot be null");
-        QueryExample example = createExampleByPk(pk);
+        QueryExample example = QueryExampleHelper.createExampleByPk(getPathBase(), pk);
         return delete(example);
     }
 
     @Override
     public Long deleteByPkAndVersion(PK pk, long updatedTime) {
         Assert.notNull(pk, "primaryKey cannot be null");
-        QueryExample example = createExampleByPk(pk);
+        QueryExample example = QueryExampleHelper.createExampleByPk(getPathBase(), pk);
         example.equalsTo(Constants.UPDATED_TIME, new Timestamp(updatedTime));
         long result = delete(example);
         if (result < 1) {
-            throw ExceptionFactory.expired();
+            throw new StaleObjectStateException();
         }
         return result;
     }
@@ -174,7 +174,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     @Override
     public Long update(final T domain) {
         Assert.notNull(domain, "domain cannot be null");
-        QueryExample example = createUpdateExample(domain);
+        QueryExample example = QueryExampleHelper.createUpdateExample(getPathBase(), domain);
         return update(domain, example);
     }
 
@@ -184,7 +184,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         QueryExample example = createUpdateExampleWithVersion(domain);
         Long result = update(domain, example);
         if (result < 1) {
-            throw ExceptionFactory.expired();
+            throw new StaleObjectStateException();
         }
         return result;
     }
@@ -196,32 +196,7 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         }
         pks.add(Constants.UPDATED_TIME);
 
-        return createUpdateExample(domain, pks);
-    }
-
-    private QueryExample createUpdateExample(T domain, Set<String> pks) {
-        QueryExample example = QueryExample.newInstance();
-        SqlParameterSource source = new BeanPropertySqlParameterSource(domain);
-        List<Path<?>> columns = getPathBase().getColumns();
-        for (Path<?> path : columns) {
-            String name = path.getMetadata().getName();
-            String humpName = humpName(name);
-            if (pks.contains(name)) {
-                Assert.notNull(source.getValue(humpName), "the value of "
-                        + name + "cannot be null");
-                example.equalsTo(humpName, source.getValue(humpName));
-            }
-        }
-        return example;
-    }
-
-    private QueryExample createUpdateExample(T domain) {
-        Set<String> pks = new HashSet<String>();
-        for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
-            pks.add(path.getMetadata().getName());
-        }
-
-        return createUpdateExample(domain, pks);
+        return QueryExampleHelper.createUpdateExample(getPathBase(), domain, pks);
     }
 
     /**
@@ -246,50 +221,4 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         return pkMap;
     }
 
-    /**
-     * 根据主键创建查询条件
-     *
-     * @param pk 主键
-     * @return 查询条件
-     */
-    private QueryExample createExampleByPk(PK pk) {
-        int numOfPk = getPathBase().getPrimaryKey().getLocalColumns().size();
-        Assert.isTrue(numOfPk > 0, "primaryKey not exists");
-        QueryExample example = QueryExample.newInstance();
-        if (numOfPk == 1) {
-            example.equalsTo(getPathBase().getPrimaryKey().getLocalColumns()
-                    .get(0).getMetadata().getName(), pk);
-        } else {
-            SqlParameterSource source = new BeanPropertySqlParameterSource(pk);
-            for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
-                String name = path.getMetadata().getName();
-                String humpName = humpName(name);
-                example.equalsTo(humpName, source.getValue(name));
-            }
-        }
-        return example;
-    }
-
-
-    /**
-     * 字符串转换，将alarm_user_code转换为alarmUserCode
-     *
-     * @param source 需要转换的字符串
-     * @return 转换后的字符串
-     */
-    private String humpName(final String source) {
-        Assert.hasLength(source);
-        if (StringUtils.contains(source, "_")) {
-            String lowerSource = source.toLowerCase();
-            String[] words = lowerSource.split("_");
-            StringBuilder result = new StringBuilder();
-            result.append(words[0]);
-            int length = words.length;
-            for (int i = 1; i < length; i++) {
-                result.append(StringUtils.capitalize(words[i]));
-            }
-            return result.toString();
-        }
-        return source;
-    }
 }
