@@ -20,7 +20,4 @@ public class Constants {
      */
     public static final String CREATED_TIME = "createdTime";
 
-    static {
-        CONFIGURATION.addListener(new CacheListener());
-    }
 }
