@@ -1,10 +1,9 @@
 package com.edgar.core.repository;
 
-import org.springframework.stereotype.Repository;
-
 import com.edgar.module.sys.repository.domain.Test2Table;
 import com.edgar.module.sys.repository.querydsl.QTest2Table;
 import com.mysema.query.sql.RelationalPathBase;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class Test2TableDao extends AbstractDaoTemplate<Test2TablePk, Test2Table> {

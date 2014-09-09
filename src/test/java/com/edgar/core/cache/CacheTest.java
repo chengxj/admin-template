@@ -40,34 +40,34 @@ public class CacheTest {
         @Autowired
         private CacheManager cacheManager;
 
-        private CacheWrapper<String, SysDict> cacheWrapper;
+        private CacheProvider<String, SysDict> cacheProvider;
 
         @Before
         public void setUp() {
-                cacheWrapper = new EhCacheWrapper<String, SysDict>("SysDictCache", cacheManager);
+                cacheProvider = new EhCacheProvider<String, SysDict>("SysDictCache", cacheManager);
         }
 
         @After
         public void tearDown() {
-                cacheWrapper.removeAll();
+                cacheProvider.removeAll();
         }
 
         @Test
         public void testGetPut() {
-                SysDict sysDict = cacheWrapper.get("notExitst");
+                SysDict sysDict = cacheProvider.get("notExitst");
                 Assert.assertNull(sysDict);
                 sysDict = new SysDict();
                 sysDict.setDictCode("notExitst");
                 sysDict.setDictName("notExitst");
-                cacheWrapper.put("notExitst", sysDict);
-                sysDict = cacheWrapper.get("notExitst");
+                cacheProvider.put("notExitst", sysDict);
+                sysDict = cacheProvider.get("notExitst");
                 Assert.assertEquals("notExitst", sysDict.getDictName());
                 sysDict.setDictName("notExitst2");
-                cacheWrapper.put("notExitst", sysDict);
-                sysDict = cacheWrapper.get("notExitst");
+                cacheProvider.put("notExitst", sysDict);
+                sysDict = cacheProvider.get("notExitst");
                 Assert.assertEquals("notExitst2", sysDict.getDictName());
-                cacheWrapper.remove("notExitst");
-                sysDict = cacheWrapper.get("notExitst");
+                cacheProvider.remove("notExitst");
+                sysDict = cacheProvider.get("notExitst");
                 Assert.assertNull(sysDict);
         }
 
@@ -149,7 +149,7 @@ public class CacheTest {
                         sysDictDao.insert(sysDict);
                 }
                 Assert.assertEquals(10, cacheManager.getCache("SysDictCache").getSize());
-                cacheWrapper.remove("0001");
+                cacheProvider.remove("0001");
                 Assert.assertEquals(9, cacheManager.getCache("SysDictCache").getSize());
                 sysDictDao.get("0001");
                 Assert.assertEquals(10, cacheManager.getCache("SysDictCache").getSize());
@@ -167,7 +167,7 @@ public class CacheTest {
                         // sysDicts.add(sysDict);
                         sysDictDao.insert(sysDict);
                 }
-                cacheWrapper.removeAll();
+                cacheProvider.removeAll();
                 ExecutorService exec = Executors.newCachedThreadPool();
                 int num = 100;
                 final CyclicBarrier barrier = new CyclicBarrier(num);

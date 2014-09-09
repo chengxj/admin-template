@@ -38,6 +38,8 @@ public abstract class AbstractDaoTemplate<PK, T> implements
     public AbstractDaoTemplate() {
         this.entityBeanType = (Class<T>) (((ParameterizedType) (getClass()
                 .getGenericSuperclass())).getActualTypeArguments()[1]);
+        System.out.println((Class<T>) (((ParameterizedType) (getClass()
+                .getGenericSuperclass())).getActualTypeArguments()[0]));
         configuration = Constants.CONFIGURATION;
     }
 

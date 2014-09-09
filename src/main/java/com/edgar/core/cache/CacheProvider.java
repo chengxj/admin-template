@@ -12,7 +12,7 @@ package com.edgar.core.cache;
  * @param <V>
  *                缓存的值
  */
-public interface CacheWrapper<K, V> {
+public interface CacheProvider<K, V> {
 
         /**
          * 增加缓存

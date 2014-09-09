@@ -1,13 +1,12 @@
 package com.edgar.core.auth;
 
 import com.edgar.core.auth.stateless.StatelessUser;
-import com.edgar.core.cache.CacheWrapper;
-import com.edgar.core.cache.EhCacheWrapper;
+import com.edgar.core.cache.CacheProvider;
+import com.edgar.core.cache.CacheProviderFactory;
 import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.facade.UserFacde;
 import com.edgar.module.sys.repository.domain.SysUser;
-import net.sf.ehcache.CacheManager;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -24,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.PostConstruct;
 import java.util.Set;
 
 /**
@@ -37,20 +37,23 @@ public class AuthServiceImpl implements AuthService {
     private static final int ACCESS_TOKEN_TIME_TO_LIVE = 30 * 60;
     private static final int REFRESH_TOKEN_TIME_TO_LIVE = 24 * 60 * 60;
 
-    private CacheWrapper<String, AccessToken> accessTokenCacheWrapper;
+    private CacheProvider<String, AccessToken> accessTokenCacheProvider;
 
-    private CacheWrapper<String, String> replyAttackCacheWrapper;
+    private CacheProvider<String, String> replyAttackCacheProvider;
 
-    private CacheWrapper<String, AccessToken> refreshTokenCacheWrapper;
+    private CacheProvider<String, AccessToken> refreshTokenCacheProvider;
 
     @Autowired
     private UserFacde userFacde;
 
     @Autowired
-    public void setCacheManager(CacheManager cacheManager) {
-        accessTokenCacheWrapper = new EhCacheWrapper<String, AccessToken>("StatelessCache", cacheManager);
-        replyAttackCacheWrapper = new EhCacheWrapper<String, String>("ReplayAttackCache", cacheManager);
-        refreshTokenCacheWrapper = new EhCacheWrapper<String, AccessToken>("RefreshTokenCache", cacheManager);
+    private CacheProviderFactory cacheProviderFactory;
+
+    @PostConstruct
+    public void init() {
+        accessTokenCacheProvider = cacheProviderFactory.createCacheWrapper("StatelessCache");
+        replyAttackCacheProvider = cacheProviderFactory.createCacheWrapper("ReplayAttackCache");
+        refreshTokenCacheProvider = cacheProviderFactory.createCacheWrapper("RefreshTokenCache");
     }
 
     /**
@@ -71,8 +74,8 @@ public class AuthServiceImpl implements AuthService {
             return false;
         }
         String replayKey = nonce + "-" + timestamp;
-        if (replyAttackCacheWrapper.get(replayKey) == null) {
-            replyAttackCacheWrapper.put(replayKey, replayKey);
+        if (replyAttackCacheProvider.get(replayKey) == null) {
+            replyAttackCacheProvider.put(replayKey, replayKey);
             return true;
         }
         return false;
@@ -89,7 +92,7 @@ public class AuthServiceImpl implements AuthService {
         Assert.notNull(accessToken);
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        accessTokenCacheWrapper.remove(accessToken);
+        accessTokenCacheProvider.remove(accessToken);
         LOGGER.debug("remove token: {}", accessToken);
     }
 
@@ -108,13 +111,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String getSecretKey(String accessToken) {
-        AccessToken token = accessTokenCacheWrapper.get(accessToken);
+        AccessToken token = accessTokenCacheProvider.get(accessToken);
         return token.getSecretKey();
     }
 
     @Override
     public String getUsername(String accessToken) {
-        AccessToken token = accessTokenCacheWrapper.get(accessToken);
+        AccessToken token = accessTokenCacheProvider.get(accessToken);
         return token.getUsername();
     }
 
@@ -156,8 +159,8 @@ public class AuthServiceImpl implements AuthService {
     private AccessToken tokenHandler(String username) {
         Assert.notNull(username);
         AccessToken accessToken = newToken(username);
-        accessTokenCacheWrapper.put(accessToken.getAccessToken(), accessToken, ACCESS_TOKEN_TIME_TO_LIVE);
-        refreshTokenCacheWrapper.put(accessToken.getAccessToken(), accessToken, REFRESH_TOKEN_TIME_TO_LIVE);
+        accessTokenCacheProvider.put(accessToken.getAccessToken(), accessToken, ACCESS_TOKEN_TIME_TO_LIVE);
+        refreshTokenCacheProvider.put(accessToken.getAccessToken(), accessToken, REFRESH_TOKEN_TIME_TO_LIVE);
         LOGGER.debug("crate new token : {}", accessToken.getAccessToken());
         return accessToken;
     }
@@ -202,9 +205,9 @@ public class AuthServiceImpl implements AuthService {
         Assert.hasText(accessToken);
         Assert.hasText(refreshToken);
 
-        AccessToken serverToken = refreshTokenCacheWrapper.get(accessToken);
+        AccessToken serverToken = refreshTokenCacheProvider.get(accessToken);
         if (serverToken != null && refreshToken.equals(serverToken.getRefreshToken())) {
-            refreshTokenCacheWrapper.remove(accessToken);
+            refreshTokenCacheProvider.remove(accessToken);
             AccessToken token = tokenHandler(serverToken.getUsername());
             return token;
         }

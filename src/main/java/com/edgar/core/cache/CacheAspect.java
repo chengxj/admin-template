@@ -4,9 +4,6 @@ import com.edgar.core.repository.AbstractDaoTemplate;
 import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.Path;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.aspectj.lang.JoinPoint;
@@ -42,7 +39,7 @@ public class CacheAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheAspect.class);
 
     @Autowired
-    private CacheManager cacheManager;
+    private CacheProviderFactory cacheProviderFactory;
 
     /**
      * get的切面.
@@ -145,30 +142,20 @@ public class CacheAspect {
     @SuppressWarnings("rawtypes")
     @Around(value = "getPointCut(pk)")
     public Object aroundGet(ProceedingJoinPoint jp, Object pk) throws Throwable {
-
-        AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
-        String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
-        Ehcache cache = cacheManager.getEhcache(cacheName);
-        if (cache != null) {
-            Object key = getCacheKey(pk);
-            Element element = cache.get(key);
-            if (element != null) {
-                Object value = element.getObjectValue();
-                LOGGER.debug("get value from cache[{}],key:{},value:{}", cacheName,
-                        key, ToStringBuilder.reflectionToString(value,
-                        ToStringStyle.SHORT_PREFIX_STYLE));
-                return value;
-            } else {
-                Object value = jp.proceed(jp.getArgs());
-                LOGGER.debug("get value from db,key:{},value:{}", key,
-                        ToStringBuilder.reflectionToString(value,
-                                ToStringStyle.SHORT_PREFIX_STYLE));
-                cache.put(new Element(key, value));
-                return value;
-            }
+        String cacheName = getCacheName(jp);
+        CacheProvider cacheProvider = getCacheWrapper(cacheName);
+        Object key = getCacheKey(pk);
+        Object value = cacheProvider.get(key);
+        if (value != null) {
+            LOGGER.debug("get value from cache: {},key: {}", cacheName,
+                    key);
+            return value;
+        } else {
+            value = jp.proceed(jp.getArgs());
+            LOGGER.debug("get value from db,key:{}", key);
+            cacheProvider.put(key, value);
+            return value;
         }
-        LOGGER.debug("cache[{}]undefined", cacheName);
-        return jp.proceed(jp.getArgs());
     }
 
     /**
@@ -184,19 +171,12 @@ public class CacheAspect {
 
         AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
         String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
-        Ehcache cache = cacheManager.getEhcache(cacheName);
-        if (cache != null) {
-            Object pk = getPrimaryKeyValue(t.getPathBase(), domain);
-            Object key = getCacheKey(pk);
-            LOGGER.debug("put value into cache[{}],key:{},value:{}", cacheName, key,
-                    ToStringBuilder.reflectionToString(domain,
-                            ToStringStyle.SHORT_PREFIX_STYLE));
-            if (BeanUtils.isSimpleValueType(pk.getClass())) {
-                cache.put(new Element(key, t.get(pk)));
-            }
-
-        } else {
-            LOGGER.debug("cache[{}]undefined", cacheName);
+        CacheProvider cacheProvider = getCacheWrapper(cacheName);
+        Object pk = getPrimaryKeyValue(t.getPathBase(), domain);
+        Object key = getCacheKey(pk);
+        LOGGER.debug("put value into cache: {},key:{}", cacheName, key);
+        if (BeanUtils.isSimpleValueType(pk.getClass())) {
+            cacheProvider.put(key, t.get(pk));
         }
     }
 
@@ -213,23 +193,14 @@ public class CacheAspect {
 
         AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
         String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
-        Ehcache cache = cacheManager.getEhcache(cacheName);
-
-        if (cache != null) {
-            for (Object obj : domains) {
-                Object pk = getPrimaryKeyValue(t.getPathBase(), obj);
-                Object key = getCacheKey(pk);
-                LOGGER.debug("向缓存[{}]中放入值,键:{},值:{}", cacheName, key,
-                        ToStringBuilder.reflectionToString(obj,
-                                ToStringStyle.SHORT_PREFIX_STYLE));
-                if (BeanUtils.isSimpleValueType(pk.getClass())) {
-                    cache.put(new Element(key, t.get(pk)));
-                }
-
+        CacheProvider cacheProvider = getCacheWrapper(cacheName);
+        for (Object obj : domains) {
+            Object pk = getPrimaryKeyValue(t.getPathBase(), obj);
+            Object key = getCacheKey(pk);
+            LOGGER.debug("put value into cache: {},key:{}", cacheName, key);
+            if (BeanUtils.isSimpleValueType(pk.getClass())) {
+                cacheProvider.put(key, t.get(pk));
             }
-
-        } else {
-            LOGGER.debug("cache[{}]undefined", cacheName);
         }
     }
 
@@ -321,21 +292,13 @@ public class CacheAspect {
 
         AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
         String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
-        Ehcache cache = cacheManager.getEhcache(cacheName);
-
-        if (cache != null) {
-            Object pk = getPrimaryKeyValue(t.getPathBase(), domain);
-            Object key = getCacheKey(pk);
-            cache.remove(key);
-            Object value = t.get(pk);
-            LOGGER.debug("update value in cache[{}],key:{},value:{}", cacheName, key,
-                    ToStringBuilder.reflectionToString(value,
-                            ToStringStyle.SHORT_PREFIX_STYLE));
-            cache.put(new Element(key, value));
-
-        } else {
-            LOGGER.debug("cache[{}]undefined", cacheName);
-        }
+        CacheProvider cacheProvider = getCacheWrapper(cacheName);
+        Object pk = getPrimaryKeyValue(t.getPathBase(), domain);
+        Object key = getCacheKey(pk);
+        cacheProvider.remove(key);
+        Object value = t.get(pk);
+        LOGGER.debug("update value in cache: {},key:{}", cacheName, key);
+        cacheProvider.put(key, value);
     }
 
     /**
@@ -347,18 +310,11 @@ public class CacheAspect {
     @SuppressWarnings("rawtypes")
     private void deleteCache(JoinPoint jp, Object pk) {
 
-        AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
-        String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
-        Ehcache cache = cacheManager.getEhcache(cacheName);
-
-        if (cache != null) {
-            Object key = getCacheKey(pk);
-            LOGGER.debug("remove from cache[{}],key:{}", cacheName, key);
-            cache.remove(key);
-
-        } else {
-            LOGGER.debug("cache[{}]undefined", cacheName);
-        }
+        String cacheName = getCacheName(jp);
+        CacheProvider cacheProvider = getCacheWrapper(cacheName);
+        Object key = getCacheKey(pk);
+        LOGGER.debug("remove from cache: {},key:{}", cacheName, key);
+        cacheProvider.remove(key);
     }
 
     /**
@@ -368,19 +324,12 @@ public class CacheAspect {
      */
     @SuppressWarnings("rawtypes")
     private void removeAllCache(JoinPoint jp) {
-
-        AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
-        String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
-        Ehcache cache = cacheManager.getEhcache(cacheName);
-
-        if (cache != null) {
-            cache.removeAll();
-            LOGGER.debug("clear cache[{}]", cacheName);
-
-        } else {
-            LOGGER.debug("cache[{}]undefined", cacheName);
-        }
+        String cacheName = getCacheName(jp);
+        CacheProvider cacheProvider = getCacheWrapper(cacheName);
+        cacheProvider.removeAll();
+        LOGGER.debug("clear cache: {}", cacheName);
     }
+
 
     /**
      * 根据主键生成ehcache的键值，如果是primitive,String ,CharSequence,Number,Date,URI,URL,
@@ -389,6 +338,7 @@ public class CacheAspect {
      * @param pk 主键
      * @return cache的键值
      */
+
     private Object getCacheKey(Object pk) {
         if (BeanUtils.isSimpleValueType(pk.getClass())) {
             return pk;
@@ -419,5 +369,20 @@ public class CacheAspect {
                     source.getValue(path.getMetadata().getName()));
         }
         return pkMap;
+    }
+
+    private CacheProvider getCacheWrapper(String cacheName) {
+        return cacheProviderFactory.createCacheWrapper(cacheName);
+    }
+
+    private String getCacheName(ProceedingJoinPoint jp) {
+        AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
+        return t.getEntityBeanType().getSimpleName() + "Cache";
+    }
+
+
+    private String getCacheName(JoinPoint jp) {
+        AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
+        return t.getEntityBeanType().getSimpleName() + "Cache";
     }
 }

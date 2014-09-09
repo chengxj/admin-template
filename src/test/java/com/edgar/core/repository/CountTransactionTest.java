@@ -1,10 +1,12 @@
 package com.edgar.core.repository;
 
-import com.edgar.core.repository.transaction.*;
+import com.edgar.core.cache.CacheProviderFactory;
+import com.edgar.core.repository.transaction.Transaction;
+import com.edgar.core.repository.transaction.TransactionConfig;
+import com.edgar.core.repository.transaction.TransactionFactory;
 import com.edgar.module.sys.repository.domain.TestTable;
 import com.edgar.module.sys.repository.querydsl.QTestTable;
 import com.mysema.query.sql.Configuration;
-import net.sf.ehcache.CacheManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,9 +35,6 @@ import java.util.List;
 public class CountTransactionTest {
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private DataSource dataSource;
 
     private Configuration configuration = Constants.CONFIGURATION;
@@ -44,6 +43,9 @@ public class CountTransactionTest {
 
     private RowMapper<TestTable> rowMapper = BeanPropertyRowMapper.newInstance(TestTable.class);
 
+
+    @Autowired
+    private CacheProviderFactory cacheProviderFactory;
 
     @Before
     public void setUp() {
@@ -64,7 +66,8 @@ public class CountTransactionTest {
 
     @After
     public void tearDown() {
-        cacheManager.removeAllCaches();
+        cacheProviderFactory.createCacheWrapper("TestTableCache").removeAll();
+        cacheProviderFactory.createCacheWrapper("Test2TableCache").removeAll();
     }
 
     @Transactional

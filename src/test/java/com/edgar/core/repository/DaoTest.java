@@ -1,8 +1,8 @@
 package com.edgar.core.repository;
 
+import com.edgar.core.cache.CacheProviderFactory;
 import com.edgar.module.sys.repository.domain.Test2Table;
 import com.edgar.module.sys.repository.domain.TestTable;
-import net.sf.ehcache.CacheManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,7 +36,7 @@ public class DaoTest {
     private BaseDao<Test2TablePk, Test2Table> test2TableDao;
 
     @Autowired
-    private CacheManager cacheManager;
+    private CacheProviderFactory cacheProviderFactory;
 
     @Autowired
     private DataSource dataSource;
@@ -69,7 +69,8 @@ public class DaoTest {
 
     @After
     public void tearDown() {
-        cacheManager.removeAllCaches();
+        cacheProviderFactory.createCacheWrapper("TestTableCache").removeAll();
+        cacheProviderFactory.createCacheWrapper("Test2TableCache").removeAll();
     }
 
     @Transactional
