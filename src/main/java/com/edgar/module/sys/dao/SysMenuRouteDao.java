@@ -20,9 +20,4 @@ public class SysMenuRouteDao extends AbstractCrudRepositoryTemplate<Integer, Sys
         public RelationalPathBase<?> getPathBase() {
                 return QSysMenuRoute.sysMenuRoute;
         }
-
-        @Override
-        public boolean cacheEnabled() {
-                return true;
-        }
 }

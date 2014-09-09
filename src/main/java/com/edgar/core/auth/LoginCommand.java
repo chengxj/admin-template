@@ -1,9 +1,7 @@
 package com.edgar.core.auth;
 
 
-import com.edgar.core.command.Command;
-
-public class LoginCommand implements Command {
+public class LoginCommand  {
     private String username;
     
     private String password;

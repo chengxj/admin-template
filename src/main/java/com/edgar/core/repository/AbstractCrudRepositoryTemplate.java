@@ -56,15 +56,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         return new TransactionConfig(DataSourceFactory.createDataSource(getDataSourceKey()), configuration, getPathBase());
     }
 
-    /**
-     * 是否开启缓存
-     *
-     * @return 默认为false
-     */
-    public boolean cacheEnabled() {
-        return false;
-    }
-
     public Class<T> getEntityBeanType() {
         return entityBeanType;
     }

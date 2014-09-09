@@ -6,6 +6,7 @@ import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,6 +15,7 @@ import org.apache.shiro.util.ByteSource;
  * Time: 下午1:50
  * To change this template use File | Settings | File Templates.
  */
+@Service
 public class MD51024ServiceImpl implements PasswordService {
 
 

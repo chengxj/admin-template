@@ -21,9 +21,4 @@ public class SysRoleMenuDao extends AbstractCrudRepositoryTemplate<Integer, SysR
                 return QSysRoleMenu.sysRoleMenu;
         }
 
-        @Override
-        public boolean cacheEnabled() {
-                return true;
-        }
-
 }

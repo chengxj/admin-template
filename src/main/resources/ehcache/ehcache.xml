@@ -30,65 +30,9 @@
            overflowToDisk="false" statistics="true">
     </cache>
 
-	<cache name="SysDictCache" maxElementsInMemory="10000" 
+	<cache name="Cache" maxElementsInMemory="1000000"
 		timeToIdleSeconds="3600" timeToLiveSeconds="0" overflowToDisk="false"
 		statistics="true">
 	</cache>
-
-	<cache name="SysMenuCache" maxElementsInMemory="10000" 
-		timeToIdleSeconds="3600" timeToLiveSeconds="0" overflowToDisk="false"
-		statistics="true">
-	</cache>
-
-	<cache name="SysMenuRouteCache" maxElementsInMemory="10000"
-		 timeToIdleSeconds="3600" timeToLiveSeconds="0"
-		overflowToDisk="false" statistics="true">
-	</cache>
-
-	<cache name="SysResourceCache" maxElementsInMemory="10000"
-		 timeToIdleSeconds="3600" timeToLiveSeconds="0"
-		overflowToDisk="false" statistics="true">
-	</cache>
-
-	<cache name="SysRoleCache" maxElementsInMemory="10000" 
-		timeToIdleSeconds="3600" timeToLiveSeconds="0" overflowToDisk="false"
-		statistics="true">
-	</cache>
-
-	<cache name="SysRoleMenuCache" maxElementsInMemory="10000"
-		 timeToIdleSeconds="3600" timeToLiveSeconds="0"
-		overflowToDisk="false" statistics="true">
-	</cache>
-
-	<cache name="SysRoleResourceCache" maxElementsInMemory="10000"
-		 timeToIdleSeconds="3600" timeToLiveSeconds="0"
-		overflowToDisk="false" statistics="true">
-	</cache>
-
-	<cache name="SysRoleRouteCache" maxElementsInMemory="10000"
-		 timeToIdleSeconds="3600" timeToLiveSeconds="0"
-		overflowToDisk="false" statistics="true">
-	</cache>
-
-	<cache name="SysRouteCache" maxElementsInMemory="10000" 
-		timeToIdleSeconds="3600" timeToLiveSeconds="0" overflowToDisk="false"
-		statistics="true">
-	</cache>
-
-	<cache name="SysRouteResCache" maxElementsInMemory="10000"
-		 timeToIdleSeconds="3600" timeToLiveSeconds="0"
-		overflowToDisk="false" statistics="true">
-	</cache>
-
-	<cache name="SysUserCache" maxElementsInMemory="10000" 
-		timeToIdleSeconds="3600" timeToLiveSeconds="0" overflowToDisk="false"
-		statistics="true">
-	</cache>
-
-	<cache name="SysUserRoleCache" maxElementsInMemory="10000"
-		 timeToIdleSeconds="3600" timeToLiveSeconds="0"
-		overflowToDisk="false" statistics="true">
-	</cache>
-
 
 </ehcache>

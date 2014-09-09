@@ -22,9 +22,5 @@ public class SysMenuResDao extends
 		return QSysMenuRes.sysMenuRes;
 	}
 
-	@Override
-	public boolean cacheEnabled() {
-		return true;
-	}
 
 }

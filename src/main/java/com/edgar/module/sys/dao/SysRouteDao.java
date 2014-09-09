@@ -21,9 +21,4 @@ public class SysRouteDao extends AbstractCrudRepositoryTemplate<Integer, SysRout
                 return QSysRoute.sysRoute;
         }
 
-        @Override
-        public boolean cacheEnabled() {
-                return true;
-        }
-
 }

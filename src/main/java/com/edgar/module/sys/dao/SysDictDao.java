@@ -20,10 +20,5 @@ public class SysDictDao extends AbstractCrudRepositoryTemplate<String, SysDict> 
         public RelationalPathBase<?> getPathBase() {
                 return QSysDict.sysDict;
         }
-        
-        @Override
-        public boolean cacheEnabled() {
-                return true;
-        }
 
 }

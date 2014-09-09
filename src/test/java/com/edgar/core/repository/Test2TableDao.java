@@ -15,8 +15,4 @@ public class Test2TableDao extends AbstractCrudRepositoryTemplate<Test2TablePk, 
                 return QTest2Table.test2Table;
         }
 
-        @Override
-        public boolean cacheEnabled() {
-                return true;
-        }
 }

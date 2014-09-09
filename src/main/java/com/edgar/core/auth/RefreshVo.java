@@ -7,7 +7,7 @@ package com.edgar.core.auth;
  * Time: 下午1:57
  * To change this template use File | Settings | File Templates.
  */
-public class RefreshCommand {
+public class RefreshVo {
     private String accessToken;
 
     private String refreshToken;

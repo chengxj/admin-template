@@ -196,7 +196,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AccessToken refresh(RefreshCommand command) {
+    public AccessToken refresh(RefreshVo command) {
         String accessToken = command.getAccessToken();
         String refreshToken = command.getRefreshToken();
         Assert.hasText(accessToken);

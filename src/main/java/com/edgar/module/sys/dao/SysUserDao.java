@@ -21,9 +21,4 @@ public class SysUserDao extends AbstractCrudRepositoryTemplate<Integer, SysUser>
                 return QSysUser.sysUser;
         }
 
-        @Override
-        public boolean cacheEnabled() {
-                return true;
-        }
-
 }

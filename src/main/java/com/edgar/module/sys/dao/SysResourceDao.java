@@ -21,8 +21,4 @@ public class SysResourceDao extends AbstractCrudRepositoryTemplate<Integer, SysR
                 return QSysResource.sysResource;
         }
 
-        @Override
-        public boolean cacheEnabled() {
-                return true;
-        }
 }

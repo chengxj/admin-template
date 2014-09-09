@@ -1,14 +1,9 @@
 package com.edgar.core.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-import com.edgar.core.repository.AbstractCrudRepositoryTemplate;
 import com.edgar.module.sys.repository.domain.TestTable;
 import com.edgar.module.sys.repository.querydsl.QTestTable;
 import com.mysema.query.sql.RelationalPathBase;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class TestTableDao extends AbstractCrudRepositoryTemplate<String, TestTable> {
@@ -16,11 +11,6 @@ public class TestTableDao extends AbstractCrudRepositoryTemplate<String, TestTab
         @Override
         public RelationalPathBase<?> getPathBase() {
                 return QTestTable.testTable;
-        }
-        
-        @Override
-        public boolean cacheEnabled() {
-                return true;
         }
 
 }

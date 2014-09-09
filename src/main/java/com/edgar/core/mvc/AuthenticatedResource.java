@@ -3,7 +3,7 @@ package com.edgar.core.mvc;
 import com.edgar.core.auth.AccessToken;
 import com.edgar.core.auth.AuthService;
 import com.edgar.core.auth.LoginCommand;
-import com.edgar.core.auth.RefreshCommand;
+import com.edgar.core.auth.RefreshVo;
 import com.edgar.core.auth.stateless.StatelessUser;
 import com.edgar.core.shiro.AuthHelper;
 import com.edgar.core.shiro.AuthType;
@@ -78,7 +78,7 @@ public class AuthenticatedResource {
     @AuthHelper(value = "Refresh Token", type = AuthType.SSL)
     @RequestMapping(method = RequestMethod.GET, value = "/refresh")
     public ModelAndView refresh(@RequestParam("accessToken") String accessToken, @RequestParam("refreshToken") String refreshToken) {
-        RefreshCommand refreshCommand = new RefreshCommand();
+        RefreshVo refreshCommand = new RefreshVo();
         refreshCommand.setAccessToken(accessToken);
         refreshCommand.setRefreshToken(refreshToken);
         AccessToken token = authService.refresh(refreshCommand);

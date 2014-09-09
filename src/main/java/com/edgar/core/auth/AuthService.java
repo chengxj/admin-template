@@ -26,5 +26,5 @@ public interface AuthService {
 
     StatelessUser getUser(String accessToken);
 
-    AccessToken refresh(RefreshCommand command);
+    AccessToken refresh(RefreshVo command);
 }
