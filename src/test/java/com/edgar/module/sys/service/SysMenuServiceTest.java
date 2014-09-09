@@ -2,47 +2,30 @@ package com.edgar.module.sys.service;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.edgar.module.sys.service.impl.SysMenuServiceImpl;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.edgar.core.exception.BusinessCode;
-import com.edgar.core.exception.SystemException;
-import com.edgar.core.repository.Criteria;
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
-import com.edgar.core.repository.SqlOperator;
 import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.service.SysMenuServiceImpl;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ IDUtils.class, QueryExample.class })

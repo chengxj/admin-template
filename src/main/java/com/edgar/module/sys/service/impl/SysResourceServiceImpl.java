@@ -1,10 +1,11 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.service.impl;
 
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.SysResource;
+import com.edgar.module.sys.service.SysResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

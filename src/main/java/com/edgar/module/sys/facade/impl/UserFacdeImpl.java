@@ -1,5 +1,6 @@
-package com.edgar.module.sys.facade;
+package com.edgar.module.sys.facade.impl;
 
+import com.edgar.module.sys.facade.UserFacde;
 import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;

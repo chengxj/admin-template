@@ -6,7 +6,6 @@ import com.edgar.core.repository.transaction.TransactionFactory;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.Path;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
@@ -14,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.util.Assert;
 
-import javax.sql.DataSource;
 import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
 import java.util.*;
@@ -49,9 +47,13 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
      * @return RelationalPathBase
      */
     public abstract RelationalPathBase<?> getPathBase();
+    
+    public String getDataSourceKey() {
+        return Constants.DEFAULT;
+    }
 
     public TransactionConfig config() {
-        return new TransactionConfig(dataSource, configuration, getPathBase());
+        return new TransactionConfig(DataSourceFactory.createDataSource(getDataSourceKey()), configuration, getPathBase());
     }
 
     /**
@@ -62,9 +64,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
     public boolean cacheEnabled() {
         return false;
     }
-
-    @Autowired
-    private DataSource dataSource;
 
     public Class<T> getEntityBeanType() {
         return entityBeanType;

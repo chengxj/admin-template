@@ -1,4 +1,4 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.edgar.module.sys.service.PermissionCommand;
+import com.edgar.module.sys.service.PermissionService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -35,8 +35,7 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserRole;
-import com.edgar.module.sys.service.SysUserRoleCommand;
-import com.edgar.module.sys.service.SysUserServiceImpl;
+import com.edgar.module.sys.service.impl.SysUserServiceImpl;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(IDUtils.class)

@@ -45,4 +45,6 @@ public interface CacheWrapper<K, V> {
          * 删除所有缓存
          */
         void removeAll();
+
+    void put(K key, V value, int expiresInSec);
 }

@@ -6,6 +6,7 @@ import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysDict;
+import com.edgar.module.sys.service.impl.SysDictServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

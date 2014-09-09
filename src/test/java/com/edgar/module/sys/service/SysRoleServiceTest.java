@@ -3,6 +3,7 @@ package com.edgar.module.sys.service;
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.repository.*;
 import com.edgar.module.sys.repository.domain.*;
+import com.edgar.module.sys.service.impl.SysRoleServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

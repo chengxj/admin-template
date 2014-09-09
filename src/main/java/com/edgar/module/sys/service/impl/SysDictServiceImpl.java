@@ -1,4 +1,4 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.service.impl;
 
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.Pagination;
@@ -7,6 +7,7 @@ import com.edgar.core.util.ExceptionFactory;
 import com.edgar.core.validator.ValidatorStrategy;
 import com.edgar.module.sys.init.DictoryLoader;
 import com.edgar.module.sys.repository.domain.SysDict;
+import com.edgar.module.sys.service.SysDictService;
 import com.edgar.module.sys.validator.SysDictValidator;
 import com.edgar.module.sys.view.Dictory;
 import org.apache.commons.lang.StringUtils;

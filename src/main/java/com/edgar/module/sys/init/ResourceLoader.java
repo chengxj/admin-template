@@ -8,9 +8,9 @@ import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
 import com.edgar.core.shiro.FilterChainDefinitionsLoader;
-import com.edgar.core.util.PasswordHelper;
 import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.*;
+import com.edgar.module.sys.service.PasswordService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
@@ -67,6 +67,9 @@ public class ResourceLoader implements Initialization {
 
     @Autowired
     private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
+
+    @Autowired
+    private PasswordService passwordService;
 
     @Autowired
     private ShiroFilterFactoryBean shiroFilterFactoryBean;
@@ -223,7 +226,7 @@ public class ResourceLoader implements Initialization {
         rootUser.setPassword("csstrd");
         rootUser.setIsRoot(true);
         rootUser.setFullName("Adminiatrator");
-        PasswordHelper.encryptPassword(rootUser);
+        passwordService.encryptPassword(rootUser);
         sysUserDao.insert(rootUser);
 
         SysUserProfile profile = new SysUserProfile();

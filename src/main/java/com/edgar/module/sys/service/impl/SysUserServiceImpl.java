@@ -1,4 +1,4 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.service.impl;
 
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.IDUtils;
@@ -6,12 +6,15 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
-import com.edgar.core.util.PasswordHelper;
 import com.edgar.core.validator.ValidatorStrategy;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
+import com.edgar.module.sys.service.PasswordCommand;
+import com.edgar.module.sys.service.PasswordService;
+import com.edgar.module.sys.service.SysUserRoleCommand;
+import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.validator.PasswordValidator;
 import com.edgar.module.sys.validator.SysUserUpdateValidator;
 import com.edgar.module.sys.validator.SysUserValidator;
@@ -47,6 +50,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
 
+    @Autowired
+    private PasswordService passwordService;
+
     private final ValidatorStrategy validator = new SysUserValidator();
 
     private final ValidatorStrategy updateValidator = new SysUserUpdateValidator();
@@ -71,7 +77,7 @@ public class SysUserServiceImpl implements SysUserService {
         validator.validator(sysUser);
         sysUser.setUserId(IDUtils.getNextId());
         sysUser.setIsRoot(false);
-        PasswordHelper.encryptPassword(sysUser);
+        passwordService.encryptPassword(sysUser);
         sysUserDao.insert(sysUser);
         insertSysUserRoles(sysUser);
         saveDefaultProfile(sysUser.getUserId());
@@ -96,7 +102,7 @@ public class SysUserServiceImpl implements SysUserService {
     public void update(SysUserRoleCommand sysUser) {
         updateValidator.validator(sysUser);
         if (StringUtils.isNotBlank(sysUser.getPassword())) {
-            PasswordHelper.encryptPassword(sysUser);
+            passwordService.encryptPassword(sysUser);
         }
         sysUserDao.update(sysUser);
         deleteRoleByUser(sysUser.getUserId());
@@ -210,7 +216,7 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser oldUser = sysUserDao.get(command.getUserId());
         String oldPassword = command.getOldpassword();
 
-        String encryptPassword = PasswordHelper.getEncryptPassword(oldPassword,
+        String encryptPassword = passwordService.getEncryptPassword(oldPassword,
                 oldUser);
         if (!encryptPassword.equals(oldUser.getPassword())) {
             throw ExceptionFactory
@@ -220,7 +226,7 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setPassword(command.getNewpassword());
         sysUser.setUserId(command.getUserId());
         sysUser.setUsername(oldUser.getUsername());
-        PasswordHelper.encryptPassword(sysUser);
+        passwordService.encryptPassword(sysUser);
         sysUserDao.update(sysUser);
     }
 

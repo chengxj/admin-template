@@ -202,7 +202,6 @@ public class CacheAspect {
                 }
                 String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
                 Ehcache cache = cacheManager.getEhcache(cacheName);
-
                 if (cache != null) {
                         Object pk = t.getPrimaryKeyValue(domain);
                         Object key = getCacheKey(pk);

@@ -32,6 +32,10 @@ import java.util.Set;
 @Service
 public class AuthServiceImpl implements AuthService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthServiceImpl.class);
+    private static final int EXPIRES_IN = 30 * 60 * 1000;
+    private static final int REPLAY_ATTACK_EXPIRE = 5 * 60 * 1000;
+    private static final int ACCESS_TOKEN_TIME_TO_LIVE = 30 * 60;
+    private static final int REFRESH_TOKEN_TIME_TO_LIVE = 24 * 60 * 60;
 
     private CacheWrapper<String, AccessToken> accessTokenCacheWrapper;
 
@@ -63,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean isNewRequest(String nonce, long timestamp) {
         long currentTime = System.currentTimeMillis();
-        if (timestamp + 5 * 60 * 1000 < currentTime) {
+        if (timestamp + REPLAY_ATTACK_EXPIRE < currentTime) {
             return false;
         }
         String replayKey = nonce + "-" + timestamp;
@@ -152,8 +156,8 @@ public class AuthServiceImpl implements AuthService {
     private AccessToken tokenHandler(String username) {
         Assert.notNull(username);
         AccessToken accessToken = newToken(username);
-        accessTokenCacheWrapper.put(accessToken.getAccessToken(), accessToken);
-        refreshTokenCacheWrapper.put(accessToken.getAccessToken(), accessToken);
+        accessTokenCacheWrapper.put(accessToken.getAccessToken(), accessToken, ACCESS_TOKEN_TIME_TO_LIVE);
+        refreshTokenCacheWrapper.put(accessToken.getAccessToken(), accessToken, REFRESH_TOKEN_TIME_TO_LIVE);
         LOGGER.debug("crate new token : {}", accessToken.getAccessToken());
         return accessToken;
     }
@@ -167,10 +171,10 @@ public class AuthServiceImpl implements AuthService {
     private AccessToken newToken(String username) {
         AccessToken token = new AccessToken();
         token.setUsername(username);
-        token.setAccessToken(createToken(username, 30 * 3600 * 1000));
-        token.setRefreshToken(createToken(username, 60 * 3600 * 1000));
-        token.setSecretKey(createToken(username, 30 * 3600 * 1000));
-        token.setExpiresIn("" + 30 * 60 * 1000);
+        token.setAccessToken(createToken(username, EXPIRES_IN));
+        token.setRefreshToken(createToken(username, EXPIRES_IN));
+        token.setSecretKey(createToken(username, EXPIRES_IN));
+        token.setExpiresIn("" + EXPIRES_IN);
         token.setServerTime("" + System.currentTimeMillis());
         return token;
     }

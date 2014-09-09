@@ -1,4 +1,4 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.service.impl;
 
 import com.edgar.core.job.JobAdpater;
 import com.edgar.core.job.JobScheduler;
@@ -8,6 +8,7 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.validator.ValidatorStrategy;
 import com.edgar.module.sys.repository.domain.SysJob;
+import com.edgar.module.sys.service.SysJobService;
 import com.edgar.module.sys.validator.SysJobUpdateValidator;
 import com.edgar.module.sys.validator.SysJobValidator;
 import org.apache.commons.lang.BooleanUtils;

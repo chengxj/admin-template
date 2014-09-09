@@ -39,7 +39,7 @@
 //import com.edgar.module.sys.repository.domain.SysRoleResource;
 //import com.edgar.module.sys.repository.domain.SysRoleRoute;
 //import com.edgar.module.sys.service.MenuPermission;
-//import com.edgar.module.sys.service.PermissionServiceImpl;
+//import com.edgar.module.sys.service.impl.PermissionServiceImpl;
 //import com.edgar.module.sys.service.ResourcePermission;
 //import com.edgar.module.sys.service.RoutePermission;
 //

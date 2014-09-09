@@ -1,4 +1,4 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.service.impl;
 
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.IDUtils;
@@ -6,6 +6,7 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.validator.ValidatorStrategy;
 import com.edgar.module.sys.repository.domain.*;
+import com.edgar.module.sys.service.SysRoleService;
 import com.edgar.module.sys.validator.SysRoleUpdateValidator;
 import com.edgar.module.sys.validator.SysRoleValidator;
 import org.springframework.beans.factory.annotation.Autowired;

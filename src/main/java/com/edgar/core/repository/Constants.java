@@ -20,4 +20,5 @@ public class Constants {
      */
     public static final String CREATED_TIME = "createdTime";
 
+    public static final String DEFAULT = "DEFAULT";
 }

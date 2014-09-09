@@ -32,6 +32,13 @@ public class EhCacheWrapper<K, V> implements CacheWrapper<K, V> {
                 getCache().put(new Element(key, value));
         }
 
+    @Override
+    public void put(K key, V value, int expiresInSec) {
+        Element element = new Element(key, value);
+        element.setTimeToLive(expiresInSec);
+        getCache().put(new Element(key, value));
+    }
+
         @SuppressWarnings("unchecked")
         @Override
         public V get(K key) {
