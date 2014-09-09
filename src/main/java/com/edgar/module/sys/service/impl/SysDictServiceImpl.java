@@ -9,7 +9,7 @@ import com.edgar.module.sys.init.DictoryLoader;
 import com.edgar.module.sys.repository.domain.SysDict;
 import com.edgar.module.sys.service.SysDictService;
 import com.edgar.module.sys.validator.SysDictValidator;
-import com.edgar.module.sys.view.Dictory;
+import com.edgar.module.sys.vo.Dictory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

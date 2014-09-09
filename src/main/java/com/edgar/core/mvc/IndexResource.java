@@ -7,6 +7,7 @@ import com.edgar.core.shiro.*;
 import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.*;
 import com.edgar.module.sys.service.SysRouteService;
+import com.edgar.module.sys.vo.AngularRoute;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,6 @@ import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.service.PermissionService;
 import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.service.SysUserService;
-import com.edgar.module.sys.view.AngularRoute;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 

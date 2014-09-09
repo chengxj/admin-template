@@ -2,6 +2,7 @@ package com.edgar.module.sys.web;
 
 import java.util.List;
 
+import com.edgar.module.sys.vo.SysMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -21,7 +22,6 @@ import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysMenuRes;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.service.SysMenuService;
-import com.edgar.module.sys.service.SysMenuVo;
 
 /**
  * 菜单的rest

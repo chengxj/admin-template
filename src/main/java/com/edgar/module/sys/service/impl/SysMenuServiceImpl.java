@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.edgar.module.sys.service.SysMenuService;
-import com.edgar.module.sys.service.SysMenuVo;
+import com.edgar.module.sys.vo.SysMenuVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;

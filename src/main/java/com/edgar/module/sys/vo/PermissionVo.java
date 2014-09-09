@@ -1,9 +1,9 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.vo;
 
 import java.util.Set;
 
 
-public class PermissionCommand {
+public class PermissionVo {
 	private int roleId;
 
 	private Set<Integer> permissionIds;

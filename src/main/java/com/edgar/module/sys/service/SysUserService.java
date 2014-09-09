@@ -5,6 +5,8 @@ import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
+import com.edgar.module.sys.vo.ChangePasswordVo;
+import com.edgar.module.sys.vo.SysUserRoleVo;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
@@ -24,7 +26,7 @@ public interface SysUserService {
      *
      * @param sysUser 用户
      */
-    void save(@NotNull SysUserRoleCommand sysUser);
+    void save(@NotNull SysUserRoleVo sysUser);
 
     /**
      * 根据用户ID查询用户
@@ -51,7 +53,7 @@ public interface SysUserService {
      *
      * @param sysUser 用户
      */
-    void update(@NotNull SysUserRoleCommand sysUser);
+    void update(@NotNull SysUserRoleVo sysUser);
 
     /**
      * 事件用户ID和时间戳删除用户
@@ -103,9 +105,9 @@ public interface SysUserService {
     /**
      * 修改用户密码
      *
-     * @param password 密码对象
+     * @param changePasswordVo 密码对象
      */
-    void updatePassword(PasswordCommand password);
+    void updatePassword(ChangePasswordVo changePasswordVo);
 
     /**
      * 创建管理员角色的用户

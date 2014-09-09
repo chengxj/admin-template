@@ -4,6 +4,7 @@ import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysMenuRes;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
+import com.edgar.module.sys.vo.SysMenuVo;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;

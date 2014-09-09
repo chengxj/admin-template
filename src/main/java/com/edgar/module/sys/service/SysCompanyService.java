@@ -3,6 +3,7 @@ package com.edgar.module.sys.service;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysCompany;
+import com.edgar.module.sys.vo.SysCompanyVo;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
@@ -11,10 +12,10 @@ public interface SysCompanyService {
 	/**
 	 * 新增公司
 	 * 
-	 * @param command
+	 * @param sysCompanyVo
 	 *            公司
 	 */
-    void save(SysCompanyCommand command);
+    void save(SysCompanyVo sysCompanyVo);
 
 	/**
 	 * 分页查询公司

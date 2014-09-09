@@ -1,21 +1,20 @@
 package com.edgar.module.sys.service.impl;
 
-import java.util.List;
-
-import com.edgar.module.sys.service.SysCompanyCommand;
-import com.edgar.module.sys.service.SysCompanyService;
-import com.edgar.module.sys.service.SysUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysCompany;
 import com.edgar.module.sys.repository.domain.SysUser;
+import com.edgar.module.sys.service.SysCompanyService;
+import com.edgar.module.sys.service.SysUserService;
+import com.edgar.module.sys.vo.SysCompanyVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import java.util.List;
 
 @Service
 public class SysCompanyServiceImpl implements SysCompanyService {
@@ -28,19 +27,19 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
 	@Override
 	@Transactional
-	public void save(SysCompanyCommand command) {
+	public void save(SysCompanyVo sysCompanyVo) {
 		SysCompany sysCompany = new SysCompany();
 		sysCompany.setCompanyId(IDUtils.getNextId());
 		sysCompany.setIsDel(false);
-		sysCompany.setCompanyCode(command.getCompanyCode());
-		sysCompany.setCompanyName(command.getCompanyName());
+		sysCompany.setCompanyCode(sysCompanyVo.getCompanyCode());
+		sysCompany.setCompanyName(sysCompanyVo.getCompanyName());
 		sysCompanyDao.insert(sysCompany);
 
 		SysUser sysUser = new SysUser();
-		sysUser.setUsername(command.getUsername());
-		sysUser.setEmail(command.getEmail());
-		sysUser.setFullName(command.getFullName());
-		sysUser.setPassword(command.getPassword());
+		sysUser.setUsername(sysCompanyVo.getUsername());
+		sysUser.setEmail(sysCompanyVo.getEmail());
+		sysUser.setFullName(sysCompanyVo.getFullName());
+		sysUser.setPassword(sysCompanyVo.getPassword());
 
 		sysUserService.saveAdminUser(sysUser);
 	}

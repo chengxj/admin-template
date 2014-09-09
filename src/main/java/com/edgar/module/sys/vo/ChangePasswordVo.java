@@ -1,14 +1,14 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.vo;
 
-public class PasswordCommand {
+public class ChangePasswordVo {
 
-        private String retypepassword;
-        
-        private String newpassword;
-        
-        private String oldpassword;
-        
-        private int userId;
+    private String retypepassword;
+
+    private String newpassword;
+
+    private String oldpassword;
+
+    private int userId;
 
     public String getRetypepassword() {
         return retypepassword;

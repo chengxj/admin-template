@@ -1,6 +1,6 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.vo;
 
-public class SysCompanyCommand {
+public class SysCompanyVo {
 
 	private String companyCode;
 

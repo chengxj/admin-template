@@ -10,9 +10,9 @@ import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
-import com.edgar.module.sys.service.PasswordCommand;
+import com.edgar.module.sys.vo.ChangePasswordVo;
 import com.edgar.module.sys.service.SysRoleService;
-import com.edgar.module.sys.service.SysUserRoleCommand;
+import com.edgar.module.sys.vo.SysUserRoleVo;
 import com.edgar.module.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,7 +47,7 @@ public class SysUserResource {
     @AuthHelper("Create User")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView save(@RequestBody SysUserRoleCommand sysUser) {
+    public ModelAndView save(@RequestBody SysUserRoleVo sysUser) {
         sysUserService.save(sysUser);
         return ResponseMessage.success();
     }
@@ -63,7 +63,7 @@ public class SysUserResource {
     @RequestMapping(method = RequestMethod.PUT, value = "/{userId}")
     @ResponseBody
     public ModelAndView update(@PathVariable("userId") int userId,
-                               @RequestBody SysUserRoleCommand sysUser) {
+                               @RequestBody SysUserRoleVo sysUser) {
         sysUser.setUserId(userId);
         sysUserService.update(sysUser);
         return ResponseMessage.success();
@@ -178,9 +178,9 @@ public class SysUserResource {
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT, value = "/password/{userId}")
     public ModelAndView updatePassword(@PathVariable("userId") int userId,
-                                       @RequestBody PasswordCommand password) {
-        password.setUserId(userId);
-        sysUserService.updatePassword(password);
+                                       @RequestBody ChangePasswordVo changePasswordVo) {
+        changePasswordVo.setUserId(userId);
+        sysUserService.updatePassword(changePasswordVo);
         return ResponseMessage.success();
     }
 

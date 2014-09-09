@@ -1,4 +1,4 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.vo;
 
 import java.util.ArrayList;
 import java.util.List;

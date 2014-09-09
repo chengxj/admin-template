@@ -2,6 +2,7 @@ package com.edgar.module.sys.service;
 
 import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.domain.SysRoute;
+import com.edgar.module.sys.vo.PermissionVo;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
@@ -42,9 +43,9 @@ public interface PermissionService {
 	/**
 	 * 保存资源权限
 	 * 
-	 * @param command
-	 *            PermissionCommand
+	 * @param permissionVo
+	 *            PermissionVo
 	 */
-	void savePermission(@NotNull PermissionCommand command);
+	void savePermission(@NotNull PermissionVo permissionVo);
 
 }

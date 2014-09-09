@@ -6,7 +6,7 @@ import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
 import com.edgar.core.view.ResponseMessage;
 import com.edgar.module.sys.repository.domain.SysCompany;
-import com.edgar.module.sys.service.SysCompanyCommand;
+import com.edgar.module.sys.vo.SysCompanyVo;
 import com.edgar.module.sys.service.SysCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,14 +23,14 @@ public class SysCompanyResource {
     /**
      * 保存公司
      *
-     * @param command 公司
+     * @param sysCompanyVo 公司
      * @return 保存成功返回1，失败返回0
      */
     @AuthHelper(value = "Create Company", isRoot = true)
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView save(@RequestBody SysCompanyCommand command) {
-        sysCompanyService.save(command);
+    public ModelAndView save(@RequestBody SysCompanyVo sysCompanyVo) {
+        sysCompanyService.save(sysCompanyVo);
         return ResponseMessage.success();
     }
 

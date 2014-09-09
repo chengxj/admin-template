@@ -5,6 +5,7 @@ import java.lang.annotation.ElementType;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import com.edgar.module.sys.vo.ChangePasswordVo;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.HibernateValidatorConfiguration;
 import org.hibernate.validator.cfg.ConstraintMapping;
@@ -12,7 +13,6 @@ import org.hibernate.validator.cfg.defs.NotNullDef;
 import org.hibernate.validator.cfg.defs.SizeDef;
 
 import com.edgar.core.validator.AbstractValidatorTemplate;
-import com.edgar.module.sys.service.PasswordCommand;
 
 public class PasswordValidator extends AbstractValidatorTemplate {
 
@@ -23,7 +23,7 @@ public class PasswordValidator extends AbstractValidatorTemplate {
 
                 ConstraintMapping constraintMapping = configuration.createConstraintMapping();
 
-                constraintMapping.type(PasswordCommand.class)
+                constraintMapping.type(ChangePasswordVo.class)
                                 .property("oldpassword", ElementType.FIELD)
                                 .constraint(new SizeDef().max(16).min(6))
                                 .constraint(new NotNullDef())

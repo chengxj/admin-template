@@ -1,4 +1,4 @@
-package com.edgar.module.sys.view;
+package com.edgar.module.sys.vo;
 
 import org.apache.commons.lang.StringUtils;
 

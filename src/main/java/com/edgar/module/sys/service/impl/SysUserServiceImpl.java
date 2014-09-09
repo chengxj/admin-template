@@ -11,9 +11,9 @@ import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
-import com.edgar.module.sys.service.PasswordCommand;
+import com.edgar.module.sys.vo.ChangePasswordVo;
 import com.edgar.module.sys.service.PasswordService;
-import com.edgar.module.sys.service.SysUserRoleCommand;
+import com.edgar.module.sys.vo.SysUserRoleVo;
 import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.validator.PasswordValidator;
 import com.edgar.module.sys.validator.SysUserUpdateValidator;
@@ -60,27 +60,27 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     @Transactional
     public void saveAdminUser(SysUser sysUser) {
-        SysUserRoleCommand command = new SysUserRoleCommand();
-        BeanUtils.copyProperties(sysUser, command);
+        SysUserRoleVo sysUserRoleVo = new SysUserRoleVo();
+        BeanUtils.copyProperties(sysUser, sysUserRoleVo);
         QueryExample example = QueryExample.newInstance();
         example.equalsTo("roleCode", "ROLE_CODE_ADMIN");
         example.addField("roleId");
         List<Integer> roleIds = sysRoleDao.querySingleColumn(example,
                 Integer.class);
-        command.setRoleIds(StringUtils.join(roleIds, ","));
-        save(command);
+        sysUserRoleVo.setRoleIds(StringUtils.join(roleIds, ","));
+        save(sysUserRoleVo);
     }
 
     @Override
     @Transactional
-    public void save(SysUserRoleCommand sysUser) {
-        validator.validator(sysUser);
-        sysUser.setUserId(IDUtils.getNextId());
-        sysUser.setIsRoot(false);
-        passwordService.encryptPassword(sysUser);
-        sysUserDao.insert(sysUser);
-        insertSysUserRoles(sysUser);
-        saveDefaultProfile(sysUser.getUserId());
+    public void save(SysUserRoleVo sysUserRoleVo) {
+        validator.validator(sysUserRoleVo);
+        sysUserRoleVo.setUserId(IDUtils.getNextId());
+        sysUserRoleVo.setIsRoot(false);
+        passwordService.encryptPassword(sysUserRoleVo);
+        sysUserDao.insert(sysUserRoleVo);
+        insertSysUserRoles(sysUserRoleVo);
+        saveDefaultProfile(sysUserRoleVo.getUserId());
     }
 
     @Override
@@ -99,7 +99,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional
-    public void update(SysUserRoleCommand sysUser) {
+    public void update(SysUserRoleVo sysUser) {
         updateValidator.validator(sysUser);
         if (StringUtils.isNotBlank(sysUser.getPassword())) {
             passwordService.encryptPassword(sysUser);
@@ -156,7 +156,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param sysUser 用户角色
      */
     @Transactional
-    private void insertSysUserRoles(SysUserRoleCommand sysUser) {
+    private void insertSysUserRoles(SysUserRoleVo sysUser) {
         if (StringUtils.isNotBlank(sysUser.getRoleIds())) {
             List<SysUserRole> sysUserRoles = new ArrayList<SysUserRole>();
             String[] roleIds = StringUtils.split(sysUser.getRoleIds(), ",");
@@ -206,15 +206,15 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public void updatePassword(PasswordCommand command) {
+    public void updatePassword(ChangePasswordVo changePasswordVo) {
         ValidatorStrategy validator = new PasswordValidator();
-        validator.validator(command);
-        if (!command.getNewpassword().equals(command.getRetypepassword())) {
+        validator.validator(changePasswordVo);
+        if (!changePasswordVo.getNewpassword().equals(changePasswordVo.getRetypepassword())) {
             throw ExceptionFactory
                     .inValidParameter("Two input password is not same");
         }
-        SysUser oldUser = sysUserDao.get(command.getUserId());
-        String oldPassword = command.getOldpassword();
+        SysUser oldUser = sysUserDao.get(changePasswordVo.getUserId());
+        String oldPassword = changePasswordVo.getOldpassword();
 
         String encryptPassword = passwordService.getEncryptPassword(oldPassword,
                 oldUser);
@@ -223,8 +223,8 @@ public class SysUserServiceImpl implements SysUserService {
                     .inValidParameter("The Original Password is not correct");
         }
         SysUser sysUser = new SysUser();
-        sysUser.setPassword(command.getNewpassword());
-        sysUser.setUserId(command.getUserId());
+        sysUser.setPassword(changePasswordVo.getNewpassword());
+        sysUser.setUserId(changePasswordVo.getUserId());
         sysUser.setUsername(oldUser.getUsername());
         passwordService.encryptPassword(sysUser);
         sysUserDao.update(sysUser);

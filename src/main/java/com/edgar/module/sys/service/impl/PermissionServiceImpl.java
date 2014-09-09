@@ -1,31 +1,18 @@
 package com.edgar.module.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.edgar.module.sys.service.PermissionCommand;
+import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.IDUtils;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.core.util.ExceptionFactory;
+import com.edgar.module.sys.repository.domain.*;
 import com.edgar.module.sys.service.PermissionService;
+import com.edgar.module.sys.vo.PermissionVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edgar.core.repository.CrudRepository;
-import com.edgar.core.repository.IDUtils;
-import com.edgar.core.repository.QueryExample;
-import com.edgar.core.util.ExceptionFactory;
-import com.edgar.module.sys.repository.domain.SysMenu;
-import com.edgar.module.sys.repository.domain.SysMenuRes;
-import com.edgar.module.sys.repository.domain.SysMenuRoute;
-import com.edgar.module.sys.repository.domain.SysResource;
-import com.edgar.module.sys.repository.domain.SysRole;
-import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.repository.domain.SysRoleRes;
-import com.edgar.module.sys.repository.domain.SysRoleRoute;
-import com.edgar.module.sys.repository.domain.SysRoute;
+import java.util.*;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
@@ -122,16 +109,16 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     @Transactional
-    public void savePermission(PermissionCommand command) {
-        int roleId = command.getRoleId();
+    public void savePermission(PermissionVo permissionVo) {
+        int roleId = permissionVo.getRoleId();
         deleteByRole(roleId);
-        Set<Integer> permIds = command.getPermissionIds();
+        Set<Integer> permIds = permissionVo.getPermissionIds();
         if (CollectionUtils.isEmpty(permIds)) {
             return;
         }
         Set<Integer> unModifiablePermIds = Collections.unmodifiableSet(permIds);
         saveRoleMenu(roleId, unModifiablePermIds);
-        checkRole(command.getRoleId());
+        checkRole(permissionVo.getRoleId());
     }
 
     /**

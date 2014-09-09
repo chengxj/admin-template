@@ -1,6 +1,5 @@
-package com.edgar.module.sys.service;
+package com.edgar.module.sys.vo;
 
-import com.edgar.core.command.Command;
 import com.edgar.module.sys.repository.domain.SysUser;
 
 /**
@@ -9,7 +8,7 @@ import com.edgar.module.sys.repository.domain.SysUser;
  * @author Edgar Zhang
  * @version 1.0
  */
-public class SysUserRoleCommand extends SysUser implements Command {
+public class SysUserRoleVo extends SysUser {
 
         private String roleIds;
 

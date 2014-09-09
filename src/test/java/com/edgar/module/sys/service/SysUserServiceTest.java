@@ -1,22 +1,14 @@
 package com.edgar.module.sys.service;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.edgar.core.exception.SystemException;
+import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.IDUtils;
+import com.edgar.core.repository.Pagination;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.module.sys.repository.domain.SysUser;
+import com.edgar.module.sys.repository.domain.SysUserRole;
+import com.edgar.module.sys.service.impl.SysUserServiceImpl;
+import com.edgar.module.sys.vo.SysUserRoleVo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,14 +20,17 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.edgar.core.exception.SystemException;
-import com.edgar.core.repository.CrudRepository;
-import com.edgar.core.repository.IDUtils;
-import com.edgar.core.repository.Pagination;
-import com.edgar.core.repository.QueryExample;
-import com.edgar.module.sys.repository.domain.SysUser;
-import com.edgar.module.sys.repository.domain.SysUserRole;
-import com.edgar.module.sys.service.impl.SysUserServiceImpl;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(IDUtils.class)
@@ -116,7 +111,7 @@ public class SysUserServiceTest {
 
         @Test
         public void testSaveUserNull() {
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("username", "username不能为null");
                 map.put("fullName", "fullName不能为null");
@@ -136,7 +131,7 @@ public class SysUserServiceTest {
 
         @Test
         public void testSaveUserLength() {
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 sysUser.setUsername("z012345678901234567890123456789123012345678901234567890123456789123");
                 sysUser.setPassword("012345678901234567890123456789123");
                 sysUser.setFullName("012345678901234567890123456789123");
@@ -159,7 +154,7 @@ public class SysUserServiceTest {
 
         @Test
         public void testSaveUserPattern() {
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 sysUser.setUsername("123");
                 sysUser.setPassword("2322434");
                 sysUser.setFullName("#$#$#$#$");
@@ -185,7 +180,7 @@ public class SysUserServiceTest {
                 PowerMockito.mockStatic(IDUtils.class);
                 when(IDUtils.getNextId()).thenReturn(1);
                 when(sysUserDao.insert(any(SysUser.class)));
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 sysUser.setUsername("z123");
                 sysUser.setPassword("2322434");
                 sysUser.setFullName("#$#$#$#$");
@@ -205,7 +200,7 @@ public class SysUserServiceTest {
                 when(IDUtils.getNextId()).thenReturn(1);
                 when(sysUserDao.insert(any(SysUser.class)));
                 when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 sysUser.setRoleIds("1");
                 sysUser.setUsername("z123");
                 sysUser.setPassword("2322434");
@@ -224,7 +219,7 @@ public class SysUserServiceTest {
                 when(IDUtils.getNextId()).thenReturn(1);
                 when(sysUserDao.insert(any(SysUser.class)));
                 when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 sysUser.setRoleIds("1,2");
                 sysUser.setUsername("z123");
                 sysUser.setPassword("2322434");
@@ -239,7 +234,7 @@ public class SysUserServiceTest {
 
         @Test
         public void testUpdateUserNull() {
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 try {
                         sysUserService.update(sysUser);
                 } catch (SystemException e) {
@@ -258,7 +253,7 @@ public class SysUserServiceTest {
 
         @Test
         public void testUpdateUserLength() {
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 sysUser.setUserId(1);
                 sysUser.setUsername("z012345678901234567890123456789123012345678901234567890123456789123");
                 sysUser.setPassword("012345678901234567890123456789123");
@@ -282,7 +277,7 @@ public class SysUserServiceTest {
         @Test
         public void testUpdateUser() {
                 when(sysUserDao.update(any(SysUser.class))).thenReturn(1L);
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 sysUser.setUserId(1);
                 sysUser.setUsername("z123");
                 sysUser.setPassword("2322434");
@@ -301,7 +296,7 @@ public class SysUserServiceTest {
                 when(sysUserDao.update(any(SysUser.class))).thenReturn(1L);
                 when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1l);
                 when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
-                SysUserRoleCommand sysUser = new SysUserRoleCommand();
+                SysUserRoleVo sysUser = new SysUserRoleVo();
                 sysUser.setUserId(1);
                 sysUser.setUsername("z123");
 //                sysUser.setPassword("2322434");
