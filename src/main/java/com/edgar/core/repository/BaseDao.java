@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.0
  */
 @Validated
-public interface CrudRepository<PK, T> {
+public interface BaseDao<PK, T> {
 
     /**
      * 根据查询条件查询列表

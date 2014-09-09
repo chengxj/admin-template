@@ -1,6 +1,6 @@
 package com.edgar.module.sys.service.impl;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.Constants;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SysResourceServiceImpl implements SysResourceService {
 
     @Autowired
-    private CrudRepository<Integer, SysResource> sysResourceDao;
+    private BaseDao<Integer, SysResource> sysResourceDao;
 
     @Override
     public List<SysResource> findAll() {
@@ -46,7 +46,7 @@ public class SysResourceServiceImpl implements SysResourceService {
         return sysResourceDao.get(resourceId);
     }
 
-    public void setSysResourceDao(CrudRepository<Integer, SysResource> sysResourceDao) {
+    public void setSysResourceDao(BaseDao<Integer, SysResource> sysResourceDao) {
         this.sysResourceDao = sysResourceDao;
     }
 }

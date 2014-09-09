@@ -490,7 +490,7 @@
 										<format>html</format>
 									</formats>
 									<!-- <excludes>
-										<exclude>com.edgar.repository/*CrudRepository.class</exclude>
+										<exclude>com.edgar.repository/*BaseDao.class</exclude>
 										<exclude>**/*Template.class</exclude>
 									</excludes> -->
 								</configuration>

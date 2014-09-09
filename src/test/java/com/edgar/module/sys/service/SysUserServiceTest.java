@@ -1,7 +1,7 @@
 package com.edgar.module.sys.service;
 
 import com.edgar.core.exception.SystemException;
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -36,10 +36,10 @@ import static org.mockito.Mockito.*;
 @PrepareForTest(IDUtils.class)
 public class SysUserServiceTest {
         @Mock
-        private CrudRepository<Integer, SysUser> sysUserDao;
+        private BaseDao<Integer, SysUser> sysUserDao;
 
         @Mock
-        private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
+        private BaseDao<Integer, SysUserRole> sysUserRoleDao;
 
         private SysUserServiceImpl sysUserService;
 

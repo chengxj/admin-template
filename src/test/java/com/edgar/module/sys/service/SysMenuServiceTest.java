@@ -20,7 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysMenu;
@@ -31,13 +31,13 @@ import com.edgar.module.sys.repository.domain.SysRoleMenu;
 @PrepareForTest({ IDUtils.class, QueryExample.class })
 public class SysMenuServiceTest {
         @Mock
-        private CrudRepository<Integer, SysMenu> sysMenuDao;
+        private BaseDao<Integer, SysMenu> sysMenuDao;
 
         @Mock
-        private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
+        private BaseDao<Integer, SysMenuRoute> sysMenuRouteDao;
 
         @Mock
-        private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
+        private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
 
         private SysMenuServiceImpl sysMenuService;
 

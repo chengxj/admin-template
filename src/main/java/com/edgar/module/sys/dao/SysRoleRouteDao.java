@@ -1,8 +1,8 @@
 package com.edgar.module.sys.dao;
 
+import com.edgar.core.repository.AbstractDaoTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.edgar.core.repository.AbstractCrudRepositoryTemplate;
 import com.edgar.module.sys.repository.domain.SysRoleRoute;
 import com.edgar.module.sys.repository.querydsl.QSysRoleRoute;
 import com.mysema.query.sql.RelationalPathBase;
@@ -14,7 +14,7 @@ import com.mysema.query.sql.RelationalPathBase;
  * @version 1.0
  */
 @Repository
-public class SysRoleRouteDao extends AbstractCrudRepositoryTemplate<Integer, SysRoleRoute> {
+public class SysRoleRouteDao extends AbstractDaoTemplate<Integer, SysRoleRoute> {
 
         @Override
         public RelationalPathBase<?> getPathBase() {

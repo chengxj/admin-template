@@ -52,8 +52,7 @@ public class InsertTransaction<T> extends TransactionTemplate {
 
     private void log(SQLInsertClause insertClause) {
         for (SQLBindings sqlBindings : insertClause.getSQL()) {
-            LOGGER.debug("insert {} \nSQL[{}] \nparams:{}", getPathBase()
-                    .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+            LOGGER.debug("SQL: {} \nparams: {}", sqlBindings.getSQL(), sqlBindings.getBindings());
         }
     }
 

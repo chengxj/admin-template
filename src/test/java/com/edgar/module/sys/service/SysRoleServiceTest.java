@@ -31,19 +31,19 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class SysRoleServiceTest {
 
     @Mock
-    private CrudRepository<Integer, SysRole> sysRoleDao;
+    private BaseDao<Integer, SysRole> sysRoleDao;
 
     @Mock
-    private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+    private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
 
     @Mock
-    private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
+    private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
 
     @Mock
-    private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
+    private BaseDao<Integer, SysRoleRes> sysRoleResDao;
 
     @Mock
-    private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
+    private BaseDao<Integer, SysUserRole> sysUserRoleDao;
 
     private SysRoleServiceImpl sysRoleService;
 

@@ -38,8 +38,7 @@ public class DeleteTransaction extends TransactionTemplate {
                     deleteClause.where(expression);
                 }
                 for (SQLBindings sqlBindings : deleteClause.getSQL()) {
-                    LOGGER.debug("delete {} \nSQL[{}] \nparams:{}", getPathBase()
-                            .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
+                    LOGGER.debug("SQL: {} \nparams: {}", sqlBindings.getSQL(), sqlBindings.getBindings());
                 }
                 return deleteClause.execute();
             }

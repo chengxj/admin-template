@@ -1,10 +1,7 @@
 package com.edgar.core.repository;
 
-import com.edgar.core.exception.SystemException;
 import com.edgar.module.sys.repository.domain.Test2Table;
 import com.edgar.module.sys.repository.domain.TestTable;
-import net.sf.ehcache.CacheManager;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,16 +24,13 @@ import java.util.List;
 @TransactionConfiguration(defaultRollback = true)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class})
-public class CacheDisabledTest {
+public class DaoTest2 {
 
     @Autowired
     private TestTableDao2 testTableDao;
 
     @Autowired
-    private CrudRepository<Test2TablePk, Test2Table> test2TableDao;
-
-    @Autowired
-    private CacheManager cacheManager;
+    private BaseDao<Test2TablePk, Test2Table> test2TableDao;
 
     @Before
     public void setUp() {
@@ -62,11 +56,6 @@ public class CacheDisabledTest {
             test2Tables.add(testTable);
         }
         test2TableDao.insert(test2Tables);
-    }
-
-    @After
-    public void tearDown() {
-        cacheManager.removeAllCaches();
     }
 
     @Transactional
@@ -372,7 +361,7 @@ public class CacheDisabledTest {
     }
 
     @Transactional
-    @Test(expected = SystemException.class)
+    @Test(expected = StaleObjectStateException.class)
     public void testUpdateByVersion() {
         QueryExample example = QueryExample.newInstance();
         example.limit(1);
@@ -460,7 +449,7 @@ public class CacheDisabledTest {
     }
 
     @Transactional
-    @Test(expected = SystemException.class)
+    @Test(expected = StaleObjectStateException.class)
     public void testDeleteByPKAndVersion() {
         QueryExample example = QueryExample.newInstance();
         example.limit(1);

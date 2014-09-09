@@ -2,13 +2,13 @@ package com.edgar.module.sys.service.impl;
 
 import java.util.List;
 
+import com.edgar.core.repository.BaseDao;
 import com.edgar.module.sys.service.SysRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.edgar.core.repository.CrudRepository;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -28,13 +28,13 @@ import com.edgar.module.sys.validator.SysRouteValidator;
 @Service
 public class SysRouteServiceImpl implements SysRouteService {
 	@Autowired
-	private CrudRepository<Integer, SysRoute> sysRouteDao;
+	private BaseDao<Integer, SysRoute> sysRouteDao;
 
 	@Autowired
-	private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+	private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
 
 	@Autowired
-	private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
+	private BaseDao<Integer, SysMenuRoute> sysMenuRouteDao;
 
 	private final ValidatorStrategy validator = new SysRouteValidator();
 
@@ -94,15 +94,15 @@ public class SysRouteServiceImpl implements SysRouteService {
 		sysMenuRouteDao.delete(example);
 	}
 
-    public void setSysRouteDao(CrudRepository<Integer, SysRoute> sysRouteDao) {
+    public void setSysRouteDao(BaseDao<Integer, SysRoute> sysRouteDao) {
         this.sysRouteDao = sysRouteDao;
     }
 
-    public void setSysRoleRouteDao(CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao) {
+    public void setSysRoleRouteDao(BaseDao<Integer, SysRoleRoute> sysRoleRouteDao) {
         this.sysRoleRouteDao = sysRoleRouteDao;
     }
 
-    public void setSysMenuRouteDao(CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao) {
+    public void setSysMenuRouteDao(BaseDao<Integer, SysMenuRoute> sysMenuRouteDao) {
         this.sysMenuRouteDao = sysMenuRouteDao;
     }
 }

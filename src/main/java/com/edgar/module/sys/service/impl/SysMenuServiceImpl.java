@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.ExceptionFactory;
@@ -34,16 +34,16 @@ import com.edgar.module.sys.validator.SysMenuValidator;
 @Service
 public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
-	private CrudRepository<Integer, SysMenu> sysMenuDao;
+	private BaseDao<Integer, SysMenu> sysMenuDao;
 
 	@Autowired
-	private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
+	private BaseDao<Integer, SysMenuRoute> sysMenuRouteDao;
 
 	@Autowired
-	private CrudRepository<Integer, SysMenuRes> sysMenuResDao;
+	private BaseDao<Integer, SysMenuRes> sysMenuResDao;
 
 	@Autowired
-	private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
+	private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
 
 	private final ValidatorStrategy validator = new SysMenuValidator();
 
@@ -196,19 +196,19 @@ public class SysMenuServiceImpl implements SysMenuService {
         return sysUsers.isEmpty();
     }
 
-    public void setSysMenuDao(CrudRepository<Integer, SysMenu> sysMenuDao) {
+    public void setSysMenuDao(BaseDao<Integer, SysMenu> sysMenuDao) {
         this.sysMenuDao = sysMenuDao;
     }
 
-    public void setSysMenuRouteDao(CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao) {
+    public void setSysMenuRouteDao(BaseDao<Integer, SysMenuRoute> sysMenuRouteDao) {
         this.sysMenuRouteDao = sysMenuRouteDao;
     }
 
-    public void setSysMenuResDao(CrudRepository<Integer, SysMenuRes> sysMenuResDao) {
+    public void setSysMenuResDao(BaseDao<Integer, SysMenuRes> sysMenuResDao) {
         this.sysMenuResDao = sysMenuResDao;
     }
 
-    public void setSysRoleMenuDao(CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao) {
+    public void setSysRoleMenuDao(BaseDao<Integer, SysRoleMenu> sysRoleMenuDao) {
         this.sysRoleMenuDao = sysRoleMenuDao;
     }
 }

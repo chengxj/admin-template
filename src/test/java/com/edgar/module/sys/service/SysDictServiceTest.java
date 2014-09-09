@@ -2,7 +2,7 @@ package com.edgar.module.sys.service;
 
 import com.edgar.core.exception.BusinessCode;
 import com.edgar.core.exception.SystemException;
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysDict;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 public class SysDictServiceTest {
 
     @Mock
-    private CrudRepository<String, SysDict> sysDictDao;
+    private BaseDao<String, SysDict> sysDictDao;
 
     private SysDictServiceImpl sysDictService;
 

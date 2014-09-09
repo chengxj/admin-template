@@ -1,6 +1,6 @@
 package com.edgar.module.sys.service.impl;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -20,7 +20,7 @@ import java.util.List;
 public class SysCompanyServiceImpl implements SysCompanyService {
 
 	@Autowired
-	private CrudRepository<Integer, SysCompany> sysCompanyDao;
+	private BaseDao<Integer, SysCompany> sysCompanyDao;
 
 	@Autowired
 	private SysUserService sysUserService;

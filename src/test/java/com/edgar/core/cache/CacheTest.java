@@ -24,7 +24,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.module.sys.repository.domain.SysDict;
 
@@ -35,7 +35,7 @@ import com.edgar.module.sys.repository.domain.SysDict;
                 TransactionalTestExecutionListener.class })
 public class CacheTest {
         @Autowired
-        private CrudRepository<String, SysDict> sysDictDao;
+        private BaseDao<String, SysDict> sysDictDao;
 
         @Autowired
         private CacheManager cacheManager;

@@ -30,7 +30,7 @@
 //import com.edgar.core.exception.BusinessCode;
 //import com.edgar.core.exception.SystemException;
 //import com.edgar.core.repository.Criteria;
-//import com.edgar.core.repository.CrudRepository;
+//import com.edgar.core.repository.BaseDao;
 //import com.edgar.core.repository.IDUtils;
 //import com.edgar.core.repository.QueryExample;
 //import com.edgar.core.repository.SqlOperator;
@@ -47,16 +47,16 @@
 //@PrepareForTest({ QueryExample.class, IDUtils.class })
 //public class PermissionServiceTest {
 //        @Mock
-//        private CrudRepository<Integer, SysRole> sysRoleDao;
+//        private BaseDao<Integer, SysRole> sysRoleDao;
 //
 //        @Mock
-//        private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+//        private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
 //
 //        @Mock
-//        private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
+//        private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
 //
 //        @Mock
-//        private CrudRepository<Integer, SysRoleResource> sysRoleResourceDao;
+//        private BaseDao<Integer, SysRoleResource> sysRoleResourceDao;
 //
 //        private PermissionServiceImpl permissionService;
 //

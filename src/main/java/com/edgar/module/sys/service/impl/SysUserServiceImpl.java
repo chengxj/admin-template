@@ -1,6 +1,6 @@
 package com.edgar.module.sys.service.impl;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -39,16 +39,16 @@ import java.util.List;
 public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
-    private CrudRepository<Integer, SysUser> sysUserDao;
+    private BaseDao<Integer, SysUser> sysUserDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRole> sysRoleDao;
+    private BaseDao<Integer, SysRole> sysRoleDao;
 
     @Autowired
-    private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
+    private BaseDao<Integer, SysUserRole> sysUserRoleDao;
 
     @Autowired
-    private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
+    private BaseDao<Integer, SysUserProfile> sysUserProfileDao;
 
     @Autowired
     private PasswordService passwordService;
@@ -230,19 +230,19 @@ public class SysUserServiceImpl implements SysUserService {
         sysUserDao.update(sysUser);
     }
 
-    public void setSysUserDao(CrudRepository<Integer, SysUser> sysUserDao) {
+    public void setSysUserDao(BaseDao<Integer, SysUser> sysUserDao) {
         this.sysUserDao = sysUserDao;
     }
 
-    public void setSysRoleDao(CrudRepository<Integer, SysRole> sysRoleDao) {
+    public void setSysRoleDao(BaseDao<Integer, SysRole> sysRoleDao) {
         this.sysRoleDao = sysRoleDao;
     }
 
-    public void setSysUserRoleDao(CrudRepository<Integer, SysUserRole> sysUserRoleDao) {
+    public void setSysUserRoleDao(BaseDao<Integer, SysUserRole> sysUserRoleDao) {
         this.sysUserRoleDao = sysUserRoleDao;
     }
 
-    public void setSysUserProfileDao(CrudRepository<Integer, SysUserProfile> sysUserProfileDao) {
+    public void setSysUserProfileDao(BaseDao<Integer, SysUserProfile> sysUserProfileDao) {
         this.sysUserProfileDao = sysUserProfileDao;
     }
 }

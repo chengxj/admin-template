@@ -3,7 +3,7 @@ package com.edgar.module.sys.init;
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.init.AppInitializer;
 import com.edgar.core.init.Initialization;
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
@@ -39,34 +39,34 @@ public class ResourceLoader implements Initialization {
     private RequestMappingHandlerMapping handlerMapping;
 
     @Autowired
-    private CrudRepository<Integer, SysResource> sysResourceDao;
+    private BaseDao<Integer, SysResource> sysResourceDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRole> sysRoleDao;
+    private BaseDao<Integer, SysRole> sysRoleDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
+    private BaseDao<Integer, SysRoleRes> sysRoleResDao;
 
     @Autowired
-    private CrudRepository<Integer, SysUser> sysUserDao;
+    private BaseDao<Integer, SysUser> sysUserDao;
 
     @Autowired
-    private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
+    private BaseDao<Integer, SysUserRole> sysUserRoleDao;
 
     @Autowired
-    private CrudRepository<Integer, SysMenu> sysMenuDao;
+    private BaseDao<Integer, SysMenu> sysMenuDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
+    private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRoute> sysRouteDao;
+    private BaseDao<Integer, SysRoute> sysRouteDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+    private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
 
     @Autowired
-    private CrudRepository<Integer, SysUserProfile> sysUserProfileDao;
+    private BaseDao<Integer, SysUserProfile> sysUserProfileDao;
 
     @Autowired
     private PasswordService passwordService;

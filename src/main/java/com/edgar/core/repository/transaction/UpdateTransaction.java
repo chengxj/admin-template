@@ -57,7 +57,7 @@ public class UpdateTransaction<T> extends TransactionTemplate {
 
     private void log(SQLUpdateClause updateClause) {
         for (SQLBindings sqlBindings : updateClause.getSQL()) {
-            LOGGER.debug("update {} \nSQL[{}] \nparams:{}", getPathBase()
+            LOGGER.debug("SQL: {} \nparams: {}", getPathBase()
                     .getTableName(), sqlBindings.getSQL(), sqlBindings.getBindings());
         }
     }

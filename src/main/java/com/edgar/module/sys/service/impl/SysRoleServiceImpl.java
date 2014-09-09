@@ -1,6 +1,6 @@
 package com.edgar.module.sys.service.impl;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -25,19 +25,19 @@ import java.util.List;
 public class SysRoleServiceImpl implements SysRoleService {
 
         @Autowired
-        private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+        private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
 
         @Autowired
-        private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
+        private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
 
         @Autowired
-        private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
+        private BaseDao<Integer, SysRoleRes> sysRoleResDao;
 
         @Autowired
-        private CrudRepository<Integer, SysRole> sysRoleDao;
+        private BaseDao<Integer, SysRole> sysRoleDao;
 
         @Autowired
-        private CrudRepository<Integer, SysUserRole> sysUserRoleDao;
+        private BaseDao<Integer, SysUserRole> sysUserRoleDao;
 
         private final ValidatorStrategy validator = new SysRoleValidator();
 
@@ -88,23 +88,23 @@ public class SysRoleServiceImpl implements SysRoleService {
                 sysRoleResDao.delete(example);
         }
 
-    public void setSysRoleRouteDao(CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao) {
+    public void setSysRoleRouteDao(BaseDao<Integer, SysRoleRoute> sysRoleRouteDao) {
         this.sysRoleRouteDao = sysRoleRouteDao;
     }
 
-    public void setSysRoleMenuDao(CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao) {
+    public void setSysRoleMenuDao(BaseDao<Integer, SysRoleMenu> sysRoleMenuDao) {
         this.sysRoleMenuDao = sysRoleMenuDao;
     }
 
-    public void setSysRoleResDao(CrudRepository<Integer, SysRoleRes> sysRoleResDao) {
+    public void setSysRoleResDao(BaseDao<Integer, SysRoleRes> sysRoleResDao) {
         this.sysRoleResDao = sysRoleResDao;
     }
 
-    public void setSysRoleDao(CrudRepository<Integer, SysRole> sysRoleDao) {
+    public void setSysRoleDao(BaseDao<Integer, SysRole> sysRoleDao) {
         this.sysRoleDao = sysRoleDao;
     }
 
-    public void setSysUserRoleDao(CrudRepository<Integer, SysUserRole> sysUserRoleDao) {
+    public void setSysUserRoleDao(BaseDao<Integer, SysUserRole> sysUserRoleDao) {
         this.sysUserRoleDao = sysUserRoleDao;
     }
 }

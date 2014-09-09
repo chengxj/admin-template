@@ -2,7 +2,7 @@ package com.edgar.module.sys.service.impl;
 
 import com.edgar.core.job.JobAdpater;
 import com.edgar.core.job.JobScheduler;
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 public class SysJobServiceImpl implements SysJobService {
     @Autowired
-    private CrudRepository<Integer, SysJob> sysJobDao;
+    private BaseDao<Integer, SysJob> sysJobDao;
 
     @Autowired
     private JobScheduler jobScheduler;
@@ -113,7 +113,7 @@ public class SysJobServiceImpl implements SysJobService {
         return query(example);
     }
 
-    public void setSysJobDao(CrudRepository<Integer, SysJob> sysJobDao) {
+    public void setSysJobDao(BaseDao<Integer, SysJob> sysJobDao) {
         this.sysJobDao = sysJobDao;
     }
 

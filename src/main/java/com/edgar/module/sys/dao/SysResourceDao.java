@@ -1,8 +1,8 @@
 package com.edgar.module.sys.dao;
 
+import com.edgar.core.repository.AbstractDaoTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.edgar.core.repository.AbstractCrudRepositoryTemplate;
 import com.edgar.module.sys.repository.domain.SysResource;
 import com.edgar.module.sys.repository.querydsl.QSysResource;
 import com.mysema.query.sql.RelationalPathBase;
@@ -14,7 +14,7 @@ import com.mysema.query.sql.RelationalPathBase;
  * @version 1.0
  */
 @Repository
-public class SysResourceDao extends AbstractCrudRepositoryTemplate<Integer, SysResource> {
+public class SysResourceDao extends AbstractDaoTemplate<Integer, SysResource> {
 
         @Override
         public RelationalPathBase<?> getPathBase() {

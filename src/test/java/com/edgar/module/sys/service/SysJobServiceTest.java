@@ -38,7 +38,7 @@ import com.edgar.core.exception.SystemException;
 import com.edgar.core.job.JobAdpater;
 import com.edgar.core.job.JobScheduler;
 import com.edgar.core.repository.Criteria;
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -49,7 +49,7 @@ import com.edgar.module.sys.repository.domain.SysJob;
 @PrepareForTest({ IDUtils.class, QueryExample.class })
 public class SysJobServiceTest {
         @Mock
-        private CrudRepository<Integer, SysJob> sysJobDao;
+        private BaseDao<Integer, SysJob> sysJobDao;
 
         @Mock
         private JobScheduler jobScheduler;

@@ -33,8 +33,7 @@ public class CountTransaction extends TransactionTemplate {
                 .getLocalColumns().get(0));
         StringBuilder sql = new StringBuilder("select count(*) from ("
                 + sqlBindings.getSQL() + ") x");
-        LOGGER.debug("query table: {}\nSQL:{} \nparams:{}", pathBase
-                .getTableName(), sql, sqlBindings.getBindings());
+        LOGGER.debug("SQL: {} \nparams: {}", sql, sqlBindings.getBindings());
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         return jdbcTemplate.queryForObject(sql.toString(), sqlBindings
                 .getBindings().toArray(), Long.class);

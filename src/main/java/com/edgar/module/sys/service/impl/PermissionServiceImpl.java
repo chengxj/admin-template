@@ -1,6 +1,6 @@
 package com.edgar.module.sys.service.impl;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.ExceptionFactory;
@@ -18,31 +18,31 @@ import java.util.*;
 public class PermissionServiceImpl implements PermissionService {
 
     @Autowired
-    private CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao;
+    private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRole> sysRoleDao;
+    private BaseDao<Integer, SysRole> sysRoleDao;
 
     @Autowired
-    private CrudRepository<Integer, SysResource> sysResourceDao;
+    private BaseDao<Integer, SysResource> sysResourceDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRoute> sysRouteDao;
+    private BaseDao<Integer, SysRoute> sysRouteDao;
 
     @Autowired
-    private CrudRepository<Integer, SysMenu> sysMenuDao;
+    private BaseDao<Integer, SysMenu> sysMenuDao;
 
     @Autowired
-    private CrudRepository<Integer, SysMenuRes> sysMenuResDao;
+    private BaseDao<Integer, SysMenuRes> sysMenuResDao;
 
     @Autowired
-    private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
+    private BaseDao<Integer, SysMenuRoute> sysMenuRouteDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+    private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
 
     @Autowired
-    private CrudRepository<Integer, SysRoleRes> sysRoleResDao;
+    private BaseDao<Integer, SysRoleRes> sysRoleResDao;
 
     @Override
     public List<Integer> getMenu(int roleId) {
@@ -199,39 +199,39 @@ public class PermissionServiceImpl implements PermissionService {
         }
     }
 
-    public void setSysRoleMenuDao(CrudRepository<Integer, SysRoleMenu> sysRoleMenuDao) {
+    public void setSysRoleMenuDao(BaseDao<Integer, SysRoleMenu> sysRoleMenuDao) {
         this.sysRoleMenuDao = sysRoleMenuDao;
     }
 
-    public void setSysRoleDao(CrudRepository<Integer, SysRole> sysRoleDao) {
+    public void setSysRoleDao(BaseDao<Integer, SysRole> sysRoleDao) {
         this.sysRoleDao = sysRoleDao;
     }
 
-    public void setSysResourceDao(CrudRepository<Integer, SysResource> sysResourceDao) {
+    public void setSysResourceDao(BaseDao<Integer, SysResource> sysResourceDao) {
         this.sysResourceDao = sysResourceDao;
     }
 
-    public void setSysRouteDao(CrudRepository<Integer, SysRoute> sysRouteDao) {
+    public void setSysRouteDao(BaseDao<Integer, SysRoute> sysRouteDao) {
         this.sysRouteDao = sysRouteDao;
     }
 
-    public void setSysMenuDao(CrudRepository<Integer, SysMenu> sysMenuDao) {
+    public void setSysMenuDao(BaseDao<Integer, SysMenu> sysMenuDao) {
         this.sysMenuDao = sysMenuDao;
     }
 
-    public void setSysMenuResDao(CrudRepository<Integer, SysMenuRes> sysMenuResDao) {
+    public void setSysMenuResDao(BaseDao<Integer, SysMenuRes> sysMenuResDao) {
         this.sysMenuResDao = sysMenuResDao;
     }
 
-    public void setSysMenuRouteDao(CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao) {
+    public void setSysMenuRouteDao(BaseDao<Integer, SysMenuRoute> sysMenuRouteDao) {
         this.sysMenuRouteDao = sysMenuRouteDao;
     }
 
-    public void setSysRoleRouteDao(CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao) {
+    public void setSysRoleRouteDao(BaseDao<Integer, SysRoleRoute> sysRoleRouteDao) {
         this.sysRoleRouteDao = sysRoleRouteDao;
     }
 
-    public void setSysRoleResDao(CrudRepository<Integer, SysRoleRes> sysRoleResDao) {
+    public void setSysRoleResDao(BaseDao<Integer, SysRoleRes> sysRoleResDao) {
         this.sysRoleResDao = sysRoleResDao;
     }
 }

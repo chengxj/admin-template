@@ -24,7 +24,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.edgar.core.repository.Criteria;
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.SqlOperator;
@@ -36,7 +36,7 @@ import com.edgar.module.sys.repository.domain.SysResource;
 public class SysResourceServiceTest {
 
         @Mock
-        private CrudRepository<Integer, SysResource> sysResourceDao;
+        private BaseDao<Integer, SysResource> sysResourceDao;
 
         private SysResourceServiceImpl sysResourceService;
 

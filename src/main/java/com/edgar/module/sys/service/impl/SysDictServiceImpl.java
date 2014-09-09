@@ -1,6 +1,6 @@
 package com.edgar.module.sys.service.impl;
 
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.ExceptionFactory;
@@ -30,7 +30,7 @@ import java.util.Map;
 public class SysDictServiceImpl implements SysDictService {
 
     @Autowired
-    private CrudRepository<String, SysDict> sysDictDao;
+    private BaseDao<String, SysDict> sysDictDao;
 
     private final ValidatorStrategy validator = new SysDictValidator();
 
@@ -147,7 +147,7 @@ public class SysDictServiceImpl implements SysDictService {
         }
     }
 
-    public void setSysDictDao(CrudRepository<String, SysDict> sysDictDao) {
+    public void setSysDictDao(BaseDao<String, SysDict> sysDictDao) {
         this.sysDictDao = sysDictDao;
     }
 }

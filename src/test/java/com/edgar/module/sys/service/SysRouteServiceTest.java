@@ -30,7 +30,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.repository.Criteria;
-import com.edgar.core.repository.CrudRepository;
+import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -43,13 +43,13 @@ import com.edgar.module.sys.repository.domain.SysRoute;
 @PrepareForTest({ IDUtils.class, QueryExample.class })
 public class SysRouteServiceTest {
 	@Mock
-	private CrudRepository<Integer, SysRoute> sysRouteDao;
+	private BaseDao<Integer, SysRoute> sysRouteDao;
 
 	@Mock
-	private CrudRepository<Integer, SysRoleRoute> sysRoleRouteDao;
+	private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
 	
 	@Mock
-	private CrudRepository<Integer, SysMenuRoute> sysMenuRouteDao;
+	private BaseDao<Integer, SysMenuRoute> sysMenuRouteDao;
 
 	private SysRouteServiceImpl sysRouteService;
 

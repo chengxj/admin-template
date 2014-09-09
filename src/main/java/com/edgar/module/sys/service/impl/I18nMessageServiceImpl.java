@@ -1,23 +1,22 @@
 package com.edgar.module.sys.service.impl;
 
+import com.edgar.core.repository.BaseDao;
+import com.edgar.core.repository.IDUtils;
+import com.edgar.core.repository.Pagination;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.module.sys.repository.domain.I18nMessage;
+import com.edgar.module.sys.service.I18nMessageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.edgar.module.sys.service.I18nMessageService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
-import com.edgar.core.repository.CrudRepository;
-import com.edgar.core.repository.IDUtils;
-import com.edgar.core.repository.Pagination;
-import com.edgar.core.repository.QueryExample;
-import com.edgar.module.sys.repository.domain.I18nMessage;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * 国际化的业务逻辑实现类
@@ -28,7 +27,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Service
 public class I18nMessageServiceImpl implements I18nMessageService {
     @Autowired
-    private CrudRepository<Integer, I18nMessage> i18nMessageDao;
+    private BaseDao<Integer, I18nMessage> i18nMessageDao;
 
     @Override
     public void save(I18nMessage i18n) {
@@ -95,7 +94,7 @@ public class I18nMessageServiceImpl implements I18nMessageService {
         mapper.writeValue(zhTwFile, zhTwLocale);
     }
 
-    public void setI18nMessageDao(CrudRepository<Integer, I18nMessage> i18nMessageDao) {
+    public void setI18nMessageDao(BaseDao<Integer, I18nMessage> i18nMessageDao) {
         this.i18nMessageDao = i18nMessageDao;
     }
 }

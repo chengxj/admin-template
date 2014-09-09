@@ -46,7 +46,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
         SQLBindings sqlBindings = sqlQuery.getSQL(returnPaths.toArray(pathArray));
         String sql = sqlBindings.getSQL();
         List<Object> args = sqlBindings.getBindings();
-        LOGGER.debug("query {} \nSQL:{} \nparams:{}", pathBase
+        LOGGER.debug("SQL: {} \nparams: {}", pathBase
                 .getTableName(), sql, args);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         return jdbcTemplate.query(sql, args.toArray(), rowMapper);

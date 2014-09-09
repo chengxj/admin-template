@@ -33,7 +33,7 @@ public class DaoTest {
     private TestTableDao testTableDao;
 
     @Autowired
-    private CrudRepository<Test2TablePk, Test2Table> test2TableDao;
+    private BaseDao<Test2TablePk, Test2Table> test2TableDao;
 
     @Autowired
     private CacheManager cacheManager;

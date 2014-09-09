@@ -9,13 +9,13 @@ import com.mysema.query.types.Path;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * DAO的父类
@@ -27,15 +27,15 @@ import java.util.*;
  * @author Edgar Zhang
  * @version 1.0
  */
-public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
-        CrudRepository<PK, T> {
+public abstract class AbstractDaoTemplate<PK, T> implements
+        BaseDao<PK, T> {
 
     private final Class<T> entityBeanType;
 
     private final Configuration configuration;
 
     @SuppressWarnings("unchecked")
-    public AbstractCrudRepositoryTemplate() {
+    public AbstractDaoTemplate() {
         this.entityBeanType = (Class<T>) (((ParameterizedType) (getClass()
                 .getGenericSuperclass())).getActualTypeArguments()[1]);
         configuration = Constants.CONFIGURATION;
@@ -187,28 +187,6 @@ public abstract class AbstractCrudRepositoryTemplate<PK, T> implements
         pks.add(Constants.UPDATED_TIME);
 
         return QueryExampleHelper.createUpdateExample(getPathBase(), domain, pks);
-    }
-
-    /**
-     * 返回主键值
-     *
-     * @return 如果主键只有一个，则直接返回该值，如果有多个，则返回MAP对象
-     */
-    public Object getPrimaryKeyValue(T domain) {
-        Assert.notEmpty(getPathBase().getPrimaryKey().getLocalColumns(),
-                getPathBase().getTableName() + "has 0 primaryKey");
-        SqlParameterSource source = new BeanPropertySqlParameterSource(domain);
-        if (getPathBase().getPrimaryKey().getLocalColumns().size() == 1) {
-            Path<?> path = getPathBase().getPrimaryKey().getLocalColumns()
-                    .get(0);
-            return source.getValue(path.getMetadata().getName());
-        }
-        Map<String, Object> pkMap = new HashMap<String, Object>();
-        for (Path<?> path : getPathBase().getPrimaryKey().getLocalColumns()) {
-            pkMap.put(path.getMetadata().getName(),
-                    source.getValue(path.getMetadata().getName()));
-        }
-        return pkMap;
     }
 
 }

@@ -6,7 +6,7 @@ import com.mysema.query.sql.RelationalPathBase;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class TestTableDao2 extends AbstractCrudRepositoryTemplate<String, TestTable> {
+public class TestTableDao2 extends AbstractDaoTemplate<String, TestTable> {
 
         @Override
         public RelationalPathBase<?> getPathBase() {
