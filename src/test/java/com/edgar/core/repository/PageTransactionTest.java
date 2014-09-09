@@ -1,12 +1,12 @@
 package com.edgar.core.repository;
 
+import com.edgar.core.cache.CacheProviderFactory;
 import com.edgar.core.repository.transaction.Transaction;
 import com.edgar.core.repository.transaction.TransactionConfig;
 import com.edgar.core.repository.transaction.TransactionFactory;
 import com.edgar.module.sys.repository.domain.TestTable;
 import com.edgar.module.sys.repository.querydsl.QTestTable;
 import com.mysema.query.sql.Configuration;
-import net.sf.ehcache.CacheManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,9 +34,9 @@ import java.util.List;
         TransactionalTestExecutionListener.class})
 public class PageTransactionTest {
 
-    @Autowired
-    private CacheManager cacheManager;
 
+    @Autowired
+    private CacheProviderFactory cacheProviderFactory;
     @Autowired
     private DataSource dataSource;
 
@@ -66,15 +66,17 @@ public class PageTransactionTest {
 
     @After
     public void tearDown() {
-        cacheManager.removeAllCaches();
+        cacheProviderFactory.createCacheWrapper("TestTableCache").removeAll();
+        cacheProviderFactory.createCacheWrapper("Test2TableCache").removeAll();
     }
+
 
     @Transactional
     @Test
     public void testPage() {
         QueryExample example = QueryExample.newInstance();
 
-        Transaction transaction  = TransactionFactory.createPageTransaction(config, example, 1, 10, rowMapper);
+        Transaction transaction = TransactionFactory.createPageTransaction(config, example, 1, 10, rowMapper);
         Pagination<TestTable> testTables = transaction.execute();
 
         Assert.assertEquals(1, testTables.getPage());
@@ -83,7 +85,7 @@ public class PageTransactionTest {
         Assert.assertEquals(1, testTables.getPrevPage());
         Assert.assertEquals(1, testTables.getNextPage());
 
-        transaction  = TransactionFactory.createPageTransaction(config, example, 2, 10, rowMapper);
+        transaction = TransactionFactory.createPageTransaction(config, example, 2, 10, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(10, testTables.getRecords().size());
         Assert.assertEquals(1, testTables.getPage());
@@ -92,7 +94,7 @@ public class PageTransactionTest {
         Assert.assertEquals(1, testTables.getPrevPage());
         Assert.assertEquals(1, testTables.getNextPage());
 
-        transaction  = TransactionFactory.createPageTransaction(config, example, 3, 5, rowMapper);
+        transaction = TransactionFactory.createPageTransaction(config, example, 3, 5, rowMapper);
         testTables = transaction.execute();
         Assert.assertEquals(2, testTables.getPage());
         Assert.assertEquals((testTables.getTotalRecords() + testTables.getPageSize() - 1)
@@ -107,7 +109,7 @@ public class PageTransactionTest {
         QueryExample example = QueryExample.newInstance();
         example.setMaxNumOfRecords(1000);
 
-        Transaction transaction  = TransactionFactory.createPageTransaction(config, example, 200, 10, rowMapper);
+        Transaction transaction = TransactionFactory.createPageTransaction(config, example, 200, 10, rowMapper);
         Pagination<TestTable> testTables = transaction.execute();
     }
 }
