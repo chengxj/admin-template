@@ -11,11 +11,11 @@ import com.edgar.module.sys.repository.domain.SysJob;
 import com.edgar.module.sys.service.SysJobService;
 import com.edgar.module.sys.validator.SysJobUpdateValidator;
 import com.edgar.module.sys.validator.SysJobValidator;
-import org.apache.commons.lang.BooleanUtils;
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class SysJobServiceImpl implements SysJobService {
     @Override
     @Transactional
     public void save(SysJob sysJob) {
-        Assert.notNull(sysJob);
+        Preconditions.checkNotNull(sysJob);
         sysJob.setJobId(IDUtils.getNextId());
         validator.validator(sysJob);
         sysJobDao.insert(sysJob);
@@ -55,7 +55,7 @@ public class SysJobServiceImpl implements SysJobService {
     @Override
     @Transactional
     public void update(SysJob sysJob) {
-        Assert.notNull(sysJob);
+        Preconditions.checkNotNull(sysJob);
         updateValidator.validator(sysJob);
         sysJobDao.update(sysJob);
         if (BooleanUtils.isTrue(sysJob.getEnabled())) {
@@ -99,7 +99,7 @@ public class SysJobServiceImpl implements SysJobService {
 
     @Override
     public boolean checkClazzName(String clazzName) {
-        Assert.notNull(clazzName);
+        Preconditions.checkNotNull(clazzName);
         QueryExample example = QueryExample.newInstance();
         example.equalsTo("clazzName", clazzName);
         List<SysJob> sysJobs = query(example);

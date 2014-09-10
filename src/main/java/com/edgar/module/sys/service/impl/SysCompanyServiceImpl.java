@@ -9,10 +9,10 @@ import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.service.SysCompanyService;
 import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.vo.SysCompanyVo;
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -61,7 +61,7 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
 	@Override
 	public boolean checkCode(String code) {
-		Assert.notNull(code);
+		Preconditions.checkNotNull(code);
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("companyCode", code);
 

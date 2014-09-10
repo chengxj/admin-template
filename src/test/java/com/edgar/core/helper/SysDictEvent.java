@@ -1,7 +1,7 @@
 package com.edgar.core.helper;
-import org.springframework.context.ApplicationEvent;
 
 import com.edgar.module.sys.repository.domain.SysDict;
+import org.springframework.context.ApplicationEvent;
 
 /**
  * 字典的spring事件

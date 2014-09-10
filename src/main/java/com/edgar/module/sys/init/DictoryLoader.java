@@ -1,20 +1,19 @@
 package com.edgar.module.sys.init;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.edgar.core.init.AppInitializer;
+import com.edgar.core.init.Initialization;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.module.sys.repository.domain.SysDict;
+import com.edgar.module.sys.service.SysDictService;
 import com.edgar.module.sys.vo.Dictory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.edgar.core.init.AppInitializer;
-import com.edgar.core.init.Initialization;
-import com.edgar.core.repository.QueryExample;
-import com.edgar.module.sys.repository.domain.SysDict;
-import com.edgar.module.sys.service.SysDictService;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 字典的工具类.

@@ -1,8 +1,5 @@
 package com.edgar.core.command;
 
-import com.edgar.core.command.ChainCommand;
-import com.edgar.core.command.Command;
-
 public class ChainGetSysUser implements Command, ChainCommand {
         
         private int userId;

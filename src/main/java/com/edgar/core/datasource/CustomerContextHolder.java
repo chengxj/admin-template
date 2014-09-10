@@ -1,12 +1,12 @@
 package com.edgar.core.datasource;
 
-import org.springframework.util.Assert;
+import com.google.common.base.Preconditions;
 
 public class CustomerContextHolder {
 	private static final ThreadLocal<CustomerType> contextHolder = new ThreadLocal<CustomerType>();
 
 	public static void setCustomerType(CustomerType customerType) {
-		Assert.notNull(customerType, "customerType cannot be null");
+		Preconditions.checkNotNull(customerType, "customerType cannot be null");
 		contextHolder.set(customerType);
 	}
 

@@ -11,20 +11,20 @@ import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
-import com.edgar.module.sys.vo.ChangePasswordVo;
 import com.edgar.module.sys.service.PasswordService;
-import com.edgar.module.sys.vo.SysUserRoleVo;
 import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.validator.PasswordValidator;
 import com.edgar.module.sys.validator.SysUserUpdateValidator;
 import com.edgar.module.sys.validator.SysUserValidator;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import com.edgar.module.sys.vo.ChangePasswordVo;
+import com.edgar.module.sys.vo.SysUserRoleVo;
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +125,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public List<SysUser> queryByUsername(String username) {
-        Assert.notNull(username);
+        Preconditions.checkNotNull(username);
         QueryExample example = QueryExample.newInstance();
         example.equalsTo("username", username);
         return sysUserDao.query(example);

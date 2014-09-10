@@ -1,17 +1,17 @@
 package com.edgar.core.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 命令调度类的实现.
@@ -76,9 +76,7 @@ public class CommandBusImpl implements CommandBus, ApplicationContextAware {
 	 */
 	@SuppressWarnings("rawtypes")
 	private CommandHandler getCommandHandler(Command command) {
-		Assert.notNull(command, "command cannot be null");
-		Assert.isTrue(!(command instanceof UnResolvedCommand),
-				"UnResolvedCommand donot has hander");
+		Preconditions.checkNotNull(command, "command cannot be null");
 		String handlerId = command.getClass().getSimpleName() + "Handler";
 		handlerId = StringUtils.uncapitalize(handlerId);
 		return APPLICATION_CONTEXT.getBean(handlerId,

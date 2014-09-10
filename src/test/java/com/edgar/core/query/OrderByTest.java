@@ -1,9 +1,8 @@
 package com.edgar.core.query;
 
+import com.edgar.core.repository.OrderBy;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.edgar.core.repository.OrderBy;
 
 public class OrderByTest {
 

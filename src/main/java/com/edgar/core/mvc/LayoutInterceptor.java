@@ -1,12 +1,11 @@
 package com.edgar.core.mvc;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.edgar.module.sys.init.RouteLoader;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.edgar.module.sys.init.RouteLoader;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Spring MVC的布局拦截器。默认返回layoutView的视图。 并将原来返回的视图作为属性保存在request中。 如果不需要使用布局，则在返回的视图前加上

@@ -1,15 +1,14 @@
 package com.edgar.core.mvc;
 
+import com.edgar.core.shiro.AuthHelper;
+import com.edgar.core.shiro.AuthType;
+import com.edgar.core.util.ExceptionFactory;
+import com.edgar.core.view.ResponseMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.edgar.core.shiro.AuthHelper;
-import com.edgar.core.shiro.AuthType;
-import com.edgar.core.util.ExceptionFactory;
-import com.edgar.core.view.ResponseMessage;
 
 /**
  * 根据容器的错误码，返回对应的视图

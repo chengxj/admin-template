@@ -1,14 +1,13 @@
 package com.edgar.core.query;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import com.edgar.core.repository.Criteria;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.SqlOperator;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class CriteriaTest {
 

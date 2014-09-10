@@ -11,7 +11,7 @@ import com.edgar.core.shiro.FilterChainDefinitionsLoader;
 import com.edgar.core.util.Constants;
 import com.edgar.module.sys.repository.domain.*;
 import com.edgar.module.sys.service.PasswordService;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;

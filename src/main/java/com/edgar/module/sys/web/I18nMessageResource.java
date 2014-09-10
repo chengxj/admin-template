@@ -9,7 +9,6 @@ import com.edgar.module.sys.repository.domain.I18nMessage;
 import com.edgar.module.sys.service.I18nMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -115,7 +114,6 @@ public class I18nMessageResource {
     @RequestMapping(method = RequestMethod.GET, value = "/check/key")
     @ResponseBody
     public ModelAndView checkClazzName(@RequestParam("field") String key) {
-        Assert.hasText(key);
         boolean result = i18nMessageService.checkKey(key);
         return ResponseMessage.asModelAndView(result);
     }

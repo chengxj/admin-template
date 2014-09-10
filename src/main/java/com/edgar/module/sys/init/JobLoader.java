@@ -1,15 +1,5 @@
 package com.edgar.module.sys.init;
 
-import java.util.List;
-
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.StdSchedulerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.init.AppInitializer;
 import com.edgar.core.init.Initialization;
@@ -18,6 +8,15 @@ import com.edgar.core.job.JobScheduler;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.repository.domain.SysJob;
 import com.edgar.module.sys.service.SysJobService;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class JobLoader implements Initialization {

@@ -1,9 +1,9 @@
 package com.edgar.core.validator;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.validation.annotation.Validated;
 
 @Validated
 public interface BusinessService {

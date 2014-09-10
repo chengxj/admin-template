@@ -1,15 +1,13 @@
 package com.edgar.core.util;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
+import com.edgar.core.exception.BusinessCode;
+import com.edgar.core.exception.SystemException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.edgar.core.exception.BusinessCode;
-import com.edgar.core.exception.SystemException;
+import javax.validation.ConstraintViolation;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 创建异常的工厂类

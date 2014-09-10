@@ -1,10 +1,7 @@
 package com.edgar.core.command;
 
-import org.springframework.stereotype.Repository;
-
-import com.edgar.core.command.CommandHandler;
-import com.edgar.core.command.CommandResult;
 import com.edgar.module.sys.repository.domain.SysUser;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ChainGetSysUserHandler implements CommandHandler<ChainGetSysUser> {

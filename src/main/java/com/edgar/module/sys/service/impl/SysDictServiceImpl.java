@@ -10,11 +10,12 @@ import com.edgar.module.sys.repository.domain.SysDict;
 import com.edgar.module.sys.service.SysDictService;
 import com.edgar.module.sys.validator.SysDictValidator;
 import com.edgar.module.sys.vo.Dictory;
-import org.apache.commons.lang.StringUtils;
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.List;
@@ -36,15 +37,15 @@ public class SysDictServiceImpl implements SysDictService {
 
     @Override
     public SysDict get(String dictCode) {
-        Assert.notNull(dictCode);
+        Preconditions.checkNotNull(dictCode);
         return sysDictDao.get(dictCode);
     }
 
     @Override
     @Transactional
     public void save(SysDict sysDict) {
-        Assert.notNull(sysDict);
-        Assert.hasText(sysDict.getDictCode());
+        Preconditions.checkNotNull(sysDict);
+        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(sysDict.getDictCode()));
         if (sysDict.getSorted() == null) {
             sysDict.setSorted(9999);
         }
@@ -97,7 +98,7 @@ public class SysDictServiceImpl implements SysDictService {
 
     @Override
     public boolean checkDictCode(String dictCode) {
-        Assert.notNull(dictCode);
+        Preconditions.checkNotNull(dictCode);
         SysDict sysDict = sysDictDao.get(dictCode);
         return sysDict == null;
     }

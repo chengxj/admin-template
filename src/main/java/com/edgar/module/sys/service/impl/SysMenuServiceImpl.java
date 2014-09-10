@@ -1,18 +1,5 @@
 package com.edgar.module.sys.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.edgar.module.sys.service.SysMenuService;
-import com.edgar.module.sys.vo.SysMenuVo;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
@@ -22,8 +9,20 @@ import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysMenuRes;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.repository.domain.SysRoleMenu;
+import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.validator.SysMenuUpdateValidator;
 import com.edgar.module.sys.validator.SysMenuValidator;
+import com.edgar.module.sys.vo.SysMenuVo;
+import com.google.common.base.Preconditions;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 系统菜单的业务逻辑实现
@@ -51,14 +50,14 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	public SysMenu get(int menuId) {
-		Assert.notNull(menuId);
+		Preconditions.checkNotNull(menuId);
 		return sysMenuDao.get(menuId);
 	}
 
 	@Override
 	@Transactional
 	public void save(SysMenuVo sysMenu) {
-		Assert.notNull(sysMenu);
+		Preconditions.checkNotNull(sysMenu);
 		sysMenu.setIsRoot(false);
 		if (sysMenu.getParentId() == null || sysMenu.getParentId() == 0) {
 			sysMenu.setParentId(-1);

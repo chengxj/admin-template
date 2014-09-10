@@ -1,11 +1,10 @@
 package com.edgar.core.validator;
 
-import java.util.Set;
+import com.edgar.core.util.ExceptionFactory;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-
-import com.edgar.core.util.ExceptionFactory;
+import java.util.Set;
 
 /**
  * 校验类模板类，所有校验都需要继承此类

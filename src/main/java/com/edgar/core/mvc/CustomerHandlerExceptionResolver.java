@@ -1,21 +1,11 @@
 package com.edgar.core.mvc;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
+import com.edgar.core.exception.BusinessCode;
+import com.edgar.core.exception.SystemException;
+import com.edgar.core.mail.MailService;
+import com.edgar.core.util.Constants;
+import com.edgar.core.view.ResponseMessage;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 
-import com.edgar.core.exception.BusinessCode;
-import com.edgar.core.exception.SystemException;
-import com.edgar.core.mail.MailService;
-import com.edgar.core.util.Constants;
-import com.edgar.core.view.ResponseMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.*;
 
 /**
  * 异常处理，继承Spring的<code>AbstractHandlerExceptionResolver</code>， 返回符合REST风格的错误信息.

@@ -1,26 +1,29 @@
 package com.edgar.core.mvc;
 
-import java.util.*;
-
 import com.edgar.core.auth.stateless.StatelessUser;
-import com.edgar.core.shiro.*;
+import com.edgar.core.shiro.AuthHelper;
+import com.edgar.core.shiro.AuthType;
 import com.edgar.core.util.Constants;
-import com.edgar.module.sys.repository.domain.*;
+import com.edgar.core.util.ExceptionFactory;
+import com.edgar.module.sys.repository.domain.SysMenu;
+import com.edgar.module.sys.repository.domain.SysRoute;
+import com.edgar.module.sys.repository.domain.SysUserProfile;
+import com.edgar.module.sys.repository.domain.SysUserRole;
+import com.edgar.module.sys.service.PermissionService;
+import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.service.SysRouteService;
+import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.vo.AngularRoute;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.edgar.core.util.ExceptionFactory;
-import com.edgar.module.sys.service.PermissionService;
-import com.edgar.module.sys.service.SysMenuService;
-import com.edgar.module.sys.service.SysUserService;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+
+import java.util.*;
 
 /**
  * 路由的rest接口

@@ -1,14 +1,6 @@
 package com.edgar.module.sys.service.impl;
 
-import java.util.List;
-
 import com.edgar.core.repository.BaseDao;
-import com.edgar.module.sys.service.SysRouteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
@@ -16,8 +8,15 @@ import com.edgar.core.validator.ValidatorStrategy;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.repository.domain.SysRoleRoute;
 import com.edgar.module.sys.repository.domain.SysRoute;
+import com.edgar.module.sys.service.SysRouteService;
 import com.edgar.module.sys.validator.SysRouteUpdateValidator;
 import com.edgar.module.sys.validator.SysRouteValidator;
+import com.google.common.base.Preconditions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 路由的业务逻辑实现类
@@ -57,7 +56,7 @@ public class SysRouteServiceImpl implements SysRouteService {
 	@Override
 	@Transactional
 	public void save(SysRoute sysRoute) {
-		Assert.notNull(sysRoute);
+		Preconditions.checkNotNull(sysRoute);
 		validator.validator(sysRoute);
 		sysRoute.setIsRoot(false);
 		sysRoute.setRouteId(IDUtils.getNextId());
@@ -68,7 +67,7 @@ public class SysRouteServiceImpl implements SysRouteService {
 	@Transactional
 	public void update(SysRoute sysRoute) {
 		updateValidator.validator(sysRoute);
-		Assert.notNull(sysRoute);
+		Preconditions.checkNotNull(sysRoute);
 		sysRouteDao.update(sysRoute);
 	}
 

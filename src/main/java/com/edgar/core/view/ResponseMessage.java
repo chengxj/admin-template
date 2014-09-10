@@ -1,12 +1,11 @@
 package com.edgar.core.view;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.edgar.core.exception.SystemException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import com.edgar.core.exception.SystemException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * rest返回的视图.

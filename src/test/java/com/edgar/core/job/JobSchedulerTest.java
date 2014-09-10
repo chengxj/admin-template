@@ -1,16 +1,13 @@
 package com.edgar.core.job;
 
-import java.util.concurrent.TimeUnit;
-
+import com.edgar.core.exception.SystemException;
 import org.junit.Before;
 import org.junit.Test;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
-import com.edgar.core.exception.SystemException;
-import com.edgar.core.job.JobAdpater;
-import com.edgar.core.job.JobSchedulerImpl;
+import java.util.concurrent.TimeUnit;
 
 public class JobSchedulerTest {
 

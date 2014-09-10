@@ -1,12 +1,11 @@
 package com.edgar.core.query;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.edgar.core.repository.Pagination;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.edgar.core.repository.Pagination;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PaginationTest {
 

@@ -1,12 +1,11 @@
 package com.edgar.core.view;
 
+import com.edgar.core.util.ExceptionFactory;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Controller;
-
-import com.edgar.core.util.ExceptionFactory;
 
 /**
  * rest返回视图的AOP类.

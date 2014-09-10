@@ -1,17 +1,15 @@
 package com.edgar.core.shiro;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
-import org.apache.commons.lang.StringUtils;
+import com.edgar.core.util.Constants;
+import com.edgar.module.sys.repository.domain.SysResource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.edgar.core.util.Constants;
-import com.edgar.module.sys.repository.domain.SysResource;
+import javax.sql.DataSource;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 动态获取数据中的资源权限

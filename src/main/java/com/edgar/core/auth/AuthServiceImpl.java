@@ -7,6 +7,8 @@ import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.facade.UserFacde;
 import com.edgar.module.sys.repository.domain.SysUser;
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Preconditions;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -21,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import java.util.Set;
@@ -89,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(String accessToken) {
-        Assert.notNull(accessToken);
+        Preconditions.checkNotNull(accessToken);
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         accessTokenCacheProvider.remove(accessToken);
@@ -136,8 +137,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void loginHandler(LoginCommand command) {
-        Assert.notNull(command.getUsername());
-        Assert.notNull(command.getPassword());
+        Preconditions.checkNotNull(command.getUsername());
+        Preconditions.checkNotNull(command.getPassword());
         String username = command.getUsername();
         String password = command.getPassword();
 
@@ -157,7 +158,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private AccessToken tokenHandler(String username) {
-        Assert.notNull(username);
+        Preconditions.checkNotNull(username);
         AccessToken accessToken = newToken(username);
         accessTokenCacheProvider.put(accessToken.getAccessToken(), accessToken, ACCESS_TOKEN_TIME_TO_LIVE);
         refreshTokenCacheProvider.put(accessToken.getAccessToken(), accessToken, REFRESH_TOKEN_TIME_TO_LIVE);
@@ -202,8 +203,8 @@ public class AuthServiceImpl implements AuthService {
     public AccessToken refresh(RefreshVo command) {
         String accessToken = command.getAccessToken();
         String refreshToken = command.getRefreshToken();
-        Assert.hasText(accessToken);
-        Assert.hasText(refreshToken);
+        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(accessToken));
+        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(refreshToken));
 
         AccessToken serverToken = refreshTokenCacheProvider.get(accessToken);
         if (serverToken != null && refreshToken.equals(serverToken.getRefreshToken())) {

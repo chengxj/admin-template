@@ -1,10 +1,6 @@
 package com.edgar.module.sys.validator;
 
-import java.lang.annotation.ElementType;
-
-import javax.validation.Validation;
-import javax.validation.Validator;
-
+import com.edgar.core.validator.AbstractValidatorTemplate;
 import com.edgar.module.sys.vo.ChangePasswordVo;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.HibernateValidatorConfiguration;
@@ -12,7 +8,9 @@ import org.hibernate.validator.cfg.ConstraintMapping;
 import org.hibernate.validator.cfg.defs.NotNullDef;
 import org.hibernate.validator.cfg.defs.SizeDef;
 
-import com.edgar.core.validator.AbstractValidatorTemplate;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import java.lang.annotation.ElementType;
 
 public class PasswordValidator extends AbstractValidatorTemplate {
 
