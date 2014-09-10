@@ -2,7 +2,7 @@ package com.edgar.core.auth.stateless;
 
 import com.edgar.core.auth.AuthService;
 import com.edgar.core.util.Constants;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,6 @@ public class StatelessAuthcFilter extends AccessControlFilter {
 
     private static final String ACCESS_TOKEN = "accessToken";
     private static final String DIGEST = "digest";
-    private static final String BASE_STRING = "baseString";
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(StatelessAuthcFilter.class);
