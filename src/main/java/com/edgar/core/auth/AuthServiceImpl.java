@@ -211,6 +211,6 @@ public class AuthServiceImpl implements AuthService {
             AccessToken token = tokenHandler(serverToken.getUsername());
             return token;
         }
-        throw ExceptionFactory.unAuthorized();
+        throw ExceptionFactory.unLogin();
     }
 }

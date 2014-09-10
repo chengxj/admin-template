@@ -294,10 +294,6 @@ function httpInterceptor($httpProvider) {
                     if (config.params) {
                         queryArray = queryArray.concat(getArray(config.params));
                     }
-                    if (config.data) {
-                        var data = angular.toJson(config.data);
-                        queryArray = queryArray.concat(getArray(angular.fromJson(data)));
-                    }
                     var baseString = config.method + config.url + "?" + queryArray.join("&");
                     config.params.digest = hmac256(baseString, secretKey);
                 }

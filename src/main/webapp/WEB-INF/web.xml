@@ -63,19 +63,6 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>authenticationRequestWrapper</filter-name>
-        <filter-class>com.edgar.core.auth.AuthenticationRequestWrapperFilter</filter-class>
-        <init-param>
-            <param-name>ignore</param-name>
-            <param-value>/app/*,/assets/*</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>authenticationRequestWrapper</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <filter>
         <filter-name>CORS</filter-name>
         <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
 
