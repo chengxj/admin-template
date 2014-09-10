@@ -1,7 +1,6 @@
 package com.edgar.core.repository;
 
 import com.edgar.core.cache.CacheProviderFactory;
-import com.edgar.module.sys.repository.domain.Test2Table;
 import com.edgar.module.sys.repository.domain.TestTable;
 import org.junit.After;
 import org.junit.Assert;
@@ -30,10 +29,7 @@ import java.util.List;
 public class DaoTest {
 
     @Autowired
-    private TestTableDao testTableDao;
-
-    @Autowired
-    private BaseDao<Test2TablePk, Test2Table> test2TableDao;
+    private BaseDao<String, TestTable> testTableDao;
 
     @Autowired
     private CacheProviderFactory cacheProviderFactory;
@@ -53,18 +49,6 @@ public class DaoTest {
             testTables.add(testTable);
         }
         testTableDao.insert(testTables);
-
-        List<Test2Table> test2Tables = new ArrayList<Test2Table>();
-        for (int i = 0; i < 10; i++) {
-            Test2Table testTable = new Test2Table();
-            testTable.setTestCode2("000" + i);
-            testTable.setTestId(testTable.getTestCode2());
-            testTable.setDictName("000" + i);
-            testTable.setParentCode("-1");
-            testTable.setSorted(9999);
-            test2Tables.add(testTable);
-        }
-        test2TableDao.insert(test2Tables);
     }
 
     @After
@@ -466,24 +450,6 @@ public class DaoTest {
 
     @Transactional
     @Test
-    public void testGetPk() {
-        QueryExample example = QueryExample.newInstance();
-        example.limit(1);
-        List<Test2Table> test2Tables = test2TableDao.query(example);
-        Test2Table test2Table = test2Tables.get(0);
-        Test2TablePk pk = new Test2TablePk();
-        pk.setTestCode2(test2Table.getTestCode2());
-        pk.setTestId(test2Table.getTestId());
-        Test2Table getTestTable = test2TableDao.get(pk);
-        Assert.assertEquals(test2Table.getTestCode2(), getTestTable.getTestCode2());
-        Assert.assertEquals(test2Table.getTestId(), getTestTable.getTestId());
-        pk.setTestId("fdre");
-        getTestTable = test2TableDao.get(pk);
-        Assert.assertNull(getTestTable);
-    }
-
-    @Transactional
-    @Test
     public void testGetField() {
         QueryExample example = QueryExample.newInstance();
         example.limit(1);
@@ -508,22 +474,6 @@ public class DaoTest {
         long result = testTableDao.deleteByPk(TestTable.getTestCode());
         Assert.assertEquals(1, result);
         TestTable getTestTable = testTableDao.get(TestTable.getTestCode());
-        Assert.assertNull(getTestTable);
-    }
-
-    @Transactional
-    @Test
-    public void testDeleteByPk2() {
-        QueryExample example = QueryExample.newInstance();
-        example.limit(1);
-        List<Test2Table> test2Tables = test2TableDao.query(example);
-        Test2Table test2Table = test2Tables.get(0);
-        Test2TablePk pk = new Test2TablePk();
-        pk.setTestCode2(test2Table.getTestCode2());
-        pk.setTestId(test2Table.getTestId());
-        long result = test2TableDao.deleteByPk(pk);
-        Assert.assertEquals(1, result);
-        Test2Table getTestTable = test2TableDao.get(pk);
         Assert.assertNull(getTestTable);
     }
 

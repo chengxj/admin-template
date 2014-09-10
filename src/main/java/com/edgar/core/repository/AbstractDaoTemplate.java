@@ -18,8 +18,6 @@ import java.util.Set;
 
 /**
  * DAO的父类
- * <p/>
- * http://java.dzone.com/articles/implementing-declarative-and
  *
  * @param <PK>
  * @param <T>
@@ -113,7 +111,6 @@ public abstract class AbstractDaoTemplate<PK, T> implements
     @Override
     public T uniqueResult(QueryExample example) {
         List<T> records = query(example);
-        System.out.println(records);
         if (records.isEmpty()) {
             return null;
         }

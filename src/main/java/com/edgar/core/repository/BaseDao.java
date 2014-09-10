@@ -79,6 +79,22 @@ public interface BaseDao<PK, T> {
     T get(@NotNull PK pk);
 
     /**
+     * 根据主键更新记录
+     *
+     * @param domain 实体类
+     * @return 如果更新成功，返回1;如果更新失败，返回0
+     */
+    Long update(@NotNull T domain);
+
+    /**
+     * 根据主键和版本号更新记录
+     *
+     * @param domain 实体类
+     * @return 如果更新成功，返回1;如果更新失败，返回0
+     */
+    Long updateWithVersion(T domain);
+
+    /**
      * 根据条件更新记录，凡是不等于null的属性都会被更新
      *
      * @param domain  实体类
@@ -86,14 +102,6 @@ public interface BaseDao<PK, T> {
      * @return 如果更新成功，返回1;如果更新失败，返回0
      */
     Long update(@NotNull T domain, @NotNull QueryExample example);
-
-    /**
-     * 根据主键更新记录
-     *
-     * @param domain 实体类
-     * @return 如果更新成功，返回1;如果更新失败，返回0
-     */
-    Long update(@NotNull T domain);
 
     /**
      * 根据主键删除记录
@@ -127,6 +135,4 @@ public interface BaseDao<PK, T> {
      * @return 实体类
      */
     T uniqueResult(@NotNull QueryExample example);
-
-    Long updateWithVersion(T domain);
 }

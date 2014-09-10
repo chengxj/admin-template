@@ -42,7 +42,7 @@ public class CacheAspect {
     @Autowired
     private CacheProviderFactory cacheProviderFactory;
 
-    private static final StripedLock lock = new StripedLock(6);
+    private static final StripedLock LOCK = new StripedLock(6);
 
     /**
      * get的切面.
@@ -147,7 +147,7 @@ public class CacheAspect {
     public Object aroundGet(ProceedingJoinPoint jp, Object pk) throws Throwable {
         String cacheName = getCacheName(jp);
         CacheProvider cacheProvider = getCacheWrapper(cacheName);
-        Object key = getCacheKey(pk);
+        Object key = getCacheKey(jp, pk);
         Object value = cacheProvider.get(key);
         if (value != null) {
             LOGGER.debug("get value from cache: {},key: {}", cacheName,
@@ -155,7 +155,7 @@ public class CacheAspect {
             return value;
         } else {
             try {
-                lock.lock(key.hashCode());
+                LOCK.lock(key.hashCode());
                 value = cacheProvider.get(key);
                 if (value != null) {
                     LOGGER.debug("get value from cache: {},key: {}", cacheName,
@@ -167,7 +167,7 @@ public class CacheAspect {
                     LOGGER.debug("get value from db,key:{}", key);
                 }
             } finally {
-                lock.unlock(key.hashCode());
+                LOCK.unlock(key.hashCode());
             }
             return value;
         }
@@ -188,7 +188,7 @@ public class CacheAspect {
         String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
         CacheProvider cacheProvider = getCacheWrapper(cacheName);
         Object pk = getPrimaryKeyValue(t.getPathBase(), domain);
-        Object key = getCacheKey(pk);
+        Object key = getCacheKey(jp, pk);
         cacheProvider.put(key, t.get(pk));
         LOGGER.debug("put value into cache: {},key:{}", cacheName, key);
     }
@@ -209,7 +209,7 @@ public class CacheAspect {
         CacheProvider cacheProvider = getCacheWrapper(cacheName);
         for (Object obj : domains) {
             Object pk = getPrimaryKeyValue(t.getPathBase(), obj);
-            Object key = getCacheKey(pk);
+            Object key = getCacheKey(jp, pk);
             cacheProvider.put(key, t.get(pk));
             LOGGER.debug("put value into cache: {},key:{}", cacheName, key);
         }
@@ -305,7 +305,7 @@ public class CacheAspect {
         String cacheName = t.getEntityBeanType().getSimpleName() + "Cache";
         CacheProvider cacheProvider = getCacheWrapper(cacheName);
         Object pk = getPrimaryKeyValue(t.getPathBase(), domain);
-        Object key = getCacheKey(pk);
+        Object key = getCacheKey(jp, pk);
         Object value = t.get(pk);
         cacheProvider.put(key, value);
         LOGGER.debug("update value in cache: {},key:{}", cacheName, key);
@@ -321,7 +321,7 @@ public class CacheAspect {
     private void deleteCache(JoinPoint jp, Object pk) {
         String cacheName = getCacheName(jp);
         CacheProvider cacheProvider = getCacheWrapper(cacheName);
-        Object key = getCacheKey(pk);
+        Object key = getCacheKey(jp, pk);
         cacheProvider.remove(key);
         LOGGER.debug("remove from cache: {},key:{}", cacheName, key);
     }
@@ -348,14 +348,17 @@ public class CacheAspect {
      * @return cache的键值
      */
 
-    private Object getCacheKey(Object pk) {
+    private String getCacheKey(JoinPoint jp, Object pk) {
+        AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
+        String key = t.getEntityBeanType().getSimpleName() + ":";
         if (BeanUtils.isSimpleValueType(pk.getClass())) {
-            return pk;
+            key = key + pk;
+        } else if (pk instanceof Map) {
+            key = key + pk;
+        } else {
+            key = key + ToStringBuilder.reflectionToString(pk, ToStringStyle.SHORT_PREFIX_STYLE);
         }
-        if (pk instanceof Map) {
-            return pk;
-        }
-        return ToStringBuilder.reflectionToString(pk, ToStringStyle.SHORT_PREFIX_STYLE);
+        return key;
     }
 
     /**
@@ -383,12 +386,6 @@ public class CacheAspect {
     private CacheProvider getCacheWrapper(String cacheName) {
         return cacheProviderFactory.createCacheWrapper(cacheName);
     }
-
-    private String getCacheName(ProceedingJoinPoint jp) {
-        AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();
-        return t.getEntityBeanType().getSimpleName() + "Cache";
-    }
-
 
     private String getCacheName(JoinPoint jp) {
         AbstractDaoTemplate t = (AbstractDaoTemplate) jp.getTarget();

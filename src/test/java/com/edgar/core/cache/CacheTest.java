@@ -43,7 +43,7 @@ public class CacheTest {
 
         @After
         public void tearDown() {
-//                cacheProvider.removeAll();
+                cacheProvider.removeAll();
         }
 
         @Test
@@ -152,7 +152,7 @@ public class CacheTest {
         @Test
         @Transactional
         public void testCacheConcurrent() throws InterruptedException {
-                cacheProvider.remove("ROLE_CODE");
+                cacheProvider.remove("SysDict:ROLE_CODE");
                 ExecutorService exec = Executors.newCachedThreadPool();
                 int num = 200;
                 final CyclicBarrier barrier = new CyclicBarrier(num);

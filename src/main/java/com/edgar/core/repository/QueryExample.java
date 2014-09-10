@@ -1,12 +1,8 @@
 package com.edgar.core.repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.springframework.util.Assert;
+
+import java.util.*;
 
 /**
  * 查询条件
@@ -94,6 +90,10 @@ public class QueryExample {
 
         public List<String> getFields() {
                 return Collections.unmodifiableList(fields);
+        }
+
+        public void clearFields() {
+            fields.clear();
         }
 
         public int getLimit() {

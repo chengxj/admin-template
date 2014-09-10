@@ -1,10 +1,9 @@
 package com.edgar.core.repository;
 
+import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
-
-
-import org.springframework.util.Assert;
 
 /**
  * 分页类
@@ -30,14 +29,7 @@ public final class Pagination<T> {
         private Pagination(long page, long pageSize, long totalRecords) {
                 super();
                 Assert.state(page > 0, "page must > 1");
-                // Assert.state(page <= Global.MAX_PAGE, "page必须小于" + Global.MAX_PAGE);
                 Assert.state(pageSize > 0, "pageSize must > 0");
-                // Assert.state(page * pageSize <= Global.MAX_PAGE * Global.PAGE_SIZE,
-                // "page * pageSize不能大于规定的大小：" + Global.MAX_PAGE
-                // * Global.PAGE_SIZE);
-                // Assert.state(totalRecords <= Global.MAX_PAGE * Global.PAGE_SIZE,
-                // "page * pageSize不能大于规定的大小：" + Global.MAX_PAGE
-                // * Global.PAGE_SIZE);
                 this.page = page;
                 this.pageSize = pageSize;
                 this.totalRecords = totalRecords;
