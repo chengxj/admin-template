@@ -1,5 +1,6 @@
 package com.edgar.core.cache;
 
+import com.edgar.core.concurrency.StripedLock;
 import com.edgar.core.repository.AbstractDaoTemplate;
 import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.RelationalPathBase;
@@ -40,6 +41,8 @@ public class CacheAspect {
 
     @Autowired
     private CacheProviderFactory cacheProviderFactory;
+
+    private static final StripedLock lock = new StripedLock(6);
 
     /**
      * get的切面.
@@ -151,9 +154,21 @@ public class CacheAspect {
                     key);
             return value;
         } else {
-            value = jp.proceed(jp.getArgs());
-            LOGGER.debug("get value from db,key:{}", key);
-            cacheProvider.put(key, value);
+            try {
+                lock.lock(key.hashCode());
+                value = cacheProvider.get(key);
+                if (value != null) {
+                    LOGGER.debug("get value from cache: {},key: {}", cacheName,
+                            key);
+                    return value;
+                } else {
+                    value = jp.proceed(jp.getArgs());
+                    cacheProvider.put(key, value);
+                    LOGGER.debug("get value from db,key:{}", key);
+                }
+            } finally {
+                lock.unlock(key.hashCode());
+            }
             return value;
         }
     }
@@ -174,10 +189,8 @@ public class CacheAspect {
         CacheProvider cacheProvider = getCacheWrapper(cacheName);
         Object pk = getPrimaryKeyValue(t.getPathBase(), domain);
         Object key = getCacheKey(pk);
+        cacheProvider.put(key, t.get(pk));
         LOGGER.debug("put value into cache: {},key:{}", cacheName, key);
-        if (BeanUtils.isSimpleValueType(pk.getClass())) {
-            cacheProvider.put(key, t.get(pk));
-        }
     }
 
     /**
@@ -197,10 +210,8 @@ public class CacheAspect {
         for (Object obj : domains) {
             Object pk = getPrimaryKeyValue(t.getPathBase(), obj);
             Object key = getCacheKey(pk);
+            cacheProvider.put(key, t.get(pk));
             LOGGER.debug("put value into cache: {},key:{}", cacheName, key);
-            if (BeanUtils.isSimpleValueType(pk.getClass())) {
-                cacheProvider.put(key, t.get(pk));
-            }
         }
     }
 
@@ -295,10 +306,9 @@ public class CacheAspect {
         CacheProvider cacheProvider = getCacheWrapper(cacheName);
         Object pk = getPrimaryKeyValue(t.getPathBase(), domain);
         Object key = getCacheKey(pk);
-        cacheProvider.remove(key);
         Object value = t.get(pk);
-        LOGGER.debug("update value in cache: {},key:{}", cacheName, key);
         cacheProvider.put(key, value);
+        LOGGER.debug("update value in cache: {},key:{}", cacheName, key);
     }
 
     /**
@@ -309,12 +319,11 @@ public class CacheAspect {
      */
     @SuppressWarnings("rawtypes")
     private void deleteCache(JoinPoint jp, Object pk) {
-
         String cacheName = getCacheName(jp);
         CacheProvider cacheProvider = getCacheWrapper(cacheName);
         Object key = getCacheKey(pk);
-        LOGGER.debug("remove from cache: {},key:{}", cacheName, key);
         cacheProvider.remove(key);
+        LOGGER.debug("remove from cache: {},key:{}", cacheName, key);
     }
 
     /**

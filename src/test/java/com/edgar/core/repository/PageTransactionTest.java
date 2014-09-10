@@ -40,7 +40,7 @@ public class PageTransactionTest {
     @Autowired
     private DataSource dataSource;
 
-    private Configuration configuration = Constants.CONFIGURATION;
+    private Configuration configuration = ConfigurationFactory.createConfiguration(Constants.DEFAULT);
 
     private TransactionConfig config;
 

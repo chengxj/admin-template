@@ -1,15 +1,9 @@
 package com.edgar.core.cache;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
+import com.edgar.core.repository.BaseDao;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.module.sys.repository.domain.SysDict;
 import net.sf.ehcache.CacheManager;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,9 +18,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edgar.core.repository.BaseDao;
-import com.edgar.core.repository.QueryExample;
-import com.edgar.module.sys.repository.domain.SysDict;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })
@@ -49,7 +43,7 @@ public class CacheTest {
 
         @After
         public void tearDown() {
-                cacheProvider.removeAll();
+//                cacheProvider.removeAll();
         }
 
         @Test
@@ -158,18 +152,9 @@ public class CacheTest {
         @Test
         @Transactional
         public void testCacheConcurrent() throws InterruptedException {
-                for (int i = 0; i < 10; i++) {
-                        SysDict sysDict = new SysDict();
-                        sysDict.setDictCode("000" + i);
-                        sysDict.setDictName("000" + i);
-                        sysDict.setParentCode("-1");
-                        sysDict.setSorted(9999);
-                        // sysDicts.add(sysDict);
-                        sysDictDao.insert(sysDict);
-                }
-                cacheProvider.removeAll();
+                cacheProvider.remove("ROLE_CODE");
                 ExecutorService exec = Executors.newCachedThreadPool();
-                int num = 100;
+                int num = 200;
                 final CyclicBarrier barrier = new CyclicBarrier(num);
                 final CountDownLatch latch = new CountDownLatch(num);
                 for (int i = 0; i < num; i++) {
@@ -185,14 +170,14 @@ public class CacheTest {
                                                 e.printStackTrace();
                                         }
                                         try {
-                                                sysDictDao.get("0001");
+                                                sysDictDao.get("ROLE_CODE");
                                         } catch (Exception e) {
                                                 e.printStackTrace();
                                         }
-                                        latch.countDown();                                
+                                        latch.countDown();
                                 }
                         });
-                        
+
                 }
                 latch.await();
         }

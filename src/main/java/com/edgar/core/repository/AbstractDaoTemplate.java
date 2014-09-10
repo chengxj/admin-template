@@ -3,7 +3,6 @@ package com.edgar.core.repository;
 import com.edgar.core.repository.transaction.Transaction;
 import com.edgar.core.repository.transaction.TransactionConfig;
 import com.edgar.core.repository.transaction.TransactionFactory;
-import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.Path;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -32,15 +31,14 @@ public abstract class AbstractDaoTemplate<PK, T> implements
 
     private final Class<T> entityBeanType;
 
-    private final Configuration configuration;
+    private final Class<T> primaryKeyType;
 
     @SuppressWarnings("unchecked")
     public AbstractDaoTemplate() {
+        this.primaryKeyType = (Class<T>) (((ParameterizedType) (getClass()
+                .getGenericSuperclass())).getActualTypeArguments()[0]);
         this.entityBeanType = (Class<T>) (((ParameterizedType) (getClass()
                 .getGenericSuperclass())).getActualTypeArguments()[1]);
-        System.out.println((Class<T>) (((ParameterizedType) (getClass()
-                .getGenericSuperclass())).getActualTypeArguments()[0]));
-        configuration = Constants.CONFIGURATION;
     }
 
     /**
@@ -49,17 +47,25 @@ public abstract class AbstractDaoTemplate<PK, T> implements
      * @return RelationalPathBase
      */
     public abstract RelationalPathBase<?> getPathBase();
-    
+
     public String getDataSourceKey() {
         return Constants.DEFAULT;
     }
 
+    public String getConfigurationKey() {
+        return Constants.DEFAULT;
+    }
+
     public TransactionConfig config() {
-        return new TransactionConfig(DataSourceFactory.createDataSource(getDataSourceKey()), configuration, getPathBase());
+        return new TransactionConfig(DataSourceFactory.createDataSource(getDataSourceKey()), ConfigurationFactory.createConfiguration(getConfigurationKey()), getPathBase());
     }
 
     public Class<T> getEntityBeanType() {
         return entityBeanType;
+    }
+
+    public Class<T> getPrimaryKeyType() {
+        return primaryKeyType;
     }
 
     protected RowMapper<T> getRowMapper() {
@@ -107,6 +113,7 @@ public abstract class AbstractDaoTemplate<PK, T> implements
     @Override
     public T uniqueResult(QueryExample example) {
         List<T> records = query(example);
+        System.out.println(records);
         if (records.isEmpty()) {
             return null;
         }
