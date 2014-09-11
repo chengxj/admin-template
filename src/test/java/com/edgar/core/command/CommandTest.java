@@ -1,6 +1,5 @@
 package com.edgar.core.command;
 
-import com.edgar.core.exception.SystemException;
 import com.edgar.module.sys.repository.domain.SysUser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,7 +48,7 @@ public class CommandTest {
         Assert.assertNotNull(result.get(0).getResult());
     }
 
-    @Test(expected = SystemException.class)
+    @Test(expected = RuntimeException.class)
     public void testError() {
         Command command = new DeleteSysUser(1);
         commandBus.executeCommand(command);

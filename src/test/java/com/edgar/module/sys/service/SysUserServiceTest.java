@@ -1,13 +1,18 @@
 package com.edgar.module.sys.service;
 
+import com.edgar.core.exception.BusinessCode;
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.repository.domain.SysUser;
+import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
 import com.edgar.module.sys.service.impl.SysUserServiceImpl;
+import com.edgar.module.sys.validator.SysUserUpdateValidator;
+import com.edgar.module.sys.validator.SysUserValidator;
 import com.edgar.module.sys.vo.SysUserRoleVo;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,14 +21,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -31,6 +36,7 @@ import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(IDUtils.class)
@@ -40,8 +46,16 @@ public class SysUserServiceTest {
 
     @Mock
     private BaseDao<Integer, SysUserRole> sysUserRoleDao;
+    @Mock
+    private BaseDao<Integer, SysUserProfile> sysUserProfileDao;
 
     private SysUserServiceImpl sysUserService;
+
+    @Mock
+    private ValidatorBus validatorBus;
+
+    @Mock
+    private PasswordService passwordService;
 
     @Before
     public void setUp() {
@@ -49,6 +63,9 @@ public class SysUserServiceTest {
         sysUserService = new SysUserServiceImpl();
         sysUserService.setSysUserDao(sysUserDao);
         sysUserService.setSysUserRoleDao(sysUserRoleDao);
+        sysUserService.setValidatorBus(validatorBus);
+        sysUserService.setSysUserProfileDao(sysUserProfileDao);
+        sysUserService.setPasswordService(passwordService);
     }
 
     @Test
@@ -109,62 +126,14 @@ public class SysUserServiceTest {
         inOrder.verify(sysUserDao, times(1)).deleteByPkAndVersion(1, 1L);
     }
 
-    @Test
-    public void testSaveUserNull() {
+    @Test(expected = SystemException.class)
+    public void testSaveUserFailed() {
         SysUserRoleVo sysUser = new SysUserRoleVo();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("username", "username不能为null");
-        map.put("fullName", "fullName不能为null");
-        map.put("password", "password不能为null");
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysUser), eq(SysUserValidator.class));
         try {
             sysUserService.save(sysUser);
         } catch (SystemException e) {
-            Map<String, Object> propertyMap = e.getPropertyMap();
-            Assert.assertEquals(map, propertyMap);
-        } finally {
-            verify(sysUserDao, never()).insert(any(SysUser.class));
-            verify(sysUserRoleDao, never()).insert(any(SysUserRole.class));
-        }
-
-    }
-
-    @Test
-    public void testSaveUserLength() {
-        SysUserRoleVo sysUser = new SysUserRoleVo();
-        sysUser.setUsername("z012345678901234567890123456789123012345678901234567890123456789123");
-        sysUser.setPassword("012345678901234567890123456789123");
-        sysUser.setFullName("012345678901234567890123456789123");
-        sysUser.setEmail("012345678901234567890123456789123012345678901234567890123456789123");
-        try {
-            sysUserService.save(sysUser);
-        } catch (SystemException e) {
-            Map<String, Object> propertyMap = e.getPropertyMap();
-            Assert.assertTrue(propertyMap.containsKey("username"));
-            Assert.assertTrue(propertyMap.containsKey("fullName"));
-            Assert.assertTrue(propertyMap.containsKey("password"));
-            Assert.assertTrue(propertyMap.containsKey("email"));
-        } finally {
-            verify(sysUserDao, never()).insert(any(SysUser.class));
-            verify(sysUserRoleDao, never()).insert(any(SysUserRole.class));
-        }
-
-    }
-
-    @Test
-    public void testSaveUserPattern() {
-        SysUserRoleVo sysUser = new SysUserRoleVo();
-        sysUser.setUsername("123");
-        sysUser.setPassword("2322434");
-        sysUser.setFullName("#$#$#$#$");
-        sysUser.setEmail("$#$#@ddd.");
-        try {
-            sysUserService.save(sysUser);
-        } catch (SystemException e) {
-            Map<String, Object> propertyMap = e.getPropertyMap();
-            Assert.assertTrue(propertyMap.containsKey("username"));
-            Assert.assertFalse(propertyMap.containsKey("fullName"));
-            Assert.assertFalse(propertyMap.containsKey("password"));
-            Assert.assertTrue(propertyMap.containsKey("email"));
+            throw e;
         } finally {
             verify(sysUserDao, never()).insert(any(SysUser.class));
             verify(sysUserRoleDao, never()).insert(any(SysUserRole.class));
@@ -176,18 +145,27 @@ public class SysUserServiceTest {
     public void testSaveUserNoRole() {
         PowerMockito.mockStatic(IDUtils.class);
         when(IDUtils.getNextId()).thenReturn(1);
-        when(sysUserDao.insert(any(SysUser.class)));
+        when(sysUserDao.insert(any(SysUser.class))).thenReturn(1L);
+        when(sysUserProfileDao.insert(any(SysUserProfile.class))).thenReturn(1L);
         SysUserRoleVo sysUser = new SysUserRoleVo();
         sysUser.setUsername("z123");
         sysUser.setPassword("2322434");
         sysUser.setFullName("#$#$#$#$");
         sysUser.setEmail("$#$#@ddd");
         String password = sysUser.getPassword();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysUser), eq(SysUserValidator.class));
         sysUserService.save(sysUser);
-        Assert.assertNotEquals(password, sysUser.getPassword());
+//        Assert.assertNotEquals(password, sysUser.getPassword());
         verify(sysUserDao, only()).insert(any(SysUser.class));
+        verify(sysUserProfileDao, only()).insert(any(SysUserProfile.class));
         verify(sysUserRoleDao, never()).insert(any(SysUserRole.class));
-        PowerMockito.verifyStatic(only());
+        PowerMockito.verifyStatic(times(2));
         IDUtils.getNextId();
     }
 
@@ -195,33 +173,22 @@ public class SysUserServiceTest {
     public void testSaveUserOneRole() {
         PowerMockito.mockStatic(IDUtils.class);
         when(IDUtils.getNextId()).thenReturn(1);
-        when(sysUserDao.insert(any(SysUser.class)));
-        when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
+        when(sysUserDao.insert(any(SysUser.class))).thenReturn(1L);
+        when(sysUserRoleDao.insert(anyListOf(SysUserRole.class))).thenReturn(1L);
+        when(sysUserProfileDao.insert(any(SysUserProfile.class))).thenReturn(1L);
         SysUserRoleVo sysUser = new SysUserRoleVo();
         sysUser.setRoleIds("1");
         sysUser.setUsername("z123");
         sysUser.setPassword("2322434");
         sysUser.setFullName("#$#$#$#$");
         sysUser.setEmail("$#$#@ddd");
-        sysUserService.save(sysUser);
-        verify(sysUserDao, only()).insert(any(SysUser.class));
-        verify(sysUserRoleDao, only()).insert(anyListOf(SysUserRole.class));
-        PowerMockito.verifyStatic(times(2));
-        IDUtils.getNextId();
-    }
-
-    @Test
-    public void testSaveUserTwoRole() {
-        PowerMockito.mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
-        when(sysUserDao.insert(any(SysUser.class)));
-        when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
-        SysUserRoleVo sysUser = new SysUserRoleVo();
-        sysUser.setRoleIds("1,2");
-        sysUser.setUsername("z123");
-        sysUser.setPassword("2322434");
-        sysUser.setFullName("#$#$#$#$");
-        sysUser.setEmail("$#$#@ddd");
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysUser), eq(SysUserValidator.class));
         sysUserService.save(sysUser);
         verify(sysUserDao, only()).insert(any(SysUser.class));
         verify(sysUserRoleDao, only()).insert(anyListOf(SysUserRole.class));
@@ -230,44 +197,37 @@ public class SysUserServiceTest {
     }
 
     @Test
-    public void testUpdateUserNull() {
+    public void testSaveUserTwoRole() {
+        PowerMockito.mockStatic(IDUtils.class);
+        when(IDUtils.getNextId()).thenReturn(1);
+        when(sysUserDao.insert(any(SysUser.class))).thenReturn(1l);
+        when(sysUserRoleDao.insert(anyListOf(SysUserRole.class))).thenReturn(2L);
+        when(sysUserProfileDao.insert(any(SysUserProfile.class))).thenReturn(1L);
         SysUserRoleVo sysUser = new SysUserRoleVo();
-        try {
-            sysUserService.update(sysUser);
-        } catch (SystemException e) {
-            Map<String, Object> propertyMap = e.getPropertyMap();
-            Assert.assertTrue(propertyMap.containsKey("userId"));
-            Assert.assertFalse(propertyMap.containsKey("username"));
-            Assert.assertFalse(propertyMap.containsKey("fullName"));
-            Assert.assertFalse(propertyMap.containsKey("password"));
-            Assert.assertFalse(propertyMap.containsKey("email"));
-        }
-        verify(sysUserDao, never()).update(any(SysUser.class));
-        verify(sysUserRoleDao, never()).delete(any(QueryExample.class));
-        verify(sysUserRoleDao, never()).insert(anyListOf(SysUserRole.class));
-
+        sysUser.setRoleIds("1,2");
+        sysUser.setUsername("z123");
+        sysUser.setPassword("2322434");
+        sysUser.setFullName("#$#$#$#$");
+        sysUser.setEmail("$#$#@ddd");
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysUser), eq(SysUserValidator.class));
+        sysUserService.save(sysUser);
+        verify(sysUserDao, only()).insert(any(SysUser.class));
+        verify(sysUserRoleDao, only()).insert(anyListOf(SysUserRole.class));
+        PowerMockito.verifyStatic(times(4));
+        IDUtils.getNextId();
     }
 
-    @Test
-    public void testUpdateUserLength() {
+    @Test(expected = SystemException.class)
+    public void testUpdateUserNull() {
         SysUserRoleVo sysUser = new SysUserRoleVo();
-        sysUser.setUserId(1);
-        sysUser.setUsername("z012345678901234567890123456789123012345678901234567890123456789123");
-        sysUser.setPassword("012345678901234567890123456789123");
-        sysUser.setFullName("012345678901234567890123456789123");
-        sysUser.setEmail("012345678901234567890123456789123012345678901234567890123456789123");
-        try {
-            sysUserService.update(sysUser);
-        } catch (SystemException e) {
-            Map<String, Object> propertyMap = e.getPropertyMap();
-            Assert.assertTrue(propertyMap.containsKey("username"));
-            Assert.assertTrue(propertyMap.containsKey("fullName"));
-            Assert.assertTrue(propertyMap.containsKey("password"));
-            Assert.assertTrue(propertyMap.containsKey("email"));
-        }
-        verify(sysUserDao, never()).update(any(SysUser.class));
-        verify(sysUserRoleDao, never()).delete(any(QueryExample.class));
-        verify(sysUserRoleDao, never()).insert(anyListOf(SysUserRole.class));
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysUser), eq(SysUserUpdateValidator.class));
+        sysUserService.update(sysUser);
 
     }
 
@@ -280,6 +240,13 @@ public class SysUserServiceTest {
         sysUser.setPassword("2322434");
         sysUser.setFullName("#$#$#$#$");
         sysUser.setEmail("$#$#@ddd");
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysUser), eq(SysUserUpdateValidator.class));
         sysUserService.update(sysUser);
         verify(sysUserDao, only()).update(any(SysUser.class));
         verify(sysUserRoleDao, only()).delete(any(QueryExample.class));
@@ -292,7 +259,7 @@ public class SysUserServiceTest {
         when(IDUtils.getNextId()).thenReturn(1);
         when(sysUserDao.update(any(SysUser.class))).thenReturn(1L);
         when(sysUserRoleDao.delete(any(QueryExample.class))).thenReturn(1l);
-        when(sysUserRoleDao.insert(anyListOf(SysUserRole.class)));
+        when(sysUserRoleDao.insert(anyListOf(SysUserRole.class))).thenReturn(1L);
         SysUserRoleVo sysUser = new SysUserRoleVo();
         sysUser.setUserId(1);
         sysUser.setUsername("z123");
@@ -300,6 +267,13 @@ public class SysUserServiceTest {
         sysUser.setFullName("#$#$#$#$");
         sysUser.setEmail("$#$#@ddd");
         sysUser.setRoleIds("1");
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysUser), eq(SysUserUpdateValidator.class));
         sysUserService.update(sysUser);
         InOrder inOrder = inOrder(sysUserDao, sysUserRoleDao);
         inOrder.verify(sysUserDao, times(1)).update(any(SysUser.class));

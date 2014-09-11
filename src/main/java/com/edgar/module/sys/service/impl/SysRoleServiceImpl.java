@@ -106,4 +106,8 @@ public class SysRoleServiceImpl implements SysRoleService {
     public void setSysUserRoleDao(BaseDao<Integer, SysUserRole> sysUserRoleDao) {
         this.sysUserRoleDao = sysUserRoleDao;
     }
+
+    public void setValidatorBus(ValidatorBus validatorBus) {
+        this.validatorBus = validatorBus;
+    }
 }

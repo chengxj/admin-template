@@ -114,6 +114,10 @@ public class SysJobServiceImpl implements SysJobService {
         this.sysJobDao = sysJobDao;
     }
 
+    public void setValidatorBus(ValidatorBus validatorBus) {
+        this.validatorBus = validatorBus;
+    }
+
     public void setJobScheduler(JobScheduler jobScheduler) {
         this.jobScheduler = jobScheduler;
     }

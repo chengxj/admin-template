@@ -151,4 +151,8 @@ public class SysDictServiceImpl implements SysDictService {
     public void setSysDictDao(BaseDao<String, SysDict> sysDictDao) {
         this.sysDictDao = sysDictDao;
     }
+
+    public void setValidatorBus(ValidatorBus validatorBus) {
+        this.validatorBus = validatorBus;
+    }
 }

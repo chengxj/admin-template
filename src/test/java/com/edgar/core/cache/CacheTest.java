@@ -143,9 +143,9 @@ public class CacheTest {
             sysDictDao.insert(sysDict);
         }
         Assert.assertEquals(10, cacheManager.getCache("SysDictCache").getSize());
-        cacheProvider.remove("0001");
+        cacheProvider.remove("SysDict:0001");
         Assert.assertEquals(9, cacheManager.getCache("SysDictCache").getSize());
-        sysDictDao.get("0001");
+        sysDictDao.get("SysDict:0001");
         Assert.assertEquals(10, cacheManager.getCache("SysDictCache").getSize());
     }
 

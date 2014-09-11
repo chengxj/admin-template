@@ -5,14 +5,18 @@ import com.edgar.core.exception.SystemException;
 import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.repository.domain.SysDict;
 import com.edgar.module.sys.service.impl.SysDictServiceImpl;
+import com.edgar.module.sys.validator.SysDictValidator;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.dao.DuplicateKeyException;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
 
 public class SysDictServiceTest {
 
@@ -32,11 +37,20 @@ public class SysDictServiceTest {
 
     private SysDictServiceImpl sysDictService;
 
+    @Mock
+    private ValidatorBus validatorBus;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         sysDictService = new SysDictServiceImpl();
         sysDictService.setSysDictDao(sysDictDao);
+        sysDictService.setValidatorBus(validatorBus);
+    }
+
+    @After
+    public void tearDown() {
+        sysDictService = null;
     }
 
     @Test
@@ -49,79 +63,49 @@ public class SysDictServiceTest {
         Assert.assertEquals(sysDict, result);
     }
 
-    @Test(expected = SystemException.class)
-    public void testSaveCodeTooLang() {
-        final SysDict sysDict = new SysDict();
-        sysDict.setDictCode("012345678901234567890123456789123");
-        when(sysDictDao.insert(any(SysDict.class)));
-        try {
-            sysDictService.save(sysDict);
-        } finally {
-            verify(sysDictDao, never()).insert(any(SysDict.class));
-        }
-    }
-
-    @Test(expected = SystemException.class)
-    public void testSaveNullName() {
-        final SysDict sysDict = new SysDict();
-        sysDict.setDictCode("1");
-        when(sysDictDao.insert(any(SysDict.class)));
-        try {
-            sysDictService.save(sysDict);
-        } finally {
-            verify(sysDictDao, never()).insert(any(SysDict.class));
-        }
-    }
-
-    @Test(expected = SystemException.class)
-    public void testSaveNameTooLong() {
-        final SysDict sysDict = new SysDict();
-        sysDict.setDictCode("1");
-        sysDict.setDictName("012345678901234567890123456789123");
-        when(sysDictDao.insert(any(SysDict.class)));
-        try {
-            sysDictService.save(sysDict);
-        } finally {
-            verify(sysDictDao, never()).insert(any(SysDict.class));
-        }
-    }
-
-    @Test(expected = SystemException.class)
-    public void testSaveCodeInvalid() {
-        final SysDict sysDict = new SysDict();
-        sysDict.setDictCode("1!@#$");
-        sysDict.setDictName("012345678901234");
-        when(sysDictDao.insert(any(SysDict.class)));
-        try {
-            sysDictService.save(sysDict);
-        } finally {
-            verify(sysDictDao, never()).insert(any(SysDict.class));
-        }
-    }
-
     @Test
     public void testSaveSuccess() {
         final SysDict sysDict = new SysDict();
         sysDict.setDictCode("1");
         sysDict.setDictName("1");
-        when(sysDictDao.insert(any(SysDict.class)));
+        validateSuccess(sysDict);
+        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1l);
         sysDictService.save(sysDict);
         verify(sysDictDao).insert(any(SysDict.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testSaveNull() {
-        final SysDict sysDict = null;
-        when(sysDictDao.insert(any(SysDict.class)));
+    private void validateSuccess(SysDict sysDict) {
+        doAnswer(new Answer<Object>() {
+
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysDict), eq(SysDictValidator.class));
+    }
+
+    @Test(expected = SystemException.class)
+    public void testSaveFailed() {
+        final SysDict sysDict = new SysDict();
+        sysDict.setDictCode("d");
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysDict), eq(SysDictValidator.class));
         sysDictService.save(sysDict);
-        verify(sysDictDao, never()).get(anyString());
         verify(sysDictDao, never()).insert(sysDict);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
+    public void testSaveNull() {
+        final SysDict sysDict = null;
+        sysDictService.save(sysDict);
+        verify(sysDictDao, never()).insert(sysDict);
+        verify(validatorBus, never()).validator(sysDict, SysDictValidator.class);
+    }
+
+    @Test(expected = NullPointerException.class)
     public void testSaveDictCodeNull() {
         final SysDict sysDict = new SysDict();
-        when(sysDictDao.insert(any(SysDict.class)));
+        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1L);
         sysDictService.save(sysDict);
         verify(sysDictDao, never()).get(anyString());
         verify(sysDictDao, never()).insert(sysDict);
@@ -134,8 +118,9 @@ public class SysDictServiceTest {
         sysDict.setDictCode(dictCode);
         final SysDict getDict = new SysDict();
         getDict.setDictCode(dictCode);
+        validateSuccess(sysDict);
         when(sysDictDao.insert(any(SysDict.class))).thenThrow(
-                new DuplicateKeyException("duplicate"));
+                new SystemException(BusinessCode.DUPLICATE));
         sysDictService.save(sysDict);
         verify(sysDictDao).insert(sysDict);
         sysDictService.save(sysDict);
@@ -148,7 +133,7 @@ public class SysDictServiceTest {
         sysDict.setParentCode("1");
         sysDict.setDictName("1");
         when(sysDictDao.get("1")).thenReturn(new SysDict());
-        when(sysDictDao.insert(any(SysDict.class)));
+        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1L);
         sysDictService.save(sysDict);
         verify(sysDictDao, times(1)).get(anyString());
         verify(sysDictDao, times(1)).insert(sysDict);
@@ -159,8 +144,9 @@ public class SysDictServiceTest {
         final SysDict sysDict = new SysDict();
         sysDict.setDictCode("12");
         sysDict.setParentCode("1");
+        validateSuccess(sysDict);
         when(sysDictDao.get("1")).thenReturn(null);
-        when(sysDictDao.insert(any(SysDict.class)));
+        when(sysDictDao.insert(any(SysDict.class))).thenReturn(1L);
         sysDictService.save(sysDict);
         verify(sysDictDao, times(1)).get(anyString());
         verify(sysDictDao, never()).insert(sysDict);
@@ -172,8 +158,10 @@ public class SysDictServiceTest {
         sysDict.setDictCode("1");
         sysDict.setDictName("d");
         sysDict.setParentCode("1");
-        when(sysDictDao.update(any(SysDict.class)));
+        validateSuccess(sysDict);
+        when(sysDictDao.update(any(SysDict.class))).thenReturn(1L);
         sysDictService.update(sysDict);
+        verify(validatorBus, times(1)).validator(sysDict, SysDictValidator.class);
         verify(sysDictDao, times(1)).update(sysDict);
     }
 

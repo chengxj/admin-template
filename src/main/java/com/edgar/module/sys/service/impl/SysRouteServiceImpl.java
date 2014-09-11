@@ -102,4 +102,8 @@ public class SysRouteServiceImpl implements SysRouteService {
     public void setSysMenuRouteDao(BaseDao<Integer, SysMenuRoute> sysMenuRouteDao) {
         this.sysMenuRouteDao = sysMenuRouteDao;
     }
+
+    public void setValidatorBus(ValidatorBus validatorBus) {
+        this.validatorBus = validatorBus;
+    }
 }

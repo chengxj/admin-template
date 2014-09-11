@@ -1,11 +1,15 @@
 package com.edgar.module.sys.service;
 
+import com.edgar.core.exception.BusinessCode;
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.repository.*;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.repository.domain.SysRoleRoute;
 import com.edgar.module.sys.repository.domain.SysRoute;
 import com.edgar.module.sys.service.impl.SysRouteServiceImpl;
+import com.edgar.module.sys.validator.SysRouteUpdateValidator;
+import com.edgar.module.sys.validator.SysRouteValidator;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.Assert;
@@ -14,18 +18,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 
@@ -43,6 +49,9 @@ public class SysRouteServiceTest {
 
     private SysRouteServiceImpl sysRouteService;
 
+    @Mock
+    private ValidatorBus validatorBus;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -50,6 +59,7 @@ public class SysRouteServiceTest {
         sysRouteService.setSysRouteDao(sysRouteDao);
         sysRouteService.setSysRoleRouteDao(sysRoleRouteDao);
         sysRouteService.setSysMenuRouteDao(sysMenuRouteDao);
+        sysRouteService.setValidatorBus(validatorBus);
     }
 
     @Test
@@ -120,57 +130,11 @@ public class SysRouteServiceTest {
         verify(sysRouteDao, times(1)).query(any(QueryExample.class));
     }
 
-    @Test
-    public void testSaveNull() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
+    @Test(expected = SystemException.class)
+    public void testSaveFailed() {
         SysRoute sysRoute = new SysRoute();
-        try {
-            sysRouteService.save(sysRoute);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("name"));
-            Assert.assertTrue(map.containsKey("url"));
-        }
-        verify(sysRouteDao, never()).insert(same(sysRoute));
-        verifyStatic(never());
-
-    }
-
-    @Test
-    public void testSaveLong() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
-        SysRoute sysRoute = new SysRoute();
-        sysRoute.setUrl("0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789");
-        sysRoute.setName("012345678901234567890123456789123");
-        try {
-            sysRouteService.save(sysRoute);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("name"));
-            Assert.assertTrue(map.containsKey("url"));
-        }
-        verify(sysRouteDao, never()).insert(same(sysRoute));
-        verifyStatic(never());
-
-    }
-
-    @Test
-    public void testSavePattern() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
-        SysRoute sysRoute = new SysRoute();
-        sysRoute.setUrl("123");
-        sysRoute.setName("1233");
-        try {
-            sysRouteService.save(sysRoute);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("url"));
-        }
-        verify(sysRouteDao, never()).insert(same(sysRoute));
-        verifyStatic(never());
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysRoute), eq(SysRouteValidator.class));
+        sysRouteService.save(sysRoute);
 
     }
 
@@ -181,55 +145,24 @@ public class SysRouteServiceTest {
         SysRoute sysRoute = new SysRoute();
         sysRoute.setUrl("/123");
         sysRoute.setName("1233");
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysRoute), eq(SysRouteValidator.class));
         sysRouteService.save(sysRoute);
         verify(sysRouteDao, only()).insert(same(sysRoute));
         verifyStatic(only());
         IDUtils.getNextId();
     }
 
-    @Test
-    public void testUpdateNull() {
+    @Test(expected = SystemException.class)
+    public void testUpdateFailed() {
         SysRoute sysRoute = new SysRoute();
-        try {
-            sysRouteService.update(sysRoute);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("routeId"));
-            Assert.assertFalse(map.containsKey("name"));
-            Assert.assertFalse(map.containsKey("url"));
-        }
-        verify(sysRouteDao, never()).update(same(sysRoute));
-
-    }
-
-    @Test
-    public void testUpdateLong() {
-        SysRoute sysRoute = new SysRoute();
-        sysRoute.setUrl("0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789");
-        sysRoute.setName("012345678901234567890123456789123");
-        try {
-            sysRouteService.update(sysRoute);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("routeId"));
-            Assert.assertTrue(map.containsKey("name"));
-            Assert.assertTrue(map.containsKey("url"));
-        }
-        verify(sysRouteDao, never()).update(same(sysRoute));
-
-    }
-
-    @Test
-    public void testUpdatePattern() {
-        SysRoute sysRoute = new SysRoute();
-        sysRoute.setRouteId(1);
-        sysRoute.setUrl("123");
-        try {
-            sysRouteService.update(sysRoute);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("url"));
-        }
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysRoute), eq(SysRouteUpdateValidator.class));
+        sysRouteService.update(sysRoute);
         verify(sysRouteDao, never()).update(same(sysRoute));
 
     }
@@ -240,6 +173,13 @@ public class SysRouteServiceTest {
         sysRoute.setRouteId(1);
         sysRoute.setUrl("/123");
         sysRoute.setName("1233");
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysRoute), eq(SysRouteUpdateValidator.class));
         sysRouteService.update(sysRoute);
         verify(sysRouteDao, only()).update(same(sysRoute));
     }

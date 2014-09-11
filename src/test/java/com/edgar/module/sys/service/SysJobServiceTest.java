@@ -1,11 +1,15 @@
 package com.edgar.module.sys.service;
 
+import com.edgar.core.exception.BusinessCode;
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.job.JobAdpater;
 import com.edgar.core.job.JobScheduler;
 import com.edgar.core.repository.*;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.repository.domain.SysJob;
 import com.edgar.module.sys.service.impl.SysJobServiceImpl;
+import com.edgar.module.sys.validator.SysJobUpdateValidator;
+import com.edgar.module.sys.validator.SysJobValidator;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.Assert;
@@ -23,13 +27,13 @@ import org.quartz.Scheduler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 
@@ -44,12 +48,16 @@ public class SysJobServiceTest {
 
     private SysJobServiceImpl sysJobService;
 
+    @Mock
+    private ValidatorBus validatorBus;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         sysJobService = new SysJobServiceImpl();
         sysJobService.setSysJobDao(sysJobDao);
         sysJobService.setJobScheduler(jobScheduler);
+        sysJobService.setValidatorBus(validatorBus);
     }
 
     @Test
@@ -169,80 +177,36 @@ public class SysJobServiceTest {
         verify(sysJobDao, times(1)).query(any(QueryExample.class));
     }
 
-    @Test
-    public void testSaveNull() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
+    @Test(expected = SystemException.class)
+    public void testSaveFail() {
         SysJob sysJob = new SysJob();
-        try {
-            sysJobService.save(sysJob);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("jobName"));
-            Assert.assertTrue(map.containsKey("clazzName"));
-            Assert.assertTrue(map.containsKey("cron"));
-            Assert.assertFalse(map.containsKey("jobId"));
-        }
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysJob), eq(SysJobValidator.class));
+        sysJobService.save(sysJob);
         verify(sysJobDao, never()).insert(same(sysJob));
-        verifyStatic(never());
-
-    }
-
-    @Test
-    public void testSaveLong() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
-        SysJob sysJob = new SysJob();
-        sysJob.setJobName("012345678901234567890123456789123");
-        sysJob.setCron("012345678901234567890123456789123");
-        sysJob.setClazzName("01234567890123456789012345678901234567890123456789012345678901234");
-        try {
-            sysJobService.save(sysJob);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("jobName"));
-            Assert.assertTrue(map.containsKey("clazzName"));
-            Assert.assertTrue(map.containsKey("cron"));
-            Assert.assertFalse(map.containsKey("jobId"));
-        }
-        verify(sysJobDao, never()).insert(same(sysJob));
-        verifyStatic(never());
-
-    }
-
-    @Test
-    public void testSavePattern() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
-        SysJob sysJob = new SysJob();
-        sysJob.setJobName("123");
-        sysJob.setClazzName("com2");
-        sysJob.setCron("1");
-        try {
-            sysJobService.save(sysJob);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertFalse(map.containsKey("jobName"));
-            Assert.assertTrue(map.containsKey("clazzName"));
-            Assert.assertFalse(map.containsKey("cron"));
-            Assert.assertFalse(map.containsKey("jobId"));
-        }
-        verify(sysJobDao, never()).insert(same(sysJob));
-        verifyStatic(never());
+        verify(validatorBus, times(1)).validator(sysJob, SysJobValidator.class);
 
     }
 
     @Test
     public void testSaveEnabled() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
+
         SysJob sysJob = new SysJob();
         sysJob.setClazzName("com.edgar.job.DayJob");
         sysJob.setCron("0/1 * * * * ? *");
         sysJob.setEnabled(true);
         sysJob.setJobName("测试作业");
+        mockStatic(IDUtils.class);
+        when(IDUtils.getNextId()).thenReturn(1);
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysJob), eq(SysJobValidator.class));
         sysJobService.save(sysJob);
         verify(sysJobDao, only()).insert(same(sysJob));
+        verify(validatorBus, times(1)).validator(sysJob, SysJobValidator.class);
         verifyStatic(only());
         IDUtils.getNextId();
         verify(jobScheduler, only()).addAndStartJob(any(JobAdpater.class));
@@ -259,8 +223,16 @@ public class SysJobServiceTest {
         sysJob.setCron("0/1 * * * * ? *");
         sysJob.setEnabled(false);
         sysJob.setJobName("测试作业");
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysJob), eq(SysJobValidator.class));
         sysJobService.save(sysJob);
         verify(sysJobDao, only()).insert(same(sysJob));
+        verify(validatorBus, times(1)).validator(sysJob, SysJobValidator.class);
         verifyStatic(only());
         IDUtils.getNextId();
         verify(jobScheduler, never()).addAndStartJob(any(JobAdpater.class));
@@ -268,40 +240,13 @@ public class SysJobServiceTest {
 
     }
 
-    @Test
-    public void testUpdateNull() {
+    @Test(expected = SystemException.class)
+    public void testUpdateFailed() {
         SysJob sysJob = new SysJob();
-        try {
-            sysJobService.update(sysJob);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertFalse(map.containsKey("jobName"));
-            Assert.assertFalse(map.containsKey("clazzName"));
-            Assert.assertFalse(map.containsKey("cron"));
-            Assert.assertTrue(map.containsKey("jobId"));
-        }
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysJob), eq(SysJobUpdateValidator.class));
+        sysJobService.update(sysJob);
         verify(sysJobDao, never()).update(same(sysJob));
-
-    }
-
-    @Test
-    public void testUpdateLong() {
-        SysJob sysJob = new SysJob();
-        sysJob.setJobId(1);
-        sysJob.setJobName("012345678901234567890123456789123");
-        sysJob.setCron("012345678901234567890123456789123");
-        sysJob.setClazzName("1");
-        try {
-            sysJobService.update(sysJob);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("jobName"));
-            Assert.assertTrue(map.containsKey("clazzName"));
-            Assert.assertTrue(map.containsKey("cron"));
-            Assert.assertFalse(map.containsKey("jobId"));
-        }
-        verify(sysJobDao, never()).update(same(sysJob));
-
+        verify(validatorBus, times(1)).validator(sysJob, SysJobUpdateValidator.class);
     }
 
     @Test
@@ -312,15 +257,15 @@ public class SysJobServiceTest {
         sysJob.setJobId(1);
         sysJob.setEnabled(true);
         sysJob.setJobName("测试作业");
-        try {
-            sysJobService.update(sysJob);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertFalse(map.containsKey("jobName"));
-            Assert.assertFalse(map.containsKey("clazzName"));
-            Assert.assertFalse(map.containsKey("cron"));
-            Assert.assertFalse(map.containsKey("jobId"));
-        }
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysJob), eq(SysJobUpdateValidator.class));
+        sysJobService.update(sysJob);
+        verify(validatorBus, times(1)).validator(sysJob, SysJobUpdateValidator.class);
         verify(sysJobDao, only()).update(same(sysJob));
         verify(jobScheduler, only()).updateJob(any(JobAdpater.class));
     }
@@ -332,15 +277,15 @@ public class SysJobServiceTest {
         sysJob.setCron("0/1 * * * * ? *");
         sysJob.setEnabled(false);
         sysJob.setJobName("测试作业");
-        try {
-            sysJobService.update(sysJob);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertFalse(map.containsKey("jobName"));
-            Assert.assertFalse(map.containsKey("clazzName"));
-            Assert.assertFalse(map.containsKey("cron"));
-            Assert.assertFalse(map.containsKey("jobId"));
-        }
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysJob), eq(SysJobUpdateValidator.class));
+        sysJobService.update(sysJob);
+        verify(validatorBus, times(1)).validator(sysJob, SysJobUpdateValidator.class);
         verify(sysJobDao, only()).update(same(sysJob));
         verify(jobScheduler, never()).updateJob(any(JobAdpater.class));
         verify(jobScheduler, only()).deleteJob(any(JobAdpater.class));

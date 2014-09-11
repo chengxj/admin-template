@@ -1,26 +1,34 @@
 package com.edgar.module.sys.service;
 
+import com.edgar.core.exception.BusinessCode;
 import com.edgar.core.exception.SystemException;
 import com.edgar.core.repository.*;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.repository.domain.*;
 import com.edgar.module.sys.service.impl.SysRoleServiceImpl;
+import com.edgar.module.sys.validator.SysRoleUpdateValidator;
+import com.edgar.module.sys.validator.SysRoleValidator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -44,6 +52,9 @@ public class SysRoleServiceTest {
     @Mock
     private BaseDao<Integer, SysUserRole> sysUserRoleDao;
 
+    @Mock
+    private ValidatorBus validatorBus;
+
     private SysRoleServiceImpl sysRoleService;
 
     @Before
@@ -55,6 +66,7 @@ public class SysRoleServiceTest {
         sysRoleService.setSysRoleRouteDao(sysRoleRouteDao);
         sysRoleService.setSysUserRoleDao(sysUserRoleDao);
         sysRoleService.setSysRoleResDao(sysRoleResDao);
+        sysRoleService.setValidatorBus(validatorBus);
     }
 
     @Test
@@ -120,61 +132,16 @@ public class SysRoleServiceTest {
         verify(sysRoleDao, times(1)).pagination(same(example), anyInt(), anyInt());
     }
 
-    @Test
-    public void testSaveNull() {
+    @Test(expected = SystemException.class)
+    public void testSaveFailed() {
         mockStatic(IDUtils.class);
         when(IDUtils.getNextId()).thenReturn(1);
         SysRole sysRole = new SysRole();
         sysRole.setRoleId(1);
-        try {
-            sysRoleService.save(sysRole);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("roleName"));
-            Assert.assertTrue(map.containsKey("roleCode"));
-            Assert.assertFalse(map.containsKey("roleId"));
-        }
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysRole), eq(SysRoleValidator.class));
+        sysRoleService.save(sysRole);
         verify(sysRoleDao, never()).insert(same(sysRole));
-        verifyStatic(never());
-    }
-
-    @Test
-    public void testSaveLong() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
-        SysRole sysRole = new SysRole();
-        sysRole.setRoleId(1);
-        sysRole.setRoleCode("012345678901234567890123456789123");
-        sysRole.setRoleName("012345678901234567890123456789123");
-        try {
-            sysRoleService.save(sysRole);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("roleName"));
-            Assert.assertTrue(map.containsKey("roleCode"));
-            Assert.assertFalse(map.containsKey("roleId"));
-        }
-        verify(sysRoleDao, never()).insert(same(sysRole));
-        verifyStatic(never());
-    }
-
-    @Test
-    public void testSavePattern() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
-        SysRole sysRole = new SysRole();
-        sysRole.setRoleCode("root");
-        sysRole.setRoleName("root");
-        sysRole.setRoleId(1);
-        try {
-            sysRoleService.save(sysRole);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("roleName"));
-            Assert.assertFalse(map.containsKey("roleCode"));
-            Assert.assertFalse(map.containsKey("roleId"));
-        }
-        verify(sysRoleDao, never()).insert(same(sysRole));
+        verify(validatorBus, times(1)).validator(sysRole, SysRoleValidator.class);
         verifyStatic(never());
     }
 
@@ -186,71 +153,46 @@ public class SysRoleServiceTest {
         sysRole.setRoleCode("root");
         sysRole.setRoleName("root1");
         sysRole.setRoleId(1);
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysRole), eq(SysRoleValidator.class));
         sysRoleService.save(sysRole);
         verify(sysRoleDao, only()).insert(same(sysRole));
+        verify(validatorBus, times(1)).validator(sysRole, SysRoleValidator.class);
         verifyStatic(only());
         IDUtils.getNextId();
         Assert.assertFalse(sysRole.getIsRoot());
     }
 
-    @Test
+    @Test(expected = SystemException.class)
     public void testUpdateNull() {
         SysRole sysRole = new SysRole();
-        try {
-            sysRoleService.update(sysRole);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertFalse(map.containsKey("roleName"));
-            Assert.assertFalse(map.containsKey("roleCode"));
-            Assert.assertTrue(map.containsKey("roleId"));
-        }
+        doThrow(new SystemException(BusinessCode.INVALID)).when(validatorBus).validator(same(sysRole), eq(SysRoleUpdateValidator.class));
+        sysRoleService.update(sysRole);
         verify(sysRoleDao, never()).update(same(sysRole));
+        verify(validatorBus, times(1)).validator(sysRole, SysRoleUpdateValidator.class);
     }
 
-    @Test
-    public void testUpdateLong() {
-        SysRole sysRole = new SysRole();
-        sysRole.setRoleId(1);
-        sysRole.setRoleCode("012345678901234567890123456789123");
-        try {
-            sysRoleService.update(sysRole);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertFalse(map.containsKey("roleName"));
-            Assert.assertTrue(map.containsKey("roleCode"));
-            Assert.assertFalse(map.containsKey("roleId"));
-        }
-        verify(sysRoleDao, never()).update(same(sysRole));
-    }
-
-    @Test
-    public void testUpdatePattern() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
-        SysRole sysRole = new SysRole();
-        sysRole.setRoleCode("root");
-        sysRole.setRoleName("root");
-        sysRole.setRoleId(1);
-        try {
-            sysRoleService.update(sysRole);
-        } catch (SystemException e) {
-            Map<String, Object> map = e.getPropertyMap();
-            Assert.assertTrue(map.containsKey("roleName"));
-            Assert.assertFalse(map.containsKey("roleCode"));
-            Assert.assertFalse(map.containsKey("roleId"));
-        }
-        verify(sysRoleDao, never()).update(same(sysRole));
-    }
 
     @Test
     public void testUpdate() {
-        mockStatic(IDUtils.class);
-        when(IDUtils.getNextId()).thenReturn(1);
         SysRole sysRole = new SysRole();
         sysRole.setRoleCode("root");
         sysRole.setRoleName("root1");
         sysRole.setRoleId(1);
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Object[] args = invocationOnMock.getArguments();
+                return "called with arguments: " + args;
+            }
+        }).when(validatorBus).validator(same(sysRole), eq(SysRoleUpdateValidator.class));
         sysRoleService.update(sysRole);
         verify(sysRoleDao, only()).update(same(sysRole));
+        verify(validatorBus, times(1)).validator(sysRole, SysRoleUpdateValidator.class);
     }
 }

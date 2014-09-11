@@ -243,4 +243,12 @@ public class SysUserServiceImpl implements SysUserService {
     public void setSysUserProfileDao(BaseDao<Integer, SysUserProfile> sysUserProfileDao) {
         this.sysUserProfileDao = sysUserProfileDao;
     }
+
+    public void setValidatorBus(ValidatorBus validatorBus) {
+        this.validatorBus = validatorBus;
+    }
+
+    public void setPasswordService(PasswordService passwordService) {
+        this.passwordService = passwordService;
+    }
 }
