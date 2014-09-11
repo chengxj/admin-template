@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TestTableDao extends AbstractDaoTemplate<String, TestTable> {
 
-        @Override
-        public RelationalPathBase<?> getPathBase() {
-                return QTestTable.testTable;
-        }
+    @Override
+    public RelationalPathBase<?> getPathBase() {
+        return QTestTable.testTable;
+    }
 
 }

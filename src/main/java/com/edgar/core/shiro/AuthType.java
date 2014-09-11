@@ -25,4 +25,4 @@ public enum AuthType {
      * 请求是https
      */
     SSL
-    }
+}

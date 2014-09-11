@@ -82,7 +82,8 @@ public class UpdateTransactionTest {
         TestTable testTable = testTables.get(0);
 
         TestTable domain = new TestTable();
-        domain.setDictName("zzz");;
+        domain.setDictName("zzz");
+        ;
         domain.setTestCode("zzz");
         domain.setCreatedTime(testTable.getCreatedTime());
         domain.setUpdatedTime(testTable.getUpdatedTime());
@@ -110,7 +111,8 @@ public class UpdateTransactionTest {
         TestTable testTable = testTables.get(0);
 
         TestTable domain = new TestTable();
-        domain.setDictName("zzz");;
+        domain.setDictName("zzz");
+        ;
         domain.setTestCode("zzz");
         domain.setParentCode("-1");
         example.clear();
@@ -136,7 +138,8 @@ public class UpdateTransactionTest {
         TestTable testTable = testTables.get(0);
 
         TestTable domain = new TestTable();
-        domain.setDictName("zzz");;
+        domain.setDictName("zzz");
+        ;
         domain.setTestCode("zzz");
         domain.setParentCode("-1");
         example.clear();
@@ -161,7 +164,8 @@ public class UpdateTransactionTest {
         TestTable testTable = testTables.get(0);
 
         TestTable domain = new TestTable();
-        domain.setDictName("zzz");;
+        domain.setDictName("zzz");
+        ;
         domain.setTestCode("zzz");
         domain.setCreatedTime(testTable.getCreatedTime());
         domain.setUpdatedTime(testTable.getUpdatedTime());

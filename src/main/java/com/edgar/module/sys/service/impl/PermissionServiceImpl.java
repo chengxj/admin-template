@@ -178,7 +178,6 @@ public class PermissionServiceImpl implements PermissionService {
     /**
      * 根据角色删除资源权限
      *
-     *
      * @param roleId 角色ID
      */
     private void deleteByRole(int roleId) {

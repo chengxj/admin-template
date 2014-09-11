@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 
 public class DayJob implements Job {
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(DayJob.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DayJob.class);
 
-        @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
-                DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-                LOGGER.info(Thread.currentThread().getId() + ":" + new DateTime().toString(format));
-        }
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        LOGGER.info(Thread.currentThread().getId() + ":" + new DateTime().toString(format));
+    }
 
 }

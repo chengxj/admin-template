@@ -4,7 +4,7 @@ import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.ExceptionFactory;
-import com.edgar.core.validator.ValidatorStrategy;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.init.DictoryLoader;
 import com.edgar.module.sys.repository.domain.SysDict;
 import com.edgar.module.sys.service.SysDictService;
@@ -32,7 +32,8 @@ public class SysDictServiceImpl implements SysDictService {
     @Autowired
     private BaseDao<String, SysDict> sysDictDao;
 
-    private final ValidatorStrategy validator = new SysDictValidator();
+    @Autowired
+    private ValidatorBus validatorBus;
 
     @Override
     public SysDict get(String dictCode) {
@@ -51,7 +52,7 @@ public class SysDictServiceImpl implements SysDictService {
         if (StringUtils.isBlank(sysDict.getParentCode())) {
             sysDict.setParentCode("-1");
         }
-        validator.validator(sysDict);
+        validatorBus.validator(sysDict, SysDictValidator.class);
         sysDictDao.insert(sysDict);
         if (!"-1".equals(sysDict.getParentCode())) {
             SysDict parentDict = get(sysDict.getParentCode());
@@ -65,7 +66,7 @@ public class SysDictServiceImpl implements SysDictService {
     @Override
     @Transactional
     public void update(SysDict sysDict) {
-        validator.validator(sysDict);
+        validatorBus.validator(sysDict, SysDictValidator.class);
         sysDictDao.update(sysDict);
         saveOrUpdateDict(sysDict);
     }

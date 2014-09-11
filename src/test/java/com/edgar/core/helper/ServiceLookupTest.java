@@ -1,5 +1,7 @@
 package com.edgar.core.helper;
 
+import com.edgar.core.util.ServiceLookup;
+import com.edgar.module.sys.dao.SysDictDao;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,25 +12,22 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.edgar.core.util.ServiceLookup;
-import com.edgar.module.sys.dao.SysDictDao;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })
+@ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 @TransactionConfiguration(defaultRollback = true)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-                TransactionalTestExecutionListener.class })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+        TransactionalTestExecutionListener.class})
 public class ServiceLookupTest {
 
-        @Test
-        public void testGetBean() {
-                SysDictDao sysDictDao = ServiceLookup.getBean(SysDictDao.class);
-                Assert.assertNotNull(sysDictDao);
-        }
-        
-        @Test
-        public void testGetBean2() {
-                SysDictDao sysDictDao = ServiceLookup.getBean("sysDictDao", SysDictDao.class);
-                Assert.assertNotNull(sysDictDao);
-        }
+    @Test
+    public void testGetBean() {
+        SysDictDao sysDictDao = ServiceLookup.getBean(SysDictDao.class);
+        Assert.assertNotNull(sysDictDao);
+    }
+
+    @Test
+    public void testGetBean2() {
+        SysDictDao sysDictDao = ServiceLookup.getBean("sysDictDao", SysDictDao.class);
+        Assert.assertNotNull(sysDictDao);
+    }
 }

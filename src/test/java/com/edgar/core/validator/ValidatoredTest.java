@@ -1,11 +1,7 @@
 package com.edgar.core.validator;
 
-import com.edgar.core.exception.SystemException;
-import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.service.SysUserService;
-import com.edgar.module.sys.validator.SysUserUpdateValidator;
 import com.edgar.module.sys.vo.SysUserRoleVo;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,24 +12,19 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })
+@ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 @TransactionConfiguration(defaultRollback = true)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-                TransactionalTestExecutionListener.class })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+        TransactionalTestExecutionListener.class})
 public class ValidatoredTest {
 
-        @Autowired
-        private SysUserService sysUserService;
+    @Autowired
+    private SysUserService sysUserService;
 
-        @Test
-        public void testValid() {
-            SysUserRoleVo sysUserRoleVo = new SysUserRoleVo();
-            sysUserService.save(sysUserRoleVo);
-        }
+    @Test
+    public void testValid() {
+        SysUserRoleVo sysUserRoleVo = new SysUserRoleVo();
+        sysUserService.save(sysUserRoleVo);
+    }
 }

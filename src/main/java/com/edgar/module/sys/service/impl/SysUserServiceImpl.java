@@ -6,19 +6,18 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
-import com.edgar.core.validator.Validated;
-import com.edgar.core.validator.ValidatorStrategy;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
-import com.edgar.module.sys.vo.ChangePasswordVo;
 import com.edgar.module.sys.service.PasswordService;
-import com.edgar.module.sys.vo.SysUserRoleVo;
 import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.validator.PasswordValidator;
 import com.edgar.module.sys.validator.SysUserUpdateValidator;
 import com.edgar.module.sys.validator.SysUserValidator;
+import com.edgar.module.sys.vo.ChangePasswordVo;
+import com.edgar.module.sys.vo.SysUserRoleVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -54,9 +53,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private PasswordService passwordService;
 
-    private final ValidatorStrategy validator = new SysUserValidator();
-
-    private final ValidatorStrategy updateValidator = new SysUserUpdateValidator();
+    @Autowired
+    private ValidatorBus validatorBus;
 
     @Override
     @Transactional
@@ -74,8 +72,8 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional
-    public void save(@Validated(SysUserValidator.class) SysUserRoleVo sysUserRoleVo) {
-//        validator.validator(sysUserRoleVo);
+    public void save(SysUserRoleVo sysUserRoleVo) {
+        validatorBus.validator(sysUserRoleVo, SysUserValidator.class);
         sysUserRoleVo.setUserId(IDUtils.getNextId());
         sysUserRoleVo.setIsRoot(false);
         passwordService.encryptPassword(sysUserRoleVo);
@@ -101,7 +99,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     @Transactional
     public void update(SysUserRoleVo sysUser) {
-        updateValidator.validator(sysUser);
+        validatorBus.validator(sysUser, SysUserUpdateValidator.class);
         if (StringUtils.isNotBlank(sysUser.getPassword())) {
             passwordService.encryptPassword(sysUser);
         }
@@ -208,8 +206,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public void updatePassword(ChangePasswordVo changePasswordVo) {
-        ValidatorStrategy validator = new PasswordValidator();
-        validator.validator(changePasswordVo);
+        validatorBus.validator(changePasswordVo, PasswordValidator.class);
         if (!changePasswordVo.getNewpassword().equals(changePasswordVo.getRetypepassword())) {
             throw ExceptionFactory
                     .inValidParameter("Two input password is not same");

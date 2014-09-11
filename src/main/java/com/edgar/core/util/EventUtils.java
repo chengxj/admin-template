@@ -7,26 +7,25 @@ import org.springframework.stereotype.Service;
 
 /**
  * Spring事件的工具类
- * 
+ *
  * @author Edgar Zhang
  * @version 1.0
  */
 @Service
 public class EventUtils implements ApplicationContextAware {
 
-        private static ApplicationContext APPLICATION_CONTEXT;
+    private static ApplicationContext APPLICATION_CONTEXT;
 
-        public void setApplicationContext(ApplicationContext applicationContext) {
-                APPLICATION_CONTEXT = applicationContext;
-        }
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        APPLICATION_CONTEXT = applicationContext;
+    }
 
-        /**
-         * 发布一个事件
-         * 
-         * @param event
-         *                事件
-         */
-        public static void publishEvent(ApplicationEvent event) {
-                APPLICATION_CONTEXT.publishEvent(event);
-        }
+    /**
+     * 发布一个事件
+     *
+     * @param event 事件
+     */
+    public static void publishEvent(ApplicationEvent event) {
+        APPLICATION_CONTEXT.publishEvent(event);
+    }
 }

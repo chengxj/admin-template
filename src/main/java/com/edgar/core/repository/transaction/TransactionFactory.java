@@ -16,18 +16,18 @@ import java.util.List;
 public class TransactionFactory {
 
     public static Transaction createCountTransaction(TransactionConfig config, QueryExample example) {
-       return new CountTransaction(config, example);
+        return new CountTransaction(config, example);
     }
 
     public static Transaction createDeleteTransaction(TransactionConfig config, QueryExample example) {
         return new DeleteTransaction(config, example);
     }
 
-    public static <T> Transaction createUpdateTransaction(TransactionConfig config, T domain,  boolean withNullBindings, QueryExample example, String ... ignore) {
+    public static <T> Transaction createUpdateTransaction(TransactionConfig config, T domain, boolean withNullBindings, QueryExample example, String... ignore) {
         return new UpdateTransaction(config, domain, withNullBindings, example, ignore);
     }
 
-    public static <T> Transaction createDefaultUpdateTransaction(TransactionConfig config, T domain,  QueryExample example) {
+    public static <T> Transaction createDefaultUpdateTransaction(TransactionConfig config, T domain, QueryExample example) {
         return new UpdateTransaction(config, domain, false, example, Constants.CREATED_TIME, Constants.UPDATED_TIME);
     }
 

@@ -10,16 +10,16 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })
+@ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 @TransactionConfiguration(defaultRollback = true)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-                TransactionalTestExecutionListener.class })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+        TransactionalTestExecutionListener.class})
 public class RealmTest {
 
-        @Test
-        public void testLogin() {
+    @Test
+    public void testLogin() {
 //                Subject subject = SecurityUtils.getSubject();
 //                UsernamePasswordToken token = new UsernamePasswordToken("root", "root");
 //                subject.login(token);
-        }
+    }
 }

@@ -80,11 +80,11 @@ public class CountTransactionTest {
         Assert.assertEquals(10, count, 0);
 
         example.limit(5);
-        transaction =  TransactionFactory.createCountTransaction(config, example);
+        transaction = TransactionFactory.createCountTransaction(config, example);
         count = transaction.execute();
         Assert.assertEquals(5, count, 0);
         example.equalsTo("testCode", "0001");
-        transaction =  TransactionFactory.createCountTransaction(config, example);
+        transaction = TransactionFactory.createCountTransaction(config, example);
         count = transaction.execute();
         Assert.assertEquals(1, count, 0);
 
@@ -93,7 +93,7 @@ public class CountTransactionTest {
         example.greaterThan("test_code", "0001");
         example.asc("sorted");
         example.desc("testCode");
-        transaction =  TransactionFactory.createCountTransaction(config, example);
+        transaction = TransactionFactory.createCountTransaction(config, example);
         count = transaction.execute();
         Assert.assertEquals(8, count, 0);
     }

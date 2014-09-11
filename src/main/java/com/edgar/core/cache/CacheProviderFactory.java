@@ -8,6 +8,6 @@ package com.edgar.core.cache;
  * To change this template use File | Settings | File Templates.
  */
 public interface CacheProviderFactory {
-    
+
     public CacheProvider createCacheWrapper(String cacheName);
 }

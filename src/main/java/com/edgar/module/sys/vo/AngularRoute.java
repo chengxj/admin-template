@@ -4,32 +4,31 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * AnagularJS需要的路由对象
- * 
+ *
  * @author Edgar Zhang
  * @version 1.0
  */
 public class AngularRoute implements Comparable<AngularRoute> {
-        private String id;
-        private String url;
-        private String basename;
-        private String path;
-        private String name;
-        private boolean isMenu;
-        private int sorted = 1;
-        private String parentId;
+    private String id;
+    private String url;
+    private String basename;
+    private String path;
+    private String name;
+    private boolean isMenu;
+    private int sorted = 1;
+    private String parentId;
 
-        /**
-         * 设计路由的地址
-         * 
-         * @param url
-         *                地址
-         */
-        public void setUrl(String url) {
-                this.url = url;
-                String newUrl = StringUtils.substringBefore(url, "/:");
-                this.basename = StringUtils.substringAfterLast(newUrl, "/");
-                this.path = StringUtils.substringBeforeLast(newUrl, "/");
-        }
+    /**
+     * 设计路由的地址
+     *
+     * @param url 地址
+     */
+    public void setUrl(String url) {
+        this.url = url;
+        String newUrl = StringUtils.substringBefore(url, "/:");
+        this.basename = StringUtils.substringAfterLast(newUrl, "/");
+        this.path = StringUtils.substringBeforeLast(newUrl, "/");
+    }
 
     public String getId() {
         return id;
@@ -92,14 +91,14 @@ public class AngularRoute implements Comparable<AngularRoute> {
     }
 
     @Override
-        public int compareTo(AngularRoute o) {
-                if (sorted == o.getSorted()) {
-                        return 0;
-                }
-                if (sorted > o.getSorted()) {
-                        return 1;
-                }
-                return -1;
+    public int compareTo(AngularRoute o) {
+        if (sorted == o.getSorted()) {
+            return 0;
         }
+        if (sorted > o.getSorted()) {
+            return 1;
+        }
+        return -1;
+    }
 
 }

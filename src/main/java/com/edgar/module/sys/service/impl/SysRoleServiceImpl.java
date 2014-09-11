@@ -4,7 +4,7 @@ import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
-import com.edgar.core.validator.ValidatorStrategy;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.repository.domain.*;
 import com.edgar.module.sys.service.SysRoleService;
 import com.edgar.module.sys.validator.SysRoleUpdateValidator;
@@ -17,76 +17,75 @@ import java.util.List;
 
 /**
  * 角色的业务逻辑实现
- * 
+ *
  * @author Edgar Zhang
  * @version 1.0
  */
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
 
-        @Autowired
-        private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
+    @Autowired
+    private BaseDao<Integer, SysRoleRoute> sysRoleRouteDao;
 
-        @Autowired
-        private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
+    @Autowired
+    private BaseDao<Integer, SysRoleMenu> sysRoleMenuDao;
 
-        @Autowired
-        private BaseDao<Integer, SysRoleRes> sysRoleResDao;
+    @Autowired
+    private BaseDao<Integer, SysRoleRes> sysRoleResDao;
 
-        @Autowired
-        private BaseDao<Integer, SysRole> sysRoleDao;
+    @Autowired
+    private BaseDao<Integer, SysRole> sysRoleDao;
 
-        @Autowired
-        private BaseDao<Integer, SysUserRole> sysUserRoleDao;
+    @Autowired
+    private BaseDao<Integer, SysUserRole> sysUserRoleDao;
 
-        private final ValidatorStrategy validator = new SysRoleValidator();
+    @Autowired
+    private ValidatorBus validatorBus;
 
-        private final ValidatorStrategy updateValidator = new SysRoleUpdateValidator();
+    @Override
+    @Transactional
+    public void save(SysRole sysRole) {
+        validatorBus.validator(sysRole, SysRoleValidator.class);
+        sysRole.setIsRoot(false);
+        sysRole.setRoleId(IDUtils.getNextId());
+        sysRoleDao.insert(sysRole);
+    }
 
-        @Override
-        @Transactional
-        public void save(SysRole sysRole) {
-                validator.validator(sysRole);
-                sysRole.setIsRoot(false);
-                sysRole.setRoleId(IDUtils.getNextId());
-                sysRoleDao.insert(sysRole);
-        }
+    @Override
+    @Transactional
+    public void update(SysRole sysRole) {
+        validatorBus.validator(sysRole, SysRoleUpdateValidator.class);
+        sysRoleDao.update(sysRole);
+    }
 
-        @Override
-        @Transactional
-        public void update(SysRole sysRole) {
-                updateValidator.validator(sysRole);
-                sysRoleDao.update(sysRole);
-        }
+    @Override
+    public SysRole get(int roleId) {
+        return sysRoleDao.get(roleId);
+    }
 
-        @Override
-        public SysRole get(int roleId) {
-                return sysRoleDao.get(roleId);
-        }
+    @Override
+    public Pagination<SysRole> pagination(QueryExample example, int page, int pageSize) {
+        example.equalsTo("isRoot", 0);
+        return sysRoleDao.pagination(example, page, pageSize);
+    }
 
-        @Override
-        public Pagination<SysRole> pagination(QueryExample example, int page, int pageSize) {
-                example.equalsTo("isRoot", 0);
-                return sysRoleDao.pagination(example, page, pageSize);
-        }
+    @Override
+    public List<SysRole> query(QueryExample example) {
+        example.equalsTo("isRoot", 0);
+        return sysRoleDao.query(example);
+    }
 
-        @Override
-        public List<SysRole> query(QueryExample example) {
-                example.equalsTo("isRoot", 0);
-                return sysRoleDao.query(example);
-        }
-
-        @Override
-        @Transactional
-        public void deleteWithLock(int roleId, long updatedTime) {
-                sysRoleDao.deleteByPkAndVersion(roleId, updatedTime);
-                QueryExample example = QueryExample.newInstance();
-                example.equalsTo("roleId", roleId);
-                sysUserRoleDao.delete(example);
-                sysRoleRouteDao.delete(example);
-                sysRoleMenuDao.delete(example);
-                sysRoleResDao.delete(example);
-        }
+    @Override
+    @Transactional
+    public void deleteWithLock(int roleId, long updatedTime) {
+        sysRoleDao.deleteByPkAndVersion(roleId, updatedTime);
+        QueryExample example = QueryExample.newInstance();
+        example.equalsTo("roleId", roleId);
+        sysUserRoleDao.delete(example);
+        sysRoleRouteDao.delete(example);
+        sysRoleMenuDao.delete(example);
+        sysRoleResDao.delete(example);
+    }
 
     public void setSysRoleRouteDao(BaseDao<Integer, SysRoleRoute> sysRoleRouteDao) {
         this.sysRoleRouteDao = sysRoleRouteDao;

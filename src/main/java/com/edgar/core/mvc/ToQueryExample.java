@@ -9,22 +9,22 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 public @interface ToQueryExample {
 
-        enum QueryType {
-                /**
-                 * =
-                 */
-                EQUALS_TO,
-                /**
-                 * like '%...%'
-                 */
-                CONTAIN,
-                /**
-                 * like '%..'
-                 */
-                BEGIN_WITH
-        }
+    enum QueryType {
+        /**
+         * =
+         */
+        EQUALS_TO,
+        /**
+         * like '%...%'
+         */
+        CONTAIN,
+        /**
+         * like '%..'
+         */
+        BEGIN_WITH
+    }
 
-        QueryType value() default QueryType.EQUALS_TO;
+    QueryType value() default QueryType.EQUALS_TO;
 
-        int maxNumOfRecords() default 0;
+    int maxNumOfRecords() default 0;
 }

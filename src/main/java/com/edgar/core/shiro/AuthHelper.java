@@ -7,16 +7,16 @@ import java.lang.annotation.Target;
 
 /**
  * 资源的注解，用在springMVC的方法上，在系统初次启动时创建资源
- * 
+ *
  * @author Edgar Zhang
  * @version 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface AuthHelper {
-        String value();
+    String value();
 
-        boolean isRoot() default false;
+    boolean isRoot() default false;
 
-        AuthType type() default AuthType.REST;
+    AuthType type() default AuthType.REST;
 }

@@ -10,14 +10,13 @@ import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.repository.domain.SysUserProfile;
 import com.edgar.module.sys.repository.domain.SysUserRole;
-import com.edgar.module.sys.vo.ChangePasswordVo;
 import com.edgar.module.sys.service.SysRoleService;
-import com.edgar.module.sys.vo.SysUserRoleVo;
 import com.edgar.module.sys.service.SysUserService;
+import com.edgar.module.sys.vo.ChangePasswordVo;
+import com.edgar.module.sys.vo.SysUserRoleVo;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 

@@ -6,7 +6,7 @@ import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
-import com.edgar.core.validator.ValidatorStrategy;
+import com.edgar.core.validator.ValidatorBus;
 import com.edgar.module.sys.repository.domain.SysJob;
 import com.edgar.module.sys.service.SysJobService;
 import com.edgar.module.sys.validator.SysJobUpdateValidator;
@@ -33,16 +33,14 @@ public class SysJobServiceImpl implements SysJobService {
     @Autowired
     private JobScheduler jobScheduler;
 
-    private final ValidatorStrategy validator = new SysJobValidator();
-
-    private final ValidatorStrategy updateValidator = new SysJobUpdateValidator();
+    @Autowired
+    private ValidatorBus validatorBus;
 
     @Override
     @Transactional
     public void save(SysJob sysJob) {
-        Validate.notNull(sysJob);
+        validatorBus.validator(sysJob, SysJobValidator.class);
         sysJob.setJobId(IDUtils.getNextId());
-        validator.validator(sysJob);
         sysJobDao.insert(sysJob);
         if (BooleanUtils.isTrue(sysJob.getEnabled())) {
             JobAdpater job = new JobAdpater();
@@ -55,8 +53,7 @@ public class SysJobServiceImpl implements SysJobService {
     @Override
     @Transactional
     public void update(SysJob sysJob) {
-        Validate.notNull(sysJob);
-        updateValidator.validator(sysJob);
+        validatorBus.validator(sysJob, SysJobUpdateValidator.class);
         sysJobDao.update(sysJob);
         if (BooleanUtils.isTrue(sysJob.getEnabled())) {
             JobAdpater job = new JobAdpater();

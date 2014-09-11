@@ -1,5 +1,7 @@
 package com.edgar.core.helper;
 
+import com.edgar.core.util.EventUtils;
+import com.edgar.module.sys.repository.domain.SysDict;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -9,19 +11,16 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import com.edgar.core.util.EventUtils;
-import com.edgar.module.sys.repository.domain.SysDict;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })
+@ContextConfiguration(locations = {"classpath:spring/applicationContext.xml"})
 @TransactionConfiguration(defaultRollback = true)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-                TransactionalTestExecutionListener.class })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+        TransactionalTestExecutionListener.class})
 public class EventUtilsTest {
 
-        @Test
-        public void testPublish() {
-                SysDictEvent event = SysDictEvent.newEvent(new SysDict());
-                EventUtils.publishEvent(event);
-        }
+    @Test
+    public void testPublish() {
+        SysDictEvent event = SysDictEvent.newEvent(new SysDict());
+        EventUtils.publishEvent(event);
+    }
 }

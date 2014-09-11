@@ -2,17 +2,17 @@ package com.edgar.module.sys.vo;
 
 public class SysCompanyVo {
 
-	private String companyCode;
+    private String companyCode;
 
-	private String companyName;
+    private String companyName;
 
-	private String email;
+    private String email;
 
-	private String fullName;
+    private String fullName;
 
-	private String password;
+    private String password;
 
-	private String username;
+    private String username;
 
     public String getCompanyCode() {
         return companyCode;

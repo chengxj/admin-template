@@ -4,9 +4,9 @@ import java.util.Set;
 
 
 public class PermissionVo {
-	private int roleId;
+    private int roleId;
 
-	private Set<Integer> permissionIds;
+    private Set<Integer> permissionIds;
 
     public int getRoleId() {
         return roleId;

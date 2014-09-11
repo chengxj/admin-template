@@ -5,58 +5,57 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 
 /**
  * 查询条件的类.
- * 
+ *
  * @author Edgar
  * @version 1.0
- * 
  */
 public class Criteria implements Comparable<Criteria> {
 
-        /**
-         * 查询字段，可以是实体类的属性
-         */
-        private String field;
+    /**
+     * 查询字段，可以是实体类的属性
+     */
+    private String field;
 
-        /**
-         * 查询运算符
-         */
-        private SqlOperator op;
+    /**
+     * 查询运算符
+     */
+    private SqlOperator op;
 
-        /**
-         * 查询参数
-         */
-        private Object value;
+    /**
+     * 查询参数
+     */
+    private Object value;
 
-        /**
-         * 查询参数，用于between的第二个参数
-         */
-        private Object secondValue;
+    /**
+     * 查询参数，用于between的第二个参数
+     */
+    private Object secondValue;
 
-        public Criteria(String field, SqlOperator op, Object value) {
-                super();
-                this.field = field;
-                this.op = op;
-                this.value = value;
-        }
+    public Criteria(String field, SqlOperator op, Object value) {
+        super();
+        this.field = field;
+        this.op = op;
+        this.value = value;
+    }
 
-        public Criteria(String field, SqlOperator op) {
-                super();
-                this.field = field;
-                this.op = op;
-        }
+    public Criteria(String field, SqlOperator op) {
+        super();
+        this.field = field;
+        this.op = op;
+    }
 
-        public Criteria(String field, SqlOperator op, Object value, Object secondValue) {
-                this(field,op,value);
-                this.secondValue = secondValue;
-        }
+    public Criteria(String field, SqlOperator op, Object value, Object secondValue) {
+        this(field, op, value);
+        this.secondValue = secondValue;
+    }
 
-        @Override
-        public int compareTo(Criteria o) {
-                return new CompareToBuilder().append(field, o.getField()).append(op, o.getOp())
-                                .append(value, o.getValue())
-                                .append(secondValue, o.getSecondValue()).toComparison();
+    @Override
+    public int compareTo(Criteria o) {
+        return new CompareToBuilder().append(field, o.getField()).append(op, o.getOp())
+                .append(value, o.getValue())
+                .append(secondValue, o.getSecondValue()).toComparison();
 
-        }
+    }
 
     @Override
     public boolean equals(Object o) {

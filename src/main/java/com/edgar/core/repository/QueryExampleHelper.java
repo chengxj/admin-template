@@ -24,7 +24,7 @@ import java.util.*;
  */
 public abstract class QueryExampleHelper {
 
-    public static QueryExample createUpdateExample(RelationalPathBase<?> pathBase,Object domain, Set<String> pks) {
+    public static QueryExample createUpdateExample(RelationalPathBase<?> pathBase, Object domain, Set<String> pks) {
         QueryExample example = QueryExample.newInstance();
         SqlParameterSource source = new BeanPropertySqlParameterSource(domain);
         List<Path<?>> columns = pathBase.getColumns();
@@ -40,7 +40,7 @@ public abstract class QueryExampleHelper {
         return example;
     }
 
-    public static QueryExample createUpdateExample(RelationalPathBase<?> pathBase,Object domain) {
+    public static QueryExample createUpdateExample(RelationalPathBase<?> pathBase, Object domain) {
         Set<String> pks = new HashSet<String>();
         for (Path<?> path : pathBase.getPrimaryKey().getLocalColumns()) {
             pks.add(path.getMetadata().getName());
@@ -52,10 +52,10 @@ public abstract class QueryExampleHelper {
      * 根据主键创建查询条件
      *
      * @param pathBase Querydsl query type
-     * @param pk 主键
+     * @param pk       主键
      * @return 查询条件
      */
-    public static QueryExample createExampleByPk(RelationalPathBase<?> pathBase,Object pk) {
+    public static QueryExample createExampleByPk(RelationalPathBase<?> pathBase, Object pk) {
         int numOfPk = pathBase.getPrimaryKey().getLocalColumns().size();
         Validate.isTrue(numOfPk > 0, "primaryKey not exists");
         QueryExample example = QueryExample.newInstance();
@@ -72,7 +72,7 @@ public abstract class QueryExampleHelper {
         }
         return example;
     }
-    
+
     public static final List<BooleanExpression> getExpressions(RelationalPathBase<?> pathBase, QueryExample example) {
         List<BooleanExpression> expressions = new ArrayList<BooleanExpression>();
         if (example.isValid()) {

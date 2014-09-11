@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.IOException;

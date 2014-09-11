@@ -71,7 +71,7 @@ public class AuthenticatedResource {
     /**
      * 刷新Token
      *
-     * @param accessToken accessToken
+     * @param accessToken  accessToken
      * @param refreshToken refreshToken
      * @return 登录成功的视图
      */

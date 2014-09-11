@@ -12,6 +12,7 @@ import com.mysema.query.sql.MySQLTemplates;
  */
 public abstract class ConfigurationFactory {
     private static final Configuration CONFIGURATION = new Configuration(new MySQLTemplates());
+
     public static final Configuration createConfiguration(String configKey) {
 
         return CONFIGURATION;

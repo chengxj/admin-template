@@ -331,7 +331,8 @@ public class QueryTransactionTest {
         example.addField("dictName");
         transaction = TransactionFactory.createQueryTransaction(config, example, rowMapper);
         try {
-            testTables = transaction.execute();;
+            testTables = transaction.execute();
+            ;
             Assert.assertEquals(1, testTables.size());
         } catch (Exception e) {
 

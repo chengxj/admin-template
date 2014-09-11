@@ -1,9 +1,9 @@
 package com.edgar.core.auth;
 
 
-public class LoginCommand  {
+public class LoginCommand {
     private String username;
-    
+
     private String password;
 
     public String getUsername() {
