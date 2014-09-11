@@ -300,16 +300,18 @@
 		    <groupId>org.apache.velocity</groupId>
 		    <artifactId>velocity</artifactId>
 		    <version>${velocity.version}</version>
+            <!--
             <exclusions>
                 <exclusion>
                     <groupId>commons-lang</groupId>
                     <artifactId>commons-lang</artifactId>
                 </exclusion>
-               <!-- <exclusion>
+               <<exclusion>
                     <groupId>commons-collections</groupId>
                     <artifactId>commons-collections</artifactId>
-                </exclusion>-->
+                </exclusion>
             </exclusions>
+            -->
 		</dependency>
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
@@ -329,6 +331,7 @@
 	</dependencies>
 	<profiles>
 		<profile>
+            <id>spring</id>
 			<repositories>
 				<repository>
 					<id>spring-milestone</id>
@@ -346,7 +349,7 @@
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
 		<sourceDirectory>src/main/java</sourceDirectory>
-		<scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+		<!--<scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>-->
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<resources>
 			<resource>
@@ -381,6 +384,8 @@
                     <files>
                         <file>${project.basedir}/src/main/resources/config.properties</file>
                     </files>
+                    <outputFile/>
+                    <properties/>
                 </configuration>
                 <executions>
                     <execution>
