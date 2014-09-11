@@ -1,5 +1,18 @@
 package com.edgar.module.sys.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.edgar.module.sys.service.SysMenuService;
+import com.edgar.module.sys.vo.SysMenuVo;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
 import com.edgar.core.repository.BaseDao;
 import com.edgar.core.repository.IDUtils;
 import com.edgar.core.repository.QueryExample;
@@ -9,21 +22,8 @@ import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysMenuRes;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.repository.domain.SysRoleMenu;
-import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.validator.SysMenuUpdateValidator;
 import com.edgar.module.sys.validator.SysMenuValidator;
-import com.edgar.module.sys.vo.SysMenuVo;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 系统菜单的业务逻辑实现
@@ -51,20 +51,20 @@ public class SysMenuServiceImpl implements SysMenuService {
 
 	@Override
 	public SysMenu get(int menuId) {
-		Preconditions.checkNotNull(menuId);
+		Assert.notNull(menuId);
 		return sysMenuDao.get(menuId);
 	}
 
 	@Override
 	@Transactional
 	public void save(SysMenuVo sysMenu) {
-		Preconditions.checkNotNull(sysMenu);
+		Assert.notNull(sysMenu);
 		sysMenu.setIsRoot(false);
 		if (sysMenu.getParentId() == null || sysMenu.getParentId() == 0) {
 			sysMenu.setParentId(-1);
 		}
 		validator.validator(sysMenu);
-		if (Strings.isNullOrEmpty(sysMenu.getMenuType())) {
+		if (StringUtils.isNotBlank(sysMenu.getMenuType())) {
 			sysMenu.setMenuType("button");
 		}
 		sysMenu.setMenuId(IDUtils.getNextId());

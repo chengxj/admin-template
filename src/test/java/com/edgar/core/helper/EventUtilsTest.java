@@ -1,7 +1,5 @@
 package com.edgar.core.helper;
 
-import com.edgar.core.util.EventUtils;
-import com.edgar.module.sys.repository.domain.SysDict;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -10,6 +8,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+
+import com.edgar.core.util.EventUtils;
+import com.edgar.module.sys.repository.domain.SysDict;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })

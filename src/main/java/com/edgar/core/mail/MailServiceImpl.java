@@ -1,5 +1,12 @@
 package com.edgar.core.mail;
 
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.mail.internet.MimeMessage;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
@@ -12,19 +19,13 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-import javax.mail.internet.MimeMessage;
-import java.io.StringWriter;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 @Service("mailService")
 public class MailServiceImpl implements MailService {
 
         @Autowired
         private MailSender mailSender;
 
-//        @Autowired
+        @Autowired
         private VelocityEngine velocityEngine;
         
         private static final ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<String, String>();

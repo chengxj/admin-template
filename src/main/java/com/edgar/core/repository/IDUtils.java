@@ -1,14 +1,16 @@
 package com.edgar.core.repository;
 
-import com.edgar.core.util.ServiceLookup;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.sql.DataSource;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
 
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.edgar.core.util.ServiceLookup;
 
 /**
  * 生成主键的工具类

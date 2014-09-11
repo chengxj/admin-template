@@ -19,7 +19,7 @@
 		</property>
 	</bean>
 
-	<!--<bean id="velocityEngine"
+	<bean id="velocityEngine"
 		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
 			<value>
@@ -29,5 +29,5 @@
 				output.encoding=UTF-8
 			</value>
 		</property>
-	</bean>-->
+	</bean>
 </beans>

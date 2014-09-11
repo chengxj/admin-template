@@ -2,7 +2,6 @@ package com.edgar.core.repository.transaction;
 
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.repository.QueryExampleHelper;
-import com.google.common.base.Preconditions;
 import com.mysema.query.sql.SQLBindings;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.OrderSpecifier;
@@ -12,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
     }
 
     public List<T> execute() {
-        Preconditions.checkNotNull(example);
+        Assert.notNull(example);
         final SQLQuery sqlQuery = new SQLQuery(configuration);
         sqlQuery.from(pathBase);
         addSpec(sqlQuery);

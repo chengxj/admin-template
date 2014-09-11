@@ -1,6 +1,6 @@
 package com.edgar.core.repository;
 
-import com.google.common.base.Preconditions;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,8 @@ public final class Pagination<T> {
 
         private Pagination(long page, long pageSize, long totalRecords) {
                 super();
-                Preconditions.checkArgument(page > 0, "page must > 1");
-                Preconditions.checkArgument(pageSize > 0, "pageSize must > 0");
+                Assert.state(page > 0, "page must > 1");
+                Assert.state(pageSize > 0, "pageSize must > 0");
                 this.page = page;
                 this.pageSize = pageSize;
                 this.totalRecords = totalRecords;

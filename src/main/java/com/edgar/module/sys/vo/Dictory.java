@@ -1,11 +1,11 @@
 package com.edgar.module.sys.vo;
 
-import com.edgar.module.sys.repository.domain.SysDict;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import com.edgar.module.sys.repository.domain.SysDict;
 
 /**
  * 将系统字典封装成一个map对象。

@@ -1,5 +1,6 @@
 package com.edgar.core.repository.transaction;
 
+import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPathBase;
 

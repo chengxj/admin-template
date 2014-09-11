@@ -6,10 +6,11 @@ import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
 import com.edgar.core.view.ResponseMessage;
 import com.edgar.module.sys.repository.domain.SysCompany;
-import com.edgar.module.sys.service.SysCompanyService;
 import com.edgar.module.sys.vo.SysCompanyVo;
+import com.edgar.module.sys.service.SysCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -75,6 +76,7 @@ public class SysCompanyResource {
     @RequestMapping(method = RequestMethod.GET, value = "/check/code")
     @ResponseBody
     public ModelAndView checkClazzName(@RequestParam("field") String code) {
+        Assert.hasText(code);
         boolean result = sysCompanyService.checkCode(code);
         return ResponseMessage.asModelAndView(result);
     }

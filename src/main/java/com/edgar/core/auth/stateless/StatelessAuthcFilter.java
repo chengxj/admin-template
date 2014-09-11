@@ -2,6 +2,7 @@ package com.edgar.core.auth.stateless;
 
 import com.edgar.core.auth.AuthService;
 import com.edgar.core.util.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

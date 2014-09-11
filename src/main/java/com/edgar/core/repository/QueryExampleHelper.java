@@ -1,7 +1,5 @@
 package com.edgar.core.repository;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ConstantImpl;
@@ -13,6 +11,7 @@ import com.mysema.query.types.expr.ComparableExpressionBase;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -33,7 +32,7 @@ public abstract class QueryExampleHelper {
             String name = path.getMetadata().getName();
             String humpName = humpName(name);
             if (pks.contains(name)) {
-                Preconditions.checkNotNull(source.getValue(humpName), "the value of "
+                Assert.notNull(source.getValue(humpName), "the value of "
                         + name + "cannot be null");
                 example.equalsTo(humpName, source.getValue(humpName));
             }
@@ -58,7 +57,7 @@ public abstract class QueryExampleHelper {
      */
     public static QueryExample createExampleByPk(RelationalPathBase<?> pathBase,Object pk) {
         int numOfPk = pathBase.getPrimaryKey().getLocalColumns().size();
-        Preconditions.checkArgument(numOfPk > 0, "primaryKey not exists");
+        Assert.isTrue(numOfPk > 0, "primaryKey not exists");
         QueryExample example = QueryExample.newInstance();
         if (numOfPk == 1) {
             example.equalsTo(pathBase.getPrimaryKey().getLocalColumns()
@@ -141,7 +140,7 @@ public abstract class QueryExampleHelper {
      * @return 转换后的字符串
      */
     private static String humpName(final String source) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(source));
+        Assert.hasLength(source);
         if (StringUtils.contains(source, "_")) {
             String lowerSource = source.toLowerCase();
             String[] words = lowerSource.split("_");

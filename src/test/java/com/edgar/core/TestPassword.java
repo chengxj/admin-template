@@ -1,5 +1,8 @@
 package com.edgar.core;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Random;
 
 public class TestPassword {
@@ -34,5 +37,11 @@ public class TestPassword {
             pw[i] = r[num];
             System.out.println(pw[i]);
         }
+
+        System.out.println(ToStringBuilder.reflectionToString(1, ToStringStyle.SHORT_PREFIX_STYLE));
+        System.out.println(ToStringBuilder.reflectionToString(1l, ToStringStyle.SHORT_PREFIX_STYLE));
+        System.out.println(ToStringBuilder.reflectionToString(1.00, ToStringStyle.SHORT_PREFIX_STYLE));
+        System.out.println(ToStringBuilder.reflectionToString("abc", ToStringStyle.SHORT_PREFIX_STYLE));
+        System.out.println(ToStringBuilder.reflectionToString("abc"));
     }
 }

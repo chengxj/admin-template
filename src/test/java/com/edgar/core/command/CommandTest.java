@@ -1,7 +1,8 @@
 package com.edgar.core.command;
 
-import com.edgar.core.exception.SystemException;
-import com.edgar.module.sys.repository.domain.SysUser;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +14,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.edgar.core.command.Command;
+import com.edgar.core.command.CommandBus;
+import com.edgar.core.command.CommandResult;
+import com.edgar.core.exception.SystemException;
+import com.edgar.module.sys.repository.domain.SysUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext.xml" })

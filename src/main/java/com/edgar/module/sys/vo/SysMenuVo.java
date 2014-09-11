@@ -1,9 +1,9 @@
 package com.edgar.module.sys.vo;
 
-import com.edgar.module.sys.repository.domain.SysMenu;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.edgar.module.sys.repository.domain.SysMenu;
 
 public class SysMenuVo extends SysMenu {
 

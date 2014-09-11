@@ -1,7 +1,10 @@
 package com.edgar.module.sys.validator;
 
-import com.edgar.core.validator.AbstractValidatorTemplate;
-import com.edgar.module.sys.repository.domain.SysRole;
+import java.lang.annotation.ElementType;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.HibernateValidatorConfiguration;
 import org.hibernate.validator.cfg.ConstraintMapping;
@@ -9,9 +12,8 @@ import org.hibernate.validator.cfg.defs.NotNullDef;
 import org.hibernate.validator.cfg.defs.PatternDef;
 import org.hibernate.validator.cfg.defs.SizeDef;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import java.lang.annotation.ElementType;
+import com.edgar.core.validator.AbstractValidatorTemplate;
+import com.edgar.module.sys.repository.domain.SysRole;
 
 
 /**

@@ -1,8 +1,8 @@
 package com.edgar.core.auth.stateless;
 
 import com.edgar.core.auth.AuthService;
-import com.edgar.core.util.NumberUtils;
-import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,7 +38,7 @@ public class ReplayAttackFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         String nonce = request.getParameter(NONCE);
         long timestamp = NumberUtils.toLong(request.getParameter(TIMESTAMP));
-        if (Strings.isNullOrEmpty(nonce) && authService.isNewRequest(nonce, timestamp)) {
+        if (StringUtils.isNotBlank(nonce) && authService.isNewRequest(nonce, timestamp)) {
             return true;
         }
         onTimeout(response);

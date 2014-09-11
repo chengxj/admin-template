@@ -1,11 +1,13 @@
 package com.edgar.module.sys.service;
 
-import com.edgar.core.repository.BaseDao;
-import com.edgar.core.repository.IDUtils;
-import com.edgar.core.repository.QueryExample;
-import com.edgar.module.sys.repository.domain.SysMenu;
-import com.edgar.module.sys.repository.domain.SysMenuRoute;
-import com.edgar.module.sys.repository.domain.SysRoleMenu;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+
 import com.edgar.module.sys.service.impl.SysMenuServiceImpl;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,8 +20,12 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.*;
+import com.edgar.core.repository.BaseDao;
+import com.edgar.core.repository.IDUtils;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.module.sys.repository.domain.SysMenu;
+import com.edgar.module.sys.repository.domain.SysMenuRoute;
+import com.edgar.module.sys.repository.domain.SysRoleMenu;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ IDUtils.class, QueryExample.class })

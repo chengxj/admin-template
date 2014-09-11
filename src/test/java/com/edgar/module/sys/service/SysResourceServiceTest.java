@@ -1,8 +1,18 @@
 package com.edgar.module.sys.service;
 
-import com.edgar.core.repository.*;
-import com.edgar.core.util.Constants;
-import com.edgar.module.sys.repository.domain.SysResource;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import com.edgar.module.sys.service.impl.SysResourceServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,15 +23,13 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+import com.edgar.core.repository.Criteria;
+import com.edgar.core.repository.BaseDao;
+import com.edgar.core.repository.Pagination;
+import com.edgar.core.repository.QueryExample;
+import com.edgar.core.repository.SqlOperator;
+import com.edgar.core.util.Constants;
+import com.edgar.module.sys.repository.domain.SysResource;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(QueryExample.class)

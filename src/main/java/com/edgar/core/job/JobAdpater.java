@@ -1,6 +1,6 @@
 package com.edgar.core.job;
 
-import com.edgar.core.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class JobAdpater {
 

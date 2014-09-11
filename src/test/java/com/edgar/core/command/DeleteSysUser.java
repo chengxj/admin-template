@@ -1,6 +1,8 @@
 package com.edgar.core.command;
 
 
+import com.edgar.core.command.Command;
+
 /**
  * 根据用户名查询用户的命令
  * 

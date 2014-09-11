@@ -37,7 +37,7 @@ import java.util.List;
         TransactionalTestExecutionListener.class})
 public class DeleteTransactionTest {
     @Autowired
-    private BaseDao<String, TestTable> testTableDao;;
+    private TestTableDao testTableDao;
     @Autowired
     private CacheProviderFactory cacheProviderFactory;
     @Autowired

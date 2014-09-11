@@ -1,8 +1,9 @@
 package com.edgar.core.helper;
 
-import com.edgar.module.sys.repository.domain.SysDict;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
+
+import com.edgar.module.sys.repository.domain.SysDict;
 
 /**
  * 字典事件的监听类
