@@ -1,9 +1,7 @@
 package com.edgar.core.command;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -35,8 +33,7 @@ public class CommandBusImpl implements CommandBus, ApplicationContextAware {
 	public <T> CommandResult<T> executeCommand(Command command) {
 		CommandHandler commandHandler;
 		commandHandler = getCommandHandler(command);
-		LOGGER.debug("request command is {}", ToStringBuilder
-				.reflectionToString(command, ToStringStyle.SHORT_PREFIX_STYLE));
+		LOGGER.debug("request command is {}", command.getClass());
 		if (command instanceof ChainCommand) {
 			ChainCommand chainCommand = (ChainCommand) command;
 			CommandResult<T> result = commandHandler.execute(command);
@@ -44,9 +41,7 @@ public class CommandBusImpl implements CommandBus, ApplicationContextAware {
 			if (nextCommand == null || nextCommand instanceof UnResolvedCommand) {
 				return result;
 			}
-			LOGGER.debug("command in chain，next command is {}", ToStringBuilder
-					.reflectionToString(nextCommand,
-							ToStringStyle.SHORT_PREFIX_STYLE));
+			LOGGER.debug("command in chain，next command is {}", command.getClass());
 			return executeCommand(nextCommand);
 		}
 		return commandHandler.execute(command);
@@ -78,7 +73,7 @@ public class CommandBusImpl implements CommandBus, ApplicationContextAware {
 	private CommandHandler getCommandHandler(Command command) {
 		Preconditions.checkNotNull(command, "command cannot be null");
 		String handlerId = command.getClass().getSimpleName() + "Handler";
-		handlerId = StringUtils.uncapitalize(handlerId);
+		handlerId = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, handlerId);
 		return APPLICATION_CONTEXT.getBean(handlerId,
                 CommandHandler.class);
 	}

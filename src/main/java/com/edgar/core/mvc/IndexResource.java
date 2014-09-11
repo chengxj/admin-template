@@ -14,7 +14,7 @@ import com.edgar.module.sys.service.SysMenuService;
 import com.edgar.module.sys.service.SysRouteService;
 import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.vo.AngularRoute;
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,7 +101,7 @@ public class IndexResource {
 			for (Integer menuId : menuIds) {
 				SysMenu menu = sysMenuService.get(menuId);
 				menus.add(menu);
-				if (StringUtils.isNotBlank(menu.getPermission())) {
+				if (Strings.isNullOrEmpty(menu.getPermission())) {
                     user.addPermission(menu.getPermission());
 				}
 			}

@@ -1,7 +1,5 @@
 package com.edgar.module.sys.vo;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * AnagularJS需要的路由对象
  * 

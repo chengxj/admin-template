@@ -5,7 +5,6 @@ import com.edgar.core.exception.SystemException;
 import com.edgar.core.mail.MailService;
 import com.edgar.core.util.Constants;
 import com.edgar.core.view.ResponseMessage;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +100,7 @@ public class CustomerHandlerExceptionResolver extends AbstractHandlerExceptionRe
                         LOGGER.debug("send error mail");
                         final Map<String, Object> model = new HashMap<String, Object>();
                         model.put("req", request);
-                        model.put("t", ToStringBuilder.reflectionToString(ex));
+                        model.put("t", ex);
                         model.put("headers", addHeaders(request));
                         model.put("params", addParams(request));
                         model.put("properties", addSystemProperties());

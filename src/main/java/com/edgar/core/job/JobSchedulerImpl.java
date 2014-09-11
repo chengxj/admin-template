@@ -1,8 +1,8 @@
 package com.edgar.core.job;
 
 import com.edgar.core.util.ExceptionFactory;
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class JobSchedulerImpl implements JobScheduler {
     @Override
     public void addJob(JobAdpater job, Scheduler scheduler) {
         Preconditions.checkNotNull(job);
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(job.getClazzName()));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(job.getClazzName()));
         try {
             Class clazz = this.getClass().getClassLoader()
                     .loadClass(job.getClazzName());

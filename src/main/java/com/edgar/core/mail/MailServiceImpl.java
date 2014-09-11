@@ -24,7 +24,7 @@ public class MailServiceImpl implements MailService {
         @Autowired
         private MailSender mailSender;
 
-        @Autowired
+//        @Autowired
         private VelocityEngine velocityEngine;
         
         private static final ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<String, String>();

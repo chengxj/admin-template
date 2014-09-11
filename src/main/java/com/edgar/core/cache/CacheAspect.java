@@ -6,8 +6,6 @@ import com.edgar.core.repository.QueryExample;
 import com.google.common.base.Preconditions;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.Path;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;

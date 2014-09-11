@@ -7,8 +7,8 @@ import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.facade.UserFacde;
 import com.edgar.module.sys.repository.domain.SysUser;
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -203,8 +203,8 @@ public class AuthServiceImpl implements AuthService {
     public AccessToken refresh(RefreshVo command) {
         String accessToken = command.getAccessToken();
         String refreshToken = command.getRefreshToken();
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(accessToken));
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(refreshToken));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(accessToken));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(refreshToken));
 
         AccessToken serverToken = refreshTokenCacheProvider.get(accessToken);
         if (serverToken != null && refreshToken.equals(serverToken.getRefreshToken())) {

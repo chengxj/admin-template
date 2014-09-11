@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class UpdateTransactionTest {
 
     @Autowired
-    private TestTableDao testTableDao;
+    private BaseDao<String, TestTable> testTableDao;
 
     @Autowired
     private CacheProviderFactory cacheProviderFactory;

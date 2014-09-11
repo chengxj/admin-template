@@ -10,8 +10,8 @@ import com.edgar.module.sys.repository.domain.SysDict;
 import com.edgar.module.sys.service.SysDictService;
 import com.edgar.module.sys.validator.SysDictValidator;
 import com.edgar.module.sys.vo.Dictory;
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class SysDictServiceImpl implements SysDictService {
     @Transactional
     public void save(SysDict sysDict) {
         Preconditions.checkNotNull(sysDict);
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(sysDict.getDictCode()));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(sysDict.getDictCode()));
         if (sysDict.getSorted() == null) {
             sysDict.setSorted(9999);
         }

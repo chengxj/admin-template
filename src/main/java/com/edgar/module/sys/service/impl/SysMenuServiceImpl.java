@@ -14,6 +14,7 @@ import com.edgar.module.sys.validator.SysMenuUpdateValidator;
 import com.edgar.module.sys.validator.SysMenuValidator;
 import com.edgar.module.sys.vo.SysMenuVo;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -63,7 +64,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 			sysMenu.setParentId(-1);
 		}
 		validator.validator(sysMenu);
-		if (StringUtils.isNotBlank(sysMenu.getMenuType())) {
+		if (Strings.isNullOrEmpty(sysMenu.getMenuType())) {
 			sysMenu.setMenuType("button");
 		}
 		sysMenu.setMenuId(IDUtils.getNextId());

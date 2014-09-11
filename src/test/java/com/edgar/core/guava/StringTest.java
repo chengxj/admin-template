@@ -1,6 +1,7 @@
 package com.edgar.core.guava;
 
-import com.google.common.base.CharMatcher;
+import com.google.common.base.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,6 +16,10 @@ public class StringTest {
 
     @Test
     public void testWhiteSpace() {
-        Assert.assertTrue( !CharMatcher.WHITESPACE.matchesAllOf("   "));
+        Assert.assertTrue(Strings.isNullOrEmpty("   "));
+        Assert.assertTrue(Strings.isNullOrEmpty(null));
+        Assert.assertTrue(Strings.isNullOrEmpty(""));
+//        Assert.assertTrue(Strings.isNullOrEmpty("   "));
+        Assert.assertTrue(StringUtils.isBlank("   "));
     }
 }

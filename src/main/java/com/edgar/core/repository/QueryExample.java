@@ -1,7 +1,7 @@
 package com.edgar.core.repository;
 
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 import java.util.*;
 
@@ -110,7 +110,7 @@ public class QueryExample {
      * @return QueryExample
      */
     public QueryExample addField(String field) {
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(field));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(field));
         this.fields.add(field);
         return this;
     }
@@ -135,7 +135,7 @@ public class QueryExample {
      * @return QueryExample
      */
     public QueryExample asc(String field) {
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(field));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(field));
         OrderBy orderBy = OrderBy.asc(field, orderbySort++);
         orderBies.add(orderBy);
         return this;
@@ -148,7 +148,7 @@ public class QueryExample {
      * @return QueryExample
      */
     public QueryExample desc(String field) {
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(field));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(field));
         OrderBy orderBy = OrderBy.desc(field, orderbySort++);
         orderBies.add(orderBy);
         return this;
@@ -427,7 +427,7 @@ public class QueryExample {
      * @return QueryExample
      */
     private QueryExample addCriteria(String field, SqlOperator op) {
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(field));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(field));
         criterias.add(new Criteria(field, op));
         return this;
     }
@@ -441,7 +441,7 @@ public class QueryExample {
      * @return QueryExample
      */
     private QueryExample addCriteria(String field, SqlOperator op, Object value) {
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(field));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(field));
         Preconditions.checkNotNull(value, "value cannot be null");
         criterias.add(new Criteria(field, op, value));
         return this;
@@ -457,7 +457,7 @@ public class QueryExample {
      * @return QueryExample
      */
     private QueryExample addCriteria(String field, SqlOperator op, Object value1, Object value2) {
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(field));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(field));
         Preconditions.checkNotNull(value1, "value1 cannot be null");
         Preconditions.checkNotNull(value2, "value2 cannot be null");
         criterias.add(new Criteria(field, op, value1, value2));

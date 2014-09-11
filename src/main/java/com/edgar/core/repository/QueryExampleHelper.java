@@ -1,7 +1,7 @@
 package com.edgar.core.repository;
 
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ConstantImpl;
@@ -141,7 +141,7 @@ public abstract class QueryExampleHelper {
      * @return 转换后的字符串
      */
     private static String humpName(final String source) {
-        Preconditions.checkArgument(!CharMatcher.WHITESPACE.matchesAllOf(source));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(source));
         if (StringUtils.contains(source, "_")) {
             String lowerSource = source.toLowerCase();
             String[] words = lowerSource.split("_");
