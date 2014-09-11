@@ -7,11 +7,11 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class QueryTransaction<T> extends TransactionTemplate {
     }
 
     public List<T> execute() {
-        Assert.notNull(example);
+        Validate.notNull(example);
         final SQLQuery sqlQuery = new SQLQuery(configuration);
         sqlQuery.from(pathBase);
         addSpec(sqlQuery);

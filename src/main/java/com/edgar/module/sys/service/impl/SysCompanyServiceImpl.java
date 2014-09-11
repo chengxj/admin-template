@@ -9,6 +9,7 @@ import com.edgar.module.sys.repository.domain.SysUser;
 import com.edgar.module.sys.service.SysCompanyService;
 import com.edgar.module.sys.service.SysUserService;
 import com.edgar.module.sys.vo.SysCompanyVo;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +62,8 @@ public class SysCompanyServiceImpl implements SysCompanyService {
 
 	@Override
 	public boolean checkCode(String code) {
-		Assert.notNull(code);
+		Validate.notNull(code);
+        Validate.notBlank(code);
 		QueryExample example = QueryExample.newInstance();
 		example.equalsTo("companyCode", code);
 

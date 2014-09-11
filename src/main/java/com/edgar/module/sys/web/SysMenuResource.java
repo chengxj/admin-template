@@ -1,19 +1,5 @@
 package com.edgar.module.sys.web;
 
-import java.util.List;
-
-import com.edgar.module.sys.vo.SysMenuVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.edgar.core.mvc.ToQueryExample;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.shiro.AuthHelper;
@@ -22,6 +8,14 @@ import com.edgar.module.sys.repository.domain.SysMenu;
 import com.edgar.module.sys.repository.domain.SysMenuRes;
 import com.edgar.module.sys.repository.domain.SysMenuRoute;
 import com.edgar.module.sys.service.SysMenuService;
+import com.edgar.module.sys.vo.SysMenuVo;
+import org.apache.commons.lang3.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 菜单的rest
@@ -152,7 +146,7 @@ public class SysMenuResource {
 	@RequestMapping(method = RequestMethod.GET, value = "/check/permisson")
 	@ResponseBody
 	public ModelAndView checkPermission(@RequestParam("field") String permission) {
-		Assert.hasText(permission);
+        Validate.notBlank(permission);
 		boolean result = sysMenuService.checkPermisson(permission);
 		return ResponseMessage.asModelAndView(result);
 	}

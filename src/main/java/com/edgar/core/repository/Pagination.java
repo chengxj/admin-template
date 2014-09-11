@@ -1,6 +1,6 @@
 package com.edgar.core.repository;
 
-import org.springframework.util.Assert;
+import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +28,8 @@ public final class Pagination<T> {
 
         private Pagination(long page, long pageSize, long totalRecords) {
                 super();
-                Assert.state(page > 0, "page must > 1");
-                Assert.state(pageSize > 0, "pageSize must > 0");
+                Validate.isTrue(page > 0, "page must > 1");
+                Validate.isTrue(pageSize > 0, "pageSize must > 0");
                 this.page = page;
                 this.pageSize = pageSize;
                 this.totalRecords = totalRecords;

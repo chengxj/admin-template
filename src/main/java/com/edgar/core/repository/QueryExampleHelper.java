@@ -9,9 +9,9 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpressionBase;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -32,7 +32,7 @@ public abstract class QueryExampleHelper {
             String name = path.getMetadata().getName();
             String humpName = humpName(name);
             if (pks.contains(name)) {
-                Assert.notNull(source.getValue(humpName), "the value of "
+                Validate.notNull(source.getValue(humpName), "the value of "
                         + name + "cannot be null");
                 example.equalsTo(humpName, source.getValue(humpName));
             }
@@ -57,7 +57,7 @@ public abstract class QueryExampleHelper {
      */
     public static QueryExample createExampleByPk(RelationalPathBase<?> pathBase,Object pk) {
         int numOfPk = pathBase.getPrimaryKey().getLocalColumns().size();
-        Assert.isTrue(numOfPk > 0, "primaryKey not exists");
+        Validate.isTrue(numOfPk > 0, "primaryKey not exists");
         QueryExample example = QueryExample.newInstance();
         if (numOfPk == 1) {
             example.equalsTo(pathBase.getPrimaryKey().getLocalColumns()
@@ -140,7 +140,7 @@ public abstract class QueryExampleHelper {
      * @return 转换后的字符串
      */
     private static String humpName(final String source) {
-        Assert.hasLength(source);
+        Validate.notBlank(source);
         if (StringUtils.contains(source, "_")) {
             String lowerSource = source.toLowerCase();
             String[] words = lowerSource.split("_");

@@ -7,6 +7,7 @@ import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.facade.UserFacde;
 import com.edgar.module.sys.repository.domain.SysUser;
+import org.apache.commons.lang3.Validate;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -89,7 +90,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout(String accessToken) {
-        Assert.notNull(accessToken);
+        Validate.notNull(accessToken);
+        Validate.notBlank(accessToken);
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         accessTokenCacheProvider.remove(accessToken);
@@ -136,8 +138,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void loginHandler(LoginCommand command) {
-        Assert.notNull(command.getUsername());
-        Assert.notNull(command.getPassword());
+        Validate.notNull(command.getUsername());
+        Validate.notNull(command.getPassword());
         String username = command.getUsername();
         String password = command.getPassword();
 
@@ -157,7 +159,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private AccessToken tokenHandler(String username) {
-        Assert.notNull(username);
+        Validate.notNull(username);
         AccessToken accessToken = newToken(username);
         accessTokenCacheProvider.put(accessToken.getAccessToken(), accessToken, ACCESS_TOKEN_TIME_TO_LIVE);
         refreshTokenCacheProvider.put(accessToken.getAccessToken(), accessToken, REFRESH_TOKEN_TIME_TO_LIVE);
@@ -202,8 +204,8 @@ public class AuthServiceImpl implements AuthService {
     public AccessToken refresh(RefreshVo command) {
         String accessToken = command.getAccessToken();
         String refreshToken = command.getRefreshToken();
-        Assert.hasText(accessToken);
-        Assert.hasText(refreshToken);
+        Validate.notBlank(accessToken);
+        Validate.notBlank(refreshToken);
 
         AccessToken serverToken = refreshTokenCacheProvider.get(accessToken);
         if (serverToken != null && refreshToken.equals(serverToken.getRefreshToken())) {

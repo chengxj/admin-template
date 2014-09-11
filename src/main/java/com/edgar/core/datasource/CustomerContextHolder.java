@@ -1,12 +1,12 @@
 package com.edgar.core.datasource;
 
-import org.springframework.util.Assert;
+import org.apache.commons.lang3.Validate;
 
 public class CustomerContextHolder {
 	private static final ThreadLocal<CustomerType> contextHolder = new ThreadLocal<CustomerType>();
 
 	public static void setCustomerType(CustomerType customerType) {
-		Assert.notNull(customerType, "customerType cannot be null");
+		Validate.notNull(customerType, "customerType cannot be null");
 		contextHolder.set(customerType);
 	}
 

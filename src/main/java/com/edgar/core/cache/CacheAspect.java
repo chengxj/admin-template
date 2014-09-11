@@ -5,6 +5,7 @@ import com.edgar.core.repository.AbstractDaoTemplate;
 import com.edgar.core.repository.QueryExample;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.Path;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.aspectj.lang.JoinPoint;
@@ -20,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.List;
@@ -367,7 +367,7 @@ public class CacheAspect {
      * @return 如果主键只有一个，则直接返回该值，如果有多个，则返回MAP对象
      */
     public Object getPrimaryKeyValue(RelationalPathBase<?> pathBase, Object domain) {
-        Assert.notEmpty(pathBase.getPrimaryKey().getLocalColumns(),
+        Validate.notEmpty(pathBase.getPrimaryKey().getLocalColumns(),
                 pathBase.getTableName() + "has 0 primaryKey");
         SqlParameterSource source = new BeanPropertySqlParameterSource(domain);
         if (pathBase.getPrimaryKey().getLocalColumns().size() == 1) {

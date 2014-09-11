@@ -1,16 +1,15 @@
 package com.edgar.core.mvc;
 
-import java.util.*;
-
+import com.edgar.core.mvc.ToQueryExample.QueryType;
+import com.edgar.core.repository.QueryExample;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.core.MethodParameter;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import com.edgar.core.mvc.ToQueryExample.QueryType;
-import com.edgar.core.repository.QueryExample;
+import java.util.*;
 
 /**
  * 根据request参数创建QueryExample.
@@ -78,9 +77,9 @@ public class QueryExampleResolver implements WebArgumentResolver {
                                         resolveOffset(toQueryExample, example, value);
                                         continue;
                                 }
-                                Assert.isTrue(example.getLimit() * example.getOffset() <= toQueryExample
-                                                .maxNumOfRecords(), "limit * offset不能大于规定的大小："
-                                                + toQueryExample.maxNumOfRecords());
+                                Validate.isTrue(example.getLimit() * example.getOffset() <= toQueryExample
+                                        .maxNumOfRecords(), "limit * offset不能大于规定的大小："
+                                        + toQueryExample.maxNumOfRecords());
                                 String[] values = StringUtils.split(value, QUERY_SEPARATOR);
                                 if (SORT.equals(paramName)) {
                                         resolveSort(example, values);
@@ -214,18 +213,18 @@ public class QueryExampleResolver implements WebArgumentResolver {
 
         private void resolveOffset(ToQueryExample toQueryExample, QueryExample example, String value) {
                 Integer offset = NumberUtils.toInt(value);
-                Assert.isTrue(offset > 0, "offset必须是正整数值");
-                Assert.isTrue(offset < toQueryExample.maxNumOfRecords(), "offset不能大于规定的大小："
-                                + toQueryExample.maxNumOfRecords());
+                Validate.isTrue(offset > 0, "offset必须是正整数值");
+                Validate.isTrue(offset < toQueryExample.maxNumOfRecords(), "offset不能大于规定的大小："
+                        + toQueryExample.maxNumOfRecords());
                 example.offset(offset);
         }
 
         private void resolveLimit(ToQueryExample toQueryExample, QueryExample example, String value) {
                 Integer limit = NumberUtils.toInt(value);
-                Assert.isTrue(limit > 0, "limit必须是正整数值");
+                Validate.isTrue(limit > 0, "limit必须是正整数值");
                 if (toQueryExample.maxNumOfRecords() > 0) {
-                        Assert.isTrue(limit < toQueryExample.maxNumOfRecords(), "limit不能大于规定的大小："
-                                        + toQueryExample.maxNumOfRecords());
+                        Validate.isTrue(limit < toQueryExample.maxNumOfRecords(), "limit不能大于规定的大小："
+                                + toQueryExample.maxNumOfRecords());
 
                 }
                 example.limit(limit);

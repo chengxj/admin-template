@@ -11,9 +11,9 @@ import com.edgar.core.view.ResponseMessage;
 import com.edgar.module.sys.init.DictoryLoader;
 import com.edgar.module.sys.repository.domain.SysDict;
 import com.edgar.module.sys.service.SysDictService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -150,7 +150,7 @@ public class SysDictResource {
     @RequestMapping(method = RequestMethod.GET, value = "/check/dictCode")
     @ResponseBody
     public ModelAndView checkDictCode(@RequestParam("field") String dictCode) {
-        Assert.hasText(dictCode);
+        Validate.notBlank(dictCode);
         boolean result = sysDictService.checkDictCode(dictCode);
         return ResponseMessage.asModelAndView(result);
     }

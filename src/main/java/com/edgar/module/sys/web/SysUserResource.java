@@ -14,6 +14,7 @@ import com.edgar.module.sys.vo.ChangePasswordVo;
 import com.edgar.module.sys.service.SysRoleService;
 import com.edgar.module.sys.vo.SysUserRoleVo;
 import com.edgar.module.sys.service.SysUserService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -126,7 +127,7 @@ public class SysUserResource {
     @RequestMapping(method = RequestMethod.GET, value = "/check/username")
     @ResponseBody
     public ModelAndView checkUsername(@RequestParam("field") String username) {
-        Assert.hasText(username);
+        Validate.notBlank(username);
         boolean result = sysUserService.checkUsername(username);
         return ResponseMessage.asModelAndView(result);
     }

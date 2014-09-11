@@ -7,9 +7,9 @@ import com.edgar.core.shiro.AuthHelper;
 import com.edgar.core.view.ResponseMessage;
 import com.edgar.module.sys.repository.domain.SysJob;
 import com.edgar.module.sys.service.SysJobService;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -107,7 +107,7 @@ public class SysJobResource {
     @RequestMapping(method = RequestMethod.GET, value = "/check/clazzname")
     @ResponseBody
     public ModelAndView checkClazzName(@RequestParam("field") String clazzName) {
-        Assert.hasText(clazzName);
+        Validate.notBlank(clazzName);
         boolean result = sysJobService.checkClazzName(clazzName);
         return ResponseMessage.asModelAndView(result);
     }

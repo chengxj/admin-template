@@ -19,6 +19,7 @@ import com.edgar.module.sys.validator.PasswordValidator;
 import com.edgar.module.sys.validator.SysUserUpdateValidator;
 import com.edgar.module.sys.validator.SysUserValidator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,7 +126,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public List<SysUser> queryByUsername(String username) {
-        Assert.notNull(username);
+        Validate.notNull(username);
         QueryExample example = QueryExample.newInstance();
         example.equalsTo("username", username);
         return sysUserDao.query(example);

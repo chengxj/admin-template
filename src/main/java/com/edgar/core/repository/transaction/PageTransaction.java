@@ -3,10 +3,10 @@ package com.edgar.core.repository.transaction;
 import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.rits.cloning.Cloner;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -36,11 +36,11 @@ public class PageTransaction<T> extends TransactionTemplate {
     public Pagination<T> execute() {
         LOGGER.debug("pagination query {},page:{},pageSize:{}", pathBase
                 .getTableName(), page, pageSize);
-        Assert.notNull(example);
-        Assert.isTrue(page > 0, "page must > 1");
-        Assert.isTrue(pageSize > 0, "pageSize must > 0");
+        Validate.notNull(example);
+        Validate.isTrue(page > 0, "page must > 1");
+        Validate.isTrue(pageSize > 0, "pageSize must > 0");
         if (example.getMaxNumOfRecords() > 0) {
-            Assert.isTrue(page * pageSize <= example.getMaxNumOfRecords(),
+            Validate.isTrue(page * pageSize <= example.getMaxNumOfRecords(),
                     "page * pageSize cannot >：" + example.getMaxNumOfRecords());
         }
 

@@ -8,6 +8,7 @@ import com.edgar.module.sys.repository.domain.I18nMessage;
 import com.edgar.module.sys.service.I18nMessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -62,7 +63,8 @@ public class I18nMessageServiceImpl implements I18nMessageService {
 
     @Override
     public boolean checkKey(String i18nKey) {
-        Assert.notNull(i18nKey);
+        Validate.notNull(i18nKey);
+        Validate.notBlank(i18nKey);
         QueryExample example = QueryExample.newInstance();
         example.equalsTo("i18nKey", i18nKey);
         List<I18nMessage> i18ns = query(example);
