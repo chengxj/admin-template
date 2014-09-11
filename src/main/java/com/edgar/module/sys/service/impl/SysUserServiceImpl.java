@@ -6,6 +6,7 @@ import com.edgar.core.repository.Pagination;
 import com.edgar.core.repository.QueryExample;
 import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
+import com.edgar.core.validator.Validated;
 import com.edgar.core.validator.ValidatorStrategy;
 import com.edgar.module.sys.repository.domain.SysRole;
 import com.edgar.module.sys.repository.domain.SysUser;
@@ -25,7 +26,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +74,8 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional
-    public void save(SysUserRoleVo sysUserRoleVo) {
-        validator.validator(sysUserRoleVo);
+    public void save(@Validated(SysUserValidator.class) SysUserRoleVo sysUserRoleVo) {
+//        validator.validator(sysUserRoleVo);
         sysUserRoleVo.setUserId(IDUtils.getNextId());
         sysUserRoleVo.setIsRoot(false);
         passwordService.encryptPassword(sysUserRoleVo);
