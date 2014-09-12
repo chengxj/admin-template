@@ -28,6 +28,10 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+
+    <mvc:interceptors>
+        <bean class="com.edgar.core.mvc.LoggerInterceptor" />
+    </mvc:interceptors>
 	
 	<context:component-scan base-package="*"
 		use-default-filters="false">
