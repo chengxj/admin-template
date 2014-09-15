@@ -1,8 +1,7 @@
 package com.edgar.core.auth;
 
 import com.edgar.core.auth.stateless.StatelessUser;
-import com.edgar.core.cache.CacheProvider;
-import com.edgar.core.cache.CacheProviderFactory;
+import com.edgar.core.cache.RedisProvider;
 import com.edgar.core.util.Constants;
 import com.edgar.core.util.ExceptionFactory;
 import com.edgar.module.sys.facade.UserFacde;
@@ -23,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Set;
 
 /**
@@ -37,24 +35,11 @@ public class AuthServiceImpl implements AuthService {
     private static final int ACCESS_TOKEN_TIME_TO_LIVE = 30 * 60;
     private static final int REFRESH_TOKEN_TIME_TO_LIVE = 24 * 60 * 60;
 
-    private CacheProvider<String, AccessToken> accessTokenCacheProvider;
-
-    private CacheProvider<String, String> replyAttackCacheProvider;
-
-    private CacheProvider<String, AccessToken> refreshTokenCacheProvider;
-
     @Autowired
     private UserFacde userFacde;
 
     @Autowired
-    private CacheProviderFactory cacheProviderFactory;
-
-    @PostConstruct
-    public void init() {
-        accessTokenCacheProvider = cacheProviderFactory.createCacheWrapper("StatelessCache");
-        replyAttackCacheProvider = cacheProviderFactory.createCacheWrapper("ReplayAttackCache");
-        refreshTokenCacheProvider = cacheProviderFactory.createCacheWrapper("RefreshTokenCache");
-    }
+    private RedisProvider redisProvider;
 
     /**
      * 校验请求合法，下面两种情况被认为是非法请求
@@ -73,9 +58,9 @@ public class AuthServiceImpl implements AuthService {
         if (timestamp + REPLAY_ATTACK_EXPIRE < currentTime) {
             return false;
         }
-        String replayKey = nonce + "-" + timestamp;
-        if (replyAttackCacheProvider.get(replayKey) == null) {
-            replyAttackCacheProvider.put(replayKey, replayKey);
+        String replayKey = "replay:" + nonce + ":" + timestamp;
+        if (redisProvider.get(replayKey) == null) {
+            redisProvider.put(replayKey, replayKey, REPLAY_ATTACK_EXPIRE);
             return true;
         }
         return false;
@@ -93,7 +78,8 @@ public class AuthServiceImpl implements AuthService {
         Validate.notBlank(accessToken);
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        accessTokenCacheProvider.remove(accessToken);
+        String key = "access:" + accessToken;
+        redisProvider.remove(accessToken);
         LOGGER.debug("remove token: {}", accessToken);
     }
 
@@ -112,13 +98,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String getSecretKey(String accessToken) {
-        AccessToken token = accessTokenCacheProvider.get(accessToken);
+        String key = "access:" + accessToken;
+        AccessToken token = (AccessToken) redisProvider.get(key);
         return token.getSecretKey();
     }
 
     @Override
     public String getUsername(String accessToken) {
-        AccessToken token = accessTokenCacheProvider.get(accessToken);
+        String key = "access:" + accessToken;
+        AccessToken token = (AccessToken) redisProvider.get(key);
         return token.getUsername();
     }
 
@@ -160,8 +148,10 @@ public class AuthServiceImpl implements AuthService {
     private AccessToken tokenHandler(String username) {
         Validate.notNull(username);
         AccessToken accessToken = newToken(username);
-        accessTokenCacheProvider.put(accessToken.getAccessToken(), accessToken, ACCESS_TOKEN_TIME_TO_LIVE);
-        refreshTokenCacheProvider.put(accessToken.getAccessToken(), accessToken, REFRESH_TOKEN_TIME_TO_LIVE);
+        String accessCachekey = "access:" + accessToken.getAccessToken();
+        String refreshCachekey = "refresh:" + accessToken.getAccessToken();
+        redisProvider.put(accessCachekey, accessToken, ACCESS_TOKEN_TIME_TO_LIVE);
+        redisProvider.put(refreshCachekey, accessToken, REFRESH_TOKEN_TIME_TO_LIVE);
         LOGGER.debug("crate new token : {}", accessToken.getAccessToken());
         return accessToken;
     }
@@ -206,9 +196,10 @@ public class AuthServiceImpl implements AuthService {
         Validate.notBlank(accessToken);
         Validate.notBlank(refreshToken);
 
-        AccessToken serverToken = refreshTokenCacheProvider.get(accessToken);
+        String refreshCachekey = "refresh:" + accessToken;
+        AccessToken serverToken = (AccessToken) redisProvider.get(refreshCachekey);
         if (serverToken != null && refreshToken.equals(serverToken.getRefreshToken())) {
-            refreshTokenCacheProvider.remove(accessToken);
+            redisProvider.remove(refreshCachekey);
             AccessToken token = tokenHandler(serverToken.getUsername());
             return token;
         }

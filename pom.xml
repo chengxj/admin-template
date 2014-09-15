@@ -59,6 +59,7 @@
         <project.info.version>2.7</project.info.version>
         <site.version>3.3</site.version>
         <cors.filter.version>2.1.2</cors.filter.version>
+        <jedis.version>2.4.2</jedis.version>
     </properties>
     <dependencies>
         <dependency>
@@ -327,6 +328,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
         </dependency>
     </dependencies>
     <profiles>
