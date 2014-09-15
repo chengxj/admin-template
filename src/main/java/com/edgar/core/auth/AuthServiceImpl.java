@@ -31,9 +31,9 @@ import java.util.Set;
 public class AuthServiceImpl implements AuthService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthServiceImpl.class);
     private static final int EXPIRES_IN = 30 * 60 * 1000;
-    private static final int REPLAY_ATTACK_EXPIRE = 5 * 60 * 1000;
-    private static final int ACCESS_TOKEN_TIME_TO_LIVE = 30 * 60;
-    private static final int REFRESH_TOKEN_TIME_TO_LIVE = 24 * 60 * 60;
+    private static final int REPLAY_ATTACK_EXPIRE_SECOND = 5 * 60;
+    private static final int ACCESS_TOKEN_TIME_TO_LIVE_SECOND = 30 * 60;
+    private static final int REFRESH_TOKEN_TIME_TO_LIVE_SECOND = 24 * 60 * 60;
 
     @Autowired
     private UserFacde userFacde;
@@ -55,12 +55,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean isNewRequest(String nonce, long timestamp) {
         long currentTime = System.currentTimeMillis();
-        if (timestamp + REPLAY_ATTACK_EXPIRE < currentTime) {
+        if (timestamp + REPLAY_ATTACK_EXPIRE_SECOND * 1000 < currentTime) {
             return false;
         }
         String replayKey = "replay:" + nonce + ":" + timestamp;
         if (redisProvider.get(replayKey) == null) {
-            redisProvider.put(replayKey, replayKey, REPLAY_ATTACK_EXPIRE);
+            redisProvider.put(replayKey, replayKey, REPLAY_ATTACK_EXPIRE_SECOND);
             return true;
         }
         return false;
@@ -78,9 +78,13 @@ public class AuthServiceImpl implements AuthService {
         Validate.notBlank(accessToken);
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        String key = "access:" + accessToken;
-        redisProvider.remove(accessToken);
+        String key = getAccessKey(accessToken);
+        redisProvider.remove(key);
         LOGGER.debug("remove token: {}", accessToken);
+    }
+
+    private String getAccessKey(String accessToken) {
+        return "access:" + accessToken;
     }
 
 
@@ -98,14 +102,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String getSecretKey(String accessToken) {
-        String key = "access:" + accessToken;
+        String key = getAccessKey(accessToken);
         AccessToken token = (AccessToken) redisProvider.get(key);
         return token.getSecretKey();
     }
 
     @Override
     public String getUsername(String accessToken) {
-        String key = "access:" + accessToken;
+        String key = getAccessKey(accessToken);
         AccessToken token = (AccessToken) redisProvider.get(key);
         return token.getUsername();
     }
@@ -148,12 +152,14 @@ public class AuthServiceImpl implements AuthService {
     private AccessToken tokenHandler(String username) {
         Validate.notNull(username);
         AccessToken accessToken = newToken(username);
-        String accessCachekey = "access:" + accessToken.getAccessToken();
-        String refreshCachekey = "refresh:" + accessToken.getAccessToken();
-        redisProvider.put(accessCachekey, accessToken, ACCESS_TOKEN_TIME_TO_LIVE);
-        redisProvider.put(refreshCachekey, accessToken, REFRESH_TOKEN_TIME_TO_LIVE);
+        redisProvider.put(getAccessKey(accessToken.getAccessToken()), accessToken, ACCESS_TOKEN_TIME_TO_LIVE_SECOND);
+        redisProvider.put(getRefreshKey(accessToken.getAccessToken()), accessToken, REFRESH_TOKEN_TIME_TO_LIVE_SECOND);
         LOGGER.debug("crate new token : {}", accessToken.getAccessToken());
         return accessToken;
+    }
+
+    private String getRefreshKey(String accessToken) {
+        return "refresh:" + accessToken;
     }
 
     /**
