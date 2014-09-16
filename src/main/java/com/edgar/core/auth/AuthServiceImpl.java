@@ -202,10 +202,11 @@ public class AuthServiceImpl implements AuthService {
         Validate.notBlank(accessToken);
         Validate.notBlank(refreshToken);
 
-        String refreshCachekey = "refresh:" + accessToken;
+        String refreshCachekey = getRefreshKey(accessToken);
         AccessToken serverToken = (AccessToken) redisProvider.get(refreshCachekey);
         if (serverToken != null && refreshToken.equals(serverToken.getRefreshToken())) {
             redisProvider.remove(refreshCachekey);
+            redisProvider.remove(getAccessKey(accessToken));
             AccessToken token = tokenHandler(serverToken.getUsername());
             return token;
         }

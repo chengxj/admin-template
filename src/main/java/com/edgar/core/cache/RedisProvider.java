@@ -19,8 +19,6 @@ import javax.annotation.PostConstruct;
 public class RedisProvider {
 
     private JedisPool jedisPool;
-    @Autowired
-    private Environment env;
 
     @Value("${redis.pool.maxIdle}")
     private String maxIdle;
