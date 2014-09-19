@@ -374,6 +374,10 @@ commonDirective.directive('edSelect2', function () {
 
                 }
             });
+			var id = iElement.attr("id");
+            scope.$on("select-" + id, function(event, data) {
+                iElement.select2("val", data);
+            });
         }
     };
 });

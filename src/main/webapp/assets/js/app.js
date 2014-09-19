@@ -157,6 +157,7 @@ angular
                 $rootScope.loadRoute(data.routes);
                 if (data.user.profile && data.user.profile.language) {
                     $translate.use(data.user.profile.language);
+					moment.lang(data.user.profile.language);
                 }
                 $rootScope.loginUser = data.user;
                 $("body").trigger("login");
@@ -218,7 +219,6 @@ angular
             }
         });
 
-        moment.lang("en");
     }).config(
         [
             '$provide', '$routeProvider', '$httpProvider', 'routeResolverProvider','$compileProvider','$translateProvider',
