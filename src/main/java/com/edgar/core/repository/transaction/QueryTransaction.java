@@ -55,6 +55,9 @@ public class QueryTransaction<T> extends TransactionTemplate {
         for (BooleanExpression expression : QueryExampleHelper.getExpressions(pathBase, example)) {
             sqlQuery.where(expression);
         }
+        if (example.isDistinct()) {
+            sqlQuery.distinct();
+        }
         addLimit(example, sqlQuery);
         addOffset(example, sqlQuery);
         for (OrderSpecifier<?> spec : QueryExampleHelper.getOrderSpecs(pathBase, example)) {

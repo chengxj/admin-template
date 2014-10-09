@@ -27,6 +27,8 @@ public class QueryExample {
 
     private int maxNumOfRecords;
 
+    private boolean distinct;
+
     private QueryExample() {
         super();
     }
@@ -38,6 +40,15 @@ public class QueryExample {
      */
     public static QueryExample newInstance() {
         return new QueryExample();
+    }
+
+    /**
+     * 设置distinct
+     * @return
+     */
+    public QueryExample distinct() {
+        this.distinct = true;
+        return this;
     }
 
     /**
@@ -158,6 +169,10 @@ public class QueryExample {
 
     public boolean isAll() {
         return fields.size() == 0;
+    }
+
+    public boolean isDistinct() {
+        return distinct;
     }
 
     /**

@@ -27,8 +27,6 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private VelocityEngine velocityEngine;
 
-    private static final ConcurrentHashMap<String, String> cache = new ConcurrentHashMap<String, String>();
-
     @Override
     public void sendSimpleMail(String from, String to, String subject, String body) {
 
@@ -105,13 +103,8 @@ public class MailServiceImpl implements MailService {
                 message.setFrom(from);
                 message.setSubject(subject);
                 String tpl;
-                if (!cache.containsKey(tplLocation)) {
-                    tpl = VelocityEngineUtils.mergeTemplateIntoString(
-                            velocityEngine, tplLocation, "utf-8", model);
-                    cache.putIfAbsent(tplLocation, tpl);
-                } else {
-                    tpl = cache.get(tplLocation);
-                }
+                tpl = VelocityEngineUtils.mergeTemplateIntoString(
+                        velocityEngine, tplLocation, "utf-8", model);
                 message.setText(tpl, true);
             }
         };

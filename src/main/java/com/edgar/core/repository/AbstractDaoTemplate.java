@@ -72,8 +72,14 @@ public abstract class AbstractDaoTemplate<PK, T> implements
 
     @Override
     public List<T> query(final QueryExample example) {
+        return query(example, getRowMapper());
+    }
+
+    @Override
+    public <E> List<E> query(final QueryExample example, RowMapper<E> rowMapper) {
         Validate.notNull(example);
-        Transaction transaction = TransactionFactory.createQueryTransaction(config(), example, getRowMapper());
+        Validate.notNull(rowMapper);
+        Transaction transaction = TransactionFactory.createQueryTransaction(config(), example, rowMapper);
         return transaction.execute();
     }
 
@@ -88,8 +94,14 @@ public abstract class AbstractDaoTemplate<PK, T> implements
 
     @Override
     public Pagination<T> pagination(QueryExample example, int page, int pageSize) {
+        return pagination(example, page, pageSize, getRowMapper());
+    }
+
+    @Override
+    public <E> Pagination<E> pagination(QueryExample example, int page, int pageSize, RowMapper<E> rowMapper) {
         Validate.notNull(example);
-        Transaction transaction = TransactionFactory.createPageTransaction(config(), example, page, pageSize, getRowMapper());
+        Validate.notNull(rowMapper);
+        Transaction transaction = TransactionFactory.createPageTransaction(config(), example, page, pageSize, rowMapper);
         return transaction.execute();
     }
 
@@ -128,6 +140,12 @@ public abstract class AbstractDaoTemplate<PK, T> implements
     @Override
     public Long insert(T domain) {
         Transaction transaction = TransactionFactory.createDefaultInsertTransaction(config(), domain);
+        return transaction.execute();
+    }
+
+    @Override
+    public <K> K insertWithKey(T domain, Class<K> keyClass) {
+        Transaction transaction = TransactionFactory.createDefaultInsertWithKeyTransaction(config(), domain, keyClass);
         return transaction.execute();
     }
 

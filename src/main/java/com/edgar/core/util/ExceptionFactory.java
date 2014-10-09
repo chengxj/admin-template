@@ -140,6 +140,25 @@ public abstract class ExceptionFactory {
     }
 
     /**
+     * 系统错误
+     *
+     * @param  msg
+     * @return SystemException
+     */
+    public static SystemException appError(String msg) {
+        return new SystemException(BusinessCode.APP_ERROR, msg);
+    }
+
+    /**
+     * 系统错误
+     *
+     * @return SystemException
+     */
+    public static SystemException appError(Throwable t) {
+        return new SystemException(BusinessCode.APP_ERROR, t.getMessage());
+    }
+
+    /**
      * 作业错误
      *
      * @return SystemException

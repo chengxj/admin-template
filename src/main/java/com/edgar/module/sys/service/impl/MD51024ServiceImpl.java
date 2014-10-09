@@ -8,6 +8,8 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Administrator
@@ -44,4 +46,37 @@ public class MD51024ServiceImpl implements PasswordService {
         return new SimpleHash(algorithmName, password, ByteSource.Util.bytes(user
                 .getUsername() + user.getSalt()), hashIterations).toHex();
     }
+
+    @Override
+    public String randomPassword() {
+        char[] r = getChar();
+        Random rr = new Random();
+        char[] pw = new char[8];
+        for (int i = 0; i < pw.length; i++) {
+            int num = rr.nextInt(62);
+            pw[i] = r[num];
+        }
+        return new String(pw);
+    }
+
+    public char[] getChar() {
+        char[] passwordLit = new char[62];
+        char fword = 'A';
+        char mword = 'a';
+        char bword = '0';
+        for (int i = 0; i < 62; i++) {
+            if (i < 26) {
+                passwordLit[i] = fword;
+                fword++;
+            } else if (i < 52) {
+                passwordLit[i] = mword;
+                mword++;
+            } else {
+                passwordLit[i] = bword;
+                bword++;
+            }
+        }
+        return passwordLit;
+    }
+
 }

@@ -47,6 +47,14 @@ public class TransactionFactory {
         return createInsertTransaction(config, domain, false);
     }
 
+    public static <T, K> Transaction createInsertWithKeyTransaction(TransactionConfig config, T domain, boolean withNullBindings, Class<K> keyClass) {
+        return new InsertWithKeyTransaction(config, domain, withNullBindings, keyClass);
+    }
+
+    public static <T, K> Transaction createDefaultInsertWithKeyTransaction(TransactionConfig config, T domain, Class<K> keyClass) {
+        return createInsertWithKeyTransaction(config, domain, false, keyClass);
+    }
+
     public static <T> Transaction createBatchInsertTransaction(TransactionConfig config, List<T> domains, boolean withNullBindings) {
         return new BatchInsertTransaction(config, domains, withNullBindings);
     }

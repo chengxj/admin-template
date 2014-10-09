@@ -13,4 +13,6 @@ public interface PasswordService {
     public void encryptPassword(SysUser user);
 
     public String getEncryptPassword(String password, SysUser user);
+
+    public String randomPassword();
 }

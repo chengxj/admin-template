@@ -1,6 +1,7 @@
 package com.edgar.core.repository;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Min;
@@ -25,6 +26,8 @@ public interface BaseDao<PK, T> {
      * @return 实体类的列表
      */
     List<T> query(@NotNull QueryExample example);
+
+    <E> List<E> query(QueryExample example, RowMapper<E> rowMapper);
 
     /**
      * 根据查询条件查询单个字段，返回字段的列表
@@ -70,6 +73,8 @@ public interface BaseDao<PK, T> {
      */
     T get(@NotNull PK pk, @NotEmpty List<String> fields);
 
+    <E> Pagination<E> pagination(QueryExample example, int page, int pageSize, RowMapper<E> rowMapper);
+
     /**
      * 根据主键查询记录
      *
@@ -102,6 +107,8 @@ public interface BaseDao<PK, T> {
      * @return 如果更新成功，返回1;如果更新失败，返回0
      */
     Long update(@NotNull T domain, @NotNull QueryExample example);
+
+    <K> K insertWithKey(T domain, Class<K> keyClass);
 
     /**
      * 根据主键删除记录
