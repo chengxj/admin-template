@@ -353,8 +353,14 @@ public class ResourceLoader implements Initialization {
                                             .setAuthType(Constants.AUTH_TYPE_REST);
                                     break;
                             }
+                            if (sysResource.getIsRoot() == null) {
+                                sysResource.setIsRoot(false);
+                            }
+                            if (StringUtils.isBlank(sysResource.getAuthType())) {
+                                sysResource.setAuthType(Constants.AUTH_TYPE_ANON);
+                            }
+                            sysResourceDao.insert(sysResource);
                         }
-                        sysResourceDao.insert(sysResource);
                     }
                     existResourceKey.add(key);
                 }
