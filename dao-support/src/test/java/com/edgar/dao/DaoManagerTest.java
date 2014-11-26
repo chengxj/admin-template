@@ -96,4 +96,16 @@ public class DaoManagerTest {
         int result = daoManager.update(testTable, "id", key, false);
         Assert.assertEquals(1, result);
     }
+
+    @Transactional
+    @Test
+    public void testGet() {
+        DaoManager daoManager = new DaoManager(dataSource);
+        TestTable testTable = new TestTable();
+        testTable.setName("testTable");
+        Number key = daoManager.insertAndGetKey(testTable, "id");
+        System.out.println(key);
+        testTable = daoManager.get("id", key, TestTable.class);
+        Assert.assertEquals(key.intValue(), testTable.getId());
+    }
 }

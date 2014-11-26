@@ -2,6 +2,7 @@ package com.edgar.dao;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -70,9 +71,10 @@ public class DaoManager {
 
     /**
      * 修改数据
-     * @param bean 实体类
-     * @param columnName 字段名
-     * @param value 字段值
+     *
+     * @param bean            实体类
+     * @param columnName      字段名
+     * @param value           字段值
      * @param withNullBinding 是否允许将null值设置到字段上
      * @return 修改的记录数
      */
@@ -101,6 +103,12 @@ public class DaoManager {
         args.add(value);
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         return jdbcTemplate.update(sql.toString(), args.toArray());
+    }
+
+    public <T> T get(String columnName, Object value, Class<T> clazz) {
+        StringBuilder sql = new StringBuilder("select * from ").append(underscoreName(clazz.getSimpleName())).append(" where ").append(underscoreName(columnName)).append(" = ?");
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        return jdbcTemplate.queryForObject(sql.toString(), new Object[]{value}, BeanPropertyRowMapper.newInstance(clazz));
     }
 
     private String tableName(Object bean) {
